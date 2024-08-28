@@ -21,10 +21,6 @@ inputs:
     required: false
     default: "bash"
 
-defaults:
-  run:
-    shell: ${{ inputs.shell }}
-
 runs:
   using: "composite"
   steps:
@@ -41,10 +37,12 @@ runs:
         cache: "pnpm"
 
     - name: Install dependencies
+      shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: pnpm install --frozen-lockfile
 
     - name: Run prepack-based deployment pipeline
+      shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: pnpm publish --no-git-checks --access public
       env:
