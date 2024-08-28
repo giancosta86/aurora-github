@@ -6,7 +6,7 @@ inputs:
     description: "The secret authentication token"
     required: true
 
-  project-dir:
+  project-directory:
     description: "Directory containing the package.json"
     required: false
     default: "."
