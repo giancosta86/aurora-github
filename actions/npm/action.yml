@@ -1,7 +1,11 @@
-name: "Publish NPM package"
-description: "Publish a package to NPM"
+name: "Publish npm package"
+description: "Publish a package to the npm registry"
 
 inputs:
+  npm-token:
+    description: "The secret authentication token"
+    required: true
+
   project-dir:
     description: "Directory containing the package.json"
     required: false
@@ -34,6 +38,5 @@ runs:
     - name: Run prepack-based deployment pipeline
       working-directory: ${{ inputs.project-directory }}
       run: pnpm publish --no-git-checks --access public
-
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
