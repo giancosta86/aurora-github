@@ -16,6 +16,15 @@ inputs:
     required: false
     default: 9
 
+  shell:
+    description: "The shell used to run commands"
+    required: false
+    default: "bash"
+
+defaults:
+  run:
+    shell: ${{ inputs.shell }}
+
 runs:
   using: "composite"
   steps:
