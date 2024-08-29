@@ -1,11 +1,7 @@
-name: "Publish to crates.io"
-description: "Publish a Rust crate to crates.io"
+name: "Validate Rust crate"
+description: "Validates a Rust crate"
 
 inputs:
-  cargo-token:
-    description: "The secret authentication token"
-    required: true
-
   project-directory:
     description: "Directory containing the Cargo.toml"
     required: false
@@ -18,8 +14,6 @@ inputs:
 
 runs:
   using: "composite"
-  env:
-    CARGO_TERM_COLOR: always
   steps:
     - name: Check format
       shell: ${{ inputs.shell }}
@@ -40,10 +34,3 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: cargo test --all-features
-
-    #- name: Publish
-    #  shell: ${{ inputs.shell }}
-    #  working-directory: ${{ inputs.project-directory }}
-    #  run: cargo publish --all-features
-    #  env:
-    #    CARGO_REGISTRY_TOKEN: ${{ inputs.cargo-token }}
