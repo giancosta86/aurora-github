@@ -1,0 +1,51 @@
+name: "Publish to crates.io"
+description: "Publish a Rust crate to crates.io"
+
+inputs:
+  cargo-token:
+    description: "The secret authentication token"
+    required: true
+
+  project-directory:
+    description: "Directory containing the Cargo.toml"
+    required: false
+    default: "."
+
+  shell:
+    description: "The shell used to run commands"
+    required: false
+    default: "bash"
+
+runs:
+  using: "composite"
+  env:
+    CARGO_TERM_COLOR: always
+  steps:
+    - uses: actions/checkout@v3
+
+    - name: Check format
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo fmt --check
+
+    - name: Lint via Clippy
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo clippy --all-targets --all-features -- -D warnings
+
+    - name: Run vanilla tests
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo test
+
+    - name: Run full tests
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo test --all-features
+
+    - name: Publish
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo publish --all-features
+      env:
+        CARGO_REGISTRY_TOKEN: ${{ inputs.cargo-token }}
