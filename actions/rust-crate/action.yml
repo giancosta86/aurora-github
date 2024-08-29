@@ -18,9 +18,9 @@ inputs:
 
 runs:
   using: "composite"
+  env:
+    CARGO_TERM_COLOR: always
   steps:
-    - uses: actions/checkout@v3
-
     - name: Check format
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
