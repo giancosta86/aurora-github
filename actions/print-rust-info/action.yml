@@ -1,0 +1,19 @@
+name: "Print Rust toolchain info"
+description: "Prints out information about the current Rust toolchain"
+
+inputs:
+  shell:
+    description: "The shell used to run commands"
+    required: false
+    default: "bash"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Print versions
+      shell: ${{ inputs.shell }}
+      run: |
+        cargo --version
+        rustc --version
+        cargo fmt --version
+        cargo clippy --version

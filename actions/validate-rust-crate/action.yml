@@ -15,6 +15,11 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: "Print Rust info"
+      use: ../print-rust-info
+      with:
+        shell: ${{ inputs.shell }}
+
     - name: Check format
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
