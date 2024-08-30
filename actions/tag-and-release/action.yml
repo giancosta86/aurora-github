@@ -5,7 +5,12 @@ inputs:
   shell:
     description: "The shell used to run commands"
     required: false
-    default: "bash"
+    default: bash
+
+  draft:
+    description: "If set to 'true', only drafts the release"
+    required: false
+    default: false
 
 runs:
   using: "composite"
@@ -36,8 +41,14 @@ runs:
         version="${{ steps.detect-version.outputs.version }}"
         source_tag="${{ steps.create-tag.outputs.tag-name }}" 
         repo_name="$(basename "$GITHUB_REPOSITORY")"
-        release_title="$repo_name $version"
-        echo "Creating release '$release_title' from tag '$source_tag'..."
+        release_title="$repo_name $version"        
+
+        release_recap="release '$release_title' from tag '$source_tag'"
+
+        if [[ $draft = "true" ]] then
+          echo "Drafting $release_recap..."
+        else 
+          echo "Creating $release_recap..."
 
     #  run: |
     #    gh release create "$source_tag" --draft --title "$release_title"
