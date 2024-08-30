@@ -38,6 +38,7 @@ runs:
     - name: Create release draft
       shell: ${{ inputs.shell }}
       run: |
+        draft="${{ inputs.draft }}"
         version="${{ steps.detect-version.outputs.version }}"
         source_tag="${{ steps.create-tag.outputs.tag-name }}" 
         repo_name="$(basename "$GITHUB_REPOSITORY")"
