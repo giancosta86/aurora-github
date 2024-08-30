@@ -17,7 +17,7 @@ runs:
         branch_name="${{ github.head_ref }}"
         version="$(echo "$branch_name" | sed 's/^b//')"
         echo "Detected version: '$version'"
-        echo "version='$version'" >> $GITHUB_OUTPUT
+        echo "version=$version" >> $GITHUB_OUTPUT
 
     - name: Create tag and delete branch
       id: create-tag
@@ -26,7 +26,7 @@ runs:
         version="${{ steps.detect-version.outputs.version }}"
         tag_name="v${version}"
         echo "Creating tag '$tag_name'..."
-        echo "tag-name='$tag_name'" >> $GITHUB_OUTPUT
+        echo "tag-name=$tag_name" >> $GITHUB_OUTPUT
 
       # git tag "v${{ steps.detect-version.outputs.version }}"
 
