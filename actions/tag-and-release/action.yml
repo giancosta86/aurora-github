@@ -45,10 +45,12 @@ runs:
 
         release_recap="release '$release_title' from tag '$source_tag'"
 
-        if [[ $draft = "true" ]] then
+        if [[ $draft = "true" ]]
+        then
           echo "Drafting $release_recap..."
         else 
           echo "Creating $release_recap..."
+        fi
 
     #  run: |
     #    gh release create "$source_tag" --draft --title "$release_title"
