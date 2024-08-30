@@ -16,7 +16,7 @@ runs:
   using: "composite"
   steps:
     - name: "Print Rust info"
-      use: ../print-rust-info
+      uses: ../print-rust-info
       with:
         shell: ${{ inputs.shell }}
 
