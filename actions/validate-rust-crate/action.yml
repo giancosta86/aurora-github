@@ -15,10 +15,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: "Print Rust info"
-      uses: ./actions/print-rust-info
-      with:
-        shell: ${{ inputs.shell }}
+    run: |
+      echo "Within the action: ${{ context.repo.owner }}/${{ context.repo.repo }}"
+
+    #- name: "Print Rust info"
+    #  uses: ./actions/print-rust-info
+    #  with:
+    #    shell: ${{ inputs.shell }}
 
     #- name: Check format
     #  shell: ${{ inputs.shell }}
