@@ -42,6 +42,7 @@ runs:
         echo "version=$version" >> $GITHUB_OUTPUT
 
     - name: Export outputs
+      shell: ${{ inputs.shell }}
       run: |
         branch="${{ steps.detect-branch.outputs.branch }}"
         branch="${{ steps.detect-version.outputs.version }}"
