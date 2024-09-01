@@ -7,6 +7,10 @@ inputs:
     required: false
     default: "."
 
+  enforce-toolchain-file:
+    description: Fails the workflow if the toolchain file is missing
+    default: true
+
   shell:
     description: "The shell used to run commands"
     required: false
@@ -15,14 +19,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - shell: ${{ inputs.shell }}
-      run: |
-        echo "Within the action: ${{ context.repo.owner }}/${{ context.repo.repo }}"
-
-    #- name: "Print Rust info"
-    #  uses: ./actions/print-rust-info
-    #  with:
-    #    shell: ${{ inputs.shell }}
+    - name: "Print Rust info"
+      uses: ./actions/print-rust-info
+      with:
+        enforce-toolchain-file: ${{ inputs.enforce-toolchain-file }}
+        shell: ${{ inputs.shell }}
 
     #- name: Check format
     #  shell: ${{ inputs.shell }}

@@ -2,6 +2,15 @@ name: Print Rust version info
 description: Print out the versions of the main Rust commands
 
 inputs:
+  project-directory:
+    description: "Directory containing the Cargo.toml"
+    required: false
+    default: "."
+
+  enforce-toolchain-file:
+    description: Fails the workflow if the toolchain file is missing
+    default: true
+
   shell:
     description: The shell used to run commands
     required: false
@@ -10,6 +19,18 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Ensure the toolchain file is present
+      if: ${{ inputs.enforce-toolchain-file == 'true' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        toolchain_file="rust-toolchain.toml"
+
+        if [[ -f $toolchain_file ]]
+        then
+          echo "Missing toolchain file: '$toolchain_file'"
+        fi
+
     - name: Print Rust command versions
       shell: ${{ inputs.shell }}
       run: |
