@@ -29,6 +29,7 @@ runs:
         if [[ -f $toolchain_file ]]
         then
           echo "Missing toolchain file: '$toolchain_file'"
+          exit 1
         fi
 
     - name: Print Rust command versions
