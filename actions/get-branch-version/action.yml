@@ -45,7 +45,9 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
         branch="${{ steps.detect-branch.outputs.branch }}"
-        branch="${{ steps.detect-version.outputs.version }}"
+        version="${{ steps.detect-version.outputs.version }}"
+
+        echo "In the final step, branch is '$branch' and version is '$version'"
 
         echo "branch=$branch" >> $GITHUB_OUTPUT
         echo "version=$version" >> $GITHUB_OUTPUT
