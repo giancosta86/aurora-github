@@ -6,7 +6,7 @@ Displays the current version of the main **Rust** commands.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/print-rust-info@v2
+  - uses: giancosta86/aurora-github/actions/print-rust-info
 ```
 
 ## Inputs
