@@ -26,7 +26,7 @@ runs:
       run: |
         toolchain_file="rust-toolchain.toml"
 
-        if [[ -f $toolchain_file ]]
+        if [[ ! -f $toolchain_file ]]
         then
           echo "Missing toolchain file: '$toolchain_file'"
           exit 1
