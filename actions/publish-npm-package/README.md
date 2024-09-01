@@ -12,7 +12,7 @@ The **npm** action executes a [pnpm](https://pnpm.io/)-based pipeline designed t
 
 - The entire build process for the package must be triggered by the `prepack` script in `package.json` (see the example below).
 
-## Input parameters
+## Inputs
 
 - `npm-token` (**REQUIRED**): the token for publishing to npm.
 
