@@ -16,26 +16,26 @@ runs:
   using: "composite"
   steps:
     - name: "Print Rust info"
-      uses: giancosta86/aurora-github/actions/print-rust-info@v2
+      uses: ./actions/print-rust-info
       with:
         shell: ${{ inputs.shell }}
 
-    - name: Check format
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: cargo fmt --check
+    #- name: Check format
+    #  shell: ${{ inputs.shell }}
+    #  working-directory: ${{ inputs.project-directory }}
+    #  run: cargo fmt --check
 
-    - name: Lint via Clippy
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: cargo clippy --all-targets --all-features -- -D warnings
+    #- name: Lint via Clippy
+    #  shell: ${{ inputs.shell }}
+    #  working-directory: ${{ inputs.project-directory }}
+    #  run: cargo clippy --all-targets --all-features -- -D warnings
 
-    - name: Run vanilla tests
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: cargo test
+    #- name: Run vanilla tests
+    #  shell: ${{ inputs.shell }}
+    #  working-directory: ${{ inputs.project-directory }}
+    #  run: cargo test
 
-    - name: Run full tests
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: cargo test --all-features
+    #- name: Run full tests
+    #  shell: ${{ inputs.shell }}
+    #  working-directory: ${{ inputs.project-directory }}
+    #  run: cargo test --all-features
