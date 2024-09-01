@@ -15,8 +15,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    run: |
-      echo "Within the action: ${{ context.repo.owner }}/${{ context.repo.repo }}"
+    - shell: ${{ inputs.shell }}
+      run: |
+        echo "Within the action: ${{ context.repo.owner }}/${{ context.repo.repo }}"
 
     #- name: "Print Rust info"
     #  uses: ./actions/print-rust-info
