@@ -1,5 +1,5 @@
-name: Tag and release
-description: From a versioned branch, creates a tag and a release
+name: Validate Rust web assembly
+description: Ensure a web assembly is ready for deployment
 
 inputs:
   shell:
@@ -20,15 +20,27 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Detect branch and version
-      id: detect-branch-version
+    - name: Detect branch
+      id: detect-branch
+      shell: ${{ inputs.shell }}
+      run: |
+        branch="${{ github.head_ref }}"
+        echo "Detected branch: '$branch'"      
+
+        if [[ ! $branch =~ ^b?[0-9](\.[0-9](\.[0-9])?)?$ ]]
+        then
+          echo "Invalid semver branch format: '$branch'"
+          exit 1
+        fi
+
+        echo "branch=$branch" >> $GITHUB_OUTPUT
 
     - name: Detect version from branch
       id: detect-version
       shell: ${{ inputs.shell }}
       run: |
-        branch="${{ steps.detect-branch-version.outputs.branch }}"
-        version="${{ steps.detect-branch-version.outputs.version }}"
+        branch="${{ steps.detect-branch.outputs.branch }}"
+        version="$(echo "$branch" | sed 's/^b//')"
         echo "Detected version: '$version'"        
         echo "version=$version" >> $GITHUB_OUTPUT
 
@@ -36,7 +48,7 @@ runs:
       id: create-tag
       shell: ${{ inputs.shell }}
       run: |
-        version="${{ steps.detect-branch-version.outputs.version }}"
+        version="${{ steps.detect-version.outputs.version }}"
 
         tag="v${version}"
         echo "Creating tag '$tag'..."
@@ -56,7 +68,7 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
         draft_only="${{ inputs.draft-only }}"
-        version="${{ steps.detect-branch-version.outputs.version }}"
+        version="${{ steps.detect-version.outputs.version }}"
         tag="${{ steps.create-tag.outputs.tag }}" 
 
         repo_basename="$(basename "$GITHUB_REPOSITORY")"

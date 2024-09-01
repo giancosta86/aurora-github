@@ -16,7 +16,7 @@ runs:
   using: "composite"
   steps:
     - name: "Print Rust info"
-      uses: giancosta86/aurora-github/actions/print-rust-info@crates
+      uses: giancosta86/aurora-github/actions/print-rust-info@v2
       with:
         shell: ${{ inputs.shell }}
 
