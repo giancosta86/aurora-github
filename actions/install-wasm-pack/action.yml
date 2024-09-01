@@ -1,14 +1,14 @@
-name: "Install wasm-pack"
-description: "Install wasm-pack for Rust"
+name: Install wasm-pack
+description: Install wasm-pack for Rust
 
 inputs:
   shell:
-    description: "The shell used to run commands"
+    description: The shell used to run commands
     required: false
-    default: "bash"
+    default: bash
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Run installation script
       shell: ${{ inputs.shell }}

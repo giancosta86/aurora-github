@@ -1,20 +1,19 @@
-name: "Print Rust toolchain info"
-description: "Prints out information about the current Rust toolchain"
+name: Print Rust version info
+description: Print out the versions of the main Rust commands
 
 inputs:
   shell:
-    description: "The shell used to run commands"
+    description: The shell used to run commands
     required: false
-    default: "bash"
+    default: bash
 
 runs:
-  using: "composite"
+  using: composite
   steps:
-    - name: Print versions
+    - name: Print Rust command versions
       shell: ${{ inputs.shell }}
       run: |
         cargo --version
         rustc --version
         cargo fmt --version
         cargo clippy --version
-        [[ $(which wasm-pack) ]] && wasm-pack --version
