@@ -20,7 +20,7 @@ runs:
   using: "composite"
   steps:
     - name: "Print Rust info"
-      uses: ./actions/print-rust-info
+      uses: giancosta86/aurora-github/actions/print-rust-info@b2.0.0
       with:
         enforce-toolchain-file: ${{ inputs.enforce-toolchain-file }}
         shell: ${{ inputs.shell }}
