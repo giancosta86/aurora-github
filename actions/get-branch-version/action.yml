@@ -30,7 +30,7 @@ runs:
           exit 1
         fi
 
-        echo "branch=$branch" >> $GITHUB_ENV
+        echo "branch=$branch" >> $GITHUB_OUTPUT
 
     - name: Detect version from branch
       id: detect-version
@@ -39,7 +39,7 @@ runs:
         branch="${{ steps.detect-branch.outputs.branch }}"
         version="$(echo "$branch" | sed 's/^b//')"
         echo "Detected version: '$version'"        
-        echo "version=$version" >> $GITHUB_ENV
+        echo "version=$version" >> $GITHUB_OUTPUT
 
     - name: Export outputs
       shell: ${{ inputs.shell }}
