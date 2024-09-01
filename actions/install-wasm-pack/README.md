@@ -2,6 +2,10 @@
 
 Installs [wasm-pack](https://rustwasm.github.io/wasm-pack/) for creating Rust-based web assemblies.
 
+## Requirements
+
+- a Bash-compatible shell must be available and used by this action.
+
 ## Inputs
 
 |  Name   |    Type    |          Description           | Default value |
