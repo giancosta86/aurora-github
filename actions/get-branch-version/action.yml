@@ -10,11 +10,9 @@ inputs:
 outputs:
   branch:
     description: The name of the current branch
-    required: true
 
   version:
     description: The version detected from the branch name, without prefix
-    required: true
 
 runs:
   using: composite
@@ -43,7 +41,10 @@ runs:
         echo "Detected version: '$version'"        
         echo "version=$version" >> $GITHUB_OUTPUT
 
-  outputs:
-    branch: ${{ steps.detect-branch.outputs.branch }}
+    - name: Export outputs
+      run: |
+        branch="${{ steps.detect-branch.outputs.branch }}"
+        branch="${{ steps.detect-version.outputs.version }}"
 
-    version: ${{ steps.detect-version.outputs.version }}
+        echo "branch=$branch" >> $GITHUB_OUTPUT
+        echo "version=$version" >> $GITHUB_OUTPUT
