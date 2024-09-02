@@ -1,5 +1,5 @@
-name: Get branch version
-description: Extracts the current version from the branch name, returning both.
+name: Detect branch version
+description: Extracts the current version from the Git branch name, returning both.
 
 inputs:
   shell:
@@ -13,7 +13,7 @@ outputs:
     value: ${{ steps.detect-branch.outputs.branch }}
 
   version:
-    description: The version detected from the current branch, without prefix.
+    description: The version detected from the Git branch, without prefix.
     value: ${{ steps.detect-version.outputs.version }}
 
 runs:
@@ -25,7 +25,7 @@ runs:
       run: |
         branch="${{ github.head_ref }}"
 
-        echo "Detected branch: '$branch'"      
+        echo "Detected Git branch: '$branch'"      
 
         if [[ ! $branch =~ ^b?[0-9](\.[0-9](\.[0-9])?)?$ ]]
         then

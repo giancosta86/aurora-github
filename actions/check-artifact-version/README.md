@@ -1,6 +1,6 @@
 # check-artifact-version
 
-Ensures the artifact version - expressed according to the project technology - matches the current branch version, as described in [detect-branch-version](../detect-branch-version/README.md); if the project type cannot be detected, the action crashes the workflow.
+Ensures the artifact version - expressed according to the project technology - matches the current branch version, detected by [detect-branch-version](../detect-branch-version/README.md); if the project type cannot be detected via [detect-project-type](../detect-project-type/README.md), the workflow crashes.
 
 ## Example
 
@@ -24,4 +24,5 @@ steps:
 
 ## Further references
 
+- [detect-branch-version](../detect-branch-version/README.md)
 - [aurora-github](../../README.md)

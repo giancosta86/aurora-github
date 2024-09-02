@@ -17,12 +17,14 @@ runs:
   steps:
     - name: Detect project type
       id: detect-project-type
+      uses: giancosta86/aurora-github/detect-project-type@b2.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Detect branch and version
       id: detect-branch-version
+      uses: giancosta86/aurora-github/detect-branch-version@b2.0.0
       with:
         shell: ${{ inputs.shell }}
 
@@ -43,5 +45,5 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "❌Cannot check the version of an unknown project type"
+        echo "❌Cannot validate the artifact version for an unknown project type"
         exit 1

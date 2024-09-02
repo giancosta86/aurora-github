@@ -1,6 +1,6 @@
 # detect-branch-version
 
-Extracts the current version from the branch name, returning both.
+Extracts the current version from the Git branch name, returning both.
 
 ## Example
 
