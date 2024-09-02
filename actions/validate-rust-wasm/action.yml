@@ -1,87 +1,65 @@
 name: Validate Rust web assembly
-description: Ensure a web assembly is ready for deployment
+description: Validates the source files of a Rust web assembly.
 
 inputs:
+  check-artifact-version:
+    description: Ensures the version in Cargo.toml matches the branch name.
+    required: false
+    default: true
+
+  verify-toolchain-file:
+    description: Ensures 'rust-toolchain.toml' is present.
+    required: false
+    default: true
+
+  pnpm-version:
+    description: The version of pnpm to use.
+    required: false
+    default: 9
+
+  project-directory:
+    description: The directory containing Cargo.toml.
+    required: false
+    default: .
+
   shell:
     description: The shell used to run commands
     required: false
     default: bash
 
-  delete-branch:
-    description: If set to 'true', deletes the branch
-    required: false
-    default: true
-
-  draft-only:
-    description: If set to 'true', only drafts the release
-    required: false
-    default: false
-
 runs:
   using: "composite"
   steps:
-    - name: Detect branch
-      id: detect-branch
+    - name: Set up NodeJS
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: ${{ inputs.project-directory }}/client_tests/.nvmrc
+        registry-url: https://registry.npmjs.org
+
+    - name: Install wasm-pack
+      uses: giancosta86/aurora-github/install-wasm-pack
+      with:
+        shell: ${{ inputs.shell }}
+
+    - name: Validate Rust source files
+      uses: giancosta86/aurora-github/validate-rust-crate
+      with:
+        check-artifact-version: ${{ inputs.check-artifact-version }}
+        verify-toolchain-file: ${{ inputs.verify-toolchain-file }}
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Run headless browser tests
       shell: ${{ inputs.shell }}
-      run: |
-        branch="${{ github.head_ref }}"
-        echo "Detected branch: '$branch'"      
+      working-directory: ${{ inputs.project-directory }}/client_tests
+      run: wasm-pack test --chrome --headless --release
 
-        if [[ ! $branch =~ ^b?[0-9](\.[0-9](\.[0-9])?)?$ ]]
-        then
-          echo "Invalid semver branch format: '$branch'"
-          exit 1
-        fi
-
-        echo "branch=$branch" >> $GITHUB_OUTPUT
-
-    - name: Detect version from branch
-      id: detect-version
+    - name: Install client-side test dependencies
       shell: ${{ inputs.shell }}
-      run: |
-        branch="${{ steps.detect-branch.outputs.branch }}"
-        version="$(echo "$branch" | sed 's/^b//')"
-        echo "Detected version: '$version'"        
-        echo "version=$version" >> $GITHUB_OUTPUT
+      working-directory: ${{ inputs.project-directory }}/client_tests
+      run: pnpm install
 
-    - name: Create tag
-      id: create-tag
+    - name: Perform client-side tests
       shell: ${{ inputs.shell }}
-      run: |
-        version="${{ steps.detect-version.outputs.version }}"
-
-        tag="v${version}"
-        echo "Creating tag '$tag'..."
-        echo "tag=$tag" >> $GITHUB_OUTPUT
-
-    - name: Optionally delete branch
-      shell: ${{ inputs.shell }}
-      if: ${{ inputs.delete-branch == 'true' }}
-      run: |
-        branch="${{ steps.detect-branch.outputs.branch }}"
-        echo "Deleting branch '$branch'..."
-
-      # git tag "v${{ steps.detect-version.outputs.version }}"
-      # git push origin --delete "$branch"
-
-    - name: Create or draft release
-      shell: ${{ inputs.shell }}
-      run: |
-        draft_only="${{ inputs.draft-only }}"
-        version="${{ steps.detect-version.outputs.version }}"
-        tag="${{ steps.create-tag.outputs.tag }}" 
-
-        repo_basename="$(basename "$GITHUB_REPOSITORY")"
-        release_title="$repo_basename $version"        
-
-        release_recap="release '$release_title' from tag '$tag'"
-
-        if [[ $draft_only = "true" ]]
-        then
-          echo "Drafting $release_recap..."
-        else 
-          echo "Creating $release_recap..."
-        fi
-
-    #  run: |
-    #    gh release create "$source_tag" --draft --title "$release_title"
+      working-directory: ${{ inputs.project-directory }}/client_tests
+      run: pnpm test

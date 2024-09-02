@@ -32,9 +32,9 @@ runs:
     - name: Setup NodeJS and NPM registry
       uses: actions/setup-node@v4
       with:
-        node-version-file: ".nvmrc"
-        registry-url: "https://registry.npmjs.org"
-        cache: "pnpm"
+        node-version-file: ${{ inputs.project-directory }}/.nvmrc
+        registry-url: https://registry.npmjs.org
+        cache: pnpm
 
     - name: Install dependencies
       shell: ${{ inputs.shell }}

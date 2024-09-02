@@ -29,12 +29,12 @@ steps:
 
 ## Inputs
 
-|           Name           |    Type     |                        Description                        | Default value |
-| :----------------------: | :---------: | :-------------------------------------------------------: | :-----------: |
-| `check-artifact-version` | **boolean** | Runs [check-artifact-version](../check-version/README.md) |   **true**    |
-| `verify-toolchain-file`  | **boolean** |         Ensures `rust-toolchain.toml` is present          |   **true**    |
-|   `project-directory`    | **string**  |           The directory containing `Cargo.toml`           |     **.**     |
-|         `shell`          | **string**  |              The shell used to run commands               |   **bash**    |
+|           Name           |    Type     |                            Description                             | Default value |
+| :----------------------: | :---------: | :----------------------------------------------------------------: | :-----------: |
+| `check-artifact-version` | **boolean** | Runs [check-artifact-version](../check-artifact-version/README.md) |   **true**    |
+| `verify-toolchain-file`  | **boolean** |              Ensures `rust-toolchain.toml` is present              |   **true**    |
+|   `project-directory`    | **string**  |               The directory containing `Cargo.toml`                |     **.**     |
+|         `shell`          | **string**  |                   The shell used to run commands                   |   **bash**    |
 
 ## Further references
 

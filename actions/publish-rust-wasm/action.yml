@@ -1,0 +1,56 @@
+name: Publish Rust web assembly
+description: Publishes a Rust web assembly to npm.
+
+inputs:
+  npm-scope:
+    description: The npm package scope (with the initial @) - or empty.
+    required: true
+
+  npm-token:
+    description: The token for publishing to npm.
+    required: true
+
+  pnpm-version:
+    description: The version of pnpm to use.
+    required: false
+    default: 9
+
+  project-directory:
+    description: The directory containing Cargo.toml.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up NodeJS
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: ${{ inputs.project-directory }}/client_tests/.nvmrc
+        registry-url: https://registry.npmjs.org
+
+    - name: Install wasm-pack
+      uses: giancosta86/aurora-github/install-wasm-pack@b2.0.0
+
+    - name: Generate NodeJS package
+      run: |
+        scope=${{ inputs.scope }}
+
+        wasm-pack build --scope giancosta86 --release --target web
+
+    - name: Install NodeJS package dependencies
+      working-directory: ${{ inputs.project-directory }}/pkg
+      run: pnpm install
+
+    - name: Publish NodeJS package
+      uses: giancosta86/aurora-github/publish-npm-package
+      with:
+        npm-token: ${{ inputs.npm-token }}
+        pnpm-version: ${{ inputs.pnpm-version }}
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
