@@ -1,0 +1,47 @@
+name: Check artifact version
+description: Ensures the artifact version matches the current branch version.
+
+inputs:
+  project-directory:
+    description: The directory containing the project.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Detect project type
+      id: detect-project-type
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Detect branch and version
+      id: detect-branch-version
+      with:
+        shell: ${{ inputs.shell }}
+
+    - name: Check Rust crate version
+      if: ${{ detect-project-type.outputs.type == 'rust' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: grep -q "^version\s*=\s*\"${{ detect-branch-version.outputs.version }}\"" Cargo.toml
+
+    - name: Check NodeJS package version
+      if: ${{ detect-project-type.outputs.type == 'nodejs' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: grep -q '\"version\"\s*:\s*\"${{ detect-branch-version.outputs.version }}\"' package.json
+
+    - name: Fail on unknown project type
+      if: ${{ detect-project-type.outputs.type == '' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "❌Cannot check the version of an unknown project type"
+        exit 1

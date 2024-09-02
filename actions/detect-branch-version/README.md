@@ -1,17 +1,13 @@
-# get-branch-version
+# detect-branch-version
 
 Extracts the current version from the branch name, returning both.
-
-## Requirements
-
-- the branch name must be a [semantic version](https://semver.org/), optionally (and preferably) preceded by `b`. For example: `b1.0.2`.
 
 ## Example
 
 ```yaml
 steps:
   - id: detector
-    uses: giancosta86/aurora-github/actions/get-branch-version
+    uses: giancosta86/aurora-github/actions/detect-branch-version
 
   - run: |
       branch="${{ steps.detector.outputs.branch }}"
@@ -19,6 +15,10 @@ steps:
 
       echo "Detected version '$version' from branch '$branch'"
 ```
+
+## Requirements
+
+- the branch name must be a [semantic version](https://semver.org/), optionally (and preferably) preceded by `b`. For example: `b1.0.2`.
 
 ## Inputs
 
@@ -30,7 +30,7 @@ steps:
 
 |   Name    |    Type    |              Description              |  Example   |
 | :-------: | :--------: | :-----------------------------------: | :--------: |
-| `branch`  | **string** |          The current branch           | **b2.4.8** |
+| `branch`  | **string** |        The current Git branch         | **b2.4.8** |
 | `version` | **string** | The extracted version, without prefix | **2.4.8**  |
 
 ## Further references

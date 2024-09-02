@@ -11,9 +11,11 @@ steps:
 
 ## Inputs
 
-|  Name   |    Type    |          Description           | Default value |
-| :-----: | :--------: | :----------------------------: | :-----------: |
-| `shell` | **string** | The shell used to run commands |   **bash**    |
+|          Name           |    Type     |               Description                | Default value |
+| :---------------------: | :---------: | :--------------------------------------: | :-----------: |
+| `verify-toolchain-file` | **boolean** | Ensures `rust-toolchain.toml` is present |   **true**    |
+|   `project-directory`   | **string**  |  The directory containing `Cargo.toml`   |     **.**     |
+|         `shell`         | **string**  |      The shell used to run commands      |   **bash**    |
 
 ## Further references
 

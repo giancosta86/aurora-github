@@ -1,0 +1,39 @@
+name: Detect project type
+description: Tries to infers the current project type from its files.
+
+inputs:
+  project-directory:
+    description: The directory containing the project.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+outputs:
+  type:
+    description: The project type. Can be either 'nodejs' or 'rust'.
+    value: ${{ steps.detect-project-type.outputs.type }}
+
+runs:
+  using: composite
+  steps:
+    - name: Detect project type
+      id: detect-project-type
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -f "package.json" ]]
+        then
+          echo "📦NodeJS project type detected"
+          echo "type=nodejs" >> $GITHUB_OUTPUT
+        elif [[ -f "Cargo.toml" ]]
+        then
+          echo "🦀Rust project detected"
+          echo "type=rust" >> $GITHUB_OUTPUT
+        else
+          echo "❌It's impossible to detect the project type"
+          echo "type=" >> $GITHUB_OUTPUT
+        fi

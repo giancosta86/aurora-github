@@ -1,18 +1,19 @@
 name: Print Rust version info
-description: Print out the versions of the main Rust commands
+description: Prints out the versions of the main Rust commands.
 
 inputs:
+  verify-toolchain-file:
+    description: Ensures 'rust-toolchain.toml' is present.
+    required: false
+    default: true
+
   project-directory:
-    description: "Directory containing the Cargo.toml"
+    description: The directory containing Cargo.toml.
     required: false
     default: "."
 
-  enforce-toolchain-file:
-    description: Fails the workflow if the toolchain file is missing
-    default: true
-
   shell:
-    description: The shell used to run commands
+    description: The shell used to run commands.
     required: false
     default: bash
 
@@ -20,7 +21,7 @@ runs:
   using: composite
   steps:
     - name: Ensure the toolchain file is present
-      if: ${{ inputs.enforce-toolchain-file == 'true' }}
+      if: ${{ inputs.verify-toolchain-file == 'true' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -34,6 +35,7 @@ runs:
 
     - name: Print Rust command versions
       shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
       run: |
         cargo --version
         rustc --version

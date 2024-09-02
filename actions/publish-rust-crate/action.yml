@@ -1,25 +1,25 @@
-name: "Publish to crates.io"
-description: "Publish a Rust crate to crates.io"
+name: Publish to crates.io
+description: Publishes a Rust crate to crates.io
 
 inputs:
   cargo-token:
-    description: "The secret authentication token"
+    description: The secret authentication token
     required: true
 
   project-directory:
-    description: "Directory containing the Cargo.toml"
+    description: Directory containing Cargo.toml
     required: false
-    default: "."
+    default: .
 
   shell:
-    description: "The shell used to run commands"
+    description: The shell used to run commands
     required: false
-    default: "bash"
+    default: bash
 
 runs:
-  using: "composite"
+  using: composite
   steps:
-    - name: Publish
+    - name: Publish to crates.io
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: cargo publish --all-features

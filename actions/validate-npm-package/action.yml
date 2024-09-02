@@ -1,24 +1,24 @@
-name: "Validate npm package"
-description: "Validates a package for the npm registry"
+name: Validate npm package
+description: Validates the source files of a NodeJS package.
 
 inputs:
-  project-directory:
-    description: "Directory containing the package.json"
-    required: false
-    default: "."
-
   pnpm-version:
-    description: "Specific version of pnpm to use"
+    description: Version of pnpm to use
     required: false
     default: 9
 
-  shell:
-    description: "The shell used to run commands"
+  project-directory:
+    description: Directory containing package.json
     required: false
-    default: "bash"
+    default: .
+
+  shell:
+    description: The shell used to run commands
+    required: false
+    default: bash
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Install pnpm
       uses: pnpm/action-setup@v4
@@ -28,9 +28,9 @@ runs:
     - name: Setup NodeJS and NPM registry
       uses: actions/setup-node@v4
       with:
-        node-version-file: ".nvmrc"
-        registry-url: "https://registry.npmjs.org"
-        cache: "pnpm"
+        node-version-file: .nvmrc
+        registry-url: https://registry.npmjs.org
+        cache: pnpm
 
     - name: Install dependencies
       shell: ${{ inputs.shell }}

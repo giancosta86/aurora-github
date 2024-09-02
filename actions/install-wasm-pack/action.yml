@@ -1,9 +1,9 @@
 name: Install wasm-pack
-description: Install wasm-pack for Rust
+description: Installs wasm-pack for Rust.
 
 inputs:
   shell:
-    description: The shell used to run commands
+    description: The shell used to run commands.
     required: false
     default: bash
 

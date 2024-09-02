@@ -13,6 +13,8 @@ steps:
 
 - a Bash-compatible shell must be available and used by this action.
 
+- `curl` must be installed in the system
+
 ## Inputs
 
 |  Name   |    Type    |          Description           | Default value |

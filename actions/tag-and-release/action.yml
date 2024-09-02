@@ -1,55 +1,48 @@
 name: Tag and release
-description: From a versioned branch, creates a tag and a release
+description: From a Git branch named according to semver, creates a Git tag and a GitHub release.
 
 inputs:
-  shell:
-    description: The shell used to run commands
-    required: false
-    default: bash
-
-  delete-branch:
-    description: If set to 'true', deletes the branch
-    required: false
-    default: true
-
   draft-only:
-    description: If set to 'true', only drafts the release
+    description: Only draft the release.
     required: false
     default: false
 
+  delete-branch:
+    description: Delete the branch after creating the tag.
+    required: false
+    default: true
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Detect branch and version
       id: detect-branch-version
 
-    - name: Detect version from branch
-      id: detect-version
-      shell: ${{ inputs.shell }}
-      run: |
-        branch="${{ steps.detect-branch-version.outputs.branch }}"
-        version="${{ steps.detect-branch-version.outputs.version }}"
-        echo "Detected version: '$version'"        
-        echo "version=$version" >> $GITHUB_OUTPUT
-
-    - name: Create tag
-      id: create-tag
+    - name: Create Git tag
+      id: create-git-tag
       shell: ${{ inputs.shell }}
       run: |
         version="${{ steps.detect-branch-version.outputs.version }}"
 
         tag="v${version}"
-        echo "Creating tag '$tag'..."
+        echo "Creating tag '$tag'..."        
         echo "tag=$tag" >> $GITHUB_OUTPUT
 
-    - name: Optionally delete branch
+      # git tag "v${{ steps.detect-version.outputs.version }}"
+
+    - name: Delete branch
       shell: ${{ inputs.shell }}
       if: ${{ inputs.delete-branch == 'true' }}
       run: |
         branch="${{ steps.detect-branch.outputs.branch }}"
+
         echo "Deleting branch '$branch'..."
 
-      # git tag "v${{ steps.detect-version.outputs.version }}"
       # git push origin --delete "$branch"
 
     - name: Create or draft release
@@ -57,7 +50,7 @@ runs:
       run: |
         draft_only="${{ inputs.draft-only }}"
         version="${{ steps.detect-branch-version.outputs.version }}"
-        tag="${{ steps.create-tag.outputs.tag }}" 
+        tag="${{ steps.create-git-tag.outputs.tag }}" 
 
         repo_basename="$(basename "$GITHUB_REPOSITORY")"
         release_title="$repo_basename $version"        

@@ -1,46 +1,60 @@
-name: "Validate Rust crate"
-description: "Validates a Rust crate"
+name: Validate Rust crate
+description: Validates a Rust crate.
 
 inputs:
-  project-directory:
-    description: "Directory containing the Cargo.toml"
+  check-artifact-version:
+    description: Ensures the version in Cargo.toml matches the branch name.
     required: false
-    default: "."
-
-  enforce-toolchain-file:
-    description: Fails the workflow if the toolchain file is missing
     default: true
 
-  shell:
-    description: "The shell used to run commands"
+  verify-toolchain-file:
+    description: Ensures 'rust-toolchain.toml' is present.
     required: false
-    default: "bash"
+    default: true
+
+  project-directory:
+    description: The directory containing Cargo.toml.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
 
 runs:
-  using: "composite"
+  using: composite
   steps:
-    - name: "Print Rust info"
-      uses: giancosta86/aurora-github/actions/print-rust-info@b2.0.0
+    - name: Check artifact version
+      uses: giancosta86/aurora-github/actions/check-artifact-version@b2.0.0
+      if: ${{ inputs.check-artifact-version == 'true' }}
       with:
-        enforce-toolchain-file: ${{ inputs.enforce-toolchain-file }}
+        project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
-    #- name: Check format
-    #  shell: ${{ inputs.shell }}
-    #  working-directory: ${{ inputs.project-directory }}
-    #  run: cargo fmt --check
+    - name: Print Rust info
+      uses: giancosta86/aurora-github/actions/print-rust-info@b2.0.0
+      with:
+        verify-toolchain-file: ${{ inputs.verify-toolchain-file }}
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
 
-    #- name: Lint via Clippy
-    #  shell: ${{ inputs.shell }}
-    #  working-directory: ${{ inputs.project-directory }}
-    #  run: cargo clippy --all-targets --all-features -- -D warnings
+    - name: Check format style
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo fmt --check
 
-    #- name: Run vanilla tests
-    #  shell: ${{ inputs.shell }}
-    #  working-directory: ${{ inputs.project-directory }}
-    #  run: cargo test
+    - name: Lint via Clippy
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo clippy --all-targets --all-features -- -D warnings
 
-    #- name: Run full tests
-    #  shell: ${{ inputs.shell }}
-    #  working-directory: ${{ inputs.project-directory }}
-    #  run: cargo test --all-features
+    - name: Run vanilla (no features) tests
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo test
+
+    - name: Run full (all features) tests
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo test --all-features
