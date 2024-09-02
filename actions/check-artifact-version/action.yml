@@ -27,19 +27,19 @@ runs:
         shell: ${{ inputs.shell }}
 
     - name: Check Rust crate version
-      if: ${{ detect-project-type.outputs.type == 'rust' }}
+      if: ${{ detect-project-type.outputs.project-type == 'rust' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: grep -q "^version\s*=\s*\"${{ detect-branch-version.outputs.version }}\"" Cargo.toml
 
     - name: Check NodeJS package version
-      if: ${{ detect-project-type.outputs.type == 'nodejs' }}
+      if: ${{ detect-project-type.outputs.project-type == 'nodejs' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: grep -q '\"version\"\s*:\s*\"${{ detect-branch-version.outputs.version }}\"' package.json
 
     - name: Fail on unknown project type
-      if: ${{ detect-project-type.outputs.type == '' }}
+      if: ${{ detect-project-type.outputs.project-type == '' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |

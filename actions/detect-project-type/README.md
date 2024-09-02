@@ -1,6 +1,6 @@
 # detect-project-type
 
-Tries to infers the current project type from its files; on failure, the output is set to an empty string.
+Tries to infers the current project type from its source files; on failure, the output is set to an empty string.
 
 ## Example
 
@@ -10,9 +10,9 @@ steps:
     uses: giancosta86/aurora-github/actions/detect-project-type
 
   - run: |
-      type="${{ steps.detector.outputs.type }}"
+      projectType="${{ steps.detector.outputs.project-type }}"
 
-      echo "Detected project type: '$type'"
+      echo "Detected project type: '$projectType'"
 ```
 
 ## Requirements
@@ -23,16 +23,16 @@ steps:
 
 ## Inputs
 
-|        Name         |    Type    |              Description              | Default value |
-| :-----------------: | :--------: | :-----------------------------------: | :-----------: |
-| `project-directory` | **string** | The directory containing `Cargo.toml` |     **.**     |
-|       `shell`       | **string** |    The shell used to run commands     |   **bash**    |
+|        Name         |    Type    |          Description           | Default value |
+| :-----------------: | :--------: | :----------------------------: | :-----------: |
+| `project-directory` | **string** |     The project directory      |     **.**     |
+|       `shell`       | **string** | The shell used to run commands |   **bash**    |
 
 ## Outputs
 
-|  Name  |    Type    |        Description        |            Example            |
-| :----: | :--------: | :-----------------------: | :---------------------------: |
-| `type` | **string** | The detected project type | **rust**, **nodejs**, (empty) |
+|      Name      |    Type    |        Description        |       Supported values        |
+| :------------: | :--------: | :-----------------------: | :---------------------------: |
+| `project-type` | **string** | The detected project type | **rust**, **nodejs**, (empty) |
 
 ## Further references
 

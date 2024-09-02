@@ -1,6 +1,6 @@
 # install-wasm-pack
 
-Installs [wasm-pack](https://rustwasm.github.io/wasm-pack/) for creating Rust-based web assemblies.
+Installs [wasm-pack](https://rustwasm.github.io/wasm-pack/), for creating Rust-based web assemblies.
 
 ## Example
 
@@ -10,8 +10,6 @@ steps:
 ```
 
 ## Requirements
-
-- a Bash-compatible shell must be available and used by this action.
 
 - `curl` must be installed in the system
 

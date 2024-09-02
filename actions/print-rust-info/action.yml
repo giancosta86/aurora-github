@@ -1,5 +1,5 @@
 name: Print Rust version info
-description: Prints out the versions of the main Rust commands.
+description: Displays the versions of the main Rust components.
 
 inputs:
   verify-toolchain-file:

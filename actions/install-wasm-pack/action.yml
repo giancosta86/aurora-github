@@ -10,7 +10,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Run installation script
+    - name: Run the installation script
       shell: ${{ inputs.shell }}
       run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 

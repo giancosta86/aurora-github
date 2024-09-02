@@ -1,6 +1,6 @@
 # print-rust-info
 
-Displays the current version of the main **Rust** commands.
+Displays the current version of the main **Rust** components.
 
 ## Example
 
