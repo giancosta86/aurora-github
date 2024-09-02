@@ -1,18 +1,18 @@
 name: Publish to crates.io
-description: Publishes a Rust crate to crates.io
+description: Publishes a Rust crate to crates.io, with all the features enabled.
 
 inputs:
   cargo-token:
-    description: The secret authentication token
+    description: The secret authentication token.
     required: true
 
   project-directory:
-    description: Directory containing Cargo.toml
+    description: The directory containing Cargo.toml.
     required: false
     default: .
 
   shell:
-    description: The shell used to run commands
+    description: The shell used to run commands.
     required: false
     default: bash
 
