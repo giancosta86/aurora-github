@@ -1,11 +1,15 @@
 # validate-rust-crate
 
-Validates a Rust crate - which is especially useful as a condition for merging a pull request.
+Validates the source files of a Rust crate - which is especially useful as a condition for merging a pull request.
 
 ## Example
 
+The action can be placed right after checking out the source code:
+
 ```yaml
 steps:
+  - uses: actions/checkout@v4
+
   - uses: giancosta86/aurora-github/actions/validate-rust-crate
 ```
 

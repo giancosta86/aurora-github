@@ -1,5 +1,5 @@
 name: Validate Rust crate
-description: Validates a Rust crate.
+description: Validates the source files of a Rust crate.
 
 inputs:
   check-artifact-version:

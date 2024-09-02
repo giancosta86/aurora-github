@@ -1,6 +1,28 @@
-# npm
+# publish-npm-package
 
 The **npm** action executes a [pnpm](https://pnpm.io/)-based pipeline designed to publish a package to the [npm](https://www.npmjs.com/) registry.
+
+## Example
+
+The action can be placed right after checking out the source code:
+
+```yaml
+steps:
+  - uses: actions/checkout@v4
+
+  - uses: giancosta86/aurora-github/actions/publish-npm-package
+    with:
+      npm-token: ${{ secrets.NPM_TOKEN }}
+```
+
+**IMPORTANT**: please, remember to declare your build process in the `prepack` script within `package.json`! For example:
+
+```json
+"scripts": {
+  "build": "tsc",
+  "prepack": "pnpm build"
+}
+```
 
 ## Requirements
 
@@ -14,36 +36,12 @@ The **npm** action executes a [pnpm](https://pnpm.io/)-based pipeline designed t
 
 ## Inputs
 
-- `npm-token` (**REQUIRED**): the token for publishing to npm.
-
-- `project-directory`: the directory containing the `package.json` file. **Defaults to:** the repository's directory.
-
-- `pnpm-version`: the required **pnpm** version. **Defaults to:** a sensible, modern version.
-
-- `shell`: the interpreter running the commands. **Defaults to:** `bash`.
-
-## Example
-
-The action can be placed right after checking out the source code:
-
-```yaml
-steps:
-  - uses: actions/checkout@v4
-
-  - uses: giancosta86/aurora-github/actions/npm
-    with:
-      npm-token: ${{ secrets.NPM_TOKEN }}
-```
-
-**IMPORTANT**: please, remember to declare your build process in the `prepack` script within `package.json`! For example:
-
-```json
-"scripts": {
-  "build": "tsc",
-  "test": "vitest",
-  "prepack": "pnpm test && pnpm build"
-}
-```
+|        Name         |    Type     |              Description              | Default value |
+| :-----------------: | :---------: | :-----------------------------------: | :-----------: |
+|     `npm-token`     | **string**  |    The token for publishing to npm    |     **9**     |
+|   `pnpm-version`    | **boolean** |    The version of **pnpm** to use     |     **9**     |
+| `project-directory` | **string**  | The directory containing `Cargo.toml` |     **.**     |
+|       `shell`       | **string**  |    The shell used to run commands     |   **bash**    |
 
 ## Further references
 
