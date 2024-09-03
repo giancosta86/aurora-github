@@ -1,6 +1,6 @@
 # tag-and-release
 
-From a Git branch named according to [semver](https://semver.org/), creates a Git tag and a GitHub release.
+Creates a Git tag and a GitHub release, from a Git branch named according to [semver](https://semver.org/).
 
 ## Example
 
@@ -11,7 +11,7 @@ steps:
 
 ## Requirements
 
-The same ones discussed for [detect-branch-version](../detect-branch-version/README.md).
+- the ones discussed for [detect-branch-version](../detect-branch-version/README.md).
 
 ## Inputs
 
@@ -22,5 +22,7 @@ The same ones discussed for [detect-branch-version](../detect-branch-version/REA
 |     `shell`     | **string**  |      The shell used to run commands      |   **bash**    |
 
 ## Further references
+
+- [detect-branch-version](../detect-branch-version/README.md)
 
 - [aurora-github](../../README.md)

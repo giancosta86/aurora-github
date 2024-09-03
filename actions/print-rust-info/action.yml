@@ -1,12 +1,7 @@
 name: Print Rust version info
-description: Displays the versions of the main Rust components.
+description: Displays the versions of the main Rust components, ensuring that 'rust-toolchain.toml' is present.
 
 inputs:
-  verify-toolchain-file:
-    description: Ensures 'rust-toolchain.toml' is present.
-    required: false
-    default: true
-
   project-directory:
     description: The directory containing Cargo.toml.
     required: false
@@ -25,11 +20,11 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        toolchain_file="rust-toolchain.toml"
+        toolchainFile="rust-toolchain.toml"
 
-        if [[ ! -f $toolchain_file ]]
+        if [[ ! -f $toolchainFile ]]
         then
-          echo "Missing toolchain file: '$toolchain_file'"
+          echo "Missing toolchain file: '$toolchainFile'"
           exit 1
         fi
 

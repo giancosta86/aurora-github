@@ -25,4 +25,7 @@ steps:
 ## Further references
 
 - [detect-branch-version](../detect-branch-version/README.md)
+
+- [detect-project-type](../detect-project-type/README.md)
+
 - [aurora-github](../../README.md)
