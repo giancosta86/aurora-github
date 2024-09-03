@@ -10,11 +10,6 @@ inputs:
     description: The secret token for publishing to npm.
     required: true
 
-  pnpm-version:
-    description: The version of pnpm to use.
-    required: false
-    default: 9
-
   project-directory:
     description: The directory containing Cargo.toml.
     required: false
@@ -51,6 +46,5 @@ runs:
       uses: giancosta86/aurora-github/publish-npm-package
       with:
         npm-token: ${{ inputs.npm-token }}
-        pnpm-version: ${{ inputs.pnpm-version }}
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}

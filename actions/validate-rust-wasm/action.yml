@@ -12,11 +12,6 @@ inputs:
     required: false
     default: true
 
-  pnpm-version:
-    description: The version of pnpm to use.
-    required: false
-    default: 9
-
   project-directory:
     description: The directory containing Cargo.toml.
     required: false

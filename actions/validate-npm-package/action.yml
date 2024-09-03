@@ -2,11 +2,6 @@ name: Validate npm package
 description: Validates the source files of a NodeJS package.
 
 inputs:
-  pnpm-version:
-    description: The version of pnpm to use.
-    required: false
-    default: 9
-
   check-artifact-version:
     description: Ensures the version in package.json matches the branch name.
     required: false
@@ -35,7 +30,7 @@ runs:
     - name: Install pnpm
       uses: pnpm/action-setup@v4
       with:
-        version: ${{ inputs.pnpm-version }}
+        version: 9
 
     - name: Setup NodeJS
       uses: actions/setup-node@v4

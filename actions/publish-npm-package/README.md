@@ -36,12 +36,11 @@ steps:
 
 ## Inputs
 
-|        Name         |    Type     |              Description              | Default value |
-| :-----------------: | :---------: | :-----------------------------------: | :-----------: |
-|     `npm-token`     | **string**  |   The secret token provided by npm    |     **9**     |
-|   `pnpm-version`    | **boolean** |    The version of **pnpm** to use     |     **9**     |
-| `project-directory` | **string**  | The directory containing `Cargo.toml` |     **.**     |
-|       `shell`       | **string**  |    The shell used to run commands     |   **bash**    |
+|        Name         |    Type    |              Description              | Default value |
+| :-----------------: | :--------: | :-----------------------------------: | :-----------: |
+|     `npm-token`     | **string** |   The secret token provided by npm    |     **9**     |
+| `project-directory` | **string** | The directory containing `Cargo.toml` |     **.**     |
+|       `shell`       | **string** |    The shell used to run commands     |   **bash**    |
 
 ## Further references
 
