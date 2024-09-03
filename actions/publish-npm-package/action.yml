@@ -1,5 +1,5 @@
 name: Publish npm package
-description: Publish a NodeJS package to the npm registry.
+description: Publishes a NodeJS package to the npm registry.
 
 inputs:
   npm-token:

@@ -1,6 +1,6 @@
 # publish-npm-package
 
-The **npm** action executes a [pnpm](https://pnpm.io/)-based pipeline designed to publish a package to the [npm](https://www.npmjs.com/) registry.
+Publishes a NodeJS package to the [npm](https://www.npmjs.com/) registry.
 
 ## Example
 
@@ -15,22 +15,13 @@ steps:
       npm-token: ${{ secrets.NPM_TOKEN }}
 ```
 
-**IMPORTANT**: please, remember to declare your build process in the `prepack` script within `package.json`! For example:
-
-```json
-"scripts": {
-  "build": "tsc",
-  "prepack": "pnpm build"
-}
-```
+**IMPORTANT**: please, remember that the action is designed for **publication** only - not for validation - although you can add publication-specific checks to the `prepack` or `postpack` scripts of your `package.json` file.
 
 ## Requirements
 
 - The project's package manager must be [pnpm](https://pnpm.io/) - version `9` or later compatible.
 
 - The root directory of the project must contain a `.nvmrc` file - declaring the required Node.js version - whose format must be compatible with the `actions/setup-node` action (for example: `vX.Y.Z`).
-
-- The entire build process for the package must be triggered by the `prepack` script in `package.json` (see the example below).
 
 ## Inputs
 
