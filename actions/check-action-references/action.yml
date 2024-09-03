@@ -1,0 +1,21 @@
+name: Check GitHub Actions references
+description: Prevents 'uses' directives from referencing other GitHub actions, within the same repository, not on the default branch.
+
+inputs:
+  project-directory:
+    description: The directory containing the project.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Fail when finding references to GitHub actions, within the same repository, not on the default branch
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: find -name "*.yml" | xargs egrep -n "uses:\s+${GITHUB_REPOSITORY}.*@" && echo >&2 "There are references to actions, within this repository, not on the default branch" && exit 1

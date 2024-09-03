@@ -13,11 +13,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/validate-rust-crate
 ```
 
-## Requirements
-
-- `rust-toolchain.toml` must be present in `project-directory` - as described in [print-rust-info](../print-rust-info/README.md)
-
-## Steps
+## How it works
 
 1. Optionally run [check-artifact-version](../check-artifact-version/README.md).
 
@@ -30,6 +26,10 @@ steps:
 1. Run `cargo test` with no features.
 
 1. Run `cargo test` enabling all features.
+
+## Requirements
+
+- `rust-toolchain.toml` must be present in `project-directory` - as described in [print-rust-info](../print-rust-info/README.md)
 
 ## Inputs
 
