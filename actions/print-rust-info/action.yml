@@ -16,7 +16,6 @@ runs:
   using: composite
   steps:
     - name: Ensure the toolchain file is present
-      if: ${{ inputs.verify-toolchain-file == 'true' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
