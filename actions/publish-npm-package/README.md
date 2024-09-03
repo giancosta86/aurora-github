@@ -38,7 +38,7 @@ steps:
 
 |        Name         |    Type     |              Description              | Default value |
 | :-----------------: | :---------: | :-----------------------------------: | :-----------: |
-|     `npm-token`     | **string**  |    The token for publishing to npm    |     **9**     |
+|     `npm-token`     | **string**  |   The secret token provided by npm    |     **9**     |
 |   `pnpm-version`    | **boolean** |    The version of **pnpm** to use     |     **9**     |
 | `project-directory` | **string**  | The directory containing `Cargo.toml` |     **.**     |
 |       `shell`       | **string**  |    The shell used to run commands     |   **bash**    |

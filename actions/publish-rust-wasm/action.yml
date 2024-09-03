@@ -7,7 +7,7 @@ inputs:
     required: true
 
   npm-token:
-    description: The token for publishing to npm.
+    description: The secret token for publishing to npm.
     required: true
 
   pnpm-version:

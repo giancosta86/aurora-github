@@ -7,11 +7,6 @@ inputs:
     required: false
     default: true
 
-  verify-toolchain-file:
-    description: Ensures 'rust-toolchain.toml' is present.
-    required: false
-    default: true
-
   project-directory:
     description: The directory containing Cargo.toml.
     required: false
@@ -35,7 +30,6 @@ runs:
     - name: Print Rust info
       uses: giancosta86/aurora-github/actions/print-rust-info@b2.0.0
       with:
-        verify-toolchain-file: ${{ inputs.verify-toolchain-file }}
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
@@ -44,7 +38,7 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: cargo fmt --check
 
-    - name: Lint via Clippy
+    - name: Lint via Clippy - with warnings as errors
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: cargo clippy --all-targets --all-features -- -D warnings

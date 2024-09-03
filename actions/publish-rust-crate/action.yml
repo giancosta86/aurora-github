@@ -3,7 +3,7 @@ description: Publishes a Rust crate to crates.io, with all the features enabled.
 
 inputs:
   cargo-token:
-    description: The secret authentication token.
+    description: The secret token for publishing to crates.io.
     required: true
 
   project-directory:
