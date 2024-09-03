@@ -10,38 +10,42 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/validate-rust-crate
+  - uses: giancosta86/aurora-github/actions/validate-rust-wasm
 ```
 
 ## How it works
 
-1. Optionally run [check-artifact-version](../check-artifact-version/README.md).
+1. Invoke the [install-wasm-pack](../install-wasm-pack/README.md) action, passing all the matching inputs, to install the `wasm-pack` command
 
-1. Display the version info for the main components of the Rust toolchain - ensuring the existence of `rust-toolchain.toml`.
+1. Invoke the [validate-rust-crate](../validate-rust-crate/README.md) action, passing all the matching inputs, to perform code analysis over the Rust source code
 
-1. Check the style of the Rust source files - via `cargo fmt`.
+1. Run `wasm-pack test` to run headless browser tests
 
-1. Lint via `cargo clippy`, enabling all features and targets. All warnings are considered errors.
+1. If the `client-tests-directory` input parameter is not set to an empty string:
 
-1. Run `cargo test` with no features.
+   1. Ensure the directory really exists
 
-1. Run `cargo test` enabling all features.
+   1. Run `pnpm install` to install its dependencies
+
+   1. Run `pnpm test` to run the NodeJS-based client tests
 
 ## Requirements
 
 - `rust-toolchain.toml` must be present in `project-directory` - as described in [print-rust-info](../print-rust-info/README.md)
 
-- if the `client-tests-directory` input parameter is not set to an empty string, it must contain:
+- if `client-tests-directory` is not set to an empty string, it must be the **relative path** of a directory containing:
 
-  - a `.nvmrc` file, containing the requested Node.js version
+  - a `.nvmrc` file, with the requested Node.js version
 
-  - a `package.json` descriptor containing:
+  - a `package.json` descriptor having:
 
     - a `test` script, in the `scripts` section
 
+    - as usual, all the dependencies required by the test
+
   - an updated `pnpm-lock.yaml` lockfile
 
-  It is worth mentioning that no quality checks - such as code formatting and linting - are performed on this test project
+  It is worth mentioning that no quality checks - such as code formatting and linting - are performed on this test project.
 
 ## Inputs
 
@@ -54,7 +58,9 @@ steps:
 
 ## Further references
 
-- [check-artifact-version](../check-artifact-version/README.md)
+- [install-wasm-pack](../install-wasm-pack/README.md)
+
+- [validate-rust-crate](../validate-rust-crate/README.md)
 
 - [print-rust-info](../print-rust-info/README.md)
 

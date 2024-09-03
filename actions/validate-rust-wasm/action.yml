@@ -4,7 +4,7 @@ description: Validates the source files of a Rust web assembly.
 inputs:
   client-tests-directory:
     description: Relative directory containing the NodeJS-based client tests.
-    required: true
+    required: false
     default: client-tests
 
   check-artifact-version:
@@ -23,7 +23,7 @@ inputs:
     default: bash
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/install-wasm-pack
@@ -48,25 +48,24 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: |
         client_tests_directory="${{ inputs.client-tests-directory }}"
-        "
+
         if [[ ! -d "$client_tests_directory" ]]
         then
-          echo "The test directory '$client_tests_directory' does not exist"
+          echo "The client test directory '$client_tests_directory' does not exist"
           exit 1
         fi
 
     - name: Set up NodeJS
       if: ${{ inputs.client-tests-directory != '' }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version-file: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}/.nvmrc
-        registry-url: https://registry.npmjs.org
 
     - name: Install client-side test dependencies
       if: ${{ inputs.client-tests-directory != '' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
-      run: pnpm install --no-frozen-lockfile
+      run: pnpm install --frozen-lockfile
 
     - name: Perform client-side tests
       if: ${{ inputs.client-tests-directory != '' }}
