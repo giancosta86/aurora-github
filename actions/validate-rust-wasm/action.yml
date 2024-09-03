@@ -2,6 +2,11 @@ name: Validate Rust web assembly
 description: Validates the source files of a Rust web assembly.
 
 inputs:
+  client-tests-directory:
+    description: Relative directory containing the NodeJS-based client tests.
+    required: true
+    default: client-tests
+
   check-artifact-version:
     description: Ensures the version in Cargo.toml matches the branch name.
     required: false
@@ -20,12 +25,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up NodeJS
-      uses: actions/setup-node@v3
-      with:
-        node-version-file: ${{ inputs.project-directory }}/client_tests/.nvmrc
-        registry-url: https://registry.npmjs.org
-
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/install-wasm-pack
       with:
@@ -40,15 +39,37 @@ runs:
 
     - name: Run headless browser tests
       shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}/client_tests
+      working-directory: ${{ inputs.project-directory }}
       run: wasm-pack test --chrome --headless --release
 
-    - name: Install client-side test dependencies
+    - name: Ensure test client directory exists
+      if: ${{ inputs.client-tests-directory != '' }}
       shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}/client_tests
-      run: pnpm install
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        client_tests_directory="${{ inputs.client-tests-directory }}"
+        "
+        if [[ ! -d "$client_tests_directory" ]]
+        then
+          echo "The test directory '$client_tests_directory' does not exist"
+          exit 1
+        fi
+
+    - name: Set up NodeJS
+      if: ${{ inputs.client-tests-directory != '' }}
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}/.nvmrc
+        registry-url: https://registry.npmjs.org
+
+    - name: Install client-side test dependencies
+      if: ${{ inputs.client-tests-directory != '' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
+      run: pnpm install --no-frozen-lockfile
 
     - name: Perform client-side tests
+      if: ${{ inputs.client-tests-directory != '' }}
       shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}/client_tests
+      working-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
       run: pnpm test

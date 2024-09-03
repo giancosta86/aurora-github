@@ -1,9 +1,9 @@
 name: Publish Rust web assembly
-description: Publishes a Rust web assembly to npm.
+description: Publishes a Rust web assembly to the npm registry.
 
 inputs:
   npm-scope:
-    description: The npm package scope (with the initial @) - or empty.
+    description: The npm package scope (optionally, with the initial @) - or empty.
     required: true
 
   npm-token:
@@ -21,7 +21,7 @@ inputs:
     default: bash
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Set up NodeJS
       uses: actions/setup-node@v3
@@ -34,9 +34,9 @@ runs:
 
     - name: Generate NodeJS package
       run: |
-        scope=${{ inputs.scope }}
+        scope_without_at_prefix="$(echo ${{ inputs.npm-scope }} | sed s/@//)"
 
-        wasm-pack build --scope giancosta86 --release --target web
+        wasm-pack build --scope "$scope_without_at_prefix" --release --target web
 
     - name: Install NodeJS package dependencies
       working-directory: ${{ inputs.project-directory }}/pkg
