@@ -1,0 +1,17 @@
+name: Validate actions
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: main
+
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: giancosta86/aurora-github/actions/check-action-references@v2
