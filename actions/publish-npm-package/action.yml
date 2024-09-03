@@ -6,6 +6,11 @@ inputs:
     description: The secret token for publishing to npm.
     required: true
 
+  frozen-lockfile:
+    description: Fails if 'pnpm-lock.yaml' is missing or outdated.
+    required: false
+    default: true
+
   project-directory:
     description: The directory containing package.json.
     required: false
@@ -31,10 +36,18 @@ runs:
         registry-url: https://registry.npmjs.org
         cache: pnpm
 
-    - name: Install dependencies
+    - name: Install production-only dependencies
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: pnpm install --frozen-lockfile
+      run: |
+        frozenLockfile="${{ inputs.frozen-lockfile }}"
+
+        if [[ $frozenLockfile == "true" ]]
+        then
+          pnpm install --prod --frozen-lockfile
+        else
+          pnpm install --prod --no-frozen-lockfile
+        fi
 
     - name: Publish to npm
       shell: ${{ inputs.shell }}

@@ -1,14 +1,12 @@
 # validate-npm-package
 
-Validates the source files of a NodeJS package - by running its `validate` script - which is especially useful as a condition for merging a pull request.
+Validates the source files of a NodeJS package - by running its `validate` script within the `scripts` section of `package.json` - which is especially useful as a condition for merging a pull request.
 
-It is worth noting that the action can support any underlying technology - as long as you comply with the requirements described below.
+It is worth noting that the action can support any technology - as long as you comply with the requirements described below.
 
 ## Requirements
 
-- The project's package manager must be [pnpm](https://pnpm.io/).
-
-- The `pnpm-lock.yaml` file must be committed into the repository.
+- The project's package manager must be [pnpm](https://pnpm.io/) - version `9` or later compatible.
 
 - The entire validation process for the package must be triggered by the `validate` script in `package.json` (see the example below).
 
@@ -39,6 +37,7 @@ steps:
 
 |           Name           |    Type     |                            Description                             | Default value |
 | :----------------------: | :---------: | :----------------------------------------------------------------: | :-----------: |
+|    `frozen-lockfile`     | **boolean** |          Fails if `pnpm-lock.yaml` is missing or outdated          |   **true**    |
 | `check-artifact-version` | **boolean** | Runs [check-artifact-version](../check-artifact-version/README.md) |   **true**    |
 |   `project-directory`    | **string**  |               The directory containing `Cargo.toml`                |     **.**     |
 |         `shell`          | **string**  |                   The shell used to run commands                   |   **bash**    |

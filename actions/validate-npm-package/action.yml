@@ -2,6 +2,11 @@ name: Validate npm package
 description: Validates the source files of a NodeJS package.
 
 inputs:
+  frozen-lockfile:
+    description: Fails if 'pnpm-lock.yaml' is missing or outdated.
+    required: false
+    default: true
+
   check-artifact-version:
     description: Ensures the version in package.json matches the branch name.
     required: false
@@ -41,7 +46,15 @@ runs:
     - name: Install dependencies
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: pnpm install --frozen-lockfile
+      run: |
+        frozenLockfile="${{ inputs.frozen-lockfile }}"
+
+        if [[ $frozenLockfile == "true" ]]
+        then
+          pnpm install --frozen-lockfile
+        else
+          pnpm install --no-frozen-lockfile
+        fi
 
     - name: Create the package
       shell: ${{ inputs.shell }}

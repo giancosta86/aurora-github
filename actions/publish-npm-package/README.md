@@ -26,9 +26,7 @@ steps:
 
 ## Requirements
 
-- The project's package manager must be **pnpm**.
-
-- The `pnpm-lock.yaml` file must be committed into the repository.
+- The project's package manager must be [pnpm](https://pnpm.io/) - version `9` or later compatible.
 
 - The root directory of the project must contain a `.nvmrc` file - declaring the required Node.js version - whose format must be compatible with the `actions/setup-node` action (for example: `vX.Y.Z`).
 
@@ -36,11 +34,12 @@ steps:
 
 ## Inputs
 
-|        Name         |    Type    |              Description              | Default value |
-| :-----------------: | :--------: | :-----------------------------------: | :-----------: |
-|     `npm-token`     | **string** |   The secret token provided by npm    |     **9**     |
-| `project-directory` | **string** | The directory containing `Cargo.toml` |     **.**     |
-|       `shell`       | **string** |    The shell used to run commands     |   **bash**    |
+|        Name         |    Type     |                   Description                    | Default value |
+| :-----------------: | :---------: | :----------------------------------------------: | :-----------: |
+|  `frozen-lockfile`  | **boolean** | Fails if `pnpm-lock.yaml` is missing or outdated |   **true**    |
+|     `npm-token`     | **string**  |         The secret token provided by npm         |     **9**     |
+| `project-directory` | **string**  |      The directory containing `Cargo.toml`       |     **.**     |
+|       `shell`       | **string**  |          The shell used to run commands          |   **bash**    |
 
 ## Further references
 

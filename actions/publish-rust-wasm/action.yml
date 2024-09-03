@@ -45,6 +45,7 @@ runs:
     - name: Publish NodeJS package
       uses: giancosta86/aurora-github/publish-npm-package
       with:
+        frozen-lockfile: false
         npm-token: ${{ inputs.npm-token }}
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
