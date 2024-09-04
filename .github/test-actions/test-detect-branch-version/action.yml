@@ -29,3 +29,6 @@ runs:
           echo 'Version should not be null!' >&2
           exit 1
         fi
+
+        [[ -z $version ]] 
+        echo "VERSION TEST RESULT: $?"
