@@ -10,7 +10,7 @@ inputs:
 outputs:
   branch:
     description: The current Git branch.
-    value: ${{ steps.detect-branch.outputs.branch }}
+    value: ${{ steps.detect-version.outputs.branch }}
 
   version:
     description: The version detected from the Git branch, without prefix.
@@ -19,29 +19,14 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Detect branch
-      id: detect-branch
-      shell: ${{ inputs.shell }}
-      run: |
-        branch="${{ github.head_ref }}"
-
-        echo "Detected Git branch: '$branch'"      
-
-        if [[ ! $branch =~ ^b?[0-9](\.[0-9](\.[0-9])?)?$ ]]
-        then
-          echo "Invalid semver branch format: '$branch'"
-          exit 1
-        fi
-
-        echo "branch=$branch" >> $GITHUB_OUTPUT
-
     - name: Detect version from branch
       id: detect-version
       shell: ${{ inputs.shell }}
       run: |
-        branch="${{ steps.detect-branch.outputs.branch }}"
+        branch="${{ github.head_ref }}"
 
-        version="$(echo "$branch" | sed 's/^b//')"
+        version="$(echo "$branch" | sed 's/^[bv]//')"
         echo "Detected version: '$version'" 
 
+        echo "branch=$branch" >> $GITHUB_OUTPUT
         echo "version=$version" >> $GITHUB_OUTPUT

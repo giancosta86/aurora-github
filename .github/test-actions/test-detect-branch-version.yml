@@ -1,0 +1,23 @@
+name: Test detect-branch-version
+
+runs:
+  using: composite
+  steps:
+    - uses: ../../actions/detect-branch-version
+      id: detector
+
+    - name: Test branch
+      shell: bash
+      run: |
+        branch="${{ steps.detector.branch }}"
+
+        echo "🔎Detected branch: '$branch'"
+        [[ -z $branch ]] && exit 1
+
+    - name: Test version
+      shell: bash
+      run: |
+        version="${{ steps.detector.version }}"
+
+        echo "🔎Detected version: '$version'"
+        [[ -z $version ]] && exit 1
