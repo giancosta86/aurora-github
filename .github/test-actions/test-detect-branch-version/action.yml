@@ -11,7 +11,7 @@ runs:
       run: |
         branch="${{ steps.detector.outputs.branch }}"
 
-        echo "🔎Detected branch: '$branch'"
+        echo "🔎Branch retrieved from action: '$branch'"
         [[ -z $branch ]] && exit 1
 
     - name: Test version
@@ -19,5 +19,5 @@ runs:
       run: |
         version="${{ steps.detector.outputs.version }}"
 
-        echo "🔎Detected version: '$version'"
+        echo "🔎Version retrieved from action: '$version'"
         [[ -z $version ]] && exit 1
