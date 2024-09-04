@@ -3,8 +3,7 @@ name: Test install-wasm-pack
 runs:
   using: composite
   steps:
-    #- uses: ./actions/detect-branch-version
-    #  id: detector
+    - uses: ./actions/install-wasm-pack
 
     - name: Verify wasm-pack
       shell: bash
