@@ -15,6 +15,11 @@ inputs:
     required: false
     default: web
 
+  dry-run:
+    description: Run a simulated publication via --dry-run.
+    required: false
+    default: false
+
   node-version-directory:
     description: The relative directory containing the .nvmrc file.
     required: false
@@ -52,5 +57,6 @@ runs:
       with:
         frozen-lockfile: false
         npm-token: ${{ inputs.npm-token }}
+        dry-run: ${{ inputs.dry-run }}
         project-directory: ${{ inputs.project-directory }}/pkg
         shell: ${{ inputs.shell }}

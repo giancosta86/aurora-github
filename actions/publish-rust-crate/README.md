@@ -21,11 +21,12 @@ steps:
 
 ## Inputs
 
-|        Name         |    Type    |                         Description                          | Default value |
-| :-----------------: | :--------: | :----------------------------------------------------------: | :-----------: |
-|    `cargo-token`    | **string** | The secret token provided by [crates.io](https://crates.io/) |     **.**     |
-| `project-directory` | **string** |            The directory containing `Cargo.toml`             |     **.**     |
-|       `shell`       | **string** |                The shell used to run commands                |   **bash**    |
+|        Name         |    Type     |                         Description                          | Default value |
+| :-----------------: | :---------: | :----------------------------------------------------------: | :-----------: |
+|    `cargo-token`    | **string**  | The secret token provided by [crates.io](https://crates.io/) |     **.**     |
+|      `dry-run`      | **boolean** |          Run a simulated publication via --dry-run           |   **false**   |
+| `project-directory` | **string**  |            The directory containing `Cargo.toml`             |     **.**     |
+|       `shell`       | **string**  |                The shell used to run commands                |   **bash**    |
 
 ## Further references
 

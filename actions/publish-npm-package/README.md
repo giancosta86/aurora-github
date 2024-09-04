@@ -28,6 +28,7 @@ steps:
 |        Name         |    Type     |                   Description                    | Default value |
 | :-----------------: | :---------: | :----------------------------------------------: | :-----------: |
 |     `npm-token`     | **string**  |         The secret token provided by npm         |               |
+|      `dry-run`      | **boolean** |    Run a simulated publication via --dry-run     |   **false**   |
 |  `frozen-lockfile`  | **boolean** | Fails if `pnpm-lock.yaml` is missing or outdated |   **true**    |
 | `project-directory` | **string**  |      The directory containing `Cargo.toml`       |     **.**     |
 |       `shell`       | **string**  |          The shell used to run commands          |   **bash**    |
