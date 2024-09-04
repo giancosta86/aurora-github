@@ -8,4 +8,4 @@ runs:
 
     - name: Verify wasm-pack
       shell: bash
-      run: which -s wasm-pack
+      run: which wasm-pack
