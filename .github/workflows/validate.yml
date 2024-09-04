@@ -18,8 +18,6 @@ jobs:
 
       - uses: ./.github/test-actions/test-detect-branch-version
 
-      - uses: ./.github/test-actions/test-install-wasm-pack
-
       - name: Verify wasm-pack
         shell: bash
         run: |
@@ -28,3 +26,5 @@ jobs:
             echo "wasm-pack not installed!" >&2
             exit 1
           fi
+
+      - uses: ./.github/test-actions/test-install-wasm-pack
