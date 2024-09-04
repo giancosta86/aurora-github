@@ -3,12 +3,22 @@ description: Publishes a Rust web assembly to the npm registry.
 
 inputs:
   npm-scope:
-    description: The npm package scope (optionally, with the initial @) - or empty.
+    description: The npm package scope (maybe with the initial @) - or empty.
     required: true
 
   npm-token:
     description: The secret token for publishing to npm.
     required: true
+
+  wasm-target:
+    description: The target of the 'wasm-pack build' command.
+    required: false
+    default: web
+
+  node-version-directory:
+    description: The relative directory containing the .nvmrc file.
+    required: false
+    default: client-tests
 
   project-directory:
     description: The directory containing Cargo.toml.
@@ -23,29 +33,24 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set up NodeJS
-      uses: actions/setup-node@v4
-      with:
-        node-version-file: ${{ inputs.project-directory }}/client_tests/.nvmrc
-        registry-url: https://registry.npmjs.org
-
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/install-wasm-pack@b2.0.0
 
     - name: Generate NodeJS package
       run: |
-        scope_without_at_prefix="$(echo ${{ inputs.npm-scope }} | sed s/@//)"
+        scope_without_at_prefix="$(echo "${{ inputs.npm-scope }}" | sed s/@//)"
 
-        wasm-pack build --scope "$scope_without_at_prefix" --release --target web
+        wasm-pack build --scope "$scope_without_at_prefix" --release --target "${{ inputs.wasm-target }}"
 
-    - name: Install NodeJS package dependencies
-      working-directory: ${{ inputs.project-directory }}/pkg
-      run: pnpm install
+    - name: Copy .nvmrc to the generated NodeJS package
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cp "${{ inputs.node-version-directory }}/.nvmrc" pkg
 
     - name: Publish NodeJS package
       uses: giancosta86/aurora-github/publish-npm-package
       with:
         frozen-lockfile: false
         npm-token: ${{ inputs.npm-token }}
-        project-directory: ${{ inputs.project-directory }}
+        project-directory: ${{ inputs.project-directory }}/pkg
         shell: ${{ inputs.shell }}

@@ -13,6 +13,8 @@ steps:
       cargo-token: ${{ secrets.CARGO_TOKEN }}
 ```
 
+**Please, note**: this action is designed for **publication** only - not for validation: you can use [validate-rust-crate](../validate-rust-crate/README.md) instead.
+
 ## Requirements
 
 - a secret publication token, provided by [crates.io](https://crates.io/).
@@ -26,5 +28,7 @@ steps:
 |       `shell`       | **string** |                The shell used to run commands                |   **bash**    |
 
 ## Further references
+
+- [validate-rust-crate](../validate-rust-crate/README.md)
 
 - [aurora-github](../../README.md)

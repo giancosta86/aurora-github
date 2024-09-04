@@ -15,7 +15,7 @@ steps:
       npm-token: ${{ secrets.NPM_TOKEN }}
 ```
 
-**IMPORTANT**: please, remember that the action is designed for **publication** only - not for validation - although you can add publication-specific checks to the `prepack` or `postpack` scripts of your `package.json` file.
+**Please, note**: this action is designed for **publication** only - not for validation: you can use [validate-npm-package](../validate-npm-package/README.md) instead; as a plus, you can add publication-specific checks to the `prepack` or `postpack` scripts of your `package.json` file.
 
 ## Requirements
 
@@ -27,8 +27,8 @@ steps:
 
 |        Name         |    Type     |                   Description                    | Default value |
 | :-----------------: | :---------: | :----------------------------------------------: | :-----------: |
+|     `npm-token`     | **string**  |         The secret token provided by npm         |               |
 |  `frozen-lockfile`  | **boolean** | Fails if `pnpm-lock.yaml` is missing or outdated |   **true**    |
-|     `npm-token`     | **string**  |         The secret token provided by npm         |     **9**     |
 | `project-directory` | **string**  |      The directory containing `Cargo.toml`       |     **.**     |
 |       `shell`       | **string**  |          The shell used to run commands          |   **bash**    |
 
