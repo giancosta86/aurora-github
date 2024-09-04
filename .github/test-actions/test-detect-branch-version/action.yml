@@ -3,7 +3,7 @@ name: Test detect-branch-version
 runs:
   using: composite
   steps:
-    - uses: ../../actions/detect-branch-version
+    - uses: ./actions/detect-branch-version
       id: detector
 
     - name: Test branch
