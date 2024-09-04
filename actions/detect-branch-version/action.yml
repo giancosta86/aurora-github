@@ -24,9 +24,10 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
         branch="${{ github.head_ref }}"
+        echo "🔎Detected branch: '$branch'" 
 
         version="$(echo "$branch" | sed 's/^[bv]//')"
-        echo "Detected version: '$version'" 
+        echo "🔎Detected version: '$version'" 
 
         echo "branch=$branch" >> $GITHUB_OUTPUT
         echo "version=$version" >> $GITHUB_OUTPUT
