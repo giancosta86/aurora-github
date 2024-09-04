@@ -14,7 +14,7 @@ runs:
         echo "🔎Branch retrieved from action: '$branch'"
         if [[ -z $branch ]] 
         then
-          echo 'Branch should not be null!' >&2
+          echo "Branch should not be null!" >&2
           exit 1
         fi
 
@@ -26,6 +26,6 @@ runs:
         echo "🔎Version retrieved from action: '$version'"
         if [[ -z $version ]] 
         then
-          echo 'Version should not be null!' >&2
+          echo "Version should not be null!" >&2
           exit 1
         fi
