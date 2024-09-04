@@ -30,5 +30,4 @@ runs:
           exit 1
         fi
 
-        [[ -z $version ]] 
-        echo "VERSION TEST RESULT: $?"
+        [[ -z "$version" ]] && { echo "version is empty"; exit 1; }
