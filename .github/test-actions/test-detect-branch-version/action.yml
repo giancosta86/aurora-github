@@ -9,7 +9,7 @@ runs:
     - name: Test branch
       shell: bash
       run: |
-        branch="${{ steps.detector.branch }}"
+        branch="${{ steps.detector.outputs.branch }}"
 
         echo "🔎Detected branch: '$branch'"
         [[ -z $branch ]] && exit 1
@@ -17,7 +17,7 @@ runs:
     - name: Test version
       shell: bash
       run: |
-        version="${{ steps.detector.version }}"
+        version="${{ steps.detector.outputs.version }}"
 
         echo "🔎Detected version: '$version'"
         [[ -z $version ]] && exit 1
