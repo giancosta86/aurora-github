@@ -1,0 +1,11 @@
+name: Test install-wasm-pack
+
+runs:
+  using: composite
+  steps:
+    #- uses: ./actions/detect-branch-version
+    #  id: detector
+
+    - name: Verify wasm-pack
+      shell: bash
+      run: which -s wasm-pack
