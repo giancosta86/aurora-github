@@ -12,7 +12,11 @@ runs:
         branch="${{ steps.detector.outputs.branch }}"
 
         echo "🔎Branch retrieved from action: '$branch'"
-        [[ -z $branch ]] && exit 1
+        if [[ -z $branch ]] 
+        then
+          echo 'Branch should not be null!' >&2
+          exit 1
+        fi
 
     - name: Test version
       shell: bash
@@ -20,4 +24,8 @@ runs:
         version="${{ steps.detector.outputs.version }}"
 
         echo "🔎Version retrieved from action: '$version'"
-        [[ -z $version ]] && exit 1
+        if [[ -z $version ]] 
+        then
+          echo 'Version should not be null!' >&2
+          exit 1
+        fi
