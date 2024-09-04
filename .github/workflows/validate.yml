@@ -16,4 +16,4 @@ jobs:
 
       #- uses: giancosta86/aurora-github/actions/check-action-references@v2
 
-      - uses: ./.github/test-actions/test-detect-branch-version
+      - uses: ./.github/test-actions/test-detect-branch-version.yml
