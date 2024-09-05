@@ -1,0 +1,8 @@
+name: Test validate-rust-crate
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/validate-rust-crate
+      with:
+        project-directory: ./tests/rust-crate
