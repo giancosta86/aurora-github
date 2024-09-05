@@ -51,7 +51,9 @@ steps:
 
 |           Name           |    Type     |                            Description                             |  Default value   |
 | :----------------------: | :---------: | :----------------------------------------------------------------: | :--------------: |
+|       `npm-scope`        | **string**  |  The npm package scope (**without** the initial `@`) - or empty.   |                  |
 | `client-tests-directory` | **string**  |    Relative directory containing the NodeJS-based client tests     | **client-tests** |
+|      `wasm-target`       | **string**  |            The target of the 'wasm-pack build' command             |     **web**      |
 | `check-artifact-version` | **boolean** | Runs [check-artifact-version](../check-artifact-version/README.md) |     **true**     |
 |   `project-directory`    | **string**  |               The directory containing `Cargo.toml`                |      **.**       |
 |         `shell`          | **string**  |                   The shell used to run commands                   |     **bash**     |

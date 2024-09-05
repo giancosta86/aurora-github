@@ -24,15 +24,15 @@ steps:
 
 ## Inputs
 
-|           Name           |    Type     |                         Description                          |  Default value   |
-| :----------------------: | :---------: | :----------------------------------------------------------: | :--------------: |
-|       `npm-scope`        | **string**  | The npm package scope (maybe with the initial @) - or empty. |                  |
-|       `npm-token`        | **string**  |               The secret token provided by npm               |                  |
-|      `wasm-target`       | **string**  |         The target of the 'wasm-pack build' command          |     **web**      |
-|        `dry-run`         | **boolean** |          Run a simulated publication via --dry-run           |    **false**     |
-| `node-version-directory` | **string**  |      The relative directory containing the .nvmrc file       | **client-tests** |
-|   `project-directory`    | **string**  |            The directory containing `Cargo.toml`             |      **.**       |
-|         `shell`          | **string**  |                The shell used to run commands                |     **bash**     |
+|           Name           |    Type     |                           Description                           |  Default value   |
+| :----------------------: | :---------: | :-------------------------------------------------------------: | :--------------: |
+|       `npm-scope`        | **string**  | The npm package scope (**without** the initial `@`) - or empty. |                  |
+|       `npm-token`        | **string**  |                The secret token provided by npm                 |                  |
+|      `wasm-target`       | **string**  |           The target of the 'wasm-pack build' command           |     **web**      |
+|        `dry-run`         | **boolean** |            Run a simulated publication via --dry-run            |    **false**     |
+| `node-version-directory` | **string**  |        The relative directory containing the .nvmrc file        | **client-tests** |
+|   `project-directory`    | **string**  |              The directory containing `Cargo.toml`              |      **.**       |
+|         `shell`          | **string**  |                 The shell used to run commands                  |     **bash**     |
 
 ## Further references
 

@@ -3,7 +3,7 @@ description: Publishes a Rust web assembly to the npm registry.
 
 inputs:
   npm-scope:
-    description: The npm package scope (maybe with the initial @) - or empty.
+    description: The npm package scope (without the initial @) - or empty.
     required: true
 
   npm-token:
@@ -41,11 +41,10 @@ runs:
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/install-wasm-pack@b2.0.0
 
-    - name: Generate NodeJS package
-      run: |
-        scope_without_at_prefix="$(echo "${{ inputs.npm-scope }}" | sed s/@//)"
-
-        wasm-pack build --scope "$scope_without_at_prefix" --release --target "${{ inputs.wasm-target }}"
+    - name: Generate the NodeJS package
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: wasm-pack build --scope "${{ inputs.npm-scope }}" --release --target "${{ inputs.wasm-target }}"
 
     - name: Copy .nvmrc to the generated NodeJS package
       shell: ${{ inputs.shell }}

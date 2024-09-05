@@ -2,10 +2,19 @@ name: Validate Rust web assembly
 description: Validates the source files of a Rust web assembly.
 
 inputs:
+  npm-scope:
+    description: The npm package scope (without the initial @) - or empty.
+    required: true
+
   client-tests-directory:
     description: Relative directory containing the NodeJS-based client tests.
     required: false
     default: client-tests
+
+  wasm-target:
+    description: The target of the 'wasm-pack build' command.
+    required: false
+    default: web
 
   check-artifact-version:
     description: Ensures the version in Cargo.toml matches the branch name.
@@ -42,6 +51,12 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: wasm-pack test --chrome --headless --release
 
+    - name: Generate the NodeJS package
+      if: ${{ inputs.client-tests-directory != '' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: wasm-pack build --scope "${{ inputs.npm-scope }}" --release --target "${{ inputs.wasm-target }}"
+
     - name: Ensure test client directory exists
       if: ${{ inputs.client-tests-directory != '' }}
       shell: ${{ inputs.shell }}
@@ -71,4 +86,4 @@ runs:
       if: ${{ inputs.client-tests-directory != '' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
-      run: pnpm test
+      run: pnpm validate
