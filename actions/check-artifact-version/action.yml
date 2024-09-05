@@ -45,5 +45,5 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "❌Cannot validate the artifact version for an unknown project type"
+        echo "❌Cannot validate the artifact version for an unknown project type" >&2
         exit 1

@@ -51,7 +51,7 @@ runs:
 
         if [[ ! -d "$client_tests_directory" ]]
         then
-          echo "The client test directory '$client_tests_directory' does not exist"
+          echo "❌The client test directory '$client_tests_directory' does not exist" >&2
           exit 1
         fi
 

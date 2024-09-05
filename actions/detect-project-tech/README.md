@@ -1,6 +1,6 @@
 # detect-project-tech
 
-Tries to infers the current project type from its source files; on failure, the output is set to an empty string.
+Tries to infer the current project type from its source files; on failure, the output is set to an empty string.
 
 ## Example
 

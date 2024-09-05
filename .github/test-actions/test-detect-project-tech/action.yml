@@ -1,0 +1,38 @@
+name: Test detect-project-tech
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/detect-project-tech
+      id: detect-rust
+      with:
+        project-dir: ./tests/rust-crate
+
+    - name: Test Rust
+      shell: bash
+      run: |
+        tech="${{ steps.detect-rust.outputs.project-tech }}"
+
+        echo "🔎Technology retrieved for 🦀Rust: '$tech'"
+        if [[ $tech != 'rust' ]] 
+        then
+          echo "❌Incorrect project tech!" >&2
+          exit 1
+        fi
+
+    - uses: ./actions/detect-project-tech
+      id: detect-nodejs
+      with:
+        project-dir: ./tests/npm-package
+
+    - name: Test NodeJS
+      shell: bash
+      run: |
+        tech="${{ steps.detect-nodejs.outputs.project-tech }}"
+
+        echo "🔎Technology retrieved for 📦NodeJS: '$tech'"
+        if [[ $tech != 'nodejs' ]] 
+        then
+          echo "❌Incorrect project tech!" >&2
+          exit 1
+        fi

@@ -23,7 +23,7 @@ runs:
 
         if [[ ! -f $toolchainFile ]]
         then
-          echo "Missing toolchain file: '$toolchainFile'"
+          echo "❌Missing toolchain file: '$toolchainFile'" >&2
           exit 1
         fi
 

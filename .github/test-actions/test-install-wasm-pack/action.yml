@@ -10,6 +10,6 @@ runs:
       run: |
         if ! which wasm-pack
         then
-          echo "wasm-pack not installed!" >&2
+          echo "❌wasm-pack not installed!" >&2
           exit 1
         fi

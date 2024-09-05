@@ -18,4 +18,4 @@ runs:
     - name: Fail when finding references to GitHub actions, within the same repository, not on the default branch
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: find . -path './.github/workflows' -prune -o -name '*.yml' -print | xargs egrep -n "uses:\s+${GITHUB_REPOSITORY}.*@" && echo >&2 "There are references to actions, within this repository, not on the default branch" && exit 1
+      run: find . -path './.github/workflows' -prune -o -name '*.yml' -print | xargs egrep -n "uses:\s+${GITHUB_REPOSITORY}.*@" && echo "There are references to actions, within this repository, not on the default branch" >&2 && exit 1
