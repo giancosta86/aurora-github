@@ -22,7 +22,17 @@ runs:
   steps:
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/detect-branch-and-version@b2.0.0
+      uses: giancosta86/aurora-github/actions/detect-branch-and-version@b2.0.0
+
+    - name: Delete Git branch
+      if: ${{ inputs.delete-branch == 'true' }}
+      shell: ${{ inputs.shell }}
+      run: |
+        branch="${{ steps.detect-branch-version.outputs.branch }}"
+
+        echo "Deleting Git branch '$branch'..."
+
+        git push origin --delete "$branch"
 
     - name: Create Git tag
       id: create-git-tag
@@ -35,16 +45,6 @@ runs:
         git tag "v${{ steps.detect-version.outputs.version }}"
 
         echo "tag=$tag" >> $GITHUB_OUTPUT
-
-    - name: Delete Git branch
-      if: ${{ inputs.delete-branch == 'true' }}
-      shell: ${{ inputs.shell }}
-      run: |
-        branch="${{ steps.detect-branch-version.outputs.branch }}"
-
-        echo "Deleting Git branch '$branch'..."
-
-        git push origin --delete "$branch"
 
     - name: Create or draft release
       shell: ${{ inputs.shell }}
