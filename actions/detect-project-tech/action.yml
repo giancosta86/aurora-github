@@ -1,5 +1,5 @@
-name: Detect project type
-description: Tries to infer the current project type from its source files.
+name: Detect project tech
+description: Tries to infer the current project tech from its source files.
 
 inputs:
   project-directory:
@@ -14,26 +14,26 @@ inputs:
 
 outputs:
   project-tech:
-    description: The project type. Can be either 'nodejs' or 'rust'.
+    description: The project tech. Can be either 'nodejs' or 'rust'.
     value: ${{ steps.detect-project-tech.outputs.project-tech }}
 
 runs:
   using: composite
   steps:
-    - name: Detect project type
+    - name: Detect project tech
       id: detect-project-tech
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -f "package.json" ]]
         then
-          echo "📦NodeJS project type detected"
+          echo "📦NodeJS project tech detected"
           echo "project-tech=nodejs" >> $GITHUB_OUTPUT
         elif [[ -f "Cargo.toml" ]]
         then
-          echo "🦀Rust project detected"
+          echo "🦀Rust project tech detected"
           echo "project-tech=rust" >> $GITHUB_OUTPUT
         else
-          echo "❌It's impossible to detect the project type"
+          echo "❌It's impossible to detect the project tech"
           echo "project-tech=" >> $GITHUB_OUTPUT
         fi

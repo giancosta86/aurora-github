@@ -1,6 +1,6 @@
 # check-artifact-version
 
-Ensures the artifact version - expressed according to the project technology - matches the current branch version, detected by [detect-branch-version](../detect-branch-version/README.md); if the project type cannot be detected via [detect-project-tech](../detect-project-tech/README.md), the workflow crashes.
+Ensures the artifact version - expressed according to the project technology - matches the current branch version, detected by [detect-branch-version](../detect-branch-version/README.md); if the project tech cannot be detected via [detect-project-tech](../detect-project-tech/README.md), the workflow crashes.
 
 ## Example
 

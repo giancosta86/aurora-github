@@ -1,6 +1,6 @@
 # detect-project-tech
 
-Tries to infer the current project type from its source files; on failure, the output is set to an empty string.
+Tries to infer the current project tech from its source files; on failure, the output is set to an empty string.
 
 ## Example
 
@@ -10,9 +10,9 @@ steps:
     uses: giancosta86/aurora-github/actions/detect-project-tech@v2
 
   - run: |
-      projectType="${{ steps.detector.outputs.project-tech }}"
+      projectTech="${{ steps.detector.outputs.project-tech }}"
 
-      echo "Detected project type: '$projectType'"
+      echo "Detected project tech: '$projectTech'"
 ```
 
 ## Requirements
@@ -32,7 +32,7 @@ steps:
 
 |      Name      |    Type    |        Description        |       Supported values        |
 | :------------: | :--------: | :-----------------------: | :---------------------------: |
-| `project-tech` | **string** | The detected project type | **rust**, **nodejs**, (empty) |
+| `project-tech` | **string** | The detected project tech | **rust**, **nodejs**, (empty) |
 
 ## Further references
 
