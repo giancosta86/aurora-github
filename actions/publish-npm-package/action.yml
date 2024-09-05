@@ -40,6 +40,7 @@ runs:
         node-version-file: ${{ inputs.project-directory }}/.nvmrc
         registry-url: https://registry.npmjs.org
         cache: pnpm
+        cache-dependency-path: ${{ inputs.project-directory }}/pnpm-lock.yaml
 
     - name: Install production-only dependencies
       shell: ${{ inputs.shell }}
