@@ -10,5 +10,5 @@ runs:
     - uses: ./actions/publish-rust-crate
       with:
         dry-run: true
-        cargo-token: LOL
+        cargo-token: ""
         project-directory: ./tests/rust-crate
