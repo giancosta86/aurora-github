@@ -1,0 +1,14 @@
+name: Test publish-rust-crate
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/inject-branch-version
+      with:
+        artifact-file: ./tests/rust-crate/Cargo.toml
+
+    - uses: ./actions/publish-rust-crate
+      with:
+        dry-run: true
+        cargo-token: LOL
+        project-directory: ./tests/rust-crate
