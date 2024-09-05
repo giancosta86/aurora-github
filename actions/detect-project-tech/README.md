@@ -1,4 +1,4 @@
-# detect-project-type
+# detect-project-tech
 
 Tries to infers the current project type from its source files; on failure, the output is set to an empty string.
 
@@ -7,10 +7,10 @@ Tries to infers the current project type from its source files; on failure, the 
 ```yaml
 steps:
   - id: detector
-    uses: giancosta86/aurora-github/actions/detect-project-type
+    uses: giancosta86/aurora-github/actions/detect-project-tech@v2
 
   - run: |
-      projectType="${{ steps.detector.outputs.project-type }}"
+      projectType="${{ steps.detector.outputs.project-tech }}"
 
       echo "Detected project type: '$projectType'"
 ```
@@ -32,7 +32,7 @@ steps:
 
 |      Name      |    Type    |        Description        |       Supported values        |
 | :------------: | :--------: | :-----------------------: | :---------------------------: |
-| `project-type` | **string** | The detected project type | **rust**, **nodejs**, (empty) |
+| `project-tech` | **string** | The detected project type | **rust**, **nodejs**, (empty) |
 
 ## Further references
 

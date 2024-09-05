@@ -1,6 +1,6 @@
 # validate-npm-package
 
-Validates the source files of a NodeJS package - by running its `validate` script within the `scripts` section of `package.json` - which is especially useful as a condition for merging a pull request.
+Validates the source files of a **NodeJS** package - by running its `validate` script within the `scripts` section of `package.json` - which is especially useful as a condition for merging a pull request.
 
 It is worth noting that the action can support any technology - as long as you comply with the requirements described below.
 
@@ -20,7 +20,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/validate-npm-package
+  - uses: giancosta86/aurora-github/actions/validate-npm-package@v2
 ```
 
 **IMPORTANT**: please, remember to declare your validation process in the `validate` script within `package.json`! For example:

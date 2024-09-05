@@ -1,6 +1,6 @@
 # publish-rust-wasm
 
-Publishes a Rust web assembly to the [npm](https://www.npmjs.com/) registry.
+Publishes a **Rust** web assembly to the [npm](https://www.npmjs.com/) registry.
 
 ## Example
 
@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-rust-wasm
+  - uses: giancosta86/aurora-github/actions/publish-rust-wasm@v2
     with:
       npm-scope: your-npm-scope
       npm-token: ${{ secrets.NPM_TOKEN }}

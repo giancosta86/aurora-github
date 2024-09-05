@@ -6,7 +6,7 @@ Prevents `uses:` directives from referencing other GitHub actions, within the sa
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-action-references
+  - uses: giancosta86/aurora-github/actions/check-action-references@v2
 ```
 
 ## How it works

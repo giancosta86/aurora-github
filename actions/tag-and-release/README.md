@@ -6,7 +6,7 @@ Creates a Git tag and a GitHub release, from a Git branch named according to [se
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/tag-and-release
+  - uses: giancosta86/aurora-github/actions/tag-and-release@v2
 ```
 
 ## Requirements

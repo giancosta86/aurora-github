@@ -1,6 +1,6 @@
 # validate-rust-wasm
 
-Validates the source files of a Rust web assembly - which is especially useful as a condition for merging a pull request.
+Validates the source files of a **Rust** web assembly - which is especially useful as a condition for merging a pull request.
 
 ## Example
 
@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/validate-rust-wasm
+  - uses: giancosta86/aurora-github/actions/validate-rust-wasm@v2
 ```
 
 ## How it works

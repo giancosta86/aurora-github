@@ -1,6 +1,6 @@
 # publish-rust-crate
 
-Publishes a Rust crate to [crates.io](https://crates.io/), with all the features enabled.
+Publishes a **Rust** crate to [crates.io](https://crates.io/), with all the features enabled.
 
 ## Example
 
@@ -8,7 +8,7 @@ Publishes a Rust crate to [crates.io](https://crates.io/), with all the features
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-rust-crate
+  - uses: giancosta86/aurora-github/actions/publish-rust-crate@v2
     with:
       cargo-token: ${{ secrets.CARGO_TOKEN }}
 ```

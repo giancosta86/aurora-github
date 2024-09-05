@@ -1,0 +1,8 @@
+{
+  "name": "npm-package",
+  "version": "1.0.0",
+  "description": "Toy npm package",
+  "scripts": {
+    "test": "echo '✅NodeJS tests simulated!'"
+  }
+}

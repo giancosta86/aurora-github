@@ -1,0 +1,8 @@
+name: Test print-rust-info
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/print-rust-info
+      with:
+        project-directory: ./tests/rust-crate

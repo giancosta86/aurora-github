@@ -1,12 +1,12 @@
 # install-wasm-pack
 
-Installs [wasm-pack](https://rustwasm.github.io/wasm-pack/), for creating Rust-based web assemblies.
+Installs [wasm-pack](https://rustwasm.github.io/wasm-pack/), for creating **Rust**-based web assemblies.
 
 ## Example
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/install-wasm-pack
+  - uses: giancosta86/aurora-github/actions/install-wasm-pack@v2
 ```
 
 ## Requirements

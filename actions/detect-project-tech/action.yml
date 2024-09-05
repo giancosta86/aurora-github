@@ -13,27 +13,27 @@ inputs:
     default: bash
 
 outputs:
-  project-type:
+  project-tech:
     description: The project type. Can be either 'nodejs' or 'rust'.
-    value: ${{ steps.detect-project-type.outputs.project-type }}
+    value: ${{ steps.detect-project-tech.outputs.project-tech }}
 
 runs:
   using: composite
   steps:
     - name: Detect project type
-      id: detect-project-type
+      id: detect-project-tech
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -f "package.json" ]]
         then
           echo "📦NodeJS project type detected"
-          echo "project-type=nodejs" >> $GITHUB_OUTPUT
+          echo "project-tech=nodejs" >> $GITHUB_OUTPUT
         elif [[ -f "Cargo.toml" ]]
         then
           echo "🦀Rust project detected"
-          echo "project-type=rust" >> $GITHUB_OUTPUT
+          echo "project-tech=rust" >> $GITHUB_OUTPUT
         else
           echo "❌It's impossible to detect the project type"
-          echo "project-type=" >> $GITHUB_OUTPUT
+          echo "project-tech=" >> $GITHUB_OUTPUT
         fi

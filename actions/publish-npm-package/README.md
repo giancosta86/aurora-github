@@ -1,6 +1,6 @@
 # publish-npm-package
 
-Publishes a NodeJS package to the [npm](https://www.npmjs.com/) registry.
+Publishes a **NodeJS** package to the [npm](https://www.npmjs.com/) registry.
 
 ## Example
 
@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-npm-package
+  - uses: giancosta86/aurora-github/actions/publish-npm-package@v2
     with:
       npm-token: ${{ secrets.NPM_TOKEN }}
 ```
