@@ -1,0 +1,33 @@
+name: Test check-artifact-version
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/detect-branch-version
+      id: version-detector
+
+    - name: Replace versions
+      shell: bash
+      run: |
+        version="${{ version-detector.version }}"
+
+        sed -i "s/0\.0\.0/${version}/g" \
+          ./tests/rust-crate/Cargo.toml \
+          ./tests/npm-package/package.json
+
+    - name: Display updated descriptors
+      shell: bash
+      run: |
+        echo "🦀Rust descriptor:"
+        less ./tests/rust-crate/Cargo.toml
+
+        echo "📦NodeJS descriptor:"
+        less ./tests/npm-package/package.json
+
+    - uses: ./actions/check-artifact-version
+      with:
+        project-directory: ./tests/rust-crate
+
+    - uses: ./actions/check-artifact-version
+      with:
+        project-directory: ./tests/npm-package

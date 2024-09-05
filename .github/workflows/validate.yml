@@ -35,12 +35,19 @@ jobs:
   #    - uses: actions/checkout@v4
   #    - uses: ./.github/test-actions/test-print-rust-info
 
-  test-detect-project-tech:
+  #test-detect-project-tech:
+  #  runs-on: ubuntu-latest
+  #  needs: check-preconditions
+  #  steps:
+  #    - uses: actions/checkout@v4
+  #    - uses: ./.github/test-actions/test-detect-project-tech
+
+  test-check-artifact-version:
     runs-on: ubuntu-latest
     needs: check-preconditions
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-detect-project-tech
+      - uses: ./.github/test-actions/test-check-artifact-version
 
   validate:
     runs-on: ubuntu-latest
@@ -48,7 +55,8 @@ jobs:
       #  - test-detect-branch-version
       #  - test-install-wasm-pack
       #  - test-print-rust-info
-      - test-detect-project-tech
+      #  - test-detect-project-tech
+      - test-check-artifact-version
 
     steps:
       - name: Test branch
