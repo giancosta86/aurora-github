@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Toy npm package",
   "scripts": {
-    "test": "echo '✅NodeJS tests simulated!'"
+    "test": "echo '✅NodeJS tests simulated!'",
+    "validate": "pnpm test"
   }
 }
