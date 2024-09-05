@@ -69,3 +69,5 @@ runs:
           echo "Creating $releaseRecap..."
           gh release create "$tag" --title "$releaseTitle"
         fi
+      env:
+        GH_TOKEN: ${{ github.token }}
