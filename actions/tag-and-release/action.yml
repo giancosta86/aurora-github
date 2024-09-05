@@ -22,7 +22,7 @@ runs:
   steps:
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-and-version@b2.0.0
+      uses: giancosta86/aurora-github/actions/detect-branch-version@b2.0.0
 
     - name: Delete Git branch
       if: ${{ inputs.delete-branch == 'true' }}
