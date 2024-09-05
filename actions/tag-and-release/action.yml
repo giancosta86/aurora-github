@@ -24,6 +24,24 @@ runs:
       id: detect-branch-version
       uses: giancosta86/aurora-github/actions/detect-branch-version@b2.0.0
 
+    - name: Verify branch and version
+      shell: ${{ inputs.shell }}
+      run: |
+        branch="${{ steps.detect-branch-version.outputs.branch }}"
+        version="${{ steps.detect-branch-version.outputs.version }}"
+
+        if [[ -z $branch ]]
+        then
+          echo "❌The current Git branch could not be detected" >&2
+          exit 1
+        fi
+
+        if [[ -z $version ]]
+        then
+          echo "❌The current version could not be detected from the Git branch" >&2
+          exit 1
+        fi
+
     - name: Delete Git branch
       if: ${{ inputs.delete-branch == 'true' }}
       shell: ${{ inputs.shell }}
