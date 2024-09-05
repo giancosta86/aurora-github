@@ -6,7 +6,7 @@ runs:
     - uses: ./actions/detect-project-tech
       id: detect-rust
       with:
-        project-dir: ./tests/rust-crate
+        project-directory: ./tests/rust-crate
 
     - name: Test Rust
       shell: bash
@@ -23,7 +23,7 @@ runs:
     - uses: ./actions/detect-project-tech
       id: detect-nodejs
       with:
-        project-dir: ./tests/npm-package
+        project-directory: ./tests/npm-package
 
     - name: Test NodeJS
       shell: bash
