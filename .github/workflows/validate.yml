@@ -63,7 +63,7 @@ jobs:
       #  - test-install-wasm-pack
       #  - test-print-rust-info
       #  - test-detect-project-tech
-      #  - test-artifact-version
+      - test-artifact-version
       # - test-validate-rust-crate
 
     steps:
