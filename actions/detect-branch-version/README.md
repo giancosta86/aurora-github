@@ -20,6 +20,8 @@ steps:
 
 - the branch name should be a [semantic version](https://semver.org/), optionally preceded by `b` or `v`. For example: `b1.0.2`.
 
+- the action only works within a pull-request workflow
+
 ## Inputs
 
 |  Name   |    Type    |          Description           | Default value |
