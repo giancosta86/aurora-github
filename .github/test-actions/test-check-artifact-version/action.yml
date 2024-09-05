@@ -9,7 +9,7 @@ runs:
     - name: Replace versions
       shell: bash
       run: |
-        version="${{ steps.version-detector.version }}"
+        version="${{ steps.version-detector.outputs.version }}"
 
         sed -i "s/0\.0\.0/${version}/g" \
           ./tests/rust-crate/Cargo.toml \
