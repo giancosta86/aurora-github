@@ -1,0 +1,26 @@
+name: Inject branch version
+description: Injects into a descriptor the version detected from the current Git branch.
+
+inputs:
+  artifact-file:
+    description: The artifact descriptor - such as Cargo.toml or package.json.
+    required: true
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/detect-branch-version@b2.0.0
+      id: version-detector
+
+    - name: Replace versions
+      shell: bash
+      run: |
+        version="${{ steps.version-detector.outputs.version }}"
+        artifactFile="${{ inputs.artifact-file }}"
+
+        sed -i "s/0\.0\.0/${version}/g" "$artifactFile"

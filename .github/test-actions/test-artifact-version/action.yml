@@ -1,4 +1,4 @@
-name: Test check-artifact-version
+name: Test inject-branch-version and check-artifact-version
 
 runs:
   using: composite
@@ -6,16 +6,17 @@ runs:
     - uses: ./actions/detect-branch-version
       id: version-detector
 
-    - name: Replace versions
-      shell: bash
-      run: |
-        version="${{ steps.version-detector.outputs.version }}"
+    - name: Inject version into 🦀Rust crate
+      uses: ./actions/inject-branch-version
+      with:
+        artifact-file: ./tests/rust-crate/Cargo.toml
 
-        sed -i "s/0\.0\.0/${version}/g" \
-          ./tests/rust-crate/Cargo.toml \
-          ./tests/npm-package/package.json
+    - name: Inject version into 📦NodeJS package
+      uses: ./actions/inject-branch-version
+      with:
+        artifact-file: ./tests/npm-package/package.json
 
-    - name: Display updated descriptors
+    - name: Display updated artifacts
       shell: bash
       run: |
         echo "🦀Rust descriptor:"
