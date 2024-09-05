@@ -7,11 +7,6 @@ inputs:
     required: false
     default: false
 
-  delete-branch:
-    description: Deletes the branch after creating the tag.
-    required: false
-    default: true
-
   shell:
     description: The shell used to run commands.
     required: false
@@ -41,16 +36,6 @@ runs:
           echo "❌The current version could not be detected from the Git branch" >&2
           exit 1
         fi
-
-    - name: Delete Git branch
-      if: ${{ inputs.delete-branch == 'true' }}
-      shell: ${{ inputs.shell }}
-      run: |
-        branch="${{ steps.detect-branch-version.outputs.branch }}"
-
-        echo "Deleting Git branch '$branch'..."
-
-        git push origin --delete "$branch"
 
     - name: Create Git tag
       id: create-git-tag
