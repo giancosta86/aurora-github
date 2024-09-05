@@ -32,9 +32,9 @@ runs:
 
         if [[ $dryRun == "true" ]]
         then
-          cargo publish --all-features --dry-run
+          cargo publish --all-features --allow-dirty --dry-run
         else
-          cargo publish --all-features
+          cargo publish --all-features --allow-dirty
         fi
 
       env:
