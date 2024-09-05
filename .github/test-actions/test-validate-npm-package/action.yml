@@ -1,0 +1,12 @@
+name: Test validate-npm-package
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/inject-branch-version
+      with:
+        artifact-file: ./tests/npm-package/package.json
+
+    - uses: ./actions/validate-npm-package
+      with:
+        project-directory: ./tests/npm-package
