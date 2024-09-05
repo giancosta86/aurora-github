@@ -3,6 +3,10 @@ name: Test validate-rust-crate
 runs:
   using: composite
   steps:
+    - uses: ./actions/inject-branch-version
+      with:
+        artifact-file: ./tests/rust-crate/Cargo.toml
+
     - uses: ./actions/validate-rust-crate
       with:
         project-directory: ./tests/rust-crate
