@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # - uses: giancosta86/aurora-github/actions/check-action-references@v2
+      # - uses: ./actions/check-action-references
 
   #test-detect-branch-version:
   #  runs-on: ubuntu-latest
