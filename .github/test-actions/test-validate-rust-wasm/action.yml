@@ -1,0 +1,13 @@
+name: Test validate-rust-wasm
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/inject-branch-version
+      with:
+        artifact-file: ./tests/rust-wasm/Cargo.toml
+
+    - uses: ./actions/validate-rust-wasm
+      with:
+        project-directory: ./tests/rust-wasm
+        npm-scope: giancosta86
