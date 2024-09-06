@@ -1,0 +1,15 @@
+name: Test publish-rust-wasm
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/inject-branch-version
+      with:
+        artifact-file: ./tests/rust-wasm/Cargo.toml
+
+    - uses: ./actions/publish-rust-wasm
+      with:
+        dry-run: true
+        npm-scope: giancosta86
+        npm-token: ""
+        project-directory: ./tests/rust-wasm
