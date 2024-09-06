@@ -44,7 +44,7 @@ runs:
   using: composite
   steps:
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/install-wasm-pack@b2.0.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@b2.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
         shell: ${{ inputs.shell }}
@@ -60,7 +60,7 @@ runs:
       run: cp "${{ inputs.node-version-directory }}/.nvmrc" pkg
 
     - name: Publish NodeJS package
-      uses: giancosta86/aurora-github/publish-npm-package
+      uses: giancosta86/aurora-github/actions/publish-npm-package@b2.0.0
       with:
         frozen-lockfile: false
         npm-token: ${{ inputs.npm-token }}
