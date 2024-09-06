@@ -35,12 +35,12 @@ runs:
   using: composite
   steps:
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/install-wasm-pack
+      uses: giancosta86/aurora-github/install-wasm-pack@b2.0.0
       with:
         shell: ${{ inputs.shell }}
 
     - name: Validate Rust source files
-      uses: giancosta86/aurora-github/validate-rust-crate
+      uses: giancosta86/aurora-github/validate-rust-crate@b2.0.0
       with:
         check-artifact-version: ${{ inputs.check-artifact-version }}
         project-directory: ${{ inputs.project-directory }}
