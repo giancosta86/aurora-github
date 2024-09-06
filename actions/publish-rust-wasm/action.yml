@@ -15,6 +15,11 @@ inputs:
     required: false
     default: web
 
+  wasm-pack-version:
+    description: The wasm-pack version to install.
+    required: false
+    default: 0.13.0
+
   dry-run:
     description: Run a simulated publication via --dry-run.
     required: false
@@ -40,6 +45,9 @@ runs:
   steps:
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/install-wasm-pack@b2.0.0
+      with:
+        wasm-pack-version: ${{ inputs.wasm-pack-version }}
+        shell: ${{ inputs.shell }}
 
     - name: Generate the NodeJS package
       shell: ${{ inputs.shell }}

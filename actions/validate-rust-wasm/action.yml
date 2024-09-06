@@ -16,6 +16,11 @@ inputs:
     required: false
     default: web
 
+  wasm-pack-version:
+    description: The wasm-pack version to install.
+    required: false
+    default: 0.13.0
+
   check-artifact-version:
     description: Ensures the version in Cargo.toml matches the branch name.
     required: false
@@ -37,6 +42,7 @@ runs:
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/actions/install-wasm-pack@b2.0.0
       with:
+        wasm-pack-version: ${{ inputs.wasm-pack-version }}
         shell: ${{ inputs.shell }}
 
     - name: Validate Rust source files
