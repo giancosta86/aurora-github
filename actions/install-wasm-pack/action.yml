@@ -2,6 +2,10 @@ name: Install wasm-pack
 description: Installs wasm-pack for Rust.
 
 inputs:
+  wasm-pack-version:
+    description: The wasm-pack version to install.
+    required: true
+
   shell:
     description: The shell used to run commands.
     required: false
@@ -10,9 +14,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Run the installation script
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    - name: Install wasm-pack via pnpm
       shell: ${{ inputs.shell }}
-      run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+      run: pnpm add -g "wasm-pack@${{ inputs.wasm-pack-version }}"
 
     - name: Print wasm-pack version
       shell: ${{ inputs.shell }}

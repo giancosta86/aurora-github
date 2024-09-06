@@ -15,9 +15,10 @@ steps:
 
 ## Inputs
 
-|  Name   |    Type    |          Description           | Default value |
-| :-----: | :--------: | :----------------------------: | :-----------: |
-| `shell` | **string** | The shell used to run commands |   **bash**    |
+|        Name         |    Type    |           Description            | Default value |
+| :-----------------: | :--------: | :------------------------------: | :-----------: |
+| `wasm-pack-version` | **string** | The wasm-pack version to install |               |
+|       `shell`       | **string** |  The shell used to run commands  |   **bash**    |
 
 ## Further references
 
