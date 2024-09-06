@@ -4,6 +4,8 @@ runs:
   using: composite
   steps:
     - uses: ./actions/install-wasm-pack
+      with:
+        wasm-pack-version: 0.13.0
 
     - name: Verify wasm-pack
       shell: bash
