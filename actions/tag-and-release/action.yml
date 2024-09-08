@@ -1,0 +1,131 @@
+name: Tag and release
+description: Creates a Git tag and a GitHub release, from a Git branch named according to semver; by default, it also deletes the current branch.
+
+inputs:
+  draft-only:
+    description: Only draft the release.
+    required: false
+    default: false
+
+  delete-branch:
+    description: Delete the branch after creating the tag.
+    required: false
+    default: true
+
+  set-major-tag:
+    description: Create/move the 'vX' tag to this commit (X=major version)
+    required: false
+    default: false
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Detect branch and version
+      id: detect-branch-version
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v2.0.0
+      with:
+        shell: ${{ inputs.shell }}
+
+    - name: Verify branch and version
+      shell: ${{ inputs.shell }}
+      run: |
+        branch="${{ steps.detect-branch-version.outputs.branch }}"
+        version="${{ steps.detect-branch-version.outputs.version }}"
+        major="${{ steps.detect-branch-version.outputs.major }}"
+        defaultBranch="${{ github.event.repository.default_branch }}"
+        setMajorTag=${{ inputs.set-major-tag == 'true' }}
+
+        echo "🌲It seems your default branch is: '$defaultBranch'"
+
+        if [[ -z "$branch" ]]
+        then
+          echo "❌The current Git branch could not be detected!" >&2
+          exit 1
+        fi
+
+        if [[ "$branch" == "$defaultBranch" ]]
+        then
+          echo "❌This action cannot be run from the default branch ('$defaultBranch')!" >&2
+          exit 1
+        fi
+
+        if [[ -z "$version" ]]
+        then
+          echo "❌The current version could not be detected from the Git branch ('$branch')!" >&2
+          exit 1
+        fi
+
+        if [[ "$setMajorTag" == "true" && -z "$major" ]]
+        then
+          echo "❌The major version could not be detected from the Git branch or the version!" >&2
+          exit 1
+        fi
+
+    - name: Delete Git branch
+      if: ${{ inputs.delete-branch == 'true' }}
+      shell: ${{ inputs.shell }}
+      run: |
+        branch="${{ steps.detect-branch-version.outputs.branch }}"
+
+        echo "Deleting Git 🌲branch '$branch'..."
+
+        git push origin --delete "$branch"
+
+        echo "🌲Branch deleted!"
+
+    - name: Create Git tag
+      id: create-git-tag
+      shell: ${{ inputs.shell }}
+      run: |
+        version="${{ steps.detect-branch-version.outputs.version }}"
+
+        tag="v${version}"
+        echo "📌Creating and pushing Git tag '$tag'..."
+        git tag "$tag"
+        git push origin "$tag"
+        echo "📌Tag created and pushed!"
+
+        echo "tag=$tag" >> $GITHUB_OUTPUT
+
+    - name: Create or draft release
+      shell: ${{ inputs.shell }}
+      run: |
+        draftOnly="${{ inputs.draft-only }}"
+        version="${{ steps.detect-branch-version.outputs.version }}"
+        tag="${{ steps.create-git-tag.outputs.tag }}" 
+
+        repoBasename="$(basename "$GITHUB_REPOSITORY")"
+        releaseTitle="$repoBasename $version"        
+
+        releaseRecap="release '$releaseTitle' from tag '$tag'"
+
+        if [[ "$draftOnly" = true ]]
+        then
+          echo "📝Drafting $releaseRecap..."
+          gh release create "$tag" --title "$releaseTitle" --draft
+          echo "📝Release drafted!"
+        else 
+          echo "🌟Creating $releaseRecap..."
+          gh release create "$tag" --title "$releaseTitle"
+          echo "🌟Release created!"
+        fi
+      env:
+        GH_TOKEN: ${{ github.token }}
+
+    - name: Create or move major version tag
+      if: ${{ inputs.set-major-tag == 'true' }}
+      shell: ${{ inputs.shell }}
+      run: |
+        major="${{ steps.detect-branch-version.outputs.major }}"
+
+        majorTag="v${major}"
+
+        echo "🪩Setting major version tag '$majorTag'..."
+        git tag -f "$majorTag"
+        git push origin "$majorTag" --force
+        echo "🪩Major version tag set!"
