@@ -1,0 +1,60 @@
+name: Verify Rust crate
+description: Verifies the source files of a Rust crate.
+
+inputs:
+  run-clippy-checks:
+    description: Enable linting via Clippy.
+    required: false
+    default: true
+
+  check-artifact-version:
+    description: Ensure the version in Cargo.toml matches the branch name.
+    required: false
+    default: true
+
+  project-directory:
+    description: The directory containing Cargo.toml.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Check artifact version
+      if: ${{ inputs.check-artifact-version == 'true' }}
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v2.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Check Rust versions
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v2.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Check format style
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo fmt --check
+
+    - name: Lint via Clippy - with warnings as errors
+      if: ${{ inputs.run-clippy-checks == 'true' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo clippy --all-targets --all-features -- -D warnings
+
+    - name: Run vanilla (no features) tests
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo test
+
+    - name: Run full (all features) tests
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: cargo test --all-features
