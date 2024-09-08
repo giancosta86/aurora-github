@@ -1,0 +1,61 @@
+name: Verify npm package
+description: Verifies the source files of a NodeJS package - by running its 'verify' script within the 'scripts' section of 'package.json'.
+
+inputs:
+  frozen-lockfile:
+    description: Fails if 'pnpm-lock.yaml' is missing or outdated.
+    required: false
+    default: true
+
+  check-artifact-version:
+    description: Ensure the version in package.json matches the branch name.
+    required: false
+    default: true
+
+  project-directory:
+    description: The directory containing package.json.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Check artifact version
+      if: ${{ inputs.check-artifact-version == 'true' }}
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v2.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Setup NodeJS
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ${{ inputs.project-directory }}/.nvmrc
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    - name: Install the dependencies
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        frozenLockfile="${{ inputs.frozen-lockfile }}"
+
+        if [[ "$frozenLockfile" == "true" ]]
+        then
+          pnpm install --frozen-lockfile
+        else
+          pnpm install --no-frozen-lockfile
+        fi
+
+    - name: Verify the package
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: pnpm verify
