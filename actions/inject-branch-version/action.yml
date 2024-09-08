@@ -1,0 +1,57 @@
+name: Inject branch version
+description: Injects into a descriptor the version detected from the current Git branch.
+
+inputs:
+  artifact-descriptor:
+    description: Relative path to the artifact descriptor - such as 'Cargo.toml' or 'package.json'; if not specified, it will be inferred from the project.
+    required: false
+    default: ""
+
+  project-directory:
+    description: The directory containing the project.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/detect-branch-version@v2.0.0
+      id: version-detector
+      with:
+        shell: ${{ inputs.shell }}
+
+    - uses: giancosta86/aurora-github/actions/detect-project-tech@v2.0.0
+      if: ${{ inputs.artifact-descriptor == '' }}
+      id: tech-detector
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Replace versions
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        version="${{ steps.version-detector.outputs.version }}"
+        artifactDescriptor="${{ inputs.artifact-descriptor }}"
+
+        echo "🔎Detected version is: '$version'"
+        echo "🔎The requested artifact descriptor is: '$artifactDescriptor'"
+
+        if [[ -z "$artifactDescriptor" ]]
+        then
+          artifactDescriptor="${{ steps.tech-detector.outputs.artifact-descriptor }}"
+          echo "🔮The detected artifact descriptor is: '$artifactDescriptor'"
+
+          if [[ -z "$artifactDescriptor" ]]
+          then
+            echo "❌Cannot detect the artifact descriptor for version injection!" >&2;
+            exit 1;
+          fi
+        fi
+
+        sed -i "s/0\.0\.0/${version}/g" "$artifactDescriptor"
