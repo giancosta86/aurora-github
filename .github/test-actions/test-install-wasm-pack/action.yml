@@ -1,0 +1,26 @@
+name: Test install-wasm-pack
+
+runs:
+  using: composite
+  steps:
+    - name: Setup environment variables
+      shell: bash
+      run: |
+        echo "expectedVersion=0.13.0" >> $GITHUB_ENV
+
+    - uses: ./actions/install-wasm-pack
+      with:
+        wasm-pack-version: ${{ env.expectedVersion }}
+
+    - name: The expected wasm-pack version should be available
+      shell: bash
+      run: |
+        wasmPackVersion=$(wasm-pack --version | cut -d' ' -f2)
+
+        echo "🔎Detected wasm-pack version: '$wasmPackVersion'"
+
+        if [[ "$wasmPackVersion" != "$expectedVersion" ]]
+        then
+          echo "❌The expected wasm-pack version ('$expectedVersion') is not installed!" >&2
+          exit 1
+        fi
