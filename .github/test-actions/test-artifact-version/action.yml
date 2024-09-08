@@ -68,7 +68,7 @@ runs:
     - name: Version should appear correctly in unknown descriptor
       shell: bash
       run: |
-        version="${{ steps.version-detector.outputs.version }}""
+        version="${{ steps.version-detector.outputs.version }}"
 
         if ! cat ./tests/unknown-tech/some-descriptor.txt | grep -q "v$version"
         then 
