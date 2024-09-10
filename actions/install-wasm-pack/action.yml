@@ -14,6 +14,15 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate parameters
+      shell: ${{ inputs.shell }}
+      run: |
+        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
+        then
+          echo "Missing action input: 'wasm-pack-version'!" >&2
+          exit 1
+        fi
+
     - name: Install pnpm
       uses: pnpm/action-setup@v4
       with:
