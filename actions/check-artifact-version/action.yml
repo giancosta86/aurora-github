@@ -17,14 +17,14 @@ runs:
   steps:
     - name: Detect project tech
       id: detect-project-tech
-      uses: giancosta86/aurora-github/actions/detect-project-tech@v2.0.0
+      uses: giancosta86/aurora-github/actions/detect-project-tech@v2.0.1
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-version@v2.0.0
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v2.0.1
       with:
         shell: ${{ inputs.shell }}
 

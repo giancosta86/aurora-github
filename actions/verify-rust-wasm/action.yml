@@ -44,13 +44,13 @@ runs:
   using: composite
   steps:
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v2.0.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v2.0.1
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
         shell: ${{ inputs.shell }}
 
     - name: Verify Rust source files
-      uses: giancosta86/aurora-github/actions/verify-rust-crate@v2.0.0
+      uses: giancosta86/aurora-github/actions/verify-rust-crate@v2.0.1
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
         check-artifact-version: ${{ inputs.check-artifact-version }}

@@ -27,7 +27,7 @@ runs:
   steps:
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v2.0.0
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v2.0.1
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
