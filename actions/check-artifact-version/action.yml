@@ -1,0 +1,49 @@
+name: Check artifact version
+description: Ensures the artifact version - expressed according to the project technology - matches the current branch version.
+
+inputs:
+  project-directory:
+    description: The directory containing the project.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Detect project tech
+      id: detect-project-tech
+      uses: giancosta86/aurora-github/actions/detect-project-tech@v2.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Detect branch and version
+      id: detect-branch-version
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v2.0.0
+      with:
+        shell: ${{ inputs.shell }}
+
+    - name: Check Rust crate version
+      if: ${{ steps.detect-project-tech.outputs.project-tech == 'rust' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: egrep -q '^version\s*=\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' Cargo.toml
+
+    - name: Check NodeJS package version
+      if: ${{ steps.detect-project-tech.outputs.project-tech == 'nodejs' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: egrep -q '"version"\s*:\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' package.json
+
+    - name: Fail on unknown project tech
+      if: ${{ steps.detect-project-tech.outputs.project-tech == '' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "❌Cannot verify the artifact version for an unknown project tech" >&2
+        exit 1

@@ -1,0 +1,112 @@
+name: Verify actions
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: main
+  workflow_dispatch:
+
+jobs:
+  check-preconditions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./actions/check-action-references
+
+  test-detect-branch-version:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-detect-branch-version
+
+  test-install-wasm-pack:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-install-wasm-pack
+
+  test-check-rust-versions:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-check-rust-versions
+
+  test-detect-project-tech:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-detect-project-tech
+
+  test-artifact-version:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-artifact-version
+
+  test-verify-rust-crate:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-verify-rust-crate
+
+  test-publish-rust-crate:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-publish-rust-crate
+
+  test-verify-npm-package:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-verify-npm-package
+
+  test-publish-npm-package:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-publish-npm-package
+
+  test-verify-rust-wasm:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-verify-rust-wasm
+
+  test-publish-rust-wasm:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-publish-rust-wasm
+
+  verify:
+    runs-on: ubuntu-latest
+    needs:
+      - check-preconditions
+      - test-detect-branch-version
+      - test-install-wasm-pack
+      - test-check-rust-versions
+      - test-detect-project-tech
+      - test-artifact-version
+      - test-verify-rust-crate
+      - test-publish-rust-crate
+      - test-verify-npm-package
+      - test-publish-npm-package
+      - test-verify-rust-wasm
+      - test-publish-rust-wasm
+
+    steps:
+      - name: Test branch
+        shell: bash
+        run: echo "✅Verification complete!"

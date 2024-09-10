@@ -1,0 +1,14 @@
+name: Test verify-rust-wasm
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/inject-branch-version
+      with:
+        artifact-descriptor: ./tests/rust-wasm/Cargo.toml
+
+    - uses: ./actions/verify-rust-wasm
+      with:
+        project-directory: ./tests/rust-wasm
+        npm-scope: giancosta86
+        wasm-pack-version: 0.13.0

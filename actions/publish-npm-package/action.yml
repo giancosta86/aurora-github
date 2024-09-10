@@ -1,0 +1,76 @@
+name: Publish npm package
+description: Publishes a NodeJS package to the npm registry.
+
+inputs:
+  npm-token:
+    description: The secret token for publishing to npm.
+    required: true
+
+  dry-run:
+    description: Run a simulated publication via --dry-run.
+    required: false
+    default: false
+
+  frozen-lockfile:
+    description: Fail if 'pnpm-lock.yaml' is missing or outdated.
+    required: false
+    default: true
+
+  project-directory:
+    description: The directory containing package.json.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Setup NodeJS and NPM registry
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ${{ inputs.project-directory }}/.nvmrc
+        registry-url: https://registry.npmjs.org
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    - name: Install dependencies
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        frozenLockfile="${{ inputs.frozen-lockfile }}"
+
+        if [[ "$frozenLockfile" == "true" ]]
+        then
+          pnpm install --frozen-lockfile
+        else
+          pnpm install --no-frozen-lockfile
+        fi
+
+    - name: Display the artifact descriptor
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "The content of your 📦package.json just before publication is:"
+        cat package.json
+
+    - name: Publish to npm
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        dryRun="${{ inputs.dry-run }}"
+
+        if [[ "$dryRun" == "true" ]]
+        then
+          pnpm publish --no-git-checks --access public --dry-run
+        else
+          pnpm publish --no-git-checks --access public
+        fi
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}

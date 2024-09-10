@@ -1,0 +1,88 @@
+name: Test inject-branch-version and check-artifact-version
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/detect-branch-version
+      id: version-detector
+
+    - name: Inject version into Rust crate
+      uses: ./actions/inject-branch-version
+      with:
+        project-directory: ./tests/rust-crate
+
+    - name: Inject version into Rust web assembly
+      uses: ./actions/inject-branch-version
+      with:
+        project-directory: ./tests/rust-wasm
+
+    - name: Inject version into NodeJS package
+      uses: ./actions/inject-branch-version
+      with:
+        project-directory: ./tests/npm-package
+
+    - name: Inject version into unknown project
+      uses: ./actions/inject-branch-version
+      with:
+        artifact-descriptor: some-descriptor.txt
+        project-directory: ./tests/unknown-tech
+
+    - name: Display updated artifacts
+      shell: bash
+      run: |
+        echo "🦀Rust descriptor:"
+        less ./tests/rust-crate/Cargo.toml
+
+        echo
+
+        echo "🦀Rust 🌐web assembly descriptor:"
+        less ./tests/rust-wasm/Cargo.toml
+
+        echo
+
+        echo "📦NodeJS descriptor:"
+        less ./tests/npm-package/package.json
+
+        echo
+
+        echo "🎁Unknown tech descriptor:"
+        less ./tests/unknown-tech/some-descriptor.txt
+
+        echo "🌳🌳🌳"
+
+    - name: Version should appear correctly in Rust crate
+      uses: ./actions/check-artifact-version
+      with:
+        project-directory: ./tests/rust-crate
+
+    - name: Version should appear correctly in Rust wasm
+      uses: ./actions/check-artifact-version
+      with:
+        project-directory: ./tests/rust-wasm
+
+    - name: Version should appear correctly in npm package
+      uses: ./actions/check-artifact-version
+      with:
+        project-directory: ./tests/npm-package
+
+    - name: Version should appear correctly in unknown descriptor
+      shell: bash
+      run: |
+        version="${{ steps.version-detector.outputs.version }}"
+
+        if ! cat ./tests/unknown-tech/some-descriptor.txt | grep -q "v$version"
+        then 
+          echo "❌Error while injecting the version into a custom descriptor!" >&2
+          exit 1
+        fi
+
+    - name: Version should be injected multiple times
+      shell: bash
+      run: |
+        version="${{ steps.version-detector.outputs.version }}"
+
+        if ! cat ./tests/unknown-tech/some-descriptor.txt | grep -q "'$version';"
+        then 
+          echo "❌The version was not injected globally into a custom descriptor!" >&2
+          exit 1
+        fi

@@ -1,0 +1,113 @@
+name: Verify Rust web assembly
+description: Verifies the source files of a Rust web assembly.
+
+inputs:
+  wasm-pack-version:
+    description: The wasm-pack version to install.
+    required: true
+
+  npm-scope:
+    description: The npm package scope (without the initial @) - or empty.
+    required: true
+
+  client-tests-directory:
+    description: Relative directory containing the NodeJS-based client tests.
+    required: false
+    default: client-tests
+
+  wasm-target:
+    description: The target of the 'wasm-pack build' command.
+    required: false
+    default: web
+
+  run-clippy-checks:
+    description: Enable linting via Clippy.
+    required: false
+    default: true
+
+  check-artifact-version:
+    description: Ensure the version in Cargo.toml matches the branch name.
+    required: false
+    default: true
+
+  project-directory:
+    description: The directory containing Cargo.toml.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Install wasm-pack
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v2.0.0
+      with:
+        wasm-pack-version: ${{ inputs.wasm-pack-version }}
+        shell: ${{ inputs.shell }}
+
+    - name: Verify Rust source files
+      uses: giancosta86/aurora-github/actions/verify-rust-crate@v2.0.0
+      with:
+        run-clippy-checks: ${{ inputs.run-clippy-checks }}
+        check-artifact-version: ${{ inputs.check-artifact-version }}
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Run headless browser tests
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: wasm-pack test --chrome --headless --release
+
+    - name: Generate the NodeJS package source files
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        scope="${{ inputs.npm-scope }}"
+
+        if [[ ! -z "$scope" ]]
+        then
+          wasm-pack build --dev --target "${{ inputs.wasm-target }}" --scope "$scope"
+        else
+          wasm-pack build --dev --target "${{ inputs.wasm-target }}"
+        fi
+
+    - name: Ensure test client directory exists
+      if: ${{ inputs.client-tests-directory != '' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        clientTestsDirectory="${{ inputs.client-tests-directory }}"
+
+        if [[ ! -d "$clientTestsDirectory" ]]
+        then
+          echo "❌The client test directory '$clientTestsDirectory' does not exist!" >&2
+          exit 1
+        fi
+
+    - name: Set up NodeJS
+      if: ${{ inputs.client-tests-directory != '' }}
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}/.nvmrc
+
+    - name: Install pnpm
+      if: ${{ inputs.client-tests-directory != '' }}
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
+    - name: Install client-side test dependencies
+      if: ${{ inputs.client-tests-directory != '' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
+      run: pnpm install --frozen-lockfile
+
+    - name: Perform client-side tests
+      if: ${{ inputs.client-tests-directory != '' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
+      run: pnpm verify

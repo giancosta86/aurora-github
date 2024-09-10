@@ -1,0 +1,37 @@
+name: Check Rust version info
+description: Displays the versions of the main Rust components, after ensuring that 'rust-toolchain.toml' is in the project directory.
+
+inputs:
+  project-directory:
+    description: The directory containing Cargo.toml.
+    required: false
+    default: "."
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Ensure the toolchain file is present
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        toolchainFile="rust-toolchain.toml"
+
+        if [[ ! -f "$toolchainFile" ]]
+        then
+          echo "❌Missing toolchain file: '$toolchainFile'" >&2
+          exit 1
+        fi
+
+    - name: Print Rust tool versions
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        cargo --version
+        rustc --version
+        cargo fmt --version
+        cargo clippy --version

@@ -1,0 +1,46 @@
+name: Detect project tech
+description: Tries to infer the current project tech - and related aspects - from the source files.
+
+inputs:
+  project-directory:
+    description: The directory containing the project.
+    required: false
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+outputs:
+  project-tech:
+    description: The detected project tech. Can be 'nodejs', 'rust' or empty string.
+    value: ${{ steps.detect-project-tech.outputs.project-tech }}
+
+  artifact-descriptor:
+    description: The artifact descriptor. Can be 'Cargo.toml', 'package.json' or empty string.
+    value: ${{ steps.detect-project-tech.outputs.artifact-descriptor }}
+
+runs:
+  using: composite
+  steps:
+    - name: Detect project tech
+      id: detect-project-tech
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -f "package.json" ]]
+        then
+          echo "📦NodeJS project tech detected"
+          echo "project-tech=nodejs" >> $GITHUB_OUTPUT
+          echo "artifact-descriptor=package.json" >> $GITHUB_OUTPUT
+        elif [[ -f "Cargo.toml" ]]
+        then
+          echo "🦀Rust project tech detected"
+          echo "project-tech=rust" >> $GITHUB_OUTPUT
+          echo "artifact-descriptor=Cargo.toml" >> $GITHUB_OUTPUT
+        else
+          echo "🤔It seems impossible to detect the project tech!"
+          echo "project-tech=" >> $GITHUB_OUTPUT
+          echo "artifact-descriptor=" >> $GITHUB_OUTPUT
+        fi
