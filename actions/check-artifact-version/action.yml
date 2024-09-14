@@ -32,13 +32,13 @@ runs:
       if: ${{ steps.detect-project-tech.outputs.project-tech == 'rust' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: egrep -q '^version\s*=\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' Cargo.toml
+      run: grep -Pq '^version\s*=\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' Cargo.toml
 
     - name: Check NodeJS package version
       if: ${{ steps.detect-project-tech.outputs.project-tech == 'nodejs' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: egrep -q '"version"\s*:\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' package.json
+      run: grep -Pq '"version"\s*:\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' package.json
 
     - name: Fail on unknown project tech
       if: ${{ steps.detect-project-tech.outputs.project-tech == '' }}

@@ -50,7 +50,7 @@ runs:
         escapedVersion="${{ steps.detector.outputs.escaped-version }}"
 
         echo "🔎Escaped version retrieved from action: '$escapedVersion'"
-        if ! echo "$escapedVersion"  | egrep -q "\\\." 
+        if ! echo "$escapedVersion"  | grep -Pq "\\\." 
         then
           echo "❌The escaped version should include '\.'!" >&2
           exit 1

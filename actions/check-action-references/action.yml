@@ -39,7 +39,7 @@ runs:
             echo "---> $referenceLine" >&2
             hasReferencesToOtherBranches=true
           fi
-        done < <(find . -name '*.yml' -print | xargs egrep -n "uses:\s+${fullRepo}/")
+        done < <(find . -name '*.yml' -print | xargs grep -Pn "uses:\s+${fullRepo}/")
 
         if [[ "$hasReferencesToOtherBranches" == "true" ]]
         then
