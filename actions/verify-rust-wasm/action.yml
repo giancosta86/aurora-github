@@ -25,6 +25,11 @@ inputs:
     required: false
     default: true
 
+  run-doc-checks:
+    description: Run documentation checks - with warnings as errors.
+    required: false
+    default: false
+
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
     required: false
@@ -53,6 +58,7 @@ runs:
       uses: giancosta86/aurora-github/actions/verify-rust-crate@v3.0.0
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
+        run-doc-checks: ${{ inputs.run-doc-checks }}
         check-artifact-version: ${{ inputs.check-artifact-version }}
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}

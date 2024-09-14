@@ -7,6 +7,11 @@ inputs:
     required: false
     default: true
 
+  run-doc-checks:
+    description: Run documentation checks - with warnings as errors.
+    required: false
+    default: true
+
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
     required: false
@@ -58,3 +63,9 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: cargo test --all-features
+
+    - name: Run documentation checks - with warnings as errors
+      if: ${{ inputs.run-doc-checks == 'true' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: RUSTDOCFLAGS="-D warnings" cargo doc --all-features

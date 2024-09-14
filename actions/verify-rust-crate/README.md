@@ -27,6 +27,8 @@ steps:
 
 1. Run `cargo test` with all the project features _enabled_.
 
+1. Try to generate documentation with all the project features _enabled_. All warnings are considered errors. This step can be skipped.
+
 ## Requirements
 
 - `rust-toolchain.toml` must be present in `project-directory` - as described in [check-rust-versions](../check-rust-versions/README.md)
@@ -38,6 +40,7 @@ steps:
 |           Name           |    Type     |                       Description                        | Default value |
 | :----------------------: | :---------: | :------------------------------------------------------: | :-----------: |
 |   `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |   **true**    |
+|     `run-doc-checks`     | **boolean** |    Run documentation checks - with warnings as errors    |   **true**    |
 | `check-artifact-version` | **boolean** | Ensure the version in Cargo.toml matches the branch name |   **true**    |
 |   `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |     **.**     |
 |         `shell`          | **string**  |              The shell used to run commands              |   **bash**    |

@@ -61,6 +61,7 @@ steps:
 | `client-tests-directory` | **string**  | Relative directory containing the NodeJS-based client tests  | **client-tests** |
 |      `wasm-target`       | **string**  |         The target of the `wasm-pack build` command          |     **web**      |
 |   `run-clippy-checks`    | **boolean** |                  Enable linting via Clippy                   |     **true**     |
+|     `run-doc-checks`     | **boolean** |      Run documentation checks - with warnings as errors      |    **false**     |
 | `check-artifact-version` | **boolean** |   Ensure the version in Cargo.toml matches the branch name   |     **true**     |
 |   `project-directory`    | **string**  |            The directory containing `Cargo.toml`             |      **.**       |
 |         `shell`          | **string**  |                The shell used to run commands                |     **bash**     |
