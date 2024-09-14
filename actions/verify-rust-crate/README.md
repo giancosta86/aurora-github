@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-rust-crate@v2
+  - uses: giancosta86/aurora-github/actions/verify-rust-crate@v3
 ```
 
 ## How it works

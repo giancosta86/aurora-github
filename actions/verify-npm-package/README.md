@@ -12,7 +12,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-npm-package@v2
+  - uses: giancosta86/aurora-github/actions/verify-npm-package@v3
 ```
 
 **IMPORTANT**: please, remember to declare your verification process in the `verify` script within `package.json`! For example:

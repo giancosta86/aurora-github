@@ -14,7 +14,7 @@ steps:
 
   - uses: PUBLICATION STEP N
 
-  - uses: giancosta86/aurora-github/actions/tag-and-release@v2
+  - uses: giancosta86/aurora-github/actions/tag-and-release@v3
 ```
 
 ## Requirements

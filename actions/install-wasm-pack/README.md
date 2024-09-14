@@ -6,7 +6,7 @@ Installs [wasm-pack](https://rustwasm.github.io/wasm-pack/), for creating **Rust
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/install-wasm-pack@v2
+  - uses: giancosta86/aurora-github/actions/install-wasm-pack@v3
 ```
 
 ## Inputs

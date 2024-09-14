@@ -6,7 +6,7 @@ Ensures the artifact version - expressed according to the project technology - m
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-artifact-version@v2
+  - uses: giancosta86/aurora-github/actions/check-artifact-version@v3
 ```
 
 ## Requirements

@@ -17,7 +17,7 @@ runs:
   steps:
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-version@v2.0.1
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v3.0.0
       with:
         shell: ${{ inputs.shell }}
 

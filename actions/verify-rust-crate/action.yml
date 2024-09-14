@@ -27,13 +27,13 @@ runs:
   steps:
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v2.0.1
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v3.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Check Rust versions
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v2.0.1
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v3.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
