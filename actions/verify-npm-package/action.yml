@@ -15,7 +15,7 @@ inputs:
   source-file-regex:
     description: PCRE pattern describing the source files.
     required: false
-    default: '\.(j|t)sx?$'
+    default: '\.(c|m)?(j|t)sx?$'
 
   check-artifact-version:
     description: Ensure the version in package.json matches the branch name.
@@ -35,6 +35,41 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        if [[ -z "${{ inputs.frozen-lockfile }}" ]]
+        then
+          echo "❌Missing action input: 'frozen-lockfile'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
+        then
+          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.source-file-regex }}" ]]
+        then
+          echo "❌Missing action input: 'source-file-regex'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.check-artifact-version }}" ]]
+        then
+          echo "❌Missing action input: 'check-artifact-version'!" >&2
+          exit 1
+        fi
+    
+    - name: Check artifact version
+      if: ${{ inputs.check-artifact-version == 'true' }}
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v3.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v3.0.0
       with:
@@ -42,13 +77,6 @@ runs:
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
         display-lines: true
         root-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
-
-    - name: Check artifact version
-      if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v3.0.0
-      with:
-        project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Setup NodeJS

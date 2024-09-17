@@ -30,6 +30,16 @@ inputs:
     required: false
     default: false
 
+  crash-on-critical-todos:
+    description: Crash the workflow if critical TODOs are found.
+    required: false
+    default: true
+
+  source-file-regex:
+    description: PCRE pattern describing the source files.
+    required: false
+    default: '\.rs$'
+
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
     required: false
@@ -48,6 +58,52 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
+        then
+          echo "❌Missing action input: 'wasm-pack-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.wasm-target }}" ]]
+        then
+          echo "❌Missing action input: 'wasm-target'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.run-clippy-checks }}" ]]
+        then
+          echo "❌Missing action input: 'run-clippy-checks'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.run-doc-checks }}" ]]
+        then
+          echo "❌Missing action input: 'run-doc-checks'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
+        then
+          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.source-file-regex }}" ]]
+        then
+          echo "❌Missing action input: 'source-file-regex'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.check-artifact-version }}" ]]
+        then
+          echo "❌Missing action input: 'check-artifact-version'!" >&2
+          exit 1
+        fi
+
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/actions/install-wasm-pack@v3.0.0
       with:
@@ -59,6 +115,8 @@ runs:
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
         run-doc-checks: ${{ inputs.run-doc-checks }}
+        crash-on-critical-todos: ${{ inputs.crash-on-critical-todos }}
+        source-file-regex: ${{ inputs.source-file-regex }}
         check-artifact-version: ${{ inputs.check-artifact-version }}
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}

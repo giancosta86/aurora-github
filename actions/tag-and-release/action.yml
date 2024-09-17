@@ -25,6 +25,27 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      run: |
+        if [[ -z "${{ inputs.draft-only }}" ]]
+        then
+          echo "❌Missing action input: 'draft-only'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.delete-branch }}" ]]
+        then
+          echo "❌Missing action input: 'delete-branch'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.set-major-tag }}" ]]
+        then
+          echo "❌Missing action input: 'set-major-tag'!" >&2
+          exit 1
+        fi
+
     - name: Detect branch and version
       id: detect-branch-version
       uses: giancosta86/aurora-github/actions/detect-branch-version@v3.0.0

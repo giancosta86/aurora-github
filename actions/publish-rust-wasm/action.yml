@@ -42,6 +42,39 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      run: |
+        if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.npm-token }}" ]]
+        then
+          echo "❌Missing action input: 'npm-token'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
+        then
+          echo "❌Missing action input: 'wasm-pack-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.dry-run }}" ]]
+        then
+          echo "❌Missing action input: 'dry-run'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.wasm-target }}" ]]
+        then
+          echo "❌Missing action input: 'wasm-target'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.node-version-directory }}" ]]
+        then
+          echo "❌Missing action input: 'node-version-directory'!" >&2
+          exit 1
+        fi
+
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/actions/install-wasm-pack@v3.0.0
       with:

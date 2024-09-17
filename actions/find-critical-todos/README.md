@@ -12,6 +12,8 @@ steps:
       crash-on-found: true
 ```
 
+**Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md) and [verify-npm-package](../verify-npm-package/README.md).
+
 ## Inputs
 
 |        Name         |    Type     |                            Description                            | Default value |
@@ -29,5 +31,9 @@ steps:
 | `found` | **boolean** | **true** if at least one `TODO!` was found in some file, **false** otherwise | **false** |
 
 ## Further references
+
+- [verify-rust-crate](../verify-rust-crate/README.md)
+
+- [verify-npm-package](../verify-npm-package/README.md)
 
 - [aurora-github](../../README.md)

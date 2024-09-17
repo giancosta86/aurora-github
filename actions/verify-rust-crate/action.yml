@@ -40,6 +40,40 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        if [[ -z "${{ inputs.run-clippy-checks }}" ]]
+        then
+          echo "❌Missing action input: 'run-clippy-checks'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.run-doc-checks }}" ]]
+        then
+          echo "❌Missing action input: 'run-doc-checks'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
+        then
+          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.source-file-regex }}" ]]
+        then
+          echo "❌Missing action input: 'source-file-regex'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.check-artifact-version }}" ]]
+        then
+          echo "❌Missing action input: 'check-artifact-version'!" >&2
+          exit 1
+        fi
+
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
       uses: giancosta86/aurora-github/actions/check-artifact-version@v3.0.0

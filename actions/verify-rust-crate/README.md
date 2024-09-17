@@ -13,6 +13,8 @@ steps:
   - uses: giancosta86/aurora-github/actions/verify-rust-crate@v3
 ```
 
+**Please, note:** this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md).
+
 ## How it works
 
 1. Optionally run [check-artifact-version](../check-artifact-version/README.md), to ensure that the artifact version in `Cargo.toml` matches the version detected from the name of the current Git branch.
@@ -50,6 +52,8 @@ steps:
 |          `shell`          | **string**  |              The shell used to run commands              |   **bash**    |
 
 ## Further references
+
+- [verify-rust-wasm](../verify-rust-wasm/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

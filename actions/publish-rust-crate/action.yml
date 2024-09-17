@@ -2,14 +2,14 @@ name: Publish to crates.io
 description: Publishes a Rust crate to crates.io, with all of its features enabled.
 
 inputs:
-  cargo-token:
-    description: The secret token for publishing to crates.io.
-    required: true
-
   dry-run:
     description: Run a simulated publication via --dry-run.
     required: false
     default: false
+
+  cargo-token:
+    description: The secret token for publishing to crates.io.
+    required: true
 
   document-all-features:
     description: Enable Rustdoc for all features.
@@ -29,6 +29,27 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      run: |
+        if [[ -z "${{ inputs.dry-run }}" ]]
+        then
+          echo "❌Missing action input: 'dry-run'!" >&2
+          exit 1
+        fi
+        
+        if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.cargo-token }}" ]]
+        then
+          echo "❌Missing action input: 'cargo-token'!" >&2
+          exit 1
+        fi        
+
+        if [[ -z "${{ inputs.document-all-features }}" ]]
+        then
+          echo "❌Missing action input: 'document-all-features'!" >&2
+          exit 1
+        fi
+
     - name: Enable Rustdoc for all features
       if: ${{ inputs.document-all-features == 'true' }}
       shell: ${{ inputs.shell }}

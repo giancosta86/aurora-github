@@ -9,6 +9,8 @@ steps:
   - uses: giancosta86/aurora-github/actions/check-rust-versions@v3
 ```
 
+**Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).
+
 ## Requirements
 
 - the [toolchain file](https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file) file must exist within `project-directory`.
@@ -28,5 +30,7 @@ steps:
 |       `shell`       | **string** |    The shell used to run commands     |   **bash**    |
 
 ## Further references
+
+- [verify-rust-crate](../verify-rust-crate/README.md)
 
 - [aurora-github](../../README.md)

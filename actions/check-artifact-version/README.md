@@ -9,6 +9,8 @@ steps:
   - uses: giancosta86/aurora-github/actions/check-artifact-version@v3
 ```
 
+**Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md) and [verify-npm-package](../verify-npm-package/README.md) by default.
+
 ## Requirements
 
 - The ones described for [detect-project-tech](../detect-project-tech/README.md)
@@ -27,5 +29,9 @@ steps:
 - [detect-project-tech](../detect-project-tech/README.md)
 
 - [detect-branch-version](../detect-branch-version/README.md)
+
+- [verify-rust-crate](../verify-rust-crate/README.md)
+
+- [verify-npm-package](../verify-npm-package/README.md)
 
 - [aurora-github](../../README.md)

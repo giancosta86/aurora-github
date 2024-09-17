@@ -33,7 +33,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Validate parameters
+    - name: Validate inputs
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.root-directory }}
       run: |
@@ -46,6 +46,12 @@ runs:
         if [[ -z "${{ inputs.crash-on-found }}" ]]
         then
           echo "❌Missing action input: 'crash-on-found'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.display-lines }}" ]]
+        then
+          echo "❌Missing action input: 'display-lines'!" >&2
           exit 1
         fi
 
