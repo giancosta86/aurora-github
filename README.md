@@ -48,6 +48,8 @@ In particular, the actions can be grouped by technology:
 
 ## 🧰General-purpose utilities
 
+- [find-critical-todos](./actions/find-critical-todos/README.md)
+
 - [detect-project-tech](./actions/detect-project-tech/README.md)
 
 ## Further references

@@ -19,6 +19,8 @@ steps:
 
 1. Display the version info for the main components of the Rust toolchain - verifying the existence of `rust-toolchain.toml`.
 
+1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
+
 1. Check the style of the Rust source files - via `cargo fmt`.
 
 1. Perform lint checks via `cargo clippy`, enabling all features and targets. All warnings are considered errors. This step can be skipped.
@@ -37,15 +39,19 @@ steps:
 
 ## Inputs
 
-|           Name           |    Type     |                       Description                        | Default value |
-| :----------------------: | :---------: | :------------------------------------------------------: | :-----------: |
-|   `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |   **true**    |
-|     `run-doc-checks`     | **boolean** |    Run documentation checks - with warnings as errors    |   **true**    |
-| `check-artifact-version` | **boolean** | Ensure the version in Cargo.toml matches the branch name |   **true**    |
-|   `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |     **.**     |
-|         `shell`          | **string**  |              The shell used to run commands              |   **bash**    |
+|           Name            |    Type     |                       Description                        | Default value |
+| :-----------------------: | :---------: | :------------------------------------------------------: | :-----------: |
+|    `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |   **true**    |
+|     `run-doc-checks`      | **boolean** |    Run documentation checks - with warnings as errors    |   **true**    |
+| `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |   **true**    |
+|    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         |  **\\.rs$**   |
+| `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |   **true**    |
+|    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |     **.**     |
+|          `shell`          | **string**  |              The shell used to run commands              |   **bash**    |
 
 ## Further references
+
+- [find-critical-todos](../find-critical-todos/README.md)
 
 - [check-artifact-version](../check-artifact-version/README.md)
 

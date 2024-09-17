@@ -7,6 +7,16 @@ inputs:
     required: false
     default: true
 
+  crash-on-critical-todos:
+    description: Crash the workflow if critical TODOs are found.
+    required: false
+    default: true
+
+  source-file-regex:
+    description: PCRE pattern describing the source files.
+    required: false
+    default: '\.(j|t)sx?$'
+
   check-artifact-version:
     description: Ensure the version in package.json matches the branch name.
     required: false
@@ -25,6 +35,15 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Check for critical TODOs
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v3.0.0
+      with:
+        source-file-regex: ${{ inputs.source-file-regex }}
+        crash-on-found: ${{ inputs.crash-on-critical-todos }}
+        display-lines: true
+        root-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
       uses: giancosta86/aurora-github/actions/check-artifact-version@v3.0.0
