@@ -44,6 +44,8 @@ In particular, the actions can be grouped by technology:
 
 - [check-rust-versions](./actions/check-rust-versions/README.md)
 
+- [extract-rust-snippets](./actions/extract-rust-snippets/README.md)
+
 - [install-wasm-pack](./actions/install-wasm-pack/README.md)
 
 ## 🧰General-purpose utilities

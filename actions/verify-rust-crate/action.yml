@@ -107,6 +107,29 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: cargo clippy --all-targets --all-features -- -D warnings
 
+    - name: Check if README.md exists
+      id: detect-readme
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -f "README.md" ]] 
+        then
+          echo "🗒️README.md found! Trying to extract snippets!"
+          readmeExists=true
+        else
+          echo "💭README.md not found - unable to extract snippets."
+          readmeExists=false
+        fi
+
+        echo "readme-exists=$readmeExists" >> $GITHUB_OUTPUT
+
+    - name: Extract code snippets as tests from README.md
+      if: ${{ steps.detect-readme.outputs.readme-exists == 'true' }}
+      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v3.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
     - name: Run vanilla (no features) tests
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
