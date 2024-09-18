@@ -25,8 +25,8 @@ inputs:
     required: false
     default: true
 
-  run-doc-checks:
-    description: Run documentation checks - with warnings as errors.
+  check-rustdoc:
+    description: Build the documentation - with warnings as errors.
     required: false
     default: false
 
@@ -80,9 +80,9 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.run-doc-checks }}" ]]
+        if [[ -z "${{ inputs.check-rustdoc }}" ]]
         then
-          echo "❌Missing action input: 'run-doc-checks'!" >&2
+          echo "❌Missing action input: 'check-rustdoc'!" >&2
           exit 1
         fi
 
@@ -120,7 +120,7 @@ runs:
       uses: giancosta86/aurora-github/actions/verify-rust-crate@v3.0.0
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
-        run-doc-checks: ${{ inputs.run-doc-checks }}
+        check-rustdoc: ${{ inputs.check-rustdoc }}
         crash-on-critical-todos: ${{ inputs.crash-on-critical-todos }}
         source-file-regex: ${{ inputs.source-file-regex }}
         check-artifact-version: ${{ inputs.check-artifact-version }}

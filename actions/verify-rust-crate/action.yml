@@ -7,8 +7,8 @@ inputs:
     required: false
     default: true
 
-  run-doc-checks:
-    description: Run documentation checks - with warnings as errors.
+  check-rustdoc:
+    description: Build the documentation - with warnings as errors.
     required: false
     default: true
 
@@ -50,9 +50,9 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.run-doc-checks }}" ]]
+        if [[ -z "${{ inputs.check-rustdoc }}" ]]
         then
-          echo "❌Missing action input: 'run-doc-checks'!" >&2
+          echo "❌Missing action input: 'check-rustdoc'!" >&2
           exit 1
         fi
 
@@ -141,7 +141,7 @@ runs:
       run: cargo test --all-features
 
     - name: Run documentation checks - with warnings as errors
-      if: ${{ inputs.run-doc-checks == 'true' }}
+      if: ${{ inputs.check-rustdoc == 'true' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: RUSTDOCFLAGS="-D warnings" cargo doc --all-features

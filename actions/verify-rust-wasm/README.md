@@ -61,7 +61,7 @@ steps:
 | `client-tests-directory`  | **string**  | Relative directory containing the NodeJS-based client tests | **client-tests** |
 |       `wasm-target`       | **string**  |         The target of the `wasm-pack build` command         |     **web**      |
 |    `run-clippy-checks`    | **boolean** |                  Enable linting via Clippy                  |     **true**     |
-|     `run-doc-checks`      | **boolean** |     Run documentation checks - with warnings as errors      |    **false**     |
+|      `check-rustdoc`      | **boolean** |      Build the documentation - with warnings as errors      |    **false**     |
 | `crash-on-critical-todos` | **boolean** |       Crash the workflow if critical TODOs are found        |     **true**     |
 |    `source-file-regex`    | **string**  |          PCRE pattern describing the source files           |    **\\.rs$**    |
 | `check-artifact-version`  | **boolean** |  Ensure the version in Cargo.toml matches the branch name   |     **true**     |

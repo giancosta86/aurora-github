@@ -33,7 +33,7 @@ steps:
 
 1. Run `cargo test` with all the project features _enabled_.
 
-1. Try to generate documentation with all the project features _enabled_. All warnings are considered errors. This step can be skipped.
+1. Generate the documentation, with all the project features _enabled_. All warnings are considered errors. This step can be skipped.
 
 ## Requirements
 
@@ -46,7 +46,7 @@ steps:
 |           Name            |    Type     |                       Description                        | Default value |
 | :-----------------------: | :---------: | :------------------------------------------------------: | :-----------: |
 |    `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |   **true**    |
-|     `run-doc-checks`      | **boolean** |    Run documentation checks - with warnings as errors    |   **true**    |
+|      `check-rustdoc`      | **boolean** |    Build the documentation - with warnings as errors     |   **true**    |
 | `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |   **true**    |
 |    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         |  **\\.rs$**   |
 | `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |   **true**    |
