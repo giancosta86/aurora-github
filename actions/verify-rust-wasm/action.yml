@@ -7,7 +7,7 @@ inputs:
     required: true
 
   npm-scope:
-    description: The npm package scope (without the initial @) - or empty.
+    description: The npm package scope or "<ROOT>".
     required: true
 
   client-tests-directory:
@@ -103,6 +103,12 @@ runs:
           echo "❌Missing action input: 'check-artifact-version'!" >&2
           exit 1
         fi
+    
+    - name: Parse npm scope
+      id: parse-npm-scope
+      uses: giancosta86/aurora-github/actions/parse-npm-scope@v3.0.0
+      with:
+        scope: ${{ inputs.npm-scope }}
 
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/actions/install-wasm-pack@v3.0.0
@@ -130,13 +136,13 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        scope="${{ inputs.npm-scope }}"
+        scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
 
-        if [[ ! -z "$scope" ]]
+        if [[ -z "$scope" ]]
         then
-          wasm-pack build --dev --target "${{ inputs.wasm-target }}" --scope "$scope"
+          wasm-pack build --dev --target "${{ inputs.wasm-target }}"          
         else
-          wasm-pack build --dev --target "${{ inputs.wasm-target }}"
+          wasm-pack build --dev --target "${{ inputs.wasm-target }}" --scope "$scope"
         fi
 
     - name: Ensure test client directory exists

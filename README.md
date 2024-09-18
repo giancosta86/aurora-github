@@ -48,6 +48,10 @@ In particular, the actions can be grouped by technology:
 
 - [install-wasm-pack](./actions/install-wasm-pack/README.md)
 
+## 📦NodeJS utilities
+
+- [parse-npm-scope](./actions/parse-npm-scope/README.md)
+
 ## 🧰General-purpose utilities
 
 - [find-critical-todos](./actions/find-critical-todos/README.md)

@@ -1,0 +1,59 @@
+name: Test parse-npm-scope
+
+runs:
+  using: composite
+  steps:
+    - name: Parse root scope
+      uses: ./actions/parse-npm-scope
+      id: root-detector
+      with:
+        scope: <ROOT>
+
+    - name: Parsed root scope should be empty
+      shell: bash
+      run: |
+        rootScope="${{ steps.root-detector.outputs.actual-scope }}"
+
+        echo "🔎Root scope parsed by action: '$rootScope'"
+        if [[ "$rootScope" != '' ]] 
+        then
+          echo "❌The parsed root scope must be empty!" >&2
+          exit 1
+        fi
+
+    - name: Parse scope without leading '@'
+      uses: ./actions/parse-npm-scope
+      id: without-leading-detector
+      with:
+        scope: giancosta86
+  
+    - name: Scope without leading '@' should be parsed as it is
+      shell: bash
+      run: |
+        actualScope="${{ steps.without-leading-detector.outputs.actual-scope }}"
+
+        echo "🔎Scope parsed by action: '$actualScope'"
+        if [[ "$actualScope" != 'giancosta86' ]] 
+        then
+          echo "❌Incorrect scope detected!" >&2
+          exit 1
+        fi
+
+    - name: Parse scope with leading '@'
+      uses: ./actions/parse-npm-scope
+      id: with-leading-detector
+      with:
+        scope: "@giancosta86"
+
+    - name: Scope with leading '@' should be parsed without the '@'
+      shell: bash
+      run: |
+        actualScope="${{ steps.with-leading-detector.outputs.actual-scope }}"
+
+        echo "🔎Scope parsed by action: '$actualScope'"
+        if [[ "$actualScope" != 'giancosta86' ]] 
+        then
+          echo "❌Incorrect scope detected!" >&2
+          exit 1
+        fi
+

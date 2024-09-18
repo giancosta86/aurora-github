@@ -1,0 +1,46 @@
+name: Parse npm scope
+description: Parses a mandatory npm scope declaration.
+
+inputs:
+  scope:
+    description: The npm scope to parse. Can be either '<ROOT>' or a string with an optional leading "@".
+    required: true
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+outputs:
+  actual-scope:
+    description: The scope without '@', or the empty string for root scope.
+    value: ${{ steps.parse-actual-scope.outputs.actual-scope }}
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      run: |
+        if [[ -z "${{ inputs.scope }}" ]]
+        then
+          echo "❌Missing action input: 'scope'!" >&2
+          exit 1
+        fi
+        
+    - name: Parse the actual npm scope
+      id: parse-actual-scope
+      shell: ${{ inputs.shell }}
+      run: |
+        requestedScope="${{ inputs.scope }}"
+
+        if [[ "$requestedScope" == "<ROOT>" ]]
+        then
+          actualScope=""
+          echo "🫚Root scope detected!"
+        else          
+          actualScope="$(echo "$requestedScope" | sed 's/^@//')"
+          echo "🎁Custom scope detected: '$actualScope'"
+        fi
+
+        echo "actual-scope=$actualScope" >> $GITHUB_OUTPUT
