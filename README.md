@@ -44,9 +44,17 @@ In particular, the actions can be grouped by technology:
 
 - [check-rust-versions](./actions/check-rust-versions/README.md)
 
+- [extract-rust-snippets](./actions/extract-rust-snippets/README.md)
+
 - [install-wasm-pack](./actions/install-wasm-pack/README.md)
 
+## 📦NodeJS utilities
+
+- [parse-npm-scope](./actions/parse-npm-scope/README.md)
+
 ## 🧰General-purpose utilities
+
+- [find-critical-todos](./actions/find-critical-todos/README.md)
 
 - [detect-project-tech](./actions/detect-project-tech/README.md)
 

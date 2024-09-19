@@ -6,8 +6,10 @@ Installs [wasm-pack](https://rustwasm.github.io/wasm-pack/), for creating **Rust
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/install-wasm-pack@v2
+  - uses: giancosta86/aurora-github/actions/install-wasm-pack@v3
 ```
+
+**Please, note:** this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
 
 ## Inputs
 
@@ -17,6 +19,10 @@ steps:
 |       `shell`       | **string** |  The shell used to run commands  |   **bash**    |
 
 ## Further references
+
+- [verify-rust-wasm](../verify-rust-wasm/README.md)
+
+- [publish-rust-wasm](../publish-rust-wasm/README.md)
 
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/)
 

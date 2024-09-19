@@ -14,12 +14,12 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate parameters
+    - name: Validate inputs
       shell: ${{ inputs.shell }}
       run: |
         if [[ -z "${{ inputs.wasm-pack-version }}" ]]
         then
-          echo "Missing action input: 'wasm-pack-version'!" >&2
+          echo "❌Missing action input: 'wasm-pack-version'!" >&2
           exit 1
         fi
 

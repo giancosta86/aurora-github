@@ -7,6 +7,21 @@ inputs:
     required: false
     default: true
 
+  check-rustdoc:
+    description: Build the documentation - with warnings as errors.
+    required: false
+    default: true
+
+  crash-on-critical-todos:
+    description: Crash the workflow if critical TODOs are found.
+    required: false
+    default: true
+
+  source-file-regex:
+    description: PCRE pattern describing the source files.
+    required: false
+    default: '\.rs$'
+
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
     required: false
@@ -25,17 +40,60 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        if [[ -z "${{ inputs.run-clippy-checks }}" ]]
+        then
+          echo "❌Missing action input: 'run-clippy-checks'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.check-rustdoc }}" ]]
+        then
+          echo "❌Missing action input: 'check-rustdoc'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
+        then
+          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.source-file-regex }}" ]]
+        then
+          echo "❌Missing action input: 'source-file-regex'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.check-artifact-version }}" ]]
+        then
+          echo "❌Missing action input: 'check-artifact-version'!" >&2
+          exit 1
+        fi
+
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v2.0.1
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v3.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Check Rust versions
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v2.0.1
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v3.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Check for critical TODOs
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v3.0.0
+      with:
+        source-file-regex: ${{ inputs.source-file-regex }}
+        crash-on-found: ${{ inputs.crash-on-critical-todos }}
+        display-lines: true
+        root-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Check format style
@@ -49,6 +107,29 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: cargo clippy --all-targets --all-features -- -D warnings
 
+    - name: Check if README.md exists
+      id: detect-readme
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -f "README.md" ]] 
+        then
+          echo "🗒️README.md found! Trying to extract snippets!"
+          readmeExists=true
+        else
+          echo "💭README.md not found - unable to extract snippets."
+          readmeExists=false
+        fi
+
+        echo "readme-exists=$readmeExists" >> $GITHUB_OUTPUT
+
+    - name: Extract code snippets as tests from README.md
+      if: ${{ steps.detect-readme.outputs.readme-exists == 'true' }}
+      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v3.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
     - name: Run vanilla (no features) tests
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
@@ -58,3 +139,9 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: cargo test --all-features
+
+    - name: Run documentation checks - with warnings as errors
+      if: ${{ inputs.check-rustdoc == 'true' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: RUSTDOCFLAGS="-D warnings" cargo doc --all-features

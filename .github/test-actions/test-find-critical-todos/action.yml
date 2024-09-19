@@ -1,0 +1,30 @@
+name: Test find-critical-todos
+runs:
+  using: composite
+  steps:
+    - id: find-critical-todos-where-existing
+      uses: ./actions/find-critical-todos
+      with:
+        root-directory: ./tests/unknown-tech/src
+        source-file-regex: '\.(js|txt)$'
+        crash-on-found: false
+
+    - name: Critical TODOs should be found when existing
+      shell: bash
+      run: |
+        found="${{ steps.find-critical-todos-where-existing.outputs.found }}"
+
+        if [[ "$found" != "true" ]]
+        then
+          echo "❌The expected critical TODOs have not been found!" >&2
+          exit 1
+        else
+          echo "✅Critical TODOs found, as expected"
+        fi
+
+    - id: find-critical-todos-where-missing
+      uses: ./actions/find-critical-todos
+      with:
+        root-directory: ./tests/rust-crate/src
+        source-file-regex: ".*"
+        crash-on-found: true

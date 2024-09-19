@@ -2,6 +2,11 @@ name: Publish Rust web assembly
 description: Publishes a Rust web assembly to the npm registry.
 
 inputs:
+  dry-run:
+    description: Run a simulated publication via --dry-run.
+    required: false
+    default: false
+
   npm-token:
     description: The secret token for publishing to npm.
     required: true
@@ -11,13 +16,8 @@ inputs:
     required: true
 
   npm-scope:
-    description: The npm package scope (without the initial @) or empty.
+    description: The npm package scope or "<ROOT>".
     required: true
-
-  dry-run:
-    description: Run a simulated publication via --dry-run.
-    required: false
-    default: false
 
   wasm-target:
     description: The target of the 'wasm-pack build' command.
@@ -42,8 +42,47 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      run: |
+        if [[ -z "${{ inputs.dry-run }}" ]]
+        then
+          echo "❌Missing action input: 'dry-run'!" >&2
+          exit 1
+        fi
+        
+        if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.npm-token }}" ]]
+        then
+          echo "❌Missing action input: 'npm-token'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
+        then
+          echo "❌Missing action input: 'wasm-pack-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.wasm-target }}" ]]
+        then
+          echo "❌Missing action input: 'wasm-target'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.node-version-directory }}" ]]
+        then
+          echo "❌Missing action input: 'node-version-directory'!" >&2
+          exit 1
+        fi
+
+    - name: Parse npm scope
+      id: parse-npm-scope
+      uses: giancosta86/aurora-github/actions/parse-npm-scope@v3.0.0
+      with:
+        scope: ${{ inputs.npm-scope }}
+
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v2.0.1
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v3.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
         shell: ${{ inputs.shell }}
@@ -52,13 +91,13 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        scope="${{ inputs.npm-scope }}"
+        scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
 
-        if [[ ! -z "$scope" ]]
+        if [[ -z "$scope" ]]
         then
-          wasm-pack build --release --target "${{ inputs.wasm-target }}" --scope "${{ inputs.npm-scope }}"
-        else
           wasm-pack build --release --target "${{ inputs.wasm-target }}"
+        else
+          wasm-pack build --release --target "${{ inputs.wasm-target }}" --scope "$scope"
         fi
 
     - name: Copy .nvmrc to the generated NodeJS package
@@ -67,7 +106,7 @@ runs:
       run: cp "${{ inputs.node-version-directory }}/.nvmrc" pkg
 
     - name: Publish NodeJS package
-      uses: giancosta86/aurora-github/actions/publish-npm-package@v2.0.1
+      uses: giancosta86/aurora-github/actions/publish-npm-package@v3.0.0
       with:
         frozen-lockfile: false
         npm-token: ${{ inputs.npm-token }}

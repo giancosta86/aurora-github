@@ -12,7 +12,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-npm-package@v2
+  - uses: giancosta86/aurora-github/actions/verify-npm-package@v3
 ```
 
 **IMPORTANT**: please, remember to declare your verification process in the `verify` script within `package.json`! For example:
@@ -24,6 +24,20 @@ steps:
   "verify": "pnpm test && pnpm build"
 }
 ```
+
+## How it works
+
+1. Optionally run [check-artifact-version](../check-artifact-version/README.md), to ensure that the artifact version in `package.json` matches the version detected from the name of the current Git branch.
+
+1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
+
+1. Install **Node.js**, at the version declared in the `.nvmrc` file within the project directory.
+
+1. Install `pnpm` - at least version 9 is guaranteed.
+
+1. Install the dependencies - by default, freezing the lockfile.
+
+1. Run `pnpm verify` - so that the related script in `package.json` can decide what to do.
 
 ## Requirements
 
@@ -37,15 +51,19 @@ steps:
 
 ## Inputs
 
-|           Name           |    Type     |                         Description                          | Default value |
-| :----------------------: | :---------: | :----------------------------------------------------------: | :-----------: |
-|    `frozen-lockfile`     | **boolean** |       Fails if `pnpm-lock.yaml` is missing or outdated       |   **true**    |
-| `check-artifact-version` | **boolean** | Ensure the version in `package.json` matches the branch name |   **true**    |
-|   `project-directory`    | **string**  |           The directory containing `package.json`            |     **.**     |
-|         `shell`          | **string**  |                The shell used to run commands                |   **bash**    |
+|           Name            |    Type     |                         Description                          |      Default value       |
+| :-----------------------: | :---------: | :----------------------------------------------------------: | :----------------------: |
+|     `frozen-lockfile`     | **boolean** |       Fails if `pnpm-lock.yaml` is missing or outdated       |         **true**         |
+| `crash-on-critical-todos` | **boolean** |        Crash the workflow if critical TODOs are found        |         **true**         |
+|    `source-file-regex`    | **string**  |           PCRE pattern describing the source files           | **\\.(c\|m)?(j\|t)sx?$** |
+| `check-artifact-version`  | **boolean** | Ensure the version in `package.json` matches the branch name |         **true**         |
+|    `project-directory`    | **string**  |           The directory containing `package.json`            |          **.**           |
+|          `shell`          | **string**  |                The shell used to run commands                |         **bash**         |
 
 ## Further references
 
 - [check-artifact-version](../check-artifact-version/README.md)
+
+- [find-critical-todos](../find-critical-todos/README.md)
 
 - [aurora-github](../../README.md)

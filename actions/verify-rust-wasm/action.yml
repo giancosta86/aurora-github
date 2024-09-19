@@ -7,7 +7,7 @@ inputs:
     required: true
 
   npm-scope:
-    description: The npm package scope (without the initial @) - or empty.
+    description: The npm package scope or "<ROOT>".
     required: true
 
   client-tests-directory:
@@ -24,6 +24,21 @@ inputs:
     description: Enable linting via Clippy.
     required: false
     default: true
+
+  check-rustdoc:
+    description: Build the documentation - with warnings as errors.
+    required: false
+    default: false
+
+  crash-on-critical-todos:
+    description: Crash the workflow if critical TODOs are found.
+    required: false
+    default: true
+
+  source-file-regex:
+    description: PCRE pattern describing the source files.
+    required: false
+    default: '\.rs$'
 
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
@@ -43,16 +58,71 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
+        then
+          echo "❌Missing action input: 'wasm-pack-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.wasm-target }}" ]]
+        then
+          echo "❌Missing action input: 'wasm-target'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.run-clippy-checks }}" ]]
+        then
+          echo "❌Missing action input: 'run-clippy-checks'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.check-rustdoc }}" ]]
+        then
+          echo "❌Missing action input: 'check-rustdoc'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
+        then
+          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.source-file-regex }}" ]]
+        then
+          echo "❌Missing action input: 'source-file-regex'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.check-artifact-version }}" ]]
+        then
+          echo "❌Missing action input: 'check-artifact-version'!" >&2
+          exit 1
+        fi
+    
+    - name: Parse npm scope
+      id: parse-npm-scope
+      uses: giancosta86/aurora-github/actions/parse-npm-scope@v3.0.0
+      with:
+        scope: ${{ inputs.npm-scope }}
+
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v2.0.1
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v3.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
         shell: ${{ inputs.shell }}
 
     - name: Verify Rust source files
-      uses: giancosta86/aurora-github/actions/verify-rust-crate@v2.0.1
+      uses: giancosta86/aurora-github/actions/verify-rust-crate@v3.0.0
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
+        check-rustdoc: ${{ inputs.check-rustdoc }}
+        crash-on-critical-todos: ${{ inputs.crash-on-critical-todos }}
+        source-file-regex: ${{ inputs.source-file-regex }}
         check-artifact-version: ${{ inputs.check-artifact-version }}
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
@@ -66,13 +136,13 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        scope="${{ inputs.npm-scope }}"
+        scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
 
-        if [[ ! -z "$scope" ]]
+        if [[ -z "$scope" ]]
         then
-          wasm-pack build --dev --target "${{ inputs.wasm-target }}" --scope "$scope"
+          wasm-pack build --dev --target "${{ inputs.wasm-target }}"          
         else
-          wasm-pack build --dev --target "${{ inputs.wasm-target }}"
+          wasm-pack build --dev --target "${{ inputs.wasm-target }}" --scope "$scope"
         fi
 
     - name: Ensure test client directory exists

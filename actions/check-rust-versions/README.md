@@ -6,8 +6,10 @@ Displays the current version of the main **Rust** components, after ensuring tha
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-rust-versions@v2
+  - uses: giancosta86/aurora-github/actions/check-rust-versions@v3
 ```
+
+**Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).
 
 ## Requirements
 
@@ -28,5 +30,7 @@ steps:
 |       `shell`       | **string** |    The shell used to run commands     |   **bash**    |
 
 ## Further references
+
+- [verify-rust-crate](../verify-rust-crate/README.md)
 
 - [aurora-github](../../README.md)

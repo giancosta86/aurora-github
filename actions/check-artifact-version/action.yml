@@ -17,14 +17,14 @@ runs:
   steps:
     - name: Detect project tech
       id: detect-project-tech
-      uses: giancosta86/aurora-github/actions/detect-project-tech@v2.0.1
+      uses: giancosta86/aurora-github/actions/detect-project-tech@v3.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-version@v2.0.1
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v3.0.0
       with:
         shell: ${{ inputs.shell }}
 
@@ -32,13 +32,13 @@ runs:
       if: ${{ steps.detect-project-tech.outputs.project-tech == 'rust' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: egrep -q '^version\s*=\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' Cargo.toml
+      run: grep -Pq '^version\s*=\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' Cargo.toml
 
     - name: Check NodeJS package version
       if: ${{ steps.detect-project-tech.outputs.project-tech == 'nodejs' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: egrep -q '"version"\s*:\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' package.json
+      run: grep -Pq '"version"\s*:\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' package.json
 
     - name: Fail on unknown project tech
       if: ${{ steps.detect-project-tech.outputs.project-tech == '' }}
