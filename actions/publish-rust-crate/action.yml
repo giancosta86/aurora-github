@@ -37,12 +37,12 @@ runs:
           echo "❌Missing action input: 'dry-run'!" >&2
           exit 1
         fi
-        
+
         if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.cargo-token }}" ]]
         then
           echo "❌Missing action input: 'cargo-token'!" >&2
           exit 1
-        fi        
+        fi
 
         if [[ -z "${{ inputs.document-all-features }}" ]]
         then

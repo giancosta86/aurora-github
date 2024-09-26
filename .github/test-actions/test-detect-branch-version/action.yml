@@ -12,7 +12,7 @@ runs:
         branch="${{ steps.detector.outputs.branch }}"
 
         echo "🔎Branch retrieved from action: '$branch'"
-        if [[ -z "$branch" ]] 
+        if [[ -z "$branch" ]]
         then
           echo "❌The branch should not be empty!" >&2
           exit 1
@@ -26,7 +26,7 @@ runs:
 
         echo "🔎Head ref in pull request: '$headRef'"
 
-        if [[ "$branch" != "$headRef" ]] 
+        if [[ "$branch" != "$headRef" ]]
         then
           echo "❌The branch ('$branch') should match the head_ref ('$headRef')!" >&2
           exit 1
@@ -38,7 +38,7 @@ runs:
         version="${{ steps.detector.outputs.version }}"
 
         echo "🔎Version retrieved from action: '$version'"
-        if [[ -z "$version" ]] 
+        if [[ -z "$version" ]]
         then
           echo "❌The version should not be empty!" >&2
           exit 1
@@ -50,7 +50,7 @@ runs:
         escapedVersion="${{ steps.detector.outputs.escaped-version }}"
 
         echo "🔎Escaped version retrieved from action: '$escapedVersion'"
-        if ! echo "$escapedVersion"  | grep -Pq "\\\." 
+        if ! echo "$escapedVersion"  | grep -Pq "\\\."
         then
           echo "❌The escaped version should include '\.'!" >&2
           exit 1
@@ -62,7 +62,7 @@ runs:
         major="${{ steps.detector.outputs.major }}"
 
         echo "🔎Major version component: '$major'"
-        if [[ -z "$major" ]] 
+        if [[ -z "$major" ]]
         then
           echo "❌The major component should not be empty!" >&2
           exit 1

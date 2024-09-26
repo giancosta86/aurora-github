@@ -55,7 +55,7 @@ runs:
         testFileNamePrefix="${{ inputs.test-filename-prefix }}"
 
         testDirectory=$(dirname "$testFileNamePrefix")
-        echo "📁Creating test directory: '${testDirectory}'"        
+        echo "📁Creating test directory: '${testDirectory}'"
         mkdir -p "$testDirectory"
         echo "✅Directory created!"
 
@@ -92,8 +92,8 @@ runs:
         testDirectory="$(dirname "$testFileNamePrefix")"
 
         testFiles=$(ls -1 "$testFileNamePrefix"*.rs 2>/dev/null || true)
-          
-        if [ -z "$testFiles" ] 
+
+        if [ -z "$testFiles" ]
         then
           echo "💭No test files generated from Rust snippets"
         else

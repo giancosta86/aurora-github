@@ -50,7 +50,7 @@ runs:
           echo "❌Missing action input: 'dry-run'!" >&2
           exit 1
         fi
-        
+
         if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.npm-token }}" ]]
         then
           echo "❌Missing action input: 'npm-token'!" >&2

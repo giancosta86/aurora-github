@@ -118,10 +118,10 @@ runs:
       run: |
         draftOnly="${{ inputs.draft-only }}"
         version="${{ steps.detect-branch-version.outputs.version }}"
-        tag="${{ steps.create-git-tag.outputs.tag }}" 
+        tag="${{ steps.create-git-tag.outputs.tag }}"
 
         repoBasename="$(basename "$GITHUB_REPOSITORY")"
-        releaseTitle="$repoBasename $version"        
+        releaseTitle="$repoBasename $version"
 
         releaseRecap="release '$releaseTitle' from tag '$tag'"
 
@@ -130,7 +130,7 @@ runs:
           echo "📝Drafting $releaseRecap..."
           gh release create "$tag" --title "$releaseTitle" --draft
           echo "📝Release drafted!"
-        else 
+        else
           echo "🌟Creating $releaseRecap..."
           gh release create "$tag" --title "$releaseTitle"
           echo "🌟Release created!"

@@ -33,7 +33,7 @@ runs:
         hasReferencesToOtherBranches=false
 
         while IFS= read -r referenceLine
-        do    
+        do
           if [[ "$referenceLine" != *@"${branch}" ]]
           then
             echo "---> $referenceLine" >&2

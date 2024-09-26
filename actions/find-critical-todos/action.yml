@@ -68,7 +68,7 @@ runs:
         if [[ "$displayLines" == "true" ]]
         then
           quietArg=""
-        else          
+        else
           quietArg="-q"
         fi
 
