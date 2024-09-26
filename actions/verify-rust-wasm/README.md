@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v3
+  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v4
     with:
       wasm-pack-version: 0.13.0
       npm-scope: your-npm-scope

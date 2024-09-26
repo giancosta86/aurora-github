@@ -76,19 +76,19 @@ runs:
 
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v3.0.0
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Check Rust versions
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v3.0.0
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v3.0.0
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v4.0.0
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
@@ -125,7 +125,7 @@ runs:
 
     - name: Extract code snippets as tests from README.md
       if: ${{ steps.detect-readme.outputs.readme-exists == 'true' }}
-      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v3.0.0
+      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}

@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-rust-wasm@v3
+  - uses: giancosta86/aurora-github/actions/publish-rust-wasm@v4
     with:
       npm-token: ${{ secrets.NPM_TOKEN }}
       wasm-pack-version: 0.13.0
