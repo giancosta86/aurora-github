@@ -6,10 +6,10 @@ inputs:
     description: Run a simulated publication via --dry-run.
     required: false
     default: false
-    
+
   npm-token:
     description: The secret token for publishing to npm.
-    required: true  
+    required: true
 
   frozen-lockfile:
     description: Fail if 'pnpm-lock.yaml' is missing or outdated.

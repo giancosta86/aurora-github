@@ -112,7 +112,7 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -f "README.md" ]] 
+        if [[ -f "README.md" ]]
         then
           echo "🗒️README.md found! Trying to extract snippets!"
           readmeExists=true

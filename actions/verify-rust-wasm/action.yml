@@ -103,7 +103,7 @@ runs:
           echo "❌Missing action input: 'check-artifact-version'!" >&2
           exit 1
         fi
-    
+
     - name: Parse npm scope
       id: parse-npm-scope
       uses: giancosta86/aurora-github/actions/parse-npm-scope@v4.0.0
@@ -140,7 +140,7 @@ runs:
 
         if [[ -z "$scope" ]]
         then
-          wasm-pack build --dev --target "${{ inputs.wasm-target }}"          
+          wasm-pack build --dev --target "${{ inputs.wasm-target }}"
         else
           wasm-pack build --dev --target "${{ inputs.wasm-target }}" --scope "$scope"
         fi
