@@ -79,7 +79,7 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "The content of your 📦package.json just before publication is:"
-        cat package.json
+        jq . package.json
 
     - name: Publish to npm
       shell: ${{ inputs.shell }}
