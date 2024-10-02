@@ -1,0 +1,37 @@
+name: Install system packages
+description: Installs software using the platform's package manager.
+
+inputs:
+  packages:
+    description: The packages to install, separated by any spaces or commas.
+    required: true
+
+  shell:
+    description: The shell used to run commands.
+    required: false
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      run: |
+        if [[ -z "${{ inputs.packages }}" ]]
+        then
+          echo "❌Missing action input: 'packages'!" >&2
+          exit 1
+        fi
+
+    - name: Install packages
+      shell: ${{ inputs.shell }}
+      run: |
+        requestedPackages="${{ inputs.packages }}"
+
+        actualPackages="$(echo "$requestedPackages" | perl -pe 's/[\s,]+/ /g')"
+
+        echo "📦Now installing packages: $actualPackages"
+
+        sudo apt-get install -y $actualPackages
+
+        echo "✅Packages installed!"
