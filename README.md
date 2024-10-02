@@ -58,6 +58,8 @@ In particular, the actions can be grouped by technology:
 
 - [detect-project-tech](./actions/detect-project-tech/README.md)
 
+- [install-system-packages](./actions/install-system-packages/README.md)
+
 ## Further references
 
 - [GitHub actions](https://docs.github.com/en/actions)
