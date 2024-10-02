@@ -111,7 +111,7 @@ jobs:
     needs:
       - test-parse-npm-scope
       - test-install-wasm-pack
-      - test-verify-rust-crate      
+      - test-verify-rust-crate
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-verify-rust-wasm
