@@ -22,6 +22,11 @@ inputs:
     required: false
     default: true
 
+  enforce-esm:
+    description: Verify that the "type" field is "module" - to create an ESM package.
+    required: false
+    default: true
+
   project-directory:
     description: The directory containing package.json.
     required: false
@@ -62,13 +67,37 @@ runs:
           echo "❌Missing action input: 'check-artifact-version'!" >&2
           exit 1
         fi
-    
+
+        if [[ -z "${{ inputs.enforce-esm }}" ]]
+        then
+          echo "❌Missing action input: 'enforce-esm'!" >&2
+          exit 1
+        fi
+
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
       uses: giancosta86/aurora-github/actions/check-artifact-version@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
+
+    - name: Enforce ESM
+      if: ${{ inputs.enforce-esm == 'true' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        packageType="$(jq -r .type package.json)"
+        expectedType="module"
+
+        echo "🔎Detected package type: '$packageType'"
+
+        if [[ "$packageType" == "$expectedType" ]]
+        then
+          echo "✅This npm package is based on ESM!"
+        else
+          echo "❌The package type must be '$expectedType'!" >&2
+          exit 1
+        fi
 
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v4.0.0

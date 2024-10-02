@@ -29,6 +29,8 @@ steps:
 
 1. Optionally run [check-artifact-version](../check-artifact-version/README.md), to ensure that the artifact version in `package.json` matches the version detected from the name of the current Git branch.
 
+1. Ensure that the package is based on **ESM** - via the `"type": "module"` attribute in `package.json`; this default behaviour can be disabled.
+
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
 1. Install **Node.js**, at the version declared in the `.nvmrc` file within the project directory.
@@ -51,14 +53,15 @@ steps:
 
 ## Inputs
 
-|           Name            |    Type     |                         Description                          |      Default value       |
-| :-----------------------: | :---------: | :----------------------------------------------------------: | :----------------------: |
-|     `frozen-lockfile`     | **boolean** |       Fails if `pnpm-lock.yaml` is missing or outdated       |         **true**         |
-| `crash-on-critical-todos` | **boolean** |        Crash the workflow if critical TODOs are found        |         **true**         |
-|    `source-file-regex`    | **string**  |           PCRE pattern describing the source files           | **\\.(c\|m)?(j\|t)sx?$** |
-| `check-artifact-version`  | **boolean** | Ensure the version in `package.json` matches the branch name |         **true**         |
-|    `project-directory`    | **string**  |           The directory containing `package.json`            |          **.**           |
-|          `shell`          | **string**  |                The shell used to run commands                |         **bash**         |
+|           Name            |    Type     |                             Description                             |      Default value       |
+| :-----------------------: | :---------: | :-----------------------------------------------------------------: | :----------------------: |
+|     `frozen-lockfile`     | **boolean** |          Fails if `pnpm-lock.yaml` is missing or outdated           |         **true**         |
+| `crash-on-critical-todos` | **boolean** |           Crash the workflow if critical TODOs are found            |         **true**         |
+|    `source-file-regex`    | **string**  |              PCRE pattern describing the source files               | **\\.(c\|m)?(j\|t)sx?$** |
+| `check-artifact-version`  | **boolean** |    Ensure the version in `package.json` matches the branch name     |         **true**         |
+|       `enforce-esm`       | **boolean** | Verify that the `type` field is `module` - to create an ESM package |         **true**         |
+|    `project-directory`    | **string**  |               The directory containing `package.json`               |          **.**           |
+|          `shell`          | **string**  |                   The shell used to run commands                    |         **bash**         |
 
 ## Further references
 
