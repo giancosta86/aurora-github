@@ -35,7 +35,7 @@ runs:
   steps:
     - name: Validate inputs
       shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.root-directory }}
+      working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.frozen-lockfile }}" ]]
         then
@@ -64,6 +64,12 @@ runs:
         if [[ -z "${{ inputs.enforce-esm }}" ]]
         then
           echo "❌Missing action input: 'enforce-esm'!" >&2
+          exit 1
+        fi
+
+        if [[ ! -f "package.json" ]]
+        then
+          echo "❌The package.json descriptor file does not exist!!" >&2
           exit 1
         fi
 
