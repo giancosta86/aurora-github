@@ -4,25 +4,20 @@ description: Looks for "critical TODOs" - that is, instances of the "TODO!" stri
 inputs:
   source-file-regex:
     description: The PCRE pattern of source file names, for the "find" command.
-    required: true
 
   crash-on-found:
     description: If true, exits with error when critical TODOs are found.
-    required: true
 
   display-lines:
     description: Display the lines with critical TODOs.
-    required: false
     default: true
 
   root-directory:
     description: The root of the directory tree.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 outputs:

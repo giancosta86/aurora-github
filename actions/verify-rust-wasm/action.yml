@@ -4,55 +4,44 @@ description: Verifies the source files of a Rust web assembly.
 inputs:
   wasm-pack-version:
     description: The wasm-pack version to install.
-    required: true
 
   npm-scope:
     description: The npm package scope or "<ROOT>".
-    required: true
 
   client-tests-directory:
     description: Relative directory containing the NodeJS-based client tests.
-    required: false
     default: client-tests
 
   wasm-target:
     description: The target of the 'wasm-pack build' command.
-    required: false
     default: web
 
   run-clippy-checks:
     description: Enable linting via Clippy.
-    required: false
     default: true
 
   check-rustdoc:
     description: Build the documentation - with warnings as errors.
-    required: false
     default: false
 
   crash-on-critical-todos:
     description: Crash the workflow if critical TODOs are found.
-    required: false
     default: true
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    required: false
     default: '\.rs$'
 
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
-    required: false
     default: true
 
   project-directory:
     description: The directory containing Cargo.toml.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands
-    required: false
     default: bash
 
 runs:

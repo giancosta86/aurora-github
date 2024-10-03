@@ -4,39 +4,31 @@ description: Publishes a Rust web assembly to the npm registry.
 inputs:
   dry-run:
     description: Run a simulated publication via --dry-run.
-    required: false
     default: false
 
   npm-token:
     description: The secret token for publishing to npm.
-    required: true
 
   wasm-pack-version:
     description: The wasm-pack version to install.
-    required: true
 
   npm-scope:
     description: The npm package scope or "<ROOT>".
-    required: true
 
   wasm-target:
     description: The target of the 'wasm-pack build' command.
-    required: false
     default: web
 
   node-version-directory:
     description: Relative directory containing the .nvmrc file.
-    required: false
     default: client-tests
 
   project-directory:
     description: The directory containing Cargo.toml.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
