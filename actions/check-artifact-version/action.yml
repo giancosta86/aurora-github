@@ -4,12 +4,10 @@ description: Ensures the artifact version - expressed according to the project t
 inputs:
   project-directory:
     description: The directory containing the project.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:

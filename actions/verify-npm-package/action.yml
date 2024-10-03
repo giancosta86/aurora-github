@@ -4,37 +4,30 @@ description: Verifies the source files of a NodeJS package - by running its 'ver
 inputs:
   frozen-lockfile:
     description: Fails if 'pnpm-lock.yaml' is missing or outdated.
-    required: false
     default: true
 
   crash-on-critical-todos:
     description: Crash the workflow if critical TODOs are found.
-    required: false
     default: true
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    required: false
     default: '\.(c|m)?(j|t)sx?$'
 
   check-artifact-version:
     description: Ensure the version in package.json matches the branch name.
-    required: false
     default: true
 
   enforce-esm:
     description: Verify that the "type" field is "module" - to create an ESM package.
-    required: false
     default: true
 
   project-directory:
     description: The directory containing package.json.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
