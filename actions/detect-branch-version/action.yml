@@ -4,7 +4,6 @@ description: Extracts the version from the name of the current Git branch, retur
 inputs:
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 outputs:

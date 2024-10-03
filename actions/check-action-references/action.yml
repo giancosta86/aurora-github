@@ -4,12 +4,10 @@ description: Prevents inter-branch 'uses:' directives to GitHub actions residing
 inputs:
   actions-directory:
     description: The root of the directory tree containing the actions.
-    required: false
     default: ./actions
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
