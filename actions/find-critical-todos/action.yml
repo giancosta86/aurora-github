@@ -67,7 +67,7 @@ runs:
           quietArg="-q"
         fi
 
-        if find . -type f -print0 | grep -zP "${sourceFileRegex}" | xargs -0 grep -Hn $quietArg "$todoText"
+        if find -type f -print0 | grep -zP "${sourceFileRegex}" | xargs -0 grep -Hn $quietArg "$todoText"
         then
           found=true
         else
