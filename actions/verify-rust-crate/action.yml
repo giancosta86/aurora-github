@@ -4,37 +4,30 @@ description: Verifies the source files of a Rust crate.
 inputs:
   run-clippy-checks:
     description: Enable linting via Clippy.
-    required: false
     default: true
 
   check-rustdoc:
     description: Build the documentation - with warnings as errors.
-    required: false
     default: true
 
   crash-on-critical-todos:
     description: Crash the workflow if critical TODOs are found.
-    required: false
     default: true
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    required: false
     default: '\.rs$'
 
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
-    required: false
     default: true
 
   project-directory:
     description: The directory containing Cargo.toml.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:

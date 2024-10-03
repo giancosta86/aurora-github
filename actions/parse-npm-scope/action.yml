@@ -4,11 +4,9 @@ description: Parses a mandatory npm scope declaration.
 inputs:
   scope:
     description: The npm scope to parse. Can be either '<ROOT>' or a string with an optional leading "@".
-    required: true
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 outputs:

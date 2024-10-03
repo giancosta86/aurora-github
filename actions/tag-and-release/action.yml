@@ -4,22 +4,18 @@ description: Creates a Git tag and a GitHub release, from a Git branch named acc
 inputs:
   draft-only:
     description: Only draft the release.
-    required: false
     default: false
 
   delete-branch:
     description: Delete the branch after creating the tag.
-    required: false
     default: true
 
   set-major-tag:
     description: Create/move the 'vX' tag to this commit (X=major version)
-    required: false
     default: false
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:

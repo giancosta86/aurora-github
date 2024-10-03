@@ -4,11 +4,9 @@ description: Installs software using the platform's package manager.
 inputs:
   packages:
     description: The packages to install, separated by any spaces or commas.
-    required: true
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:

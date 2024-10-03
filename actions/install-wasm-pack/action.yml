@@ -4,11 +4,9 @@ description: Installs wasm-pack, for creating Rust-based web assemblies.
 inputs:
   wasm-pack-version:
     description: The wasm-pack version to install.
-    required: true
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:

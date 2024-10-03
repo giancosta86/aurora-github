@@ -4,22 +4,18 @@ description: Appends subpath exports to package.json according to the directory 
 inputs:
   mode:
     description: Subpath exports generation mode; can be "prefer-index" or "all".
-    required: true
     default: prefer-index
 
   source-directory:
     description: Relative path to the source directory.
-    required: true
     default: src
 
   project-directory:
     description: The directory containing package.json.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
