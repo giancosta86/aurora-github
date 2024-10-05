@@ -1,0 +1,102 @@
+name: Check subpath exports
+description: Verifies that all the subpath exports in package.json actually match existing files.
+
+inputs:
+  project-directory:
+    description: The directory containing package.json.
+    default: "."
+
+  shell:
+    description: The shell used to run commands.
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ ! -f "package.json" ]]
+        then
+          echo "❌The package.json descriptor file does not exist!!" >&2
+          exit 1
+        fi
+
+    - name: Check the subpath exports
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        main() {
+          local exports="$(jq -r '.exports' package.json)"
+
+          if [[ "$exports" == "null" ]]
+          then
+            echo "💭No exports declared in package.json..."
+            exit 0
+          fi
+
+          echo "🔎 Now inspecting subpath exports..."
+
+          checkJsonValue "exports" "$exports"
+
+          echo "✅Export subpaths are OK!"
+        }
+
+
+        checkJsonValue() {
+          local positionInJson="$1"
+          local jsonValue="$2"
+
+          if isJsonObject "$jsonValue"
+          then
+            checkJsonObject "$positionInJson" "$jsonValue"
+          else
+            checkFilePattern "$positionInJson" "$jsonValue"
+          fi
+        }
+
+
+        isJsonObject() {
+          local jsonValue="$1"
+
+          if [[ "$jsonValue" =~ ^\{ ]]
+          then
+            return 0
+          else
+            return 1
+          fi
+        }
+
+
+        checkJsonObject() {
+          local positionInJson="$1"
+          local jsonObject="$2"
+
+          echo "$jsonObject" | jq -r '. | keys[]' | while IFS= read -r key
+          do
+            local jsonValue="$(echo "$jsonObject" | jq -r '.["'$key'"]')"
+            checkJsonValue "$positionInJson -> $key" "$jsonValue"
+          done
+        }
+
+
+        checkFilePattern() {
+          local positionInJson="$1"
+          local filePattern="$2"
+
+          echo -n "🔎 $positionInJson -> $filePattern... "
+
+          local matches="$(find . -wholename "$filePattern" | wc -l)"
+
+          if [[ "$matches" == 0 ]]
+          then
+            echo "❌"
+            echo "❌No file matching subpath pattern: '$filePattern'"
+            exit 1
+          else
+            echo "✅"
+          fi
+        }
+
+        main

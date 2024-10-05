@@ -3,7 +3,7 @@ description: Verifies the source files of a NodeJS package - by running its 'ver
 
 inputs:
   frozen-lockfile:
-    description: Fails if 'pnpm-lock.yaml' is missing or outdated.
+    description: Fail if "pnpm-lock.yaml" is missing or outdated.
     default: true
 
   crash-on-critical-todos:
@@ -20,6 +20,10 @@ inputs:
 
   enforce-esm:
     description: Verify that the "type" field is "module" - to create an ESM package.
+    default: true
+
+  check-subpath-exports:
+    description: Run check-subpath-exports after the "verify" package script.
     default: true
 
   project-directory:
@@ -134,3 +138,10 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: pnpm verify
+
+    - name: Check subpath exports
+      if: ${{ inputs.check-subpath-exports == 'true' }}
+      uses: giancosta86/aurora-github/actions/check-subpath-exports@v4.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
