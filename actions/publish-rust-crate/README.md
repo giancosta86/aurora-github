@@ -8,7 +8,7 @@ Publishes a **Rust** crate to [crates.io](https://crates.io/), with all of its f
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-rust-crate@v3
+  - uses: giancosta86/aurora-github/actions/publish-rust-crate@v4
     with:
       cargo-token: ${{ secrets.CARGO_TOKEN }}
 ```

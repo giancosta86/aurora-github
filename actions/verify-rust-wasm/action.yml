@@ -4,55 +4,44 @@ description: Verifies the source files of a Rust web assembly.
 inputs:
   wasm-pack-version:
     description: The wasm-pack version to install.
-    required: true
 
   npm-scope:
     description: The npm package scope or "<ROOT>".
-    required: true
 
   client-tests-directory:
     description: Relative directory containing the NodeJS-based client tests.
-    required: false
     default: client-tests
 
   wasm-target:
     description: The target of the 'wasm-pack build' command.
-    required: false
     default: web
 
   run-clippy-checks:
     description: Enable linting via Clippy.
-    required: false
     default: true
 
   check-rustdoc:
     description: Build the documentation - with warnings as errors.
-    required: false
     default: false
 
   crash-on-critical-todos:
     description: Crash the workflow if critical TODOs are found.
-    required: false
     default: true
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    required: false
     default: '\.rs$'
 
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
-    required: false
     default: true
 
   project-directory:
     description: The directory containing Cargo.toml.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands
-    required: false
     default: bash
 
 runs:
@@ -103,21 +92,21 @@ runs:
           echo "❌Missing action input: 'check-artifact-version'!" >&2
           exit 1
         fi
-    
+
     - name: Parse npm scope
       id: parse-npm-scope
-      uses: giancosta86/aurora-github/actions/parse-npm-scope@v3.0.0
+      uses: giancosta86/aurora-github/actions/parse-npm-scope@v4.0.0
       with:
         scope: ${{ inputs.npm-scope }}
 
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v3.0.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v4.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
         shell: ${{ inputs.shell }}
 
     - name: Verify Rust source files
-      uses: giancosta86/aurora-github/actions/verify-rust-crate@v3.0.0
+      uses: giancosta86/aurora-github/actions/verify-rust-crate@v4.0.0
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
         check-rustdoc: ${{ inputs.check-rustdoc }}
@@ -140,7 +129,7 @@ runs:
 
         if [[ -z "$scope" ]]
         then
-          wasm-pack build --dev --target "${{ inputs.wasm-target }}"          
+          wasm-pack build --dev --target "${{ inputs.wasm-target }}"
         else
           wasm-pack build --dev --target "${{ inputs.wasm-target }}" --scope "$scope"
         fi

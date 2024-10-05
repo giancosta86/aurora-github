@@ -4,37 +4,30 @@ description: Verifies the source files of a Rust crate.
 inputs:
   run-clippy-checks:
     description: Enable linting via Clippy.
-    required: false
     default: true
 
   check-rustdoc:
     description: Build the documentation - with warnings as errors.
-    required: false
     default: true
 
   crash-on-critical-todos:
     description: Crash the workflow if critical TODOs are found.
-    required: false
     default: true
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    required: false
     default: '\.rs$'
 
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
-    required: false
     default: true
 
   project-directory:
     description: The directory containing Cargo.toml.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -76,19 +69,19 @@ runs:
 
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v3.0.0
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Check Rust versions
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v3.0.0
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v3.0.0
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v4.0.0
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
@@ -112,7 +105,7 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -f "README.md" ]] 
+        if [[ -f "README.md" ]]
         then
           echo "🗒️README.md found! Trying to extract snippets!"
           readmeExists=true
@@ -125,7 +118,7 @@ runs:
 
     - name: Extract code snippets as tests from README.md
       if: ${{ steps.detect-readme.outputs.readme-exists == 'true' }}
-      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v3.0.0
+      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}

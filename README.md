@@ -20,6 +20,10 @@ In particular, the actions can be grouped by technology:
 
 - [publish-npm-package](./actions/publish-npm-package/README.md)
 
+- [inject-subpath-exports](./actions/inject-subpath-exports/README.md)
+
+- [check-subpath-exports](./actions/check-subpath-exports/README.md)
+
 ## 🦀Rust 🌐WebAssembly
 
 - [verify-rust-wasm](./actions/verify-rust-wasm/README.md)
@@ -57,6 +61,8 @@ In particular, the actions can be grouped by technology:
 - [find-critical-todos](./actions/find-critical-todos/README.md)
 
 - [detect-project-tech](./actions/detect-project-tech/README.md)
+
+- [install-system-packages](./actions/install-system-packages/README.md)
 
 ## Further references
 

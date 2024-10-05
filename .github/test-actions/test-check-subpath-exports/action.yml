@@ -1,0 +1,9 @@
+name: Test check-subpath-exports
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/install-system-packages
+      with:
+        packages: moreutils
+

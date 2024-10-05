@@ -4,26 +4,21 @@ description: Publishes a NodeJS package to the npm registry.
 inputs:
   dry-run:
     description: Run a simulated publication via --dry-run.
-    required: false
     default: false
-    
+
   npm-token:
     description: The secret token for publishing to npm.
-    required: true  
 
   frozen-lockfile:
     description: Fail if 'pnpm-lock.yaml' is missing or outdated.
-    required: false
     default: true
 
   project-directory:
     description: The directory containing package.json.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -31,6 +26,7 @@ runs:
   steps:
     - name: Validate inputs
       shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.dry-run }}" ]]
         then
@@ -47,6 +43,12 @@ runs:
         if [[ -z "${{ inputs.frozen-lockfile }}" ]]
         then
           echo "❌Missing action input: 'frozen-lockfile'!" >&2
+          exit 1
+        fi
+
+        if [[ ! -f "package.json" ]]
+        then
+          echo "❌The package.json descriptor file does not exist!!" >&2
           exit 1
         fi
 
@@ -79,7 +81,7 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "The content of your 📦package.json just before publication is:"
-        cat package.json
+        jq . package.json
 
     - name: Publish to npm
       shell: ${{ inputs.shell }}
