@@ -41,6 +41,8 @@ steps:
 
 1. Run `pnpm verify` - so that the related script in `package.json` can decide what to do.
 
+1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) to verify that the `exports` field in `package.json` actually references existing files.
+
 ## Requirements
 
 - The package manager for the project must be [pnpm](https://pnpm.io/) - version `9` or later compatible.
@@ -60,10 +62,13 @@ steps:
 |    `source-file-regex`    | **string**  |              PCRE pattern describing the source files               | **\\.(c\|m)?(j\|t)sx?$** |
 | `check-artifact-version`  | **boolean** |    Ensure the version in `package.json` matches the branch name     |         **true**         |
 |       `enforce-esm`       | **boolean** | Verify that the `type` field is `module` - to create an ESM package |         **true**         |
+|  `check-subpath-exports`  | **boolean** |    Run `check-subpath-exports` after the `verify` package script    |         **true**         |
 |    `project-directory`    | **string**  |               The directory containing `package.json`               |          **.**           |
 |          `shell`          | **string**  |                   The shell used to run commands                    |         **bash**         |
 
 ## Further references
+
+- [check-subpath-exports](../check-subpath-exports/README.md)
 
 - [check-artifact-version](../check-artifact-version/README.md)
 

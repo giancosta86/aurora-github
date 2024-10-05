@@ -22,6 +22,8 @@ In particular, the actions can be grouped by technology:
 
 - [inject-subpath-exports](./actions/inject-subpath-exports/README.md)
 
+- [check-subpath-exports](./actions/check-subpath-exports/README.md)
+
 ## 🦀Rust 🌐WebAssembly
 
 - [verify-rust-wasm](./actions/verify-rust-wasm/README.md)
