@@ -1,0 +1,60 @@
+name: Test check-subpath-exports
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/install-system-packages
+      with:
+        packages: moreutils
+
+    - name: When the "exports" field is missing
+      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+      with:
+        jq-operation: del(.exports)
+
+    - name: When the "exports" field is present but empty
+      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+      with:
+        jq-operation: .exports={}
+
+    - name: When the "exports" field is a string
+      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+      with:
+        jq-operation: .exports="./src/beta/index.js"
+
+    - name: When the "exports" fields contains a string field
+      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+      with:
+        jq-operation: |
+          .exports={
+            "beta": "./src/beta/index.js"
+          }
+
+    - name: When the "exports" fields contains an object field
+      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+      with:
+        jq-operation: |
+          .exports={
+              "beta": {
+                "import": "./src/beta/index.js",
+                "default": "./src/beta/index.js"
+              }
+            }
+
+    - name: When the "exports" fields contains multiple fields
+      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+      with:
+        jq-operation: |
+          .exports={
+              "alpha": {
+                "import": "./src/alpha/index.ts",
+                "default": "./src/alpha/index.ts"
+              },
+
+              "beta": {
+                "import": "./src/beta/index.js",
+                "default": "./src/beta/index.js"
+              },
+
+              "omega": "./src/omega/index.ts"
+            }

@@ -47,7 +47,7 @@ The `mode` input can have the following values:
 
 ## Requirements
 
-- The operating system must contain the `jq` command.
+- The `jq` command (especially version **1.7**) must be available in the operating system.
 
 - The `source-directory` and the root `package.json` descriptor must exist.
 
