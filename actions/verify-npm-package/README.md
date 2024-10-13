@@ -33,11 +33,7 @@ steps:
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
-1. Install **Node.js**, at the version declared in the `.nvmrc` file within the project directory.
-
-1. Install `pnpm` - at least version 9 is guaranteed.
-
-1. Install the dependencies - by default, freezing the lockfile.
+1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 1. Run `pnpm verify` - so that the related script in `package.json` can decide what to do.
 
@@ -67,6 +63,8 @@ steps:
 |          `shell`          | **string**  |                   The shell used to run commands                    |         **bash**         |
 
 ## Further references
+
+- [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 - [check-subpath-exports](../check-subpath-exports/README.md)
 

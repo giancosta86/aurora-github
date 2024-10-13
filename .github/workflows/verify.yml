@@ -29,7 +29,8 @@ jobs:
 
   test-install-wasm-pack:
     runs-on: ubuntu-latest
-    needs: check-preconditions
+    needs:
+      - check-preconditions
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-install-wasm-pack
@@ -89,13 +90,16 @@ jobs:
       - test-artifact-version
       - test-find-critical-todos
       - test-check-subpath-exports
+      - test-setup-nodejs-context
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-verify-npm-package
 
   test-publish-npm-package:
     runs-on: ubuntu-latest
-    needs: check-preconditions
+    needs:
+      - check-preconditions
+      - test-setup-nodejs-context
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-publish-npm-package
@@ -149,6 +153,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-check-subpath-exports
 
+  test-setup-nodejs-context:
+    runs-on: ubuntu-latest
+    needs:
+      - check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-setup-nodejs-context
+
   verify:
     runs-on: ubuntu-latest
     needs:
@@ -170,6 +182,7 @@ jobs:
       - test-install-system-packages
       - test-inject-subpath-exports
       - test-check-subpath-exports
+      - test-setup-nodejs-context
 
     steps:
       - name: Show completion message

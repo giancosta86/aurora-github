@@ -23,7 +23,7 @@ steps:
 
 - The project's package manager must be [pnpm](https://pnpm.io/) - version `9` or later compatible.
 
-- The root directory of the project must contain a `.nvmrc` file - declaring the required Node.js version - whose format must be compatible with the `actions/setup-node` action (for example: `vX.Y.Z`).
+- The requirements for [setup-nodejs-context](../setup-nodejs-context/README.md).
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
@@ -38,6 +38,8 @@ steps:
 |       `shell`       | **string**  |         The shell used to run commands          |   **bash**    |
 
 ## Further references
+
+- [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 - [verify-npm-package](../verify-npm-package/README.md)
 
