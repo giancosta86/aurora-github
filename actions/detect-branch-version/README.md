@@ -25,13 +25,13 @@ steps:
 
 - the branch name should have a [semantic version](https://semver.org/) format, optionally preceded by `v`. For example: `v1.0.2`.
 
-## Inputs
+## Inputs 📥
 
 |  Name   |    Type    |          Description           | Default value |
 | :-----: | :--------: | :----------------------------: | :-----------: |
 | `shell` | **string** | The shell used to run commands |   **bash**    |
 
-## Outputs
+## Outputs 📤
 
 |       Name        |    Type    |                         Description                          |   Example   |
 | :---------------: | :--------: | :----------------------------------------------------------: | :---------: |

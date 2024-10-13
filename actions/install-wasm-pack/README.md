@@ -11,7 +11,7 @@ steps:
 
 **Please, note:** this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type    |           Description            | Default value |
 | :-----------------: | :--------: | :------------------------------: | :-----------: |

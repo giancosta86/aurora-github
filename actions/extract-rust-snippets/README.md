@@ -49,7 +49,7 @@ Each test file has this relative path:
 
 where `N` is the position of the snippet within the Markdown content, starting from **1**.
 
-## Inputs
+## Inputs 📥
 
 |          Name          |    Type    |                        Description                         |      Default value      |
 | :--------------------: | :--------: | :--------------------------------------------------------: | :---------------------: |

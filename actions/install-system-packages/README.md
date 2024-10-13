@@ -19,7 +19,7 @@ This action currently requires an operating system with the `apt-get` package ma
 
 This action installs the requested packages as **root**, without asking for confirmation.
 
-## Inputs
+## Inputs 📥
 
 |    Name    |    Type    |                        Description                         | Default value |
 | :--------: | :--------: | :--------------------------------------------------------: | :-----------: |

@@ -49,7 +49,7 @@ steps:
 
 - The requirements for [check-artifact-version](../check-artifact-version/README.md), if `check-artifact-version` is enabled.
 
-## Inputs
+## Inputs 📥
 
 |           Name            |    Type     |                             Description                             |      Default value       |
 | :-----------------------: | :---------: | :-----------------------------------------------------------------: | :----------------------: |

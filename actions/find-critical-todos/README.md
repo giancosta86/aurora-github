@@ -14,7 +14,7 @@ steps:
 
 **Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md) and [verify-npm-package](../verify-npm-package/README.md).
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type     |                            Description                            | Default value |
 | :-----------------: | :---------: | :---------------------------------------------------------------: | :-----------: |
@@ -24,7 +24,7 @@ steps:
 |  `root-directory`   | **string**  |                  The root of the directory tree                   |     **.**     |
 |       `shell`       | **string**  |                  The shell used to run commands                   |   **bash**    |
 
-## Outputs
+## Outputs 📤
 
 |  Name   |    Type     |                                 Description                                  |  Example  |
 | :-----: | :---------: | :--------------------------------------------------------------------------: | :-------: |

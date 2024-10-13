@@ -51,7 +51,7 @@ The `mode` input can have the following values:
 
 - The `source-directory` and the root `package.json` descriptor must exist.
 
-## Inputs
+## Inputs 📥
 
 |        Name         |         Type          |               Description               |  Default value   |
 | :-----------------: | :-------------------: | :-------------------------------------: | :--------------: |

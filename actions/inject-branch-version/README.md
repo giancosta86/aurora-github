@@ -17,7 +17,7 @@ steps:
 
 - If `artifact-descriptor` is missing, the requirements for [detect-project-tech](../detect-project-tech/README.md) apply.
 
-## Inputs
+## Inputs 📥
 
 |         Name          |    Type    |               Description                |        Default value        |
 | :-------------------: | :--------: | :--------------------------------------: | :-------------------------: |

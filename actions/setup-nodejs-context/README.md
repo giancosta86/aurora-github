@@ -21,7 +21,7 @@ The project directory must contain:
 
 - the `.nvmrc` file, containing the expected NodeJS version, as expected by [nvm](https://github.com/nvm-sh/nvm)
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type     |                   Description                   |      Default value      |
 | :-----------------: | :---------: | :---------------------------------------------: | :---------------------: |

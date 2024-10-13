@@ -25,7 +25,7 @@ steps:
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
-## Inputs
+## Inputs 📥
 
 |           Name           |    Type     |                   Description                   |      Default value      |
 | :----------------------: | :---------: | :---------------------------------------------: | :---------------------: |

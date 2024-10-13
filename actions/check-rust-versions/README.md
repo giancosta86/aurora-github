@@ -22,7 +22,7 @@ steps:
   channel = "1.80.0"
   ```
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type    |              Description              | Default value |
 | :-----------------: | :--------: | :-----------------------------------: | :-----------: |
