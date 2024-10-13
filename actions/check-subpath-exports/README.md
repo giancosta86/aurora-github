@@ -15,7 +15,7 @@ steps:
 
 - The `jq` command (especially version **1.7**) must be available in the operating system.
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type    |               Description               | Default value |
 | :-----------------: | :--------: | :-------------------------------------: | :-----------: |

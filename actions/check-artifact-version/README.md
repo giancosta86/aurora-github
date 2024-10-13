@@ -17,7 +17,7 @@ steps:
 
 - The ones described for [detect-branch-version](../detect-branch-version/README.md)
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type    |          Description           | Default value |
 | :-----------------: | :--------: | :----------------------------: | :-----------: |

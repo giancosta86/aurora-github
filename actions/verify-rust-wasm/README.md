@@ -52,7 +52,7 @@ steps:
 
   - an updated `pnpm-lock.yaml` lockfile
 
-## Inputs
+## Inputs 📥
 
 |           Name            |    Type     |                         Description                         |  Default value   |
 | :-----------------------: | :---------: | :---------------------------------------------------------: | :--------------: |
