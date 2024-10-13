@@ -2,6 +2,10 @@ name: Verify npm package
 description: Verifies the source files of a NodeJS package - by running its 'verify' script within the 'scripts' section of 'package.json'.
 
 inputs:
+  registry-url:
+    description: The URL of the npm registry.
+    default: https://registry.npmjs.org
+
   frozen-lockfile:
     description: Fail if "pnpm-lock.yaml" is missing or outdated.
     default: true
@@ -41,6 +45,12 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
+        if [[ -z "${{ inputs.registry-url }}" ]]
+        then
+          echo "❌Missing action input: 'registry-url'!" >&2
+          exit 1
+        fi
+
         if [[ -z "${{ inputs.frozen-lockfile }}" ]]
         then
           echo "❌Missing action input: 'frozen-lockfile'!" >&2
@@ -111,30 +121,15 @@ runs:
         root-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
-    - name: Setup NodeJS
-      uses: actions/setup-node@v4
+    - name: Setup NodeJS context
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v4.0.0
       with:
-        node-version-file: ${{ inputs.project-directory }}/.nvmrc
+        registry-url: ${{ inputs.registry-url }}
+        frozen-lockfile: ${{ inputs.frozen-lockfile }}
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 9
-
-    - name: Install the dependencies
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        frozenLockfile="${{ inputs.frozen-lockfile }}"
-
-        if [[ "$frozenLockfile" == "true" ]]
-        then
-          pnpm install --frozen-lockfile
-        else
-          pnpm install --no-frozen-lockfile
-        fi
-
-    - name: Verify the package
+    - name: Run the 'verify' script from package.json
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: pnpm verify
