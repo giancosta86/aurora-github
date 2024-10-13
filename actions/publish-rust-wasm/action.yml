@@ -1,5 +1,5 @@
 name: Publish Rust web assembly
-description: Publishes a Rust web assembly to the npm registry.
+description: Publishes a Rust web assembly to an npm registry.
 
 inputs:
   dry-run:
@@ -7,13 +7,17 @@ inputs:
     default: false
 
   npm-token:
-    description: The secret token for publishing to npm.
+    description: The secret token for publishing to the registry.
 
   wasm-pack-version:
     description: The wasm-pack version to install.
 
   npm-scope:
     description: The npm package scope or "<ROOT>".
+
+  registry-url:
+    description: The URL of the npm registry.
+    default: https://registry.npmjs.org
 
   wasm-target:
     description: The target of the 'wasm-pack build' command.
@@ -102,6 +106,7 @@ runs:
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
+        registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: false
         project-directory: ${{ inputs.project-directory }}/pkg
         shell: ${{ inputs.shell }}
