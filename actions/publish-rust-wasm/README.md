@@ -1,6 +1,6 @@
 # publish-rust-wasm
 
-Publishes a **Rust** web assembly to the [npm](https://www.npmjs.com/) registry.
+Publishes a **Rust** web assembly to an [npm](https://www.npmjs.com/) registry.
 
 ## Example
 
@@ -27,16 +27,17 @@ steps:
 
 ## Inputs
 
-|           Name           |    Type     |                   Description                   |  Default value   |
-| :----------------------: | :---------: | :---------------------------------------------: | :--------------: |
-|        `dry-run`         | **boolean** |   Run a simulated publication via `--dry-run`   |    **false**     |
-|       `npm-token`        | **string**  |     The secret token for publishing to npm      |                  |
-|   `wasm-pack-version`    | **string**  |       The `wasm-pack` version to install        |                  |
-|       `npm-scope`        | **string**  |        The npm package scope or `<ROOT>`        |                  |
-|      `wasm-target`       | **string**  |   The target of the `wasm-pack build` command   |     **web**      |
-| `node-version-directory` | **string**  | Relative directory containing the `.nvmrc` file | **client-tests** |
-|   `project-directory`    | **string**  |      The directory containing `Cargo.toml`      |      **.**       |
-|         `shell`          | **string**  |         The shell used to run commands          |     **bash**     |
+|           Name           |    Type     |                   Description                   |      Default value      |
+| :----------------------: | :---------: | :---------------------------------------------: | :---------------------: |
+|        `dry-run`         | **boolean** |   Run a simulated publication via `--dry-run`   |        **false**        |
+|       `npm-token`        | **string**  | The secret token for publishing to the registry |                         |
+|   `wasm-pack-version`    | **string**  |       The `wasm-pack` version to install        |                         |
+|       `npm-scope`        | **string**  |        The npm package scope or `<ROOT>`        |                         |
+|      `registry-url`      | **string**  |           The URL of the npm registry           | _Official npm registry_ |
+|      `wasm-target`       | **string**  |   The target of the `wasm-pack build` command   |         **web**         |
+| `node-version-directory` | **string**  | Relative directory containing the `.nvmrc` file |    **client-tests**     |
+|   `project-directory`    | **string**  |      The directory containing `Cargo.toml`      |          **.**          |
+|         `shell`          | **string**  |         The shell used to run commands          |        **bash**         |
 
 ## Further references
 
