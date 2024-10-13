@@ -54,6 +54,8 @@ In particular, the actions can be grouped by technology:
 
 ## 📦NodeJS utilities
 
+- [setup-nodejs-context](./actions/setup-nodejs-context/README.md)
+
 - [parse-npm-scope](./actions/parse-npm-scope/README.md)
 
 ## 🧰General-purpose utilities

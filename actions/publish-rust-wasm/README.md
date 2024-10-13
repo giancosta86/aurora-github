@@ -21,7 +21,7 @@ steps:
 
 ## Requirements
 
-- You must create a `.nvmrc` file, declaring the required Node.js version, whose format must be compatible with the `actions/setup-node` action (for example: `vX.Y.Z`): the file will most probably reside in a `client-tests` subdirectory - designed for NodeJS tests - but you can customize this aspect via the `node-version-directory` input.
+- You must create a `.nvmrc` file, declaring the required Node.js version, whose format must be compatible with the [setup-nodejs-context](../setup-nodejs-context/README.md) action (for example: `vX.Y.Z`): such file will most probably reside in a `client-tests` subdirectory - designed for NodeJS tests - but you can customize this aspect via the `node-version-directory` input.
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
@@ -39,6 +39,8 @@ steps:
 |         `shell`          | **string**  |         The shell used to run commands          |     **bash**     |
 
 ## Further references
+
+- [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 - [parse-npm-scope](../parse-npm-scope/README.md)
 

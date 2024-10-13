@@ -32,7 +32,7 @@ steps:
 
    1. `cd` to that directory
 
-   1. Install its dependencies
+   1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
 
    1. Execute `pnpm verify` to run the NodeJS-based client tests
 
@@ -69,6 +69,8 @@ steps:
 |          `shell`          | **string**  |               The shell used to run commands                |     **bash**     |
 
 ## Further references
+
+- [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 - [parse-npm-scope](../parse-npm-scope/README.md)
 

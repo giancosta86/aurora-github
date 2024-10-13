@@ -1,0 +1,84 @@
+name: Setup a NodeJS context
+description: Installs a specific NodeJS version, pnpm, and the dependencies listed in package.json.
+
+inputs:
+  pnpm-version:
+    description: The version of pnpm to use.
+    default: 9
+
+  registry-url:
+    description: The URL of the npm registry.
+    default: https://registry.npmjs.org
+
+  frozen-lockfile:
+    description: Fail if "pnpm-lock.yaml" is missing or outdated.
+    default: true
+
+  project-directory:
+    description: The directory containing package.json.
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -z "${{ inputs.pnpm-version }}" ]]
+        then
+          echo "❌Missing action input: 'pnpm-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.registry-url }}" ]]
+        then
+          echo "❌Missing action input: 'registry-url'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.frozen-lockfile }}" ]]
+        then
+          echo "❌Missing action input: 'frozen-lockfile'!" >&2
+          exit 1
+        fi
+
+        if [[ ! -f "package.json" ]]
+        then
+          echo "❌The package.json descriptor file does not exist!!" >&2
+          exit 1
+        fi
+
+        if [[ ! -f ".nvmrc" ]]
+        then
+          echo "❌The .nvmrc version file does not exist!!" >&2
+          exit 1
+        fi
+
+    - name: Setup NodeJS
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: ${{ inputs.project-directory }}/.nvmrc
+        registry-url: ${{ inputs.registry-url }}
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: ${{ inputs.pnpm-version }}
+
+    - name: Install the dependencies
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        frozenLockfile="${{ inputs.frozen-lockfile }}"
+
+        if [[ "$frozenLockfile" == "true" ]]
+        then
+          pnpm install --frozen-lockfile
+        else
+          pnpm install --no-frozen-lockfile
+        fi
