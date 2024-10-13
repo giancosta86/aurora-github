@@ -23,14 +23,14 @@ steps:
 
 - a **NodeJS** package must have its `package.json`.
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type    |          Description           | Default value |
 | :-----------------: | :--------: | :----------------------------: | :-----------: |
 | `project-directory` | **string** |     The project directory      |     **.**     |
 |       `shell`       | **string** | The shell used to run commands |   **bash**    |
 
-## Outputs
+## Outputs 📤
 
 |         Name          |    Type    |        Description        |  Supported values   |
 | :-------------------: | :--------: | :-----------------------: | :-----------------: |

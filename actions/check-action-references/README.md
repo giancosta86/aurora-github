@@ -17,7 +17,7 @@ When creating actions in a repository acting as a library for GitHub Actions, yo
 
 - The check is only performed on [composite GitHub actions](https://docs.github.com/en/actions/sharing-automations/creating-actions/creating-a-composite-action), written in files having `.yml` extension and residing below the given `actions-directory`.
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type    |                      Description                      | Default value |
 | :-----------------: | :--------: | :---------------------------------------------------: | :-----------: |

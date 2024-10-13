@@ -37,7 +37,7 @@ steps:
 
 1. Optionally, _create or move_ the tag of the major version related to the current version - for example, `vX`.
 
-## Inputs
+## Inputs 📥
 
 |      Name       |    Type     |                        Description                        | Default value |
 | :-------------: | :---------: | :-------------------------------------------------------: | :-----------: |
