@@ -52,3 +52,6 @@ runs:
         fi
 
         sed -i "s/0\.0\.0/${version}/g" "$artifactDescriptor"
+
+        echo "🔎The artifact descriptor after injecting the version is:"
+        cat "$artifactDescriptor"
