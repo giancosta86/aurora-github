@@ -8,7 +8,7 @@ Looks for _critical TODOs_ - that is, instances of the `TODO!` string - in sourc
 steps:
   - uses: giancosta86/aurora-github/actions/find-critical-todos@v4
     with:
-      source-file-regex: "\.(js|ts)x?$"
+      source-file-regex: \.(js|ts)x?$
       crash-on-found: true
 ```
 
