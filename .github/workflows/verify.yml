@@ -29,8 +29,7 @@ jobs:
 
   test-install-wasm-pack:
     runs-on: ubuntu-latest
-    needs:
-      - check-preconditions
+    needs: check-preconditions
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-install-wasm-pack
@@ -60,8 +59,7 @@ jobs:
 
   test-extract-rust-snippets:
     runs-on: ubuntu-latest
-    needs:
-      - check-preconditions
+    needs: check-preconditions
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-extract-rust-snippets
@@ -143,23 +141,37 @@ jobs:
     needs: check-preconditions
     steps:
       - uses: actions/checkout@v4
+      - uses: ./actions/install-system-packages
+        with:
+          packages: moreutils
       - uses: ./.github/test-actions/test-inject-subpath-exports
 
   test-check-subpath-exports:
     runs-on: ubuntu-latest
-    needs:
-      - check-preconditions
+    needs: check-preconditions
     steps:
       - uses: actions/checkout@v4
+      - uses: ./actions/install-system-packages
+        with:
+          packages: moreutils
       - uses: ./.github/test-actions/test-check-subpath-exports
 
   test-setup-nodejs-context:
     runs-on: ubuntu-latest
-    needs:
-      - check-preconditions
+    needs: check-preconditions
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-setup-nodejs-context
+
+  test-publish-github-pages:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-publish-github-pages
 
   verify:
     runs-on: ubuntu-latest
@@ -183,6 +195,7 @@ jobs:
       - test-inject-subpath-exports
       - test-check-subpath-exports
       - test-setup-nodejs-context
+      - test-publish-github-pages
 
     steps:
       - name: Show completion message
