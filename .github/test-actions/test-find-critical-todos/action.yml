@@ -6,7 +6,7 @@ runs:
       uses: ./actions/find-critical-todos
       with:
         root-directory: ./tests/unknown-tech/src
-        source-file-regex: '\.(js|txt)$'
+        source-file-regex: \.(js|txt)$
         crash-on-found: false
 
     - name: Critical TODOs should be found when existing
@@ -26,5 +26,5 @@ runs:
       uses: ./actions/find-critical-todos
       with:
         root-directory: ./tests/rust-crate/src
-        source-file-regex: ".*"
+        source-file-regex: .*
         crash-on-found: true
