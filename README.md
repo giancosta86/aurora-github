@@ -1,6 +1,6 @@
 # aurora-github
 
-_Elegant pipelines for GitHub Actions_
+_Elegant workflows for GitHub Actions_
 
 ![Schema](docs/schema.png)
 
