@@ -4,7 +4,7 @@ Creates a **Git** tag and a **GitHub** release, from a Git branch named accordin
 
 ## Example
 
-This action is designed to be the very last step in a _publication_ workflow:
+This action is designed to be the very last step in a _publication_ workflow, **when merging a pull request**:
 
 ```yaml
 steps:
