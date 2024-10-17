@@ -19,6 +19,8 @@ steps:
 
 ## Requirements
 
+- This action can only be used in a workflow running while **merging a pull request**.
+
 - The following [permission](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work - especially during the _branch deletion_ process:
 
   - `contents`: **write**
