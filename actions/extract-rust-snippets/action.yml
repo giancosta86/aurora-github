@@ -4,22 +4,18 @@ description: Extracts Rust code snippets from a Markdown file to standalone test
 inputs:
   markdown-file:
     description: Relative path of the Markdown file containing the snippets.
-    required: false
     default: README.md
 
   test-filename-prefix:
     description: Relative path prefix for each generated test source file.
-    required: false
     default: tests/readme_test_
 
   project-directory:
     description: The directory containing Cargo.toml.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -55,7 +51,7 @@ runs:
         testFileNamePrefix="${{ inputs.test-filename-prefix }}"
 
         testDirectory=$(dirname "$testFileNamePrefix")
-        echo "📁Creating test directory: '${testDirectory}'"        
+        echo "📁Creating test directory: '${testDirectory}'"
         mkdir -p "$testDirectory"
         echo "✅Directory created!"
 
@@ -92,8 +88,8 @@ runs:
         testDirectory="$(dirname "$testFileNamePrefix")"
 
         testFiles=$(ls -1 "$testFileNamePrefix"*.rs 2>/dev/null || true)
-          
-        if [ -z "$testFiles" ] 
+
+        if [ -z "$testFiles" ]
         then
           echo "💭No test files generated from Rust snippets"
         else

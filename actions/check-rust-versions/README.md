@@ -6,7 +6,7 @@ Displays the current version of the main **Rust** components, after ensuring tha
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-rust-versions@v3
+  - uses: giancosta86/aurora-github/actions/check-rust-versions@v4
 ```
 
 **Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).
@@ -22,7 +22,7 @@ steps:
   channel = "1.80.0"
   ```
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type    |              Description              | Default value |
 | :-----------------: | :--------: | :-----------------------------------: | :-----------: |

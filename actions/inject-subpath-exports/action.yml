@@ -1,0 +1,131 @@
+name: Inject subpath exports
+description: Appends subpath exports to package.json according to the directory tree.
+
+inputs:
+  mode:
+    description: Subpath exports generation mode; can be "index-first" or "all".
+    default: index-first
+
+  source-directory:
+    description: Relative path to the source directory.
+    default: src
+
+  project-directory:
+    description: The directory containing package.json.
+    default: .
+
+  shell:
+    description: The shell used to run commands.
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        case "${{ inputs.mode }}" in
+          "index-first" | all)
+            ;;
+
+          *)
+            echo "❌Invalid value for 'mode' input: '${{ inputs.mode }}'!" >&2
+            exit 1
+        esac
+
+        if [[ -z "${{ inputs.source-directory }}" ]]
+        then
+          echo "❌Missing action input: 'source-directory'!" >&2
+          exit 1
+        fi
+
+        if [[ ! -f "package.json" ]]
+        then
+          echo "❌The package.json descriptor file does not exist!!" >&2
+          exit 1
+        fi
+
+        if [[ ! -d "${{ inputs.source-directory }}" ]]
+        then
+          echo "❌Source directory '${{ inputs.source-directory }}' does not exist!" >&2
+          exit 1
+        fi
+
+    - name: Display initial status of the exports
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "📦package.json exports at the beginning of inject-subpath-exports:"
+
+        jq .exports package.json
+
+    - name: Generate and inject subpath exports
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        updatePackageJson() {
+          updatingExpression="$1"
+
+          tempPackage="$(mktemp)"
+
+          jq "$updatingExpression" package.json > "$tempPackage"
+          mv "$tempPackage" package.json
+        }
+
+        mode="${{ inputs.subpath-exports }}"
+        sourceDirectory="${{ inputs.source-directory }}"
+
+        rootIndexNames=("index.ts" "index.js")
+
+        for rootIndexName in ${rootIndexNames[@]}
+        do
+          potentialRootIndex="$sourceDirectory/$rootIndexName"
+
+          echo "🔎Looking for potential root index: '${potentialRootIndex}'"
+
+          if [[ -f "$potentialRootIndex" ]]
+          then
+            rootIndex="$potentialRootIndex"
+            break
+          fi
+        done
+
+        if [[ -n "$rootIndex" ]]
+        then
+          echo "✅Root index file found: '$rootIndex'!"
+
+          updatePackageJson '.exports += {".": {types: "./dist/index.d.ts", import: "./dist/index.js"}}'
+
+          if [[ "$mode" == "index-first" ]]
+          then
+            echo "🐹In this mode, since the root index has been found, no more subpath exports will be injected"
+
+            exit 0
+          fi
+        else
+          echo "💭No root index file found..."
+        fi
+
+        find "$sourceDirectory" -mindepth 2 -maxdepth 2 -type f -regex '.*index.\(t\|j\)s' | sort | while IFS= read -r subIndexFile
+        do
+          exportName="$(dirname "$subIndexFile" | xargs basename)"
+
+          distExportDirectory="./dist/$exportName"
+
+          echo "✅Export '${exportName}' provided by dist directory: '${distExportDirectory}'"
+
+          declarationsFile="${distExportDirectory}/index.d.ts"
+
+          esmFile="${distExportDirectory}/index.js"
+
+          updatePackageJson '.exports += {"./'"$exportName"'": {types: "'"$declarationsFile"'", import: "'"$esmFile"'"}}'
+        done
+
+    - name: Display final status of the exports
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "📦package.json exports at the end of inject-subpath-exports:"
+
+        jq .exports package.json

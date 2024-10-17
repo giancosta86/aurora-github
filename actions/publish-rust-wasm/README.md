@@ -1,6 +1,6 @@
 # publish-rust-wasm
 
-Publishes a **Rust** web assembly to the [npm](https://www.npmjs.com/) registry.
+Publishes a **Rust** web assembly to an [npm](https://www.npmjs.com/) registry.
 
 ## Example
 
@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-rust-wasm@v3
+  - uses: giancosta86/aurora-github/actions/publish-rust-wasm@v4
     with:
       npm-token: ${{ secrets.NPM_TOKEN }}
       wasm-pack-version: 0.13.0
@@ -25,18 +25,19 @@ steps:
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
-## Inputs
+## Inputs 📥
 
-|           Name           |    Type     |                   Description                   |  Default value   |
-| :----------------------: | :---------: | :---------------------------------------------: | :--------------: |
-|        `dry-run`         | **boolean** |   Run a simulated publication via `--dry-run`   |    **false**     |
-|       `npm-token`        | **string**  |     The secret token for publishing to npm      |                  |
-|   `wasm-pack-version`    | **string**  |       The `wasm-pack` version to install        |                  |
-|       `npm-scope`        | **string**  |        The npm package scope or `<ROOT>`        |                  |
-|      `wasm-target`       | **string**  |   The target of the `wasm-pack build` command   |     **web**      |
-| `node-version-directory` | **string**  | Relative directory containing the `.nvmrc` file | **client-tests** |
-|   `project-directory`    | **string**  |      The directory containing `Cargo.toml`      |      **.**       |
-|         `shell`          | **string**  |         The shell used to run commands          |     **bash**     |
+|           Name           |    Type     |                   Description                   |      Default value      |
+| :----------------------: | :---------: | :---------------------------------------------: | :---------------------: |
+|        `dry-run`         | **boolean** |   Run a simulated publication via `--dry-run`   |        **false**        |
+|       `npm-token`        | **string**  | The secret token for publishing to the registry |                         |
+|   `wasm-pack-version`    | **string**  |       The `wasm-pack` version to install        |                         |
+|       `npm-scope`        | **string**  |        The npm package scope or `<ROOT>`        |                         |
+|      `registry-url`      | **string**  |           The URL of the npm registry           | _Official npm registry_ |
+|      `wasm-target`       | **string**  |   The target of the `wasm-pack build` command   |         **web**         |
+| `node-version-directory` | **string**  | Relative directory containing the `.nvmrc` file |    **client-tests**     |
+|   `project-directory`    | **string**  |      The directory containing `Cargo.toml`      |          **.**          |
+|         `shell`          | **string**  |         The shell used to run commands          |        **bash**         |
 
 ## Further references
 

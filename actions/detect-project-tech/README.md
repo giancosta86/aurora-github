@@ -7,7 +7,7 @@ Tries to infer the current project tech - and related aspects - from the source 
 ```yaml
 steps:
   - id: detector
-    uses: giancosta86/aurora-github/actions/detect-project-tech@v3
+    uses: giancosta86/aurora-github/actions/detect-project-tech@v4
 
   - run: |
       projectTech="${{ steps.detector.outputs.project-tech }}"
@@ -23,14 +23,14 @@ steps:
 
 - a **NodeJS** package must have its `package.json`.
 
-## Inputs
+## Inputs 📥
 
 |        Name         |    Type    |          Description           | Default value |
 | :-----------------: | :--------: | :----------------------------: | :-----------: |
 | `project-directory` | **string** |     The project directory      |     **.**     |
 |       `shell`       | **string** | The shell used to run commands |   **bash**    |
 
-## Outputs
+## Outputs 📤
 
 |         Name          |    Type    |        Description        |  Supported values   |
 | :-------------------: | :--------: | :-----------------------: | :-----------------: |

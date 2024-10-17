@@ -4,12 +4,10 @@ description: Displays the versions of the main Rust components, after ensuring t
 inputs:
   project-directory:
     description: The directory containing Cargo.toml.
-    required: false
     default: "."
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:

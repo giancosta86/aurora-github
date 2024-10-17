@@ -7,7 +7,7 @@ Extracts the version from the name of the current **Git** branch, returning both
 ```yaml
 steps:
   - id: detector
-    uses: giancosta86/aurora-github/actions/detect-branch-version@v3
+    uses: giancosta86/aurora-github/actions/detect-branch-version@v4
 
   - run: |
       branch="${{ steps.detector.outputs.branch }}"
@@ -25,13 +25,13 @@ steps:
 
 - the branch name should have a [semantic version](https://semver.org/) format, optionally preceded by `v`. For example: `v1.0.2`.
 
-## Inputs
+## Inputs 📥
 
 |  Name   |    Type    |          Description           | Default value |
 | :-----: | :--------: | :----------------------------: | :-----------: |
 | `shell` | **string** | The shell used to run commands |   **bash**    |
 
-## Outputs
+## Outputs 📤
 
 |       Name        |    Type    |                         Description                          |   Example   |
 | :---------------: | :--------: | :----------------------------------------------------------: | :---------: |
