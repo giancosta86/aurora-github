@@ -21,6 +21,8 @@ The project directory must contain:
 
 - the `.nvmrc` file, containing the expected NodeJS version, as expected by [nvm](https://github.com/nvm-sh/nvm)
 
+- an updated `pnpm-lock.yaml` file, if `frozen-lockfile` is enabled
+
 ## Inputs 📥
 
 |        Name         |    Type     |                   Description                   |      Default value      |
