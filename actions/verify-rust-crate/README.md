@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-rust-crate@v3
+  - uses: giancosta86/aurora-github/actions/verify-rust-crate@v4
 ```
 
 **Please, note:** this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md).
@@ -41,7 +41,7 @@ steps:
 
 - The requirements for [check-artifact-version](../check-artifact-version/README.md), if `check-artifact-version` is enabled.
 
-## Inputs
+## Inputs 📥
 
 |           Name            |    Type     |                       Description                        | Default value |
 | :-----------------------: | :---------: | :------------------------------------------------------: | :-----------: |

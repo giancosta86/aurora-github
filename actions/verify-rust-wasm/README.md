@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v3
+  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v4
     with:
       wasm-pack-version: 0.13.0
       npm-scope: your-npm-scope
@@ -32,7 +32,7 @@ steps:
 
    1. `cd` to that directory
 
-   1. Install its dependencies
+   1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
 
    1. Execute `pnpm verify` to run the NodeJS-based client tests
 
@@ -52,7 +52,7 @@ steps:
 
   - an updated `pnpm-lock.yaml` lockfile
 
-## Inputs
+## Inputs 📥
 
 |           Name            |    Type     |                         Description                         |  Default value   |
 | :-----------------------: | :---------: | :---------------------------------------------------------: | :--------------: |
@@ -69,6 +69,8 @@ steps:
 |          `shell`          | **string**  |               The shell used to run commands                |     **bash**     |
 
 ## Further references
+
+- [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 - [parse-npm-scope](../parse-npm-scope/README.md)
 

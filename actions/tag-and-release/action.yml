@@ -4,22 +4,18 @@ description: Creates a Git tag and a GitHub release, from a Git branch named acc
 inputs:
   draft-only:
     description: Only draft the release.
-    required: false
     default: false
 
   delete-branch:
     description: Delete the branch after creating the tag.
-    required: false
     default: true
 
   set-major-tag:
     description: Create/move the 'vX' tag to this commit (X=major version)
-    required: false
     default: false
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -48,7 +44,7 @@ runs:
 
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-version@v3.0.0
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v4.0.0
       with:
         shell: ${{ inputs.shell }}
 
@@ -87,6 +83,45 @@ runs:
           exit 1
         fi
 
+    - name: Generate release notes
+      id: generate-release-notes
+      shell: ${{ inputs.shell }}
+      run: |
+        pullRequestTitle="$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")"
+        pullRequestId="$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")"
+        pullRequestDescription="**$pullRequestTitle** (#$pullRequestId)"
+        echo "🔎Pull request description: '$pullRequestDescription'"
+
+        baseCommit="${{ github.event.pull_request.base.sha }}"
+        headCommit="${{ github.event.pull_request.head.sha }}"
+
+        git fetch origin "$baseCommit" "$headCommit"
+
+        commitList="$(git log --reverse --pretty=format:'%s' "$baseCommit".."$headCommit")"
+        echo "🔎Commit list:"
+        echo -e "$commitList"
+        echo "🔎🔎🔎"
+
+        commitsWithBulletPoints="$(echo "$commitList" | perl -pe 's/^(?!\* )/* /')"
+        commitsWithEmptyLines="$(echo "$commitsWithBulletPoints" | perl -pe 's/(.+)\n/$1\n\n/g')"
+
+        formattedCommits="$commitsWithEmptyLines"
+        echo "🔎Formatted commits:"
+        echo -e "$formattedCommits"
+        echo "🔎🔎🔎"
+
+        releaseNotes="${pullRequestDescription}\n\n${formattedCommits}"
+        echo "🔎Release notes:"
+        echo -e "$releaseNotes"
+        echo "🔎🔎🔎"
+
+        {
+          echo 'release-notes<<GIANCOSTA86_RESERVED_EOF'
+          echo -e "$releaseNotes"
+          echo GIANCOSTA86_RESERVED_EOF
+        } >> $GITHUB_OUTPUT
+
+
     - name: Delete Git branch
       if: ${{ inputs.delete-branch == 'true' }}
       shell: ${{ inputs.shell }}
@@ -118,21 +153,26 @@ runs:
       run: |
         draftOnly="${{ inputs.draft-only }}"
         version="${{ steps.detect-branch-version.outputs.version }}"
-        tag="${{ steps.create-git-tag.outputs.tag }}" 
+        tag="${{ steps.create-git-tag.outputs.tag }}"
+        releaseNotes="${{ steps.generate-release-notes.outputs.release-notes }}"
 
         repoBasename="$(basename "$GITHUB_REPOSITORY")"
-        releaseTitle="$repoBasename $version"        
+        releaseTitle="$repoBasename $version"
 
         releaseRecap="release '$releaseTitle' from tag '$tag'"
+
+        echo "🔎The detected release notes for the release are:"
+        echo -e "$releaseNotes"
+        echo "🔎🔎🔎"
 
         if [[ "$draftOnly" = true ]]
         then
           echo "📝Drafting $releaseRecap..."
-          gh release create "$tag" --title "$releaseTitle" --draft
+          gh release create "$tag" --title "$releaseTitle" --notes "$releaseNotes" --draft
           echo "📝Release drafted!"
-        else 
+        else
           echo "🌟Creating $releaseRecap..."
-          gh release create "$tag" --title "$releaseTitle"
+          gh release create "$tag" --title "$releaseTitle" --notes "$releaseNotes"
           echo "🌟Release created!"
         fi
       env:

@@ -15,7 +15,7 @@ runs:
         rootScope="${{ steps.root-detector.outputs.actual-scope }}"
 
         echo "🔎Root scope parsed by action: '$rootScope'"
-        if [[ "$rootScope" != '' ]] 
+        if [[ "$rootScope" != '' ]]
         then
           echo "❌The parsed root scope must be empty!" >&2
           exit 1
@@ -26,14 +26,14 @@ runs:
       id: without-leading-detector
       with:
         scope: giancosta86
-  
+
     - name: Scope without leading '@' should be parsed as it is
       shell: bash
       run: |
         actualScope="${{ steps.without-leading-detector.outputs.actual-scope }}"
 
         echo "🔎Scope parsed by action: '$actualScope'"
-        if [[ "$actualScope" != 'giancosta86' ]] 
+        if [[ "$actualScope" != 'giancosta86' ]]
         then
           echo "❌Incorrect scope detected!" >&2
           exit 1
@@ -51,7 +51,7 @@ runs:
         actualScope="${{ steps.with-leading-detector.outputs.actual-scope }}"
 
         echo "🔎Scope parsed by action: '$actualScope'"
-        if [[ "$actualScope" != 'giancosta86' ]] 
+        if [[ "$actualScope" != 'giancosta86' ]]
         then
           echo "❌Incorrect scope detected!" >&2
           exit 1

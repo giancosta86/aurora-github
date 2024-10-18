@@ -4,7 +4,7 @@ Creates a **Git** tag and a **GitHub** release, from a Git branch named accordin
 
 ## Example
 
-This action is designed to be the very last step in a _publication_ workflow:
+This action is designed to be the very last step in a _publication_ workflow, **when merging a pull request**:
 
 ```yaml
 steps:
@@ -14,12 +14,18 @@ steps:
 
   - uses: PUBLICATION STEP N
 
-  - uses: giancosta86/aurora-github/actions/tag-and-release@v3
+  - uses: giancosta86/aurora-github/actions/tag-and-release@v4
 ```
 
 ## Requirements
 
-- this action requires GitHub Actions to have **read/write** permissions on the repository.
+- The following [permission](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work - especially during the _branch deletion_ process:
+
+  - `contents`: **write**
+
+  It is already active by default - but declaring other permissions will implictly disable it.
+
+- GitHub Actions must have **read/write** permissions on the repository.
 
 - this action will not run on the _default_ branch of the repository.
 
@@ -37,7 +43,7 @@ steps:
 
 1. Optionally, _create or move_ the tag of the major version related to the current version - for example, `vX`.
 
-## Inputs
+## Inputs 📥
 
 |      Name       |    Type     |                        Description                        | Default value |
 | :-------------: | :---------: | :-------------------------------------------------------: | :-----------: |

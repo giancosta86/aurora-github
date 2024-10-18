@@ -6,7 +6,7 @@ Injects into a descriptor the version detected from the current **Git** branch.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/inject-branch-version@v3
+  - uses: giancosta86/aurora-github/actions/inject-branch-version@v4
 ```
 
 ## Requirements
@@ -17,7 +17,7 @@ steps:
 
 - If `artifact-descriptor` is missing, the requirements for [detect-project-tech](../detect-project-tech/README.md) apply.
 
-## Inputs
+## Inputs 📥
 
 |         Name          |    Type    |               Description                |        Default value        |
 | :-------------------: | :--------: | :--------------------------------------: | :-------------------------: |

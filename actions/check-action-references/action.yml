@@ -4,12 +4,10 @@ description: Prevents inter-branch 'uses:' directives to GitHub actions residing
 inputs:
   actions-directory:
     description: The root of the directory tree containing the actions.
-    required: false
     default: ./actions
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -17,7 +15,7 @@ runs:
   steps:
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-version@v3.0.0
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v4.0.0
       with:
         shell: ${{ inputs.shell }}
 
@@ -33,13 +31,13 @@ runs:
         hasReferencesToOtherBranches=false
 
         while IFS= read -r referenceLine
-        do    
+        do
           if [[ "$referenceLine" != *@"${branch}" ]]
           then
             echo "---> $referenceLine" >&2
             hasReferencesToOtherBranches=true
           fi
-        done < <(find . -name '*.yml' -print | xargs grep -Pn "uses:\s+${fullRepo}/")
+        done < <(find -name '*.yml' -print | xargs grep -Pn "uses:\s+${fullRepo}/")
 
         if [[ "$hasReferencesToOtherBranches" == "true" ]]
         then
