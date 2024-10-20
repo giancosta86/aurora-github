@@ -32,4 +32,7 @@ runs:
 
     - name: Print wasm-pack version
       shell: ${{ inputs.shell }}
-      run: wasm-pack --version
+      run: |
+        echo "🔎Now invoking wasm-pack..."
+        wasm-pack --version
+        echo "✅wasm-pack installed!"

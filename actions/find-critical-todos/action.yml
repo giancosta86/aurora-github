@@ -50,12 +50,16 @@ runs:
           exit 1
         fi
 
+    - name: Setup environment variables
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "todoText=TODO!" >> $GITHUB_ENV
+
     - name: Scan the directory tree
       id: scan-directory-tree
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        todoText="TODO!"
         sourceFileRegex="${{ inputs.source-file-regex }}"
         displayLines="${{ inputs.display-lines }}"
         crashOnFound="${{ inputs.crash-on-found }}"
@@ -78,7 +82,7 @@ runs:
 
         if [[ "$found" == "true" && "$crashOnFound" == "true" ]]
         then
-          echo "Critical TODOs found!" >&2
+          echo "❌Critical TODOs found!" >&2
           exit 1
         else
           echo "✅No critical TODOs found!"

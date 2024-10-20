@@ -1,6 +1,6 @@
 # check-action-references
 
-Prevents inter-branch `uses:` directives to **GitHub** actions residing below the same root directory.
+Prevents cross-branch `uses:` directives to **GitHub** actions residing below the same root directory.
 
 ## Example
 

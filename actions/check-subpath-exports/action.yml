@@ -19,7 +19,7 @@ runs:
       run: |
         if [[ ! -f "package.json" ]]
         then
-          echo "❌The package.json descriptor file does not exist!!" >&2
+          echo "❌The package.json descriptor file does not exist!" >&2
           exit 1
         fi
 

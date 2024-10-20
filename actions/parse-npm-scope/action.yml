@@ -35,10 +35,10 @@ runs:
         if [[ "$requestedScope" == "<ROOT>" ]]
         then
           actualScope=""
-          echo "🫚Root scope detected!"
+          echo "🫚Root npm scope detected!"
         else
           actualScope="$(echo "$requestedScope" | sed 's/^@//')"
-          echo "🎁Custom scope detected: '$actualScope'"
+          echo "🖌️Custom npm scope detected: '$actualScope'"
         fi
 
         echo "actual-scope=$actualScope" >> $GITHUB_OUTPUT

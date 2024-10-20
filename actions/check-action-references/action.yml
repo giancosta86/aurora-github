@@ -1,5 +1,5 @@
 name: Check GitHub Actions references
-description: Prevents inter-branch 'uses:' directives to GitHub actions residing below the same root directory.
+description: Prevents cross-branch 'uses:' directives to GitHub actions residing below the same root directory.
 
 inputs:
   actions-directory:
@@ -19,14 +19,15 @@ runs:
       with:
         shell: ${{ inputs.shell }}
 
-    - name: Fail on inter-branch local references
+    - name: Fail on cross-branch local references
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.actions-directory }}
       run: |
         branch="${{ steps.detect-branch-version.outputs.branch }}"
-        fullRepo="$GITHUB_REPOSITORY"
+        echo "🌲Current branch: '$branch'"
 
-        echo "Now in 🌲branch: '$branch'. 🧭Full repository name: '$fullRepo'."
+        fullRepo="$GITHUB_REPOSITORY"
+        echo "🧭Full repository name: '$fullRepo'"
 
         hasReferencesToOtherBranches=false
 
@@ -34,7 +35,7 @@ runs:
         do
           if [[ "$referenceLine" != *@"${branch}" ]]
           then
-            echo "---> $referenceLine" >&2
+            echo "⛔Cross-branch reference found: $referenceLine" >&2
             hasReferencesToOtherBranches=true
           fi
         done < <(find -name '*.yml' -print | xargs grep -Pn "uses:\s+${fullRepo}/")
@@ -44,5 +45,5 @@ runs:
           echo "❌There are references to actions within '${{ inputs.actions-directory }}' residing in other branches!" >&2
           exit 1
         else
-          echo "✅No inter-branch action references detected!"
+          echo "✅No cross-branch action references detected!"
         fi

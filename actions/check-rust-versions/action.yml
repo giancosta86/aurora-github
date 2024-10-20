@@ -29,7 +29,9 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
+        echo "🦀Rust toolchain versions:"
         cargo --version
         rustc --version
         cargo fmt --version
         cargo clippy --version
+        echo "🦀🦀🦀"

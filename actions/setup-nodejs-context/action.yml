@@ -70,6 +70,12 @@ runs:
       with:
         version: ${{ inputs.pnpm-version }}
 
+    - name: Print versions
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "🔎node version: $(node --version)"
+        echo "📦pnpm version: $(pnpm --version)"
+
     - name: Install the dependencies
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
@@ -78,7 +84,16 @@ runs:
 
         if [[ "$frozenLockfile" == "true" ]]
         then
+          echo "🧊Installing dependencies with frozen lockfile..."
           pnpm install --frozen-lockfile
         else
+          echo "🌞Installing dependencies without frozen lockfile..."
           pnpm install --no-frozen-lockfile
         fi
+
+        echo "✅Dependencies installed!"
+
+    - name: Print confirmation message
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "✅NodeJS context ready in '${{ inputs.project-directory }}'!"

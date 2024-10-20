@@ -132,7 +132,10 @@ runs:
     - name: Run the 'verify' script from package.json
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: pnpm verify
+      run: |
+        echo "🔎Now running the 'verify' package.json script..."
+        pnpm verify
+        echo "✅'verify' script successful!"
 
     - name: Check subpath exports
       if: ${{ inputs.check-subpath-exports == 'true' }}
@@ -140,3 +143,7 @@ runs:
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
+
+    - name: Print confirmation message
+      shell: ${{ inputs.shell }}
+      run: echo "✅npm package source files verified!"

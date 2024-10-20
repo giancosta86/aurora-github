@@ -119,7 +119,10 @@ runs:
     - name: Run headless browser tests
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: wasm-pack test --chrome --headless --release
+      run: |
+        echo "🌐Running headless browser tests..."
+        wasm-pack test --chrome --headless --release
+        echo "✅Headless browser tests OK!"
 
     - name: Generate the NodeJS package source files
       shell: ${{ inputs.shell }}
@@ -169,4 +172,11 @@ runs:
       if: ${{ inputs.client-tests-directory != '' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
-      run: pnpm verify
+      run: |
+        echo "📦Running client-side tests..."
+        pnpm verify
+        echo "✅client-side tests OK!"
+
+    - name: Print confirmation message
+      shell: ${{ inputs.shell }}
+      run: echo "✅Rust web assembly source files verified!"

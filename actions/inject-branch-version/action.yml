@@ -36,13 +36,13 @@ runs:
         version="${{ steps.version-detector.outputs.version }}"
         artifactDescriptor="${{ inputs.artifact-descriptor }}"
 
-        echo "🔎Detected version is: '$version'"
-        echo "🔎The requested artifact descriptor is: '$artifactDescriptor'"
+        echo "🔎Detected version: '$version'"
+        echo "🔎Requested artifact descriptor: '$artifactDescriptor'"
 
         if [[ -z "$artifactDescriptor" ]]
         then
           artifactDescriptor="${{ steps.tech-detector.outputs.artifact-descriptor }}"
-          echo "🔮The detected artifact descriptor is: '$artifactDescriptor'"
+          echo "🔮Detected artifact descriptor: '$artifactDescriptor'"
 
           if [[ -z "$artifactDescriptor" ]]
           then

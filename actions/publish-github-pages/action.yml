@@ -18,6 +18,11 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Print description message
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "📦Now publishing the '${{ inputs.source-directory }}' directory to GitHub Pages..."
+
     - name: Upload website artifacts
       uses: actions/upload-pages-artifact@v3
       with:
@@ -27,3 +32,8 @@ runs:
       id: publish-pages
       uses: actions/deploy-pages@v4
 
+    - name: Print confirmation message
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "✅Publication to GitHub Pages successful!"
+        echo "🌐Website: ${{ steps.publish-pages.outputs.page_url }}"

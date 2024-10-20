@@ -92,13 +92,19 @@ runs:
     - name: Check format style
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: cargo fmt --check
+      run: |
+        echo "🎨Checking source code format..."
+        cargo fmt --check
+        echo "✅Source code format OK!"
 
     - name: Lint via Clippy - with warnings as errors
       if: ${{ inputs.run-clippy-checks == 'true' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: cargo clippy --all-targets --all-features -- -D warnings
+      run: |
+        echo "📎Running clippy checks..."
+        cargo clippy --all-targets --all-features -- -D warnings
+        echo "✅Clippy checks OK!"
 
     - name: Check if README.md exists
       id: detect-readme
@@ -126,15 +132,28 @@ runs:
     - name: Run vanilla (no features) tests
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: cargo test
+      run: |
+        echo "🔎Running tests with no features enabled..."
+        cargo test
+        echo "✅Tests with no features OK!"
 
     - name: Run full (all features) tests
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: cargo test --all-features
+      run: |
+        echo "🔬Running tests with all the features enabled..."
+        cargo test --all-features
+        echo "✅Tests with all the features OK!"
 
     - name: Run documentation checks - with warnings as errors
       if: ${{ inputs.check-rustdoc == 'true' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
-      run: RUSTDOCFLAGS="-D warnings" cargo doc --all-features
+      run: |
+        echo "📚Running doctests with all the features enabled..."
+        RUSTDOCFLAGS="-D warnings" cargo doc --all-features
+        echo "✅Doctests with all the features OK!"
+
+    - name: Print confirmation message
+      shell: ${{ inputs.shell }}
+      run: echo "✅Rust crate source files verified!"

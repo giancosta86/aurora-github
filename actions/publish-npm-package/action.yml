@@ -89,3 +89,8 @@ runs:
         fi
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+
+    - name: Print confirmation message
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "✅Publication to '${{ inputs.registry-url }}' successful!"
