@@ -7,6 +7,7 @@ inputs:
 
   crash-on-found:
     description: If true, exits with error when critical TODOs are found.
+    default: true
 
   display-lines:
     description: Display the lines with critical TODOs.
