@@ -36,6 +36,10 @@ inputs:
     description: Ensure the version in Cargo.toml matches the branch name.
     default: true
 
+  registry-url:
+    description: The URL of the npm registry.
+    default: https://registry.npmjs.org
+
   project-directory:
     description: The directory containing Cargo.toml.
     default: .
@@ -150,23 +154,14 @@ runs:
           exit 1
         fi
 
-    - name: Set up NodeJS
+    - name: Setup NodeJS context
       if: ${{ inputs.client-tests-directory != '' }}
-      uses: actions/setup-node@v4
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v4.0.0
       with:
-        node-version-file: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}/.nvmrc
-
-    - name: Install pnpm
-      if: ${{ inputs.client-tests-directory != '' }}
-      uses: pnpm/action-setup@v4
-      with:
-        version: 9
-
-    - name: Install client-side test dependencies
-      if: ${{ inputs.client-tests-directory != '' }}
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
-      run: pnpm install --frozen-lockfile
+        registry-url: ${{ inputs.registry-url }}
+        frozen-lockfile: true
+        project-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
+        shell: ${{ inputs.shell }}
 
     - name: Perform client-side tests
       if: ${{ inputs.client-tests-directory != '' }}
