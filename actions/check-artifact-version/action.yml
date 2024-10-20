@@ -4,12 +4,10 @@ description: Ensures the artifact version - expressed according to the project t
 inputs:
   project-directory:
     description: The directory containing the project.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -17,14 +15,14 @@ runs:
   steps:
     - name: Detect project tech
       id: detect-project-tech
-      uses: giancosta86/aurora-github/actions/detect-project-tech@v3.0.0
+      uses: giancosta86/aurora-github/actions/detect-project-tech@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-version@v3.0.0
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v4.0.0
       with:
         shell: ${{ inputs.shell }}
 

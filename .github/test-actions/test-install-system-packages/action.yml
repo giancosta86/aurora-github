@@ -1,0 +1,35 @@
+name: Test install-system-packages
+
+runs:
+  using: composite
+  steps:
+    - name: Setup environment variables
+      shell: bash
+      run: |
+        echo "expectedCommand=sponge" >> $GITHUB_ENV
+
+    - name: Ensure the command is not installed at first
+      shell: bash
+      run: |
+        if which "$expectedCommand"
+        then
+          echo "❌This test must be revised, as the '$expectedCommand' command is already installed."
+          exit 1
+        fi
+
+    - uses: ./actions/install-system-packages
+      with:
+        packages: jq, moreutils
+
+    - name: The expected command should now be available
+      shell: bash
+      run: |
+        echo "🔎Now looking for the '$expectedCommand' command..."
+
+        if which "$expectedCommand"
+        then
+          echo "✅OK!"
+        else
+          echo "❌The expected command was not installed!" >&2
+          exit 1
+        fi

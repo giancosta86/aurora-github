@@ -71,7 +71,7 @@ runs:
         version="${{ steps.version-detector.outputs.version }}"
 
         if ! cat ./tests/unknown-tech/some-descriptor.txt | grep -q "v$version"
-        then 
+        then
           echo "❌Error while injecting the version into a custom descriptor!" >&2
           exit 1
         fi
@@ -82,7 +82,7 @@ runs:
         version="${{ steps.version-detector.outputs.version }}"
 
         if ! cat ./tests/unknown-tech/some-descriptor.txt | grep -q "'$version';"
-        then 
+        then
           echo "❌The version was not injected globally into a custom descriptor!" >&2
           exit 1
         fi

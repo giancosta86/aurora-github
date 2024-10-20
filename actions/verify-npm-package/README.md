@@ -12,7 +12,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-npm-package@v3
+  - uses: giancosta86/aurora-github/actions/verify-npm-package@v4
 ```
 
 **IMPORTANT**: please, remember to declare your verification process in the `verify` script within `package.json`! For example:
@@ -29,15 +29,15 @@ steps:
 
 1. Optionally run [check-artifact-version](../check-artifact-version/README.md), to ensure that the artifact version in `package.json` matches the version detected from the name of the current Git branch.
 
+1. Ensure that the package is based on **ESM** - via the `"type": "module"` attribute in `package.json`; this default behaviour can be disabled.
+
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
-1. Install **Node.js**, at the version declared in the `.nvmrc` file within the project directory.
-
-1. Install `pnpm` - at least version 9 is guaranteed.
-
-1. Install the dependencies - by default, freezing the lockfile.
+1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 1. Run `pnpm verify` - so that the related script in `package.json` can decide what to do.
+
+1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) to verify that the `exports` field in `package.json` actually references existing files.
 
 ## Requirements
 
@@ -49,18 +49,25 @@ steps:
 
 - The requirements for [check-artifact-version](../check-artifact-version/README.md), if `check-artifact-version` is enabled.
 
-## Inputs
+## Inputs 📥
 
-|           Name            |    Type     |                         Description                          |      Default value       |
-| :-----------------------: | :---------: | :----------------------------------------------------------: | :----------------------: |
-|     `frozen-lockfile`     | **boolean** |       Fails if `pnpm-lock.yaml` is missing or outdated       |         **true**         |
-| `crash-on-critical-todos` | **boolean** |        Crash the workflow if critical TODOs are found        |         **true**         |
-|    `source-file-regex`    | **string**  |           PCRE pattern describing the source files           | **\\.(c\|m)?(j\|t)sx?$** |
-| `check-artifact-version`  | **boolean** | Ensure the version in `package.json` matches the branch name |         **true**         |
-|    `project-directory`    | **string**  |           The directory containing `package.json`            |          **.**           |
-|          `shell`          | **string**  |                The shell used to run commands                |         **bash**         |
+|           Name            |    Type     |                             Description                             |      Default value       |
+| :-----------------------: | :---------: | :-----------------------------------------------------------------: | :----------------------: |
+|      `registry-url`       | **string**  |                     The URL of the npm registry                     | _Official npm registry_  |
+|     `frozen-lockfile`     | **boolean** |          Fails if `pnpm-lock.yaml` is missing or outdated           |         **true**         |
+| `crash-on-critical-todos` | **boolean** |           Crash the workflow if critical TODOs are found            |         **true**         |
+|    `source-file-regex`    | **string**  |              PCRE pattern describing the source files               | **\\.(c\|m)?(j\|t)sx?$** |
+| `check-artifact-version`  | **boolean** |    Ensure the version in `package.json` matches the branch name     |         **true**         |
+|       `enforce-esm`       | **boolean** | Verify that the `type` field is `module` - to create an ESM package |         **true**         |
+|  `check-subpath-exports`  | **boolean** |    Run `check-subpath-exports` after the `verify` package script    |         **true**         |
+|    `project-directory`    | **string**  |               The directory containing `package.json`               |          **.**           |
+|          `shell`          | **string**  |                   The shell used to run commands                    |         **bash**         |
 
 ## Further references
+
+- [setup-nodejs-context](../setup-nodejs-context/README.md)
+
+- [check-subpath-exports](../check-subpath-exports/README.md)
 
 - [check-artifact-version](../check-artifact-version/README.md)
 

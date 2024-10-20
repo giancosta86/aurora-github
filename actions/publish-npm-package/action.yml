@@ -1,29 +1,28 @@
 name: Publish npm package
-description: Publishes a NodeJS package to the npm registry.
+description: Publishes a NodeJS package to an npm registry.
 
 inputs:
   dry-run:
     description: Run a simulated publication via --dry-run.
-    required: false
     default: false
-    
+
   npm-token:
-    description: The secret token for publishing to npm.
-    required: true  
+    description: The secret token for publishing to the registry.
+
+  registry-url:
+    description: The URL of the npm registry.
+    default: https://registry.npmjs.org
 
   frozen-lockfile:
     description: Fail if 'pnpm-lock.yaml' is missing or outdated.
-    required: false
     default: true
 
   project-directory:
     description: The directory containing package.json.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -31,6 +30,7 @@ runs:
   steps:
     - name: Validate inputs
       shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.dry-run }}" ]]
         then
@@ -44,34 +44,22 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.registry-url }}" ]]
+        then
+          echo "❌Missing action input: 'registry-url'!" >&2
+          exit 1
+        fi
+
         if [[ -z "${{ inputs.frozen-lockfile }}" ]]
         then
           echo "❌Missing action input: 'frozen-lockfile'!" >&2
           exit 1
         fi
 
-    - name: Setup NodeJS and NPM registry
-      uses: actions/setup-node@v4
-      with:
-        node-version-file: ${{ inputs.project-directory }}/.nvmrc
-        registry-url: https://registry.npmjs.org
-
-    - name: Install pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 9
-
-    - name: Install dependencies
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        frozenLockfile="${{ inputs.frozen-lockfile }}"
-
-        if [[ "$frozenLockfile" == "true" ]]
+        if [[ ! -f "package.json" ]]
         then
-          pnpm install --frozen-lockfile
-        else
-          pnpm install --no-frozen-lockfile
+          echo "❌The package.json descriptor file does not exist!!" >&2
+          exit 1
         fi
 
     - name: Display the artifact descriptor
@@ -79,15 +67,21 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "The content of your 📦package.json just before publication is:"
-        cat package.json
+        jq . package.json
+
+    - name: Setup NodeJS context
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v4.0.0
+      with:
+        registry-url: ${{ inputs.registry-url }}
+        frozen-lockfile: ${{ inputs.frozen-lockfile }}
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
 
     - name: Publish to npm
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        dryRun="${{ inputs.dry-run }}"
-
-        if [[ "$dryRun" == "true" ]]
+        if [[ "${{ inputs.dry-run }}" == "true" ]]
         then
           pnpm publish --no-git-checks --access public --dry-run
         else
@@ -95,3 +89,8 @@ runs:
         fi
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+
+    - name: Print confirmation message
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "✅Publication to '${{ inputs.registry-url }}' successful!"

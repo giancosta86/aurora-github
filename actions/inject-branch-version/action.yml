@@ -4,28 +4,25 @@ description: Injects into a descriptor the version detected from the current Git
 inputs:
   artifact-descriptor:
     description: Relative path to the artifact descriptor - such as 'Cargo.toml' or 'package.json'; if not specified, it will be inferred from the project.
-    required: false
     default: ""
 
   project-directory:
     description: The directory containing the project.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/detect-branch-version@v3.0.0
+    - uses: giancosta86/aurora-github/actions/detect-branch-version@v4.0.0
       id: version-detector
       with:
         shell: ${{ inputs.shell }}
 
-    - uses: giancosta86/aurora-github/actions/detect-project-tech@v3.0.0
+    - uses: giancosta86/aurora-github/actions/detect-project-tech@v4.0.0
       if: ${{ inputs.artifact-descriptor == '' }}
       id: tech-detector
       with:
@@ -39,13 +36,13 @@ runs:
         version="${{ steps.version-detector.outputs.version }}"
         artifactDescriptor="${{ inputs.artifact-descriptor }}"
 
-        echo "🔎Detected version is: '$version'"
-        echo "🔎The requested artifact descriptor is: '$artifactDescriptor'"
+        echo "🔎Detected version: '$version'"
+        echo "🔎Requested artifact descriptor: '$artifactDescriptor'"
 
         if [[ -z "$artifactDescriptor" ]]
         then
           artifactDescriptor="${{ steps.tech-detector.outputs.artifact-descriptor }}"
-          echo "🔮The detected artifact descriptor is: '$artifactDescriptor'"
+          echo "🔮Detected artifact descriptor: '$artifactDescriptor'"
 
           if [[ -z "$artifactDescriptor" ]]
           then
@@ -55,3 +52,7 @@ runs:
         fi
 
         sed -i "s/0\.0\.0/${version}/g" "$artifactDescriptor"
+
+        echo "🔎The artifact descriptor after injecting the version is:"
+        cat "$artifactDescriptor"
+        echo "🔎🔎🔎"

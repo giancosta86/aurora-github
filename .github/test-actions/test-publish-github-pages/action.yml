@@ -1,0 +1,21 @@
+name: Test publish-github-pages
+
+runs:
+  using: composite
+  steps:
+    - name: The test website should be published
+      id: publish-pages
+      uses: ./actions/publish-github-pages
+
+    - name: The URL of the website should be defined
+      shell: bash
+      run: |
+        websiteUrl="${{ steps.publish-pages.outputs.url }}"
+
+        if [[ -n "$websiteUrl" ]]
+        then
+          echo "🌐Website available at: '$websiteUrl'"
+        else
+          echo "❌Website not available!" >&2
+          exit 1
+        fi

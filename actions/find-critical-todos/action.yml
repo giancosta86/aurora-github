@@ -4,25 +4,21 @@ description: Looks for "critical TODOs" - that is, instances of the "TODO!" stri
 inputs:
   source-file-regex:
     description: The PCRE pattern of source file names, for the "find" command.
-    required: true
 
   crash-on-found:
     description: If true, exits with error when critical TODOs are found.
-    required: true
+    default: true
 
   display-lines:
     description: Display the lines with critical TODOs.
-    required: false
     default: true
 
   root-directory:
     description: The root of the directory tree.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 outputs:
@@ -55,12 +51,16 @@ runs:
           exit 1
         fi
 
+    - name: Setup environment variables
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "todoText=TODO!" >> $GITHUB_ENV
+
     - name: Scan the directory tree
       id: scan-directory-tree
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        todoText="TODO!"
         sourceFileRegex="${{ inputs.source-file-regex }}"
         displayLines="${{ inputs.display-lines }}"
         crashOnFound="${{ inputs.crash-on-found }}"
@@ -68,11 +68,11 @@ runs:
         if [[ "$displayLines" == "true" ]]
         then
           quietArg=""
-        else          
+        else
           quietArg="-q"
         fi
 
-        if find . -type f -print0 | grep -zP "${sourceFileRegex}" | xargs -0 grep -Hn $quietArg "$todoText"
+        if find -type f -print0 | grep -zP "${sourceFileRegex}" | xargs -0 grep -Hn $quietArg "$todoText"
         then
           found=true
         else
@@ -83,7 +83,7 @@ runs:
 
         if [[ "$found" == "true" && "$crashOnFound" == "true" ]]
         then
-          echo "Critical TODOs found!" >&2
+          echo "❌Critical TODOs found!" >&2
           exit 1
         else
           echo "✅No critical TODOs found!"

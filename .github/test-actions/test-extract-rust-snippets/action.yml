@@ -60,9 +60,9 @@ runs:
         testFile="readme_test_1.rs"
 
         echo "🔎Inspecting the content of the first test file..."
-        grep 'Alpha' "$testFile"
-        grep 'Beta' "$testFile"
-        grep 'main().unwrap();' "$testFile"
+        grep -q 'Alpha' "$testFile"
+        grep -q 'Beta' "$testFile"
+        grep -q 'main().unwrap();' "$testFile"
         echo "✅First test file OK!"
 
     - name: The second test must contain the expected Rust source code
@@ -72,10 +72,10 @@ runs:
         testFile="readme_test_2.rs"
 
         echo "🔎Inspecting the content of the second test file..."
-        grep 'Gamma' "$testFile"
-        grep 'Delta' "$testFile"
-        grep 'Epsilon' "$testFile"
-        grep 'main().unwrap();' "$testFile"
+        grep -q 'Gamma' "$testFile"
+        grep -q 'Delta' "$testFile"
+        grep -q 'Epsilon' "$testFile"
+        grep -q 'main().unwrap();' "$testFile"
         echo "✅Second test file OK!"
 
     - name: The third test must contain the expected Rust source code
@@ -85,7 +85,7 @@ runs:
         testFile="readme_test_3.rs"
 
         echo "🔎Inspecting the content of the third test file..."
-        grep 'Sigma' "$testFile"
-        grep 'Tau' "$testFile"
-        grep 'main().unwrap();' "$testFile"
+        grep -q 'Sigma' "$testFile"
+        grep -q 'Tau' "$testFile"
+        grep -q 'main().unwrap();' "$testFile"
         echo "✅Third test file OK!"
