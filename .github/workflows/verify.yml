@@ -59,8 +59,7 @@ jobs:
 
   test-extract-rust-snippets:
     runs-on: ubuntu-latest
-    needs:
-      - check-preconditions
+    needs: check-preconditions
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-extract-rust-snippets
@@ -88,13 +87,17 @@ jobs:
     needs:
       - test-artifact-version
       - test-find-critical-todos
+      - test-check-subpath-exports
+      - test-setup-nodejs-context
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-verify-npm-package
 
   test-publish-npm-package:
     runs-on: ubuntu-latest
-    needs: check-preconditions
+    needs:
+      - check-preconditions
+      - test-setup-nodejs-context
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-publish-npm-package
@@ -111,7 +114,7 @@ jobs:
     needs:
       - test-parse-npm-scope
       - test-install-wasm-pack
-      - test-verify-rust-crate      
+      - test-verify-rust-crate
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-verify-rust-wasm
@@ -125,6 +128,50 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-publish-rust-wasm
+
+  test-install-system-packages:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-install-system-packages
+
+  test-inject-subpath-exports:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./actions/install-system-packages
+        with:
+          packages: moreutils
+      - uses: ./.github/test-actions/test-inject-subpath-exports
+
+  test-check-subpath-exports:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./actions/install-system-packages
+        with:
+          packages: moreutils
+      - uses: ./.github/test-actions/test-check-subpath-exports
+
+  test-setup-nodejs-context:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-setup-nodejs-context
+
+  test-publish-github-pages:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-publish-github-pages
 
   verify:
     runs-on: ubuntu-latest
@@ -144,6 +191,11 @@ jobs:
       - test-verify-rust-wasm
       - test-publish-rust-wasm
       - test-extract-rust-snippets
+      - test-install-system-packages
+      - test-inject-subpath-exports
+      - test-check-subpath-exports
+      - test-setup-nodejs-context
+      - test-publish-github-pages
 
     steps:
       - name: Show completion message

@@ -4,7 +4,6 @@ description: Extracts the version from the name of the current Git branch, retur
 inputs:
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 outputs:
@@ -35,15 +34,15 @@ runs:
         ref="${{ github.ref }}"
 
         branch="${headRef:-"$ref"}"
-        echo "🌲Current Git branch: '$branch'" 
+        echo "🌲Current Git branch: '$branch'"
 
         version="$(echo "$branch" | xargs basename | sed 's/^v//')"
-        echo "🦋Detected version: '$version'" 
+        echo "🦋Detected version: '$version'"
 
         escapedVersion=$(echo "$version" | sed 's/\./\\\./g')
-        echo "🧵Escaped version: '$escapedVersion'" 
+        echo "🧵Escaped version: '$escapedVersion'"
 
-        major="$(echo "$version" | cut -d'.' -f1 | cut -d'-' -f1 | cut -d'+' -f1)"        
+        major="$(echo "$version" | cut -d'.' -f1 | cut -d'-' -f1 | cut -d'+' -f1)"
         echo "💎Major component: '$major'"
 
         echo "branch=$branch" >> $GITHUB_OUTPUT

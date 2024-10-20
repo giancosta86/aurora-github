@@ -1,6 +1,6 @@
 # aurora-github
 
-_Elegant pipelines for GitHub Actions_
+_Elegant workflows for GitHub Actions_
 
 ![Schema](docs/schema.png)
 
@@ -19,6 +19,10 @@ In particular, the actions can be grouped by technology:
 - [verify-npm-package](./actions/verify-npm-package/README.md)
 
 - [publish-npm-package](./actions/publish-npm-package/README.md)
+
+- [inject-subpath-exports](./actions/inject-subpath-exports/README.md)
+
+- [check-subpath-exports](./actions/check-subpath-exports/README.md)
 
 ## 🦀Rust 🌐WebAssembly
 
@@ -50,6 +54,8 @@ In particular, the actions can be grouped by technology:
 
 ## 📦NodeJS utilities
 
+- [setup-nodejs-context](./actions/setup-nodejs-context/README.md)
+
 - [parse-npm-scope](./actions/parse-npm-scope/README.md)
 
 ## 🧰General-purpose utilities
@@ -57,6 +63,10 @@ In particular, the actions can be grouped by technology:
 - [find-critical-todos](./actions/find-critical-todos/README.md)
 
 - [detect-project-tech](./actions/detect-project-tech/README.md)
+
+- [install-system-packages](./actions/install-system-packages/README.md)
+
+- [publish-github-pages](./actions/publish-github-pages/README.md)
 
 ## Further references
 

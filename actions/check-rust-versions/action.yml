@@ -4,12 +4,10 @@ description: Displays the versions of the main Rust components, after ensuring t
 inputs:
   project-directory:
     description: The directory containing Cargo.toml.
-    required: false
     default: "."
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -31,7 +29,9 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
+        echo "🦀Rust toolchain versions:"
         cargo --version
         rustc --version
         cargo fmt --version
         cargo clippy --version
+        echo "🦀🦀🦀"

@@ -4,27 +4,34 @@ description: Creates a Git tag and a GitHub release, from a Git branch named acc
 inputs:
   draft-only:
     description: Only draft the release.
-    required: false
     default: false
 
   delete-branch:
     description: Delete the branch after creating the tag.
-    required: false
     default: true
 
   set-major-tag:
     description: Create/move the 'vX' tag to this commit (X=major version)
-    required: false
     default: false
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
   using: composite
   steps:
+    - name: Ensure the action is invoked when merging a pull request
+      shell: ${{ inputs.shell }}
+      run: |
+        inPullRequestMerging="$(jq -r .pull_request.merged "$GITHUB_EVENT_PATH")"
+
+        if [[ "$inPullRequestMerging" != "true" ]]
+        then
+          echo "❌This action can only be invoked when merging a pull request!" >&2
+          exit 1
+        fi
+
     - name: Validate inputs
       shell: ${{ inputs.shell }}
       run: |
@@ -48,7 +55,7 @@ runs:
 
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-version@v3.0.0
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v4.0.0
       with:
         shell: ${{ inputs.shell }}
 
@@ -56,22 +63,24 @@ runs:
       shell: ${{ inputs.shell }}
       run: |
         branch="${{ steps.detect-branch-version.outputs.branch }}"
+        defaultBranch="${{ github.event.repository.default_branch }}"
         version="${{ steps.detect-branch-version.outputs.version }}"
         major="${{ steps.detect-branch-version.outputs.major }}"
-        defaultBranch="${{ github.event.repository.default_branch }}"
         setMajorTag=${{ inputs.set-major-tag == 'true' }}
 
-        echo "🌲It seems your default branch is: '$defaultBranch'"
-
-        if [[ -z "$branch" ]]
+        if [[ -n "$branch" ]]
         then
+          echo "🌲Current branch: '$branch'"
+        else
           echo "❌The current Git branch could not be detected!" >&2
           exit 1
         fi
 
+        echo "🌲Default repository branch: '$defaultBranch'"
+
         if [[ "$branch" == "$defaultBranch" ]]
         then
-          echo "❌This action cannot be run from the default branch ('$defaultBranch')!" >&2
+          echo "❌This action cannot be run from the default branch!" >&2
           exit 1
         fi
 
@@ -83,9 +92,92 @@ runs:
 
         if [[ "$setMajorTag" == "true" && -z "$major" ]]
         then
-          echo "❌The major version could not be detected from the Git branch or the version!" >&2
+          echo "❌The major version could not be detected!" >&2
           exit 1
         fi
+
+    - name: Generate pull request description
+      id: generate-pull-request-description
+      shell: ${{ inputs.shell }}
+      run: |
+        pullRequestTitle="$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")"
+        if [[ -z "$pullRequestTitle" ]]
+        then
+          echo "❌Cannot detect the pull request title!" >&2
+          exit 1
+        fi
+
+        pullRequestId="$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")"
+        if [[ -z "$pullRequestId" ]]
+        then
+          echo "❌Cannot detect the pull request id!" >&2
+          exit 1
+        fi
+
+        pullRequestDescription="**$pullRequestTitle** (#$pullRequestId)"
+        echo "description=$pullRequestDescription" >> $GITHUB_OUTPUT
+
+    - name: Detect commit list
+      id: detect-commit-list
+      shell: ${{ inputs.shell }}
+      run: |
+        baseCommit="${{ github.event.pull_request.base.sha }}"
+        if [[ -n "$baseCommit" ]]
+        then
+          echo "📤Base commit: '$baseCommit'"
+        else
+          echo "❌Cannot detect the base commit!" >&2
+          exit 1
+        fi
+
+        headCommit="${{ github.event.pull_request.head.sha }}"
+        if [[ -n "$headCommit" ]]
+        then
+          echo "📥Head commit: '$headCommit'"
+        else
+          echo "❌Cannot detect the head commit!" >&2
+          exit 1
+        fi
+
+        git fetch origin "$baseCommit" "$headCommit"
+
+        commitList="$(git log --reverse --pretty=format:'%s' "$baseCommit".."$headCommit")"
+
+        {
+          echo 'commit-list<<GIANCOSTA86_RESERVED_EOF'
+          echo -e "$commitList"
+          echo GIANCOSTA86_RESERVED_EOF
+        } >> $GITHUB_OUTPUT
+
+    - name: Generate release notes
+      id: generate-release-notes
+      shell: ${{ inputs.shell }}
+      run: |
+        pullRequestDescription="${{ steps.generate-pull-request-description.outputs.description }}"
+        echo "🔎Pull request description: '$pullRequestDescription'"
+
+        commitList="${{ steps.detect-commit-list.outputs.commit-list }}"
+        echo "🔎Commit list:"
+        echo -e "$commitList"
+        echo "🔎🔎🔎"
+
+        commitsWithBulletPoints="$(echo "$commitList" | perl -pe 's/^(?!\* )/* /')"
+
+        commitsWithEmptyLines="$(echo "$commitsWithBulletPoints" | perl -pe 's/(.+)\n/$1\n\n/g')"
+
+        formattedCommits="$commitsWithEmptyLines"
+
+        echo "🔎Formatted commits:"
+        echo -e "$formattedCommits"
+        echo "🔎🔎🔎"
+
+        releaseNotes="${pullRequestDescription}\n\n${formattedCommits}"
+
+        {
+          echo 'release-notes<<GIANCOSTA86_RESERVED_EOF'
+          echo -e "$releaseNotes"
+          echo GIANCOSTA86_RESERVED_EOF
+        } >> $GITHUB_OUTPUT
 
     - name: Delete Git branch
       if: ${{ inputs.delete-branch == 'true' }}
@@ -118,21 +210,26 @@ runs:
       run: |
         draftOnly="${{ inputs.draft-only }}"
         version="${{ steps.detect-branch-version.outputs.version }}"
-        tag="${{ steps.create-git-tag.outputs.tag }}" 
+        tag="${{ steps.create-git-tag.outputs.tag }}"
+
+        releaseNotes="${{ steps.generate-release-notes.outputs.release-notes }}"
+
+        echo "🔎The detected release notes for the release are:"
+        echo -e "$releaseNotes"
+        echo "🔎🔎🔎"
 
         repoBasename="$(basename "$GITHUB_REPOSITORY")"
-        releaseTitle="$repoBasename $version"        
-
-        releaseRecap="release '$releaseTitle' from tag '$tag'"
+        releaseTitle="$repoBasename $version"
+        releaseRecapMessage="release '$releaseTitle' from tag '$tag'"
 
         if [[ "$draftOnly" = true ]]
         then
-          echo "📝Drafting $releaseRecap..."
-          gh release create "$tag" --title "$releaseTitle" --draft
+          echo "📝Drafting $releaseRecapMessage..."
+          gh release create "$tag" --title "$releaseTitle" --notes "$releaseNotes" --draft
           echo "📝Release drafted!"
-        else 
-          echo "🌟Creating $releaseRecap..."
-          gh release create "$tag" --title "$releaseTitle"
+        else
+          echo "🌟Creating $releaseRecapMessage..."
+          gh release create "$tag" --title "$releaseTitle" --notes "$releaseNotes"
           echo "🌟Release created!"
         fi
       env:

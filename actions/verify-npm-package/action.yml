@@ -2,34 +2,40 @@ name: Verify npm package
 description: Verifies the source files of a NodeJS package - by running its 'verify' script within the 'scripts' section of 'package.json'.
 
 inputs:
+  registry-url:
+    description: The URL of the npm registry.
+    default: https://registry.npmjs.org
+
   frozen-lockfile:
-    description: Fails if 'pnpm-lock.yaml' is missing or outdated.
-    required: false
+    description: Fail if "pnpm-lock.yaml" is missing or outdated.
     default: true
 
   crash-on-critical-todos:
     description: Crash the workflow if critical TODOs are found.
-    required: false
     default: true
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    required: false
     default: '\.(c|m)?(j|t)sx?$'
 
   check-artifact-version:
     description: Ensure the version in package.json matches the branch name.
-    required: false
+    default: true
+
+  enforce-esm:
+    description: Verify that the "type" field is "module" - to create an ESM package.
+    default: true
+
+  check-subpath-exports:
+    description: Run check-subpath-exports after the "verify" package script.
     default: true
 
   project-directory:
     description: The directory containing package.json.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -37,8 +43,14 @@ runs:
   steps:
     - name: Validate inputs
       shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.root-directory }}
+      working-directory: ${{ inputs.project-directory }}
       run: |
+        if [[ -z "${{ inputs.registry-url }}" ]]
+        then
+          echo "❌Missing action input: 'registry-url'!" >&2
+          exit 1
+        fi
+
         if [[ -z "${{ inputs.frozen-lockfile }}" ]]
         then
           echo "❌Missing action input: 'frozen-lockfile'!" >&2
@@ -62,16 +74,46 @@ runs:
           echo "❌Missing action input: 'check-artifact-version'!" >&2
           exit 1
         fi
-    
+
+        if [[ -z "${{ inputs.enforce-esm }}" ]]
+        then
+          echo "❌Missing action input: 'enforce-esm'!" >&2
+          exit 1
+        fi
+
+        if [[ ! -f "package.json" ]]
+        then
+          echo "❌The package.json descriptor file does not exist!!" >&2
+          exit 1
+        fi
+
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v3.0.0
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
+    - name: Enforce ESM
+      if: ${{ inputs.enforce-esm == 'true' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        packageType="$(jq -r .type package.json)"
+        expectedType="module"
+
+        echo "🔎Detected package type: '$packageType'"
+
+        if [[ "$packageType" == "$expectedType" ]]
+        then
+          echo "✅This npm package is based on ESM!"
+        else
+          echo "❌The package type must be '$expectedType'!" >&2
+          exit 1
+        fi
+
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v3.0.0
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v4.0.0
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
@@ -79,30 +121,29 @@ runs:
         root-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
-    - name: Setup NodeJS
-      uses: actions/setup-node@v4
+    - name: Setup NodeJS context
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v4.0.0
       with:
-        node-version-file: ${{ inputs.project-directory }}/.nvmrc
+        registry-url: ${{ inputs.registry-url }}
+        frozen-lockfile: ${{ inputs.frozen-lockfile }}
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 9
-
-    - name: Install the dependencies
+    - name: Run the 'verify' script from package.json
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        frozenLockfile="${{ inputs.frozen-lockfile }}"
+        echo "🔎Now running the 'verify' package.json script..."
+        pnpm verify
+        echo "✅'verify' script successful!"
 
-        if [[ "$frozenLockfile" == "true" ]]
-        then
-          pnpm install --frozen-lockfile
-        else
-          pnpm install --no-frozen-lockfile
-        fi
+    - name: Check subpath exports
+      if: ${{ inputs.check-subpath-exports == 'true' }}
+      uses: giancosta86/aurora-github/actions/check-subpath-exports@v4.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
 
-    - name: Verify the package
+    - name: Print confirmation message
       shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: pnpm verify
+      run: echo "✅npm package source files verified!"

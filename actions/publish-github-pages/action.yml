@@ -1,0 +1,39 @@
+name: Publish GitHub Pages
+description: Publishes a directory as the GitHub Pages website for the current repository.
+
+inputs:
+  source-directory:
+    description: Relative directory containing the website.
+    default: website
+
+  shell:
+    description: The shell used to run commands.
+    default: bash
+
+outputs:
+  url:
+    description: The URL of the published website.
+    value: ${{ steps.publish-pages.outputs.page_url }}
+
+runs:
+  using: composite
+  steps:
+    - name: Print description message
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "📦Now publishing the '${{ inputs.source-directory }}' directory to GitHub Pages..."
+
+    - name: Upload website artifacts
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ${{ inputs.source-directory }}
+
+    - name: Publish website via GitHub Pages
+      id: publish-pages
+      uses: actions/deploy-pages@v4
+
+    - name: Print confirmation message
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "✅Publication to GitHub Pages successful!"
+        echo "🌐Website: ${{ steps.publish-pages.outputs.page_url }}"

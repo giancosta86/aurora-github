@@ -1,9 +1,11 @@
 {
   "name": "npm-package",
   "version": "0.0.0",
+  "type": "module",
   "description": "Toy npm package",
   "scripts": {
     "test": "echo '✅NodeJS tests simulated!'",
     "verify": "pnpm test"
-  }
+  },
+  "private": true
 }

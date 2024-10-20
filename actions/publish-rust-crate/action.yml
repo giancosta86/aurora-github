@@ -4,26 +4,21 @@ description: Publishes a Rust crate to crates.io, with all of its features enabl
 inputs:
   dry-run:
     description: Run a simulated publication via --dry-run.
-    required: false
     default: false
 
   cargo-token:
     description: The secret token for publishing to crates.io.
-    required: true
 
   document-all-features:
     description: Enable Rustdoc for all features.
-    required: false
     default: true
 
   project-directory:
     description: The directory containing Cargo.toml.
-    required: false
     default: .
 
   shell:
     description: The shell used to run commands.
-    required: false
     default: bash
 
 runs:
@@ -37,12 +32,12 @@ runs:
           echo "❌Missing action input: 'dry-run'!" >&2
           exit 1
         fi
-        
+
         if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.cargo-token }}" ]]
         then
           echo "❌Missing action input: 'cargo-token'!" >&2
           exit 1
-        fi        
+        fi
 
         if [[ -z "${{ inputs.document-all-features }}" ]]
         then
@@ -67,6 +62,7 @@ runs:
       run: |
         echo "The content of your 🦀Cargo.toml just before publication is:"
         cat Cargo.toml
+        echo "🦀🦀🦀"
 
     - name: Publish to crates.io
       shell: ${{ inputs.shell }}
@@ -82,3 +78,8 @@ runs:
         fi
       env:
         CARGO_REGISTRY_TOKEN: ${{ inputs.cargo-token }}
+
+    - name: Print confirmation message
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "✅Publication to crates.io successful!"
