@@ -1,5 +1,5 @@
-name: Publish to crates.io
-description: Publishes a Rust crate to crates.io, with all of its features enabled.
+name: Publish Rust crate
+description: Publishes a Rust crate - by default, to crates.io - with all of its features enabled.
 
 inputs:
   dry-run:
@@ -7,7 +7,7 @@ inputs:
     default: false
 
   cargo-token:
-    description: The secret token for publishing to crates.io.
+    description: The secret token for publishing to the registry.
 
   document-all-features:
     description: Enable Rustdoc for all features.
@@ -64,7 +64,7 @@ runs:
         cat Cargo.toml
         echo "🦀🦀🦀"
 
-    - name: Publish to crates.io
+    - name: Publish the crate
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -82,4 +82,4 @@ runs:
     - name: Print confirmation message
       shell: ${{ inputs.shell }}
       run: |
-        echo "✅Publication to crates.io successful!"
+        echo "✅Publication of the 🦀Rust crate successful!"
