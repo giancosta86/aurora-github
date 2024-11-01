@@ -68,6 +68,8 @@ In particular, the actions can be grouped by technology:
 
 - [publish-github-pages](./actions/publish-github-pages/README.md)
 
+- [run-custom-tests](./run-custom-tests/README.md)
+
 ## Further references
 
 - [GitHub actions](https://docs.github.com/en/actions)
