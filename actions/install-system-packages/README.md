@@ -6,7 +6,7 @@ Installs software using the platform's package manager.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/install-system-packages@v4
+  - uses: giancosta86/aurora-github/actions/install-system-packages@v5
     with:
       packages: moreutils
 ```
