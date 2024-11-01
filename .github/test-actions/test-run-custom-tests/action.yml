@@ -1,0 +1,75 @@
+name: Test run-custom-tests
+
+runs:
+  using: composite
+  steps:
+    - name: Test the "script" strategy
+      uses: ./actions/run-custom-tests
+      with:
+        root-directory: tests/custom/script
+
+    - name: The Bash script should have run correctly
+      shell: bash
+      working-directory: tests/custom/script
+      run: |
+        generatedContent="$(cat generated-file.txt)"
+
+        if [[ "$generatedContent" == "Bash-generated content" ]]
+        then
+          echo "✅The Bash test script completed perfectly!"
+        else
+          echo "❌Issues with the Bash test script!" >&2
+          exit 1
+        fi
+
+    - name: Test the "nodejs" strategy
+      uses: ./actions/run-custom-tests
+      with:
+        root-directory: tests/custom/nodejs
+        dedicated-env: true
+
+    - name: The NodeJS script should have run correctly
+      shell: bash
+      working-directory: tests/custom/nodejs/
+      run: |
+        generatedContent="$(cat generated-file.txt)"
+
+        if [[ "$generatedContent" == "NodeJS-generated content" ]]
+        then
+          echo "✅The NodeJS test script completed perfectly!"
+        else
+          echo "❌Issues with the NodeJS test script!" >&2
+          exit 1
+        fi
+
+    - name: Test the "rust" strategy
+      uses: ./actions/run-custom-tests
+      with:
+        root-directory: tests/custom/rust
+        dedicated-env: true
+
+    - name: The Rust tests should have run correctly
+      shell: bash
+      working-directory: tests/custom/rust/
+      run: |
+        generatedContent="$(cat generated-file.txt)"
+
+        if [[ "$generatedContent" == "Rust-generated content" ]]
+        then
+          echo "✅The Rust test script completed perfectly!"
+        else
+          echo "❌Issues with the Rust test script!" >&2
+          exit 1
+        fi
+
+    - name: Run tests on inexisting directory
+      uses: ./actions/run-custom-tests
+      with:
+        root-directory: tests/custom/TOTALLY_INEXISTING
+        optional: true
+
+    - name: Run tests on directory with no tests
+      uses: ./actions/run-custom-tests
+      with:
+        root-directory: tests/custom
+        optional: true

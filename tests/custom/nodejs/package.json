@@ -1,0 +1,7 @@
+{
+  "name": "nodejs-test",
+  "scripts": {
+    "verify": "echo 'NodeJS-generated content' > generated-file.txt"
+  },
+  "private": true
+}

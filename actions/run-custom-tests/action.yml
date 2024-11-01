@@ -1,0 +1,148 @@
+name: Run custom tests
+description: Executes arbitrary tests within a given directory; it runs a shell script by default, but can also run pnpm (for NodeJS) or cargo (for Rust).
+
+inputs:
+  optional:
+    description: Exit with no error if the tests cannot be run.
+    default: false
+
+  script-file:
+    description: Relative path to the script file.
+    default: verify.sh
+
+  script-shell:
+    description: The shell used to run script-file.
+    default: bash
+
+  dedicated-env:
+    description: Set up a context-specific, dedicated environment.
+    default: false
+
+  registry-url:
+    description: The URL of the npm registry.
+    default: https://registry.npmjs.org
+
+  frozen-lockfile:
+    description: Fail if "pnpm-lock.yaml" is missing or outdated.
+    default: true
+
+  root-directory:
+    description: The directory containing the tests.
+
+  shell:
+    description: The shell used to run commands.
+    default: bash
+
+runs:
+  using: composite
+  steps:
+    - name: Detect directory existence
+      shell: ${{ inputs.shell }}
+      run: |
+        if [[ ! -d "${{ inputs.root-directory }}" ]]
+        then
+          if [[ "${{ inputs.optional }}" == "true" ]]
+          then
+            echo "💭Skipping optional tests in missing directory: '${{ inputs.root-directory }}'"
+            echo "strategy=exit" >> $GITHUB_ENV
+            exit 0
+          else
+            echo "❌Cannot run custom tests in missing directory: '${{ inputs.root-directory }}'" >&2
+            exit 1
+          fi
+        fi
+
+        echo "strategy=detect" >> $GITHUB_ENV
+
+    - name: Validate inputs
+      if: ${{ env.strategy == 'detect' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        echo "🔬Detecting custom test strategy in directory '${{ inputs.root-directory }}'..."
+
+        scriptFile="${{ inputs.script-file }}"
+
+        if [[ -n "$scriptFile" && -f "$scriptFile" ]]
+        then
+          echo "🐚Custom test script '$scriptFile' found!"
+          strategy="script"
+        elif [[ -f "package.json" ]]
+        then
+          echo "📦package.json file found!"
+          strategy="nodejs"
+        elif [[ -f "Cargo.toml" ]]
+        then
+          echo "🦀Cargo.toml file found!"
+          strategy="rust"
+        else
+          if [[ "${{ inputs.optional }}" == "true" ]]
+          then
+            echo "💭No supported strategy detected for the optional custom tests"
+            strategy="exit"
+          else
+            echo "❌Cannot run custom tests: no supported test strategy could be detected!" >&2
+            exit 1
+          fi
+        fi
+
+        echo "🔎Test strategy: '$strategy'"
+
+        echo "strategy=$strategy" >> $GITHUB_ENV
+
+    - name: Run script
+      if: ${{ env.strategy == 'script' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        echo "🐚Now running the custom script '${{ inputs.script-file }}'..."
+
+        "${{ inputs.script-shell }}" "${{ inputs.script-file }}"
+
+    - name: Setup NodeJS context
+      if: ${{ env.strategy == 'nodejs' && inputs.dedicated-env == 'true' }}
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5.0.0
+      with:
+        registry-url: ${{ inputs.registry-url }}
+        frozen-lockfile: ${{ inputs.frozen-lockfile }}
+        project-directory: ${{ inputs.root-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Just install NodeJS dependencies
+      if: ${{ env.strategy == 'nodejs' && inputs.dedicated-env != 'true' }}
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5.0.0
+      with:
+        setup-nodejs: false
+        install-pnpm: false
+        registry-url: ${{ inputs.registry-url }}
+        frozen-lockfile: ${{ inputs.frozen-lockfile }}
+        project-directory: ${{ inputs.root-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Run the 'verify' script from package.json
+      if: ${{ env.strategy == 'nodejs' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        echo "📦Now running the 'verify' script from package.json..."
+        pnpm verify
+
+    - name: Check Rust versions
+      if: ${{ env.strategy == 'rust' && inputs.dedicated-env == 'true' }}
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v5.0.0
+      with:
+        project-directory: ${{ inputs.root-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Run tests via Cargo
+      if: ${{ env.strategy == 'rust' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        echo "🦀Running Rust tests with all the features enabled..."
+        cargo test --all-features
+
+    - name: Print confirmation message
+      if: ${{ env.strategy != 'exit' }}
+      shell: ${{ inputs.shell }}
+      run: echo "✅Custom tests in directory '${{ inputs.root-directory }}' run successfully!"
