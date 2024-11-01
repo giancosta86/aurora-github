@@ -80,15 +80,6 @@ runs:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
-    - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v4.0.0
-      with:
-        source-file-regex: ${{ inputs.source-file-regex }}
-        crash-on-found: ${{ inputs.crash-on-critical-todos }}
-        display-lines: true
-        root-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
-
     - name: Check format style
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
@@ -153,6 +144,15 @@ runs:
         echo "📚Running doctests with all the features enabled..."
         RUSTDOCFLAGS="-D warnings" cargo doc --all-features
         echo "✅Doctests with all the features OK!"
+
+    - name: Check for critical TODOs
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v4.0.0
+      with:
+        source-file-regex: ${{ inputs.source-file-regex }}
+        crash-on-found: ${{ inputs.crash-on-critical-todos }}
+        display-lines: true
+        root-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
 
     - name: Print confirmation message
       shell: ${{ inputs.shell }}

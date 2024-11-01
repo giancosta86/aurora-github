@@ -31,13 +31,13 @@ steps:
 
 1. Ensure that the package is based on **ESM** - via the `"type": "module"` attribute in `package.json`; this default behaviour can be disabled.
 
-1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
-
 1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 1. Run `pnpm verify` - so that the related script in `package.json` can decide what to do.
 
 1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) to verify that the `exports` field in `package.json` actually references existing files.
+
+1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
 ## Requirements
 
