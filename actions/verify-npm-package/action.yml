@@ -112,15 +112,6 @@ runs:
           exit 1
         fi
 
-    - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v4.0.0
-      with:
-        source-file-regex: ${{ inputs.source-file-regex }}
-        crash-on-found: ${{ inputs.crash-on-critical-todos }}
-        display-lines: true
-        root-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
-
     - name: Setup NodeJS context
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v4.0.0
       with:
@@ -142,6 +133,15 @@ runs:
       uses: giancosta86/aurora-github/actions/check-subpath-exports@v4.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Check for critical TODOs
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v4.0.0
+      with:
+        source-file-regex: ${{ inputs.source-file-regex }}
+        crash-on-found: ${{ inputs.crash-on-critical-todos }}
+        display-lines: true
+        root-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Print confirmation message

@@ -21,8 +21,6 @@ steps:
 
 1. Display the version info for the main components of the Rust toolchain - verifying the existence of `rust-toolchain.toml`.
 
-1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
-
 1. Check the style of the Rust source files - via `cargo fmt`.
 
 1. Perform lint checks via `cargo clippy`, enabling all features and targets. All warnings are considered errors. This step can be skipped.
@@ -34,6 +32,8 @@ steps:
 1. Run `cargo test` with all the project features _enabled_.
 
 1. Generate the documentation, with all the project features _enabled_. All warnings are considered errors. This step can be skipped.
+
+1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
 ## Requirements
 
