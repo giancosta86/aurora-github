@@ -30,6 +30,10 @@ inputs:
     description: Run check-subpath-exports after the "verify" package script.
     default: true
 
+  custom-test-env:
+    description: Create a dedicated environment for custom tests.
+    default: false
+
   project-directory:
     description: The directory containing package.json.
     default: .
@@ -127,6 +131,16 @@ runs:
         echo "🔎Now running the 'verify' package.json script..."
         pnpm verify
         echo "✅'verify' script successful!"
+
+    - name: Run optional custom tests from the 'tests' directory
+      uses: giancosta86/aurora-github/actions/run-custom-tests@v5.0.0
+      with:
+        optional: true
+        dedicated-env: ${{ inputs.custom-test-env }}
+        registry-url: ${{ inputs.registry-url }}
+        frozen-lockfile: ${{ inputs.frozen-lockfile }}
+        root-directory: ${{ inputs.project-directory }}/tests
+        shell: ${{ inputs.shell }}
 
     - name: Check subpath exports
       if: ${{ inputs.check-subpath-exports == 'true' }}
