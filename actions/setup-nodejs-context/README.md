@@ -1,6 +1,6 @@
 # setup-nodejs-context
 
-Installs a specific **NodeJS** version, [pnpm](https://pnpm.io/), and the dependencies listed in **package.json**.
+Sets up a specific **NodeJS** version and installs [pnpm](https://pnpm.io/) as well as the dependencies listed in **package.json**; any of these steps can be skipped by disabling the related flag.
 
 ## Example
 
@@ -17,21 +17,24 @@ steps:
 
 The project directory must contain:
 
-- the `package.json` descriptor
+- the `.nvmrc` file, containing the expected NodeJS version, as expected by [nvm](https://github.com/nvm-sh/nvm) - if `setup-nodejs` is set to **true**
 
-- the `.nvmrc` file, containing the expected NodeJS version, as expected by [nvm](https://github.com/nvm-sh/nvm)
+- the **package.json** descriptor, if `install-dependencies` is set to **true**
 
-- an updated `pnpm-lock.yaml` file, if `frozen-lockfile` is enabled
+- an updated `pnpm-lock.yaml` file, if both `install-dependencies` and `frozen-lockfile` are enabled
 
 ## Inputs 📥
 
-|        Name         |    Type     |                   Description                   |      Default value      |
-| :-----------------: | :---------: | :---------------------------------------------: | :---------------------: |
-|   `pnpm-version`    | **string**  |           The version of pnpm to use            |          **9**          |
-|   `registry-url`    | **string**  |           The URL of the npm registry           | _Official npm registry_ |
-|  `frozen-lockfile`  | **boolean** | Fail if "pnpm-lock.yaml" is missing or outdated |        **true**         |
-| `project-directory` | **string**  |     The directory containing `package.json`     |          **.**          |
-|       `shell`       | **string**  |         The shell used to run commands          |        **bash**         |
+|          Name          |    Type     |                   Description                    |      Default value      |
+| :--------------------: | :---------: | :----------------------------------------------: | :---------------------: |
+|     `setup-nodejs`     | **boolean** |       Set up the requested NodeJS version        |        **true**         |
+|     `install-pnpm`     | **boolean** |        Install the requested pnpm version        |        **true**         |
+| `install-dependencies` | **boolean** | Install the dependencies for the current package |        **true**         |
+|     `pnpm-version`     | **string**  |            The version of pnpm to use            |          **9**          |
+|     `registry-url`     | **string**  |           The URL of the npm registry            | _Official npm registry_ |
+|   `frozen-lockfile`    | **boolean** | Fail if "pnpm-lock.yaml" is missing or outdated  |        **true**         |
+|  `project-directory`   | **string**  |     The directory containing `package.json`      |          **.**          |
+|        `shell`         | **string**  |          The shell used to run commands          |        **bash**         |
 
 ## Further references
 

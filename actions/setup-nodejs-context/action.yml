@@ -1,7 +1,19 @@
 name: Setup a NodeJS context
-description: Installs a specific NodeJS version, pnpm, and the dependencies listed in package.json.
+description: Sets up a specific NodeJS version and installs pnpm as well as the dependencies listed in package.json; any of these steps can be skipped by disabling the related flag.
 
 inputs:
+  setup-nodejs:
+    description: Set up the requested NodeJS version.
+    default: true
+
+  install-pnpm:
+    description: Install the requested pnpm version.
+    default: true
+
+  install-dependencies:
+    description: Install the dependencies for the current package.
+    default: true
+
   pnpm-version:
     description: The version of pnpm to use.
     default: 9
@@ -29,60 +41,100 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.pnpm-version }}" ]]
+        if [[ -z "${{ inputs.setup-nodejs }}" ]]
         then
-          echo "❌Missing action input: 'pnpm-version'!" >&2
+          echo "❌Missing action input: 'setup-nodejs'!" >&2
           exit 1
         fi
 
-        if [[ -z "${{ inputs.registry-url }}" ]]
+        if [[ "${{ inputs.setup-nodejs }}" == "true" ]]
         then
-          echo "❌Missing action input: 'registry-url'!" >&2
+          if [[ -z "${{ inputs.registry-url }}" ]]
+          then
+            echo "❌Missing action input: 'registry-url'!" >&2
+            exit 1
+          fi
+
+          if [[ ! -f ".nvmrc" ]]
+          then
+            echo "❌The .nvmrc version file does not exist!!" >&2
+            exit 1
+          fi
+        fi
+
+        if [[ -z "${{ inputs.install-pnpm }}" ]]
+        then
+          echo "❌Missing action input: 'install-pnpm'!" >&2
           exit 1
         fi
 
-        if [[ -z "${{ inputs.frozen-lockfile }}" ]]
+        if [[ "${{ inputs.install-pnpm }}" == "true" ]]
         then
-          echo "❌Missing action input: 'frozen-lockfile'!" >&2
+          if [[ -z "${{ inputs.pnpm-version }}" ]]
+          then
+            echo "❌Missing action input: 'pnpm-version'!" >&2
+            exit 1
+          fi
+        fi
+
+        if [[ -z "${{ inputs.install-dependencies }}" ]]
+        then
+          echo "❌Missing action input: 'install-dependencies'!" >&2
           exit 1
         fi
 
-        if [[ ! -f "package.json" ]]
+        if [[ "${{ inputs.install-dependencies }}" == "true" ]]
         then
-          echo "❌The package.json descriptor file does not exist!!" >&2
-          exit 1
+          if [[ -z "${{ inputs.frozen-lockfile }}" ]]
+          then
+            echo "❌Missing action input: 'frozen-lockfile'!" >&2
+            exit 1
+          fi
+
+          if [[ ! -f "package.json" ]]
+          then
+            echo "❌The package.json descriptor file does not exist!!" >&2
+            exit 1
+          fi
         fi
 
-        if [[ ! -f ".nvmrc" ]]
-        then
-          echo "❌The .nvmrc version file does not exist!!" >&2
-          exit 1
-        fi
+    - name: Print welcome message
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "💻Setting up NodeJS context in '${{ inputs.project-directory }}'..."
 
     - name: Setup NodeJS
+      if: ${{ inputs.setup-nodejs == 'true' }}
       uses: actions/setup-node@v4
       with:
         node-version-file: ${{ inputs.project-directory }}/.nvmrc
         registry-url: ${{ inputs.registry-url }}
 
+    - name: Print NodeJS version
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "🔎node version: $(node --version)"
+
     - name: Install pnpm
+      if: ${{ inputs.install-pnpm == 'true' }}
       uses: pnpm/action-setup@v4
       with:
         version: ${{ inputs.pnpm-version }}
 
-    - name: Print versions
-      shell: ${{ inputs.shell }}
-      run: |
-        echo "🔎node version: $(node --version)"
-        echo "📦pnpm version: $(pnpm --version)"
-
-    - name: Install the dependencies
+    - name: Print pnpm version
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        frozenLockfile="${{ inputs.frozen-lockfile }}"
+        echo "📦pnpm version: $(pnpm --version)"
 
-        if [[ "$frozenLockfile" == "true" ]]
+    - name: Install the dependencies
+      if: ${{ inputs.install-dependencies == 'true' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ "${{ inputs.frozen-lockfile }}" == "true" ]]
         then
           echo "🧊Installing dependencies with frozen lockfile..."
           pnpm install --frozen-lockfile
@@ -95,5 +147,6 @@ runs:
 
     - name: Print confirmation message
       shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "✅NodeJS context ready in '${{ inputs.project-directory }}'!"
+        echo "✅NodeJS context ready!"
