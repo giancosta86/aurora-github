@@ -32,7 +32,6 @@ runs:
           exit 1
         fi
 
-
     - name: The expected pnpm version should be used
       shell: bash
       run: |
@@ -49,3 +48,15 @@ runs:
           exit 1
         fi
 
+    - name: Introduce the parameterless tests
+      shell: bash
+      run: |
+        echo "🕵Now enforcing the NodeJS context with all the steps disabled..."
+
+    - name: Call the action with all the flags disabled
+      uses: ./actions/setup-nodejs-context
+      with:
+        project-directory: ./tests/npm-package
+        setup-nodejs: false
+        install-pnpm: false
+        install-dependencies: false
