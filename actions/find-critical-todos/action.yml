@@ -13,6 +13,10 @@ inputs:
     description: Display the lines with critical TODOs.
     default: true
 
+  verbose:
+    description: Show details such as the filterable paths.
+    default: false
+
   root-directory:
     description: The root of the directory tree.
     default: .
@@ -51,6 +55,12 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.verbose }}" ]]
+        then
+          echo "❌Missing action input: 'verbose'!" >&2
+          exit 1
+        fi
+
     - name: Setup environment variables
       shell: ${{ inputs.shell }}
       run: |
@@ -70,6 +80,13 @@ runs:
           quietArg=""
         else
           quietArg="-q"
+        fi
+
+        if [[ "${{ inputs.verbose }}" == "true" ]]
+        then
+          echo "🔎File list to filter when looking for TODOs:"
+          find -type f -print
+          echo "🔎🔎🔎"
         fi
 
         if find -type f -print0 | grep -zP "${sourceFileRegex}" | xargs -0 grep -Hn $quietArg "$todoText"
