@@ -9,7 +9,7 @@ inputs:
     description: The npm package scope or "<ROOT>".
 
   client-tests-directory:
-    description: Relative directory containing the NodeJS-based client tests.
+    description: Relative directory containing the client tests.
     default: client-tests
 
   wasm-target:
@@ -40,6 +40,10 @@ inputs:
     description: The URL of the npm registry.
     default: https://registry.npmjs.org
 
+  frozen-lockfile:
+    description: Fail if "pnpm-lock.yaml" is missing or outdated.
+    default: true
+
   project-directory:
     description: The directory containing Cargo.toml.
     default: .
@@ -58,6 +62,12 @@ runs:
         if [[ -z "${{ inputs.wasm-pack-version }}" ]]
         then
           echo "❌Missing action input: 'wasm-pack-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.client-tests-directory }}" ]]
+        then
+          echo "❌Missing action input: 'client-tests-directory'!" >&2
           exit 1
         fi
 
@@ -94,6 +104,18 @@ runs:
         if [[ -z "${{ inputs.check-artifact-version }}" ]]
         then
           echo "❌Missing action input: 'check-artifact-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.registry-url }}" ]]
+        then
+          echo "❌Missing action input: 'registry-url'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.frozen-lockfile }}" ]]
+        then
+          echo "❌Missing action input: 'frozen-lockfile'!" >&2
           exit 1
         fi
 
@@ -141,36 +163,15 @@ runs:
           wasm-pack build --dev --target "${{ inputs.wasm-target }}" --scope "$scope"
         fi
 
-    - name: Ensure test client directory exists
-      if: ${{ inputs.client-tests-directory != '' }}
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        clientTestsDirectory="${{ inputs.client-tests-directory }}"
-
-        if [[ ! -d "$clientTestsDirectory" ]]
-        then
-          echo "❌The client test directory '$clientTestsDirectory' does not exist!" >&2
-          exit 1
-        fi
-
-    - name: Setup NodeJS context
-      if: ${{ inputs.client-tests-directory != '' }}
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5.0.0
+    - name: Run client tests
+      uses: giancosta86/aurora-github/actions/run-custom-tests@v5.0.0
       with:
+        optional: true
+        dedicated-env: true
         registry-url: ${{ inputs.registry-url }}
-        frozen-lockfile: true
-        project-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
+        frozen-lockfile: ${{ inputs.frozen-lockfile }}
+        root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
         shell: ${{ inputs.shell }}
-
-    - name: Perform client-side tests
-      if: ${{ inputs.client-tests-directory != '' }}
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
-      run: |
-        echo "📦Running client-side tests..."
-        pnpm verify
-        echo "✅client-side tests OK!"
 
     - name: Print confirmation message
       shell: ${{ inputs.shell }}
