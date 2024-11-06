@@ -8,6 +8,7 @@ runs:
         root-directory: ./tests/unknown-tech/src
         source-file-regex: \.(js|txt)$
         crash-on-found: false
+        verbose: true
 
     - name: Critical TODOs should be found when existing
       shell: bash
@@ -25,6 +26,20 @@ runs:
     - id: find-critical-todos-where-missing
       uses: ./actions/find-critical-todos
       with:
-        root-directory: ./tests/rust-crate/src
+        root-directory: ./tests/custom
         source-file-regex: .*
         crash-on-found: true
+        verbose: true
+
+    - name: Critical TODOs should not be found where they are missing
+      shell: bash
+      run: |
+        found="${{ steps.find-critical-todos-where-missing.outputs.found }}"
+
+        if [[ "$found" == "true" ]]
+        then
+          echo "❌Critical TODOs have been found where they should be missing!" >&2
+          exit 1
+        else
+          echo "✅Critical TODOs not found, as expected"
+        fi
