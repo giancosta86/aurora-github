@@ -16,7 +16,7 @@ inputs:
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    default: '\.(c|m)?(j|t)sx?$'
+    default: '^\.\/(src|tests)\/.+\.(c|m)?(j|t)sx?$'
 
   check-artifact-version:
     description: Ensure the version in package.json matches the branch name.

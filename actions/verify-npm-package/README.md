@@ -57,18 +57,18 @@ steps:
 
 ## Inputs 📥
 
-|           Name            |    Type     |                             Description                             |      Default value       |
-| :-----------------------: | :---------: | :-----------------------------------------------------------------: | :----------------------: |
-|      `registry-url`       | **string**  |                     The URL of the npm registry                     | _Official npm registry_  |
-|     `frozen-lockfile`     | **boolean** |          Fails if `pnpm-lock.yaml` is missing or outdated           |         **true**         |
-| `crash-on-critical-todos` | **boolean** |           Crash the workflow if critical TODOs are found            |         **true**         |
-|    `source-file-regex`    | **string**  |              PCRE pattern describing the source files               | **\\.(c\|m)?(j\|t)sx?$** |
-| `check-artifact-version`  | **boolean** |    Ensure the version in `package.json` matches the branch name     |         **true**         |
-|       `enforce-esm`       | **boolean** | Verify that the `type` field is `module` - to create an ESM package |         **true**         |
-|  `check-subpath-exports`  | **boolean** |    Run `check-subpath-exports` after the `verify` package script    |         **true**         |
-|     `custom-test-env`     | **boolean** |           Create a dedicated environment for custom tests           |         **true**         |
-|    `project-directory`    | **string**  |               The directory containing `package.json`               |          **.**           |
-|          `shell`          | **string**  |                   The shell used to run commands                    |         **bash**         |
+|           Name            |    Type     |                             Description                             |                  Default value                   |
+| :-----------------------: | :---------: | :-----------------------------------------------------------------: | :----------------------------------------------: |
+|      `registry-url`       | **string**  |                     The URL of the npm registry                     |             _Official npm registry_              |
+|     `frozen-lockfile`     | **boolean** |          Fails if `pnpm-lock.yaml` is missing or outdated           |                     **true**                     |
+| `crash-on-critical-todos` | **boolean** |           Crash the workflow if critical TODOs are found            |                     **true**                     |
+|    `source-file-regex`    | **string**  |              PCRE pattern describing the source files               | **^\\.\\/(src\|tests)\\/.+\\.(c\|m)?(j\|t)sx?$** |
+| `check-artifact-version`  | **boolean** |    Ensure the version in `package.json` matches the branch name     |                     **true**                     |
+|       `enforce-esm`       | **boolean** | Verify that the `type` field is `module` - to create an ESM package |                     **true**                     |
+|  `check-subpath-exports`  | **boolean** |    Run `check-subpath-exports` after the `verify` package script    |                     **true**                     |
+|     `custom-test-env`     | **boolean** |           Create a dedicated environment for custom tests           |                    **false**                     |
+|    `project-directory`    | **string**  |               The directory containing `package.json`               |                      **.**                       |
+|          `shell`          | **string**  |                   The shell used to run commands                    |                     **bash**                     |
 
 ## Further references
 
