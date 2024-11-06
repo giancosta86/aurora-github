@@ -16,7 +16,7 @@ inputs:
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    default: '\.rs$'
+    default: '^\.\/(src|tests)\/.+\.rs$'
 
   check-artifact-version:
     description: Ensure the version in Cargo.toml matches the branch name.
