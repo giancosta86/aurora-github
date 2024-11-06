@@ -26,52 +26,35 @@ steps:
 
 1. Run `wasm-pack build` to verify the generation of the NodeJS package source files.
 
-1. If the `client-tests-directory` input parameter is not an empty string:
-
-   1. Ensure the directory really exists
-
-   1. `cd` to that directory
-
-   1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
-
-   1. Execute `pnpm verify` to run the NodeJS-based client tests
+1. If the directory referenced by the `client-tests-directory` input exists, execute the [run-custom-tests](../run-custom-tests/README.md) action on it, with the `optional` flag enabled and forwarding the related inputs, like `registry-url` and `frozen-lockfile`.
 
 ## Requirements
 
 - `rust-toolchain.toml` must be present in `project-directory` - as described in [check-rust-versions](../check-rust-versions/README.md)
 
-- if `client-tests-directory` is not an empty string, it must be the **relative path** of a directory containing:
-
-  - a `.nvmrc` file, with the requested Node.js version
-
-  - a `package.json` descriptor having:
-
-    - a `verify` script, in the `scripts` section
-
-    - as usual, all the dependencies required by the tests
-
-  - an updated `pnpm-lock.yaml` lockfile
+- Please, refer to the documentation of [run-custom-tests](../run-custom-tests/README.md) for details about setting up a suitable structure for `client-tests-directory`.
 
 ## Inputs 📥
 
-|           Name            |    Type     |                         Description                         |      Default value      |
-| :-----------------------: | :---------: | :---------------------------------------------------------: | :---------------------: |
-|    `wasm-pack-version`    | **string**  |             The `wasm-pack` version to install              |                         |
-|        `npm-scope`        | **string**  |              The npm package scope or `<ROOT>`              |                         |
-| `client-tests-directory`  | **string**  | Relative directory containing the NodeJS-based client tests |    **client-tests**     |
-|       `wasm-target`       | **string**  |         The target of the `wasm-pack build` command         |         **web**         |
-|    `run-clippy-checks`    | **boolean** |                  Enable linting via Clippy                  |        **true**         |
-|      `check-rustdoc`      | **boolean** |      Build the documentation - with warnings as errors      |        **false**        |
-| `crash-on-critical-todos` | **boolean** |       Crash the workflow if critical TODOs are found        |        **true**         |
-|    `source-file-regex`    | **string**  |          PCRE pattern describing the source files           |       **\\.rs$**        |
-| `check-artifact-version`  | **boolean** |  Ensure the version in Cargo.toml matches the branch name   |        **true**         |
-|      `registry-url`       | **string**  |                 The URL of the npm registry                 | _Official npm registry_ |
-|    `project-directory`    | **string**  |            The directory containing `Cargo.toml`            |          **.**          |
-|          `shell`          | **string**  |               The shell used to run commands                |        **bash**         |
+|           Name            |    Type     |                       Description                        |         Default value         |
+| :-----------------------: | :---------: | :------------------------------------------------------: | :---------------------------: |
+|    `wasm-pack-version`    | **string**  |            The `wasm-pack` version to install            |                               |
+|        `npm-scope`        | **string**  |            The npm package scope or `<ROOT>`             |                               |
+| `client-tests-directory`  | **string**  |      Relative directory containing the client tests      |       **client-tests**        |
+|       `wasm-target`       | **string**  |       The target of the `wasm-pack build` command        |            **web**            |
+|    `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |           **true**            |
+|      `check-rustdoc`      | **boolean** |    Build the documentation - with warnings as errors     |           **false**           |
+| `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |           **true**            |
+|    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         | view the [code](./action.yml) |
+| `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |           **true**            |
+|      `registry-url`       | **string**  |               The URL of the npm registry                |    _Official npm registry_    |
+|     `frozen-lockfile`     | **boolean** |     Fails if `pnpm-lock.yaml` is missing or outdated     |           **true**            |
+|    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |             **.**             |
+|          `shell`          | **string**  |              The shell used to run commands              |           **bash**            |
 
 ## Further references
 
-- [setup-nodejs-context](../setup-nodejs-context/README.md)
+- [run-custom-tests](../run-custom-tests/README.md)
 
 - [parse-npm-scope](../parse-npm-scope/README.md)
 
