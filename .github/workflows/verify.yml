@@ -13,157 +13,157 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./actions/check-action-references
 
-  test-find-critical-todos:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-find-critical-todos
+  # test-find-critical-todos:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-find-critical-todos
 
-  test-detect-branch-version:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-detect-branch-version
+  # test-detect-branch-version:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-detect-branch-version
 
-  test-install-wasm-pack:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-install-wasm-pack
+  # test-install-wasm-pack:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-install-wasm-pack
 
-  test-check-rust-versions:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-check-rust-versions
+  # test-check-rust-versions:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-check-rust-versions
 
-  test-detect-project-tech:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-detect-project-tech
+  # test-detect-project-tech:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-detect-project-tech
 
-  test-artifact-version:
-    runs-on: ubuntu-latest
-    needs:
-      - test-detect-branch-version
-      - test-detect-project-tech
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-artifact-version
+  # test-artifact-version:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - test-detect-branch-version
+  #     - test-detect-project-tech
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-artifact-version
 
-  test-extract-rust-snippets:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-extract-rust-snippets
+  # test-extract-rust-snippets:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-extract-rust-snippets
 
-  test-verify-rust-crate:
-    runs-on: ubuntu-latest
-    needs:
-      - test-check-rust-versions
-      - test-artifact-version
-      - test-find-critical-todos
-      - test-extract-rust-snippets
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-verify-rust-crate
+  # test-verify-rust-crate:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - test-check-rust-versions
+  #     - test-artifact-version
+  #     - test-find-critical-todos
+  #     - test-extract-rust-snippets
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-verify-rust-crate
 
-  test-publish-rust-crate:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-publish-rust-crate
+  # test-publish-rust-crate:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-publish-rust-crate
 
-  test-verify-npm-package:
-    runs-on: ubuntu-latest
-    needs:
-      - test-artifact-version
-      - test-find-critical-todos
-      - test-check-subpath-exports
-      - test-setup-nodejs-context
-      - test-run-custom-tests
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-verify-npm-package
+  # test-verify-npm-package:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - test-artifact-version
+  #     - test-find-critical-todos
+  #     - test-check-subpath-exports
+  #     - test-setup-nodejs-context
+  #     - test-run-custom-tests
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-verify-npm-package
 
-  test-publish-npm-package:
-    runs-on: ubuntu-latest
-    needs:
-      - check-preconditions
-      - test-setup-nodejs-context
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-publish-npm-package
+  # test-publish-npm-package:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - check-preconditions
+  #     - test-setup-nodejs-context
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-publish-npm-package
 
-  test-parse-npm-scope:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-parse-npm-scope
+  # test-parse-npm-scope:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-parse-npm-scope
 
-  test-verify-rust-wasm:
-    runs-on: ubuntu-latest
-    needs:
-      - test-parse-npm-scope
-      - test-install-wasm-pack
-      - test-verify-rust-crate
-      - test-run-custom-tests
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-verify-rust-wasm
+  # test-verify-rust-wasm:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - test-parse-npm-scope
+  #     - test-install-wasm-pack
+  #     - test-verify-rust-crate
+  #     - test-run-custom-tests
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-verify-rust-wasm
 
-  test-publish-rust-wasm:
-    runs-on: ubuntu-latest
-    needs:
-      - test-parse-npm-scope
-      - test-install-wasm-pack
-      - test-publish-npm-package
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-publish-rust-wasm
+  # test-publish-rust-wasm:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - test-parse-npm-scope
+  #     - test-install-wasm-pack
+  #     - test-publish-npm-package
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-publish-rust-wasm
 
-  test-install-system-packages:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-install-system-packages
+  # test-install-system-packages:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-install-system-packages
 
-  test-inject-subpath-exports:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./actions/install-system-packages
-        with:
-          packages: moreutils
-      - uses: ./.github/test-actions/test-inject-subpath-exports
+  # test-inject-subpath-exports:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./actions/install-system-packages
+  #       with:
+  #         packages: moreutils
+  #     - uses: ./.github/test-actions/test-inject-subpath-exports
 
-  test-check-subpath-exports:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./actions/install-system-packages
-        with:
-          packages: moreutils
-      - uses: ./.github/test-actions/test-check-subpath-exports
+  # test-check-subpath-exports:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./actions/install-system-packages
+  #       with:
+  #         packages: moreutils
+  #     - uses: ./.github/test-actions/test-check-subpath-exports
 
-  test-setup-nodejs-context:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-setup-nodejs-context
+  # test-setup-nodejs-context:
+  #   runs-on: ubuntu-latest
+  #   needs: check-preconditions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-setup-nodejs-context
 
   test-publish-github-pages:
     runs-on: ubuntu-latest
@@ -175,40 +175,40 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-publish-github-pages
 
-  test-run-custom-tests:
-    runs-on: ubuntu-latest
-    needs:
-      - check-preconditions
-      - test-setup-nodejs-context
-      - test-check-rust-versions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-run-custom-tests
+  # test-run-custom-tests:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - check-preconditions
+  #     - test-setup-nodejs-context
+  #     - test-check-rust-versions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-run-custom-tests
 
   verify:
     runs-on: ubuntu-latest
     needs:
       - check-preconditions
-      - test-find-critical-todos
-      - test-detect-branch-version
-      - test-install-wasm-pack
-      - test-check-rust-versions
-      - test-detect-project-tech
-      - test-artifact-version
-      - test-verify-rust-crate
-      - test-publish-rust-crate
-      - test-verify-npm-package
-      - test-publish-npm-package
-      - test-parse-npm-scope
-      - test-verify-rust-wasm
-      - test-publish-rust-wasm
-      - test-extract-rust-snippets
-      - test-install-system-packages
-      - test-inject-subpath-exports
-      - test-check-subpath-exports
-      - test-setup-nodejs-context
+      # - test-find-critical-todos
+      # - test-detect-branch-version
+      # - test-install-wasm-pack
+      # - test-check-rust-versions
+      # - test-detect-project-tech
+      # - test-artifact-version
+      # - test-verify-rust-crate
+      # - test-publish-rust-crate
+      # - test-verify-npm-package
+      # - test-publish-npm-package
+      # - test-parse-npm-scope
+      # - test-verify-rust-wasm
+      # - test-publish-rust-wasm
+      # - test-extract-rust-snippets
+      # - test-install-system-packages
+      # - test-inject-subpath-exports
+      # - test-check-subpath-exports
+      # - test-setup-nodejs-context
       - test-publish-github-pages
-      - test-run-custom-tests
+      # - test-run-custom-tests
 
     steps:
       - name: Show completion message

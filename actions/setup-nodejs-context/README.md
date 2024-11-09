@@ -8,7 +8,7 @@ Sets up a specific **NodeJS** version and installs [pnpm](https://pnpm.io/) as w
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5
+  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6
 ```
 
 **Please, note:** this action is automatically run by [verify-npm-package](../verify-npm-package/README.md) and [publish-npm-package](../publish-npm-package/README.md).

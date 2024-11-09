@@ -121,18 +121,18 @@ runs:
 
     - name: Parse npm scope
       id: parse-npm-scope
-      uses: giancosta86/aurora-github/actions/parse-npm-scope@v5.0.0
+      uses: giancosta86/aurora-github/actions/parse-npm-scope@v6.0.0
       with:
         scope: ${{ inputs.npm-scope }}
 
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v5.0.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v6.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
         shell: ${{ inputs.shell }}
 
     - name: Verify Rust source files
-      uses: giancosta86/aurora-github/actions/verify-rust-crate@v5.0.0
+      uses: giancosta86/aurora-github/actions/verify-rust-crate@v6.0.0
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
         check-rustdoc: ${{ inputs.check-rustdoc }}
@@ -164,7 +164,7 @@ runs:
         fi
 
     - name: Run client tests
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v5.0.0
+      uses: giancosta86/aurora-github/actions/run-custom-tests@v6.0.0
       with:
         optional: true
         dedicated-env: true

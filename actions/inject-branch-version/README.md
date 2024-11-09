@@ -6,7 +6,7 @@ Injects into a descriptor the version detected from the current **Git** branch.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/inject-branch-version@v5
+  - uses: giancosta86/aurora-github/actions/inject-branch-version@v6
 ```
 
 ## Requirements

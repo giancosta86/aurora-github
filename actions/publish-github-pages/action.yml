@@ -3,8 +3,19 @@ description: Publishes a directory as the GitHub Pages website for the current r
 
 inputs:
   source-directory:
-    description: Relative directory containing the website.
-    default: website
+    description: Directory containing the website.
+
+  optional:
+    description: source-directory can be empty or refer to a missing directory.
+    default: false
+
+  dry-run:
+    description: Stops the publication just before uploading.
+    default: false
+
+  dedicated-env:
+    description: Set up a context-specific, dedicated environment.
+    default: true
 
   shell:
     description: The shell used to run commands.
@@ -18,21 +29,139 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: ${{ inputs.shell }}
+      run: |
+        if [[ -z "${{ inputs.source-directory }}" ]]
+        then
+          echo "❌Missing action input: 'source-directory'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.optional }}" ]]
+        then
+          echo "❌Missing action input: 'optional'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.dry-run }}" ]]
+        then
+          echo "❌Missing action input: 'dry-run'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.dedicated-env }}" ]]
+        then
+          echo "❌Missing action input: 'dedicated-env'!" >&2
+          exit 1
+        fi
+
     - name: Print description message
       shell: ${{ inputs.shell }}
       run: |
-        echo "📦Now publishing the '${{ inputs.source-directory }}' directory to GitHub Pages..."
+        echo "🌐Now trying to publish to GitHub Pages..."
+
+    - name: Setup environment variables
+      shell: ${{ inputs.shell }}
+      run: |
+        optional="${{ inputs.optional }}"
+        sourceDirectory="${{ inputs.source-directory }}"
+        strategy=exit
+
+        if [[ -z "$sourceDirectory" ]]
+        then
+          if [[ "$optional" == "true" ]]
+          then
+            echo "💬Missing action input: 'source-directory' - won't proceed"
+          else
+            echo "❌Missing action input: 'source-directory'!" >&2
+            exit 1
+          fi
+        elif [[ ! -d "$sourceDirectory" ]]
+        then
+          if [[ "$optional" == "true" ]]
+          then
+            echo "💬Missing website directory '$sourceDirectory' - can't proceed"
+          else
+            echo "❌Missing website directory '$sourceDirectory'!" >&2
+            exit 1
+          fi
+        else
+          echo "🌐Website directory '$sourceDirectory' found!"
+          strategy=detect
+        fi
+
+        echo "strategy=$strategy" >> $GITHUB_ENV
+
+    - name: Detect website technology
+      if: ${{ env.strategy != 'exit' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.source-directory }}
+      run: |
+        if [[ -f "package.json" ]]
+        then
+          strategy=nodejs
+        else
+          strategy="static-files"
+        fi
+
+        echo "strategy=$strategy" >> $GITHUB_ENV
+
+    - name: Debug publication strategy
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "🔎Website publication strategy: '$strategy'"
+
+    - name: Setup NodeJS context
+      if: ${{ env.strategy == 'nodejs' }}
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
+      with:
+        setup-nodejs: ${{ inputs.dedicated-env }}
+        install-pnpm: ${{ inputs.dedicated-env }}
+        install-dependencies: true
+        project-directory: ${{ inputs.source-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Create artifacts via NodeJS
+      if: ${{ env.strategy == 'nodejs' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.source-directory }}
+      run: |
+        pnpm build
+        artifactDirectory=${{ inputs.source-directory }}/dist
+        echo "artifactDirectory=$artifactDirectory" >> $GITHUB_ENV
+
+    - name: Setup static artifacts
+      if: ${{ env.strategy == 'static-files' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.source-directory }}
+      run: echo "artifactDirectory=${{ inputs.source-directory }}" >> $GITHUB_ENV
+
+    - name: Debug artifact directory
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "🔎Website artifact directory: '$artifactDirectory'"
+
+    - name: Prevent uploading via dry-run
+      if: ${{ inputs.dry-run == 'true' }}
+      shell: ${{ inputs.shell }}
+      run: |
+        echo "💭Skipping publication, as requested by dry-run."
+        echo "strategy=exit" >> $GITHUB_ENV
 
     - name: Upload website artifacts
+      if: ${{ env.strategy != 'exit' }}
       uses: actions/upload-pages-artifact@v3
       with:
-        path: ${{ inputs.source-directory }}
+        path: ${{ env.artifactDirectory }}
 
     - name: Publish website via GitHub Pages
+      if: ${{ env.strategy != 'exit' }}
       id: publish-pages
       uses: actions/deploy-pages@v4
 
     - name: Print confirmation message
+      if: ${{ env.strategy != 'exit' }}
       shell: ${{ inputs.shell }}
       run: |
         echo "✅Publication to GitHub Pages successful!"

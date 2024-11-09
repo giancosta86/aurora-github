@@ -93,7 +93,7 @@ runs:
 
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v5.0.0
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
@@ -117,7 +117,7 @@ runs:
         fi
 
     - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
         registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: ${{ inputs.frozen-lockfile }}
@@ -134,13 +134,13 @@ runs:
 
     - name: Check subpath exports
       if: ${{ inputs.check-subpath-exports == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-subpath-exports@v5.0.0
+      uses: giancosta86/aurora-github/actions/check-subpath-exports@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Run optional custom tests from the 'tests' directory
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v5.0.0
+      uses: giancosta86/aurora-github/actions/run-custom-tests@v6.0.0
       with:
         optional: true
         dedicated-env: ${{ inputs.custom-test-env }}
@@ -150,7 +150,7 @@ runs:
         shell: ${{ inputs.shell }}
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v5.0.0
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v6.0.0
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}

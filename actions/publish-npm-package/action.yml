@@ -70,7 +70,7 @@ runs:
         jq . package.json
 
     - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
         registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: ${{ inputs.frozen-lockfile }}

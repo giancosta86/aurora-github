@@ -6,7 +6,7 @@ Executes arbitrary tests within a given directory; it runs a **shell** script by
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/run-custom-tests@v5
+  - uses: giancosta86/aurora-github/actions/run-custom-tests@v6
     with:
       root-directory: client-tests
 ```
