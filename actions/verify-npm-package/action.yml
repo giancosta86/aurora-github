@@ -132,6 +132,13 @@ runs:
         pnpm verify
         echo "✅'verify' script successful!"
 
+    - name: Check subpath exports
+      if: ${{ inputs.check-subpath-exports == 'true' }}
+      uses: giancosta86/aurora-github/actions/check-subpath-exports@v5.0.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
     - name: Run optional custom tests from the 'tests' directory
       uses: giancosta86/aurora-github/actions/run-custom-tests@v5.0.0
       with:
@@ -140,13 +147,6 @@ runs:
         registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: ${{ inputs.frozen-lockfile }}
         root-directory: ${{ inputs.project-directory }}/tests
-        shell: ${{ inputs.shell }}
-
-    - name: Check subpath exports
-      if: ${{ inputs.check-subpath-exports == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-subpath-exports@v5.0.0
-      with:
-        project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 
     - name: Check for critical TODOs
