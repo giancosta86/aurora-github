@@ -15,6 +15,12 @@ steps:
 
 **Please, note**: this action is designed for _publication_ only - not for _verification_: you may want to use [verify-rust-crate](../verify-rust-crate/README.md) for that.
 
+## How it works
+
+1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled
+
+1. Run `cargo publish`, with the `--all-features` flag
+
 ## Requirements
 
 - a secret publication token, provided by the registry.

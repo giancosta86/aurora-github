@@ -13,6 +13,10 @@ inputs:
     description: Enable Rustdoc for all features.
     default: true
 
+  website-directory:
+    description: Relative directory to the project website.
+    default: website
+
   project-directory:
     description: The directory containing Cargo.toml.
     default: .
@@ -55,6 +59,14 @@ runs:
         [package.metadata.docs.rs]
         all-features = true
         EOF
+
+    - name: Publish the GitHub Pages website
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v6.0.0
+      with:
+        optional: true
+        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        dedicated-env: true
+        shell: ${{ inputs.shell }}
 
     - name: Display the artifact descriptor
       shell: ${{ inputs.shell }}
