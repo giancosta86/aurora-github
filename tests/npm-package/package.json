@@ -5,7 +5,8 @@
   "description": "Toy npm package",
   "scripts": {
     "test": "echo '✅NodeJS tests simulated!'",
-    "verify": "pnpm test"
+    "build": "echo '✅NodeJS build simulated!'",
+    "verify": "pnpm test && pnpm build"
   },
   "private": true
 }

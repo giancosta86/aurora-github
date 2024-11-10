@@ -15,9 +15,21 @@ steps:
       npm-token: ${{ secrets.NPM_TOKEN }}
 ```
 
-**Please, note**: this action is designed for _publication_ only - not for _verification_: you may want use [verify-npm-package](../verify-npm-package/README.md) for that; as a plus, you can add publication-specific checks via the [pre-/post- hook scripts](https://docs.npmjs.com/cli/v10/using-npm/scripts) of your `package.json` file.
+### Remarks
 
-**Please, note:** this action is automatically run by [publish-rust-wasm](../publish-rust-wasm/README.md).
+- This action is designed for _publication_ only - not for _verification_: you may want use [verify-npm-package](../verify-npm-package/README.md) for that.
+
+- This action is automatically run by [publish-rust-wasm](../publish-rust-wasm/README.md).
+
+## How it works
+
+1. Invoke [setup-nodejs-context](../setup-nodejs-context/README.md) to set up a NodeJS environment having `pnpm` and dependencies
+
+1. Run `pnpm build` if such script has been declared in **package.json**
+
+1. Run `publish-github-pages` with the `optional` flag enabled
+
+1. Run `pnpm publish`
 
 ## Requirements
 

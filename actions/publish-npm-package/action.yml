@@ -17,6 +17,10 @@ inputs:
     description: Fail if 'pnpm-lock.yaml' is missing or outdated.
     default: true
 
+  website-directory:
+    description: Relative directory to the project website.
+    default: website
+
   project-directory:
     description: The directory containing package.json.
     default: .
@@ -75,6 +79,26 @@ runs:
         registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: ${{ inputs.frozen-lockfile }}
         project-directory: ${{ inputs.project-directory }}
+        shell: ${{ inputs.shell }}
+
+    - name: Try to build the package artifacts
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if jq -e '.scripts.build? != null' package.json > /dev/null
+        then
+          echo "✅'build' script found in package.json - now running it!"
+          pnpm build
+        else
+          echo "💭No 'build' script found in package.json - skipping the build step."
+        fi
+
+    - name: Publish the GitHub Pages website
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v6.0.0
+      with:
+        optional: true
+        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        dedicated-env: false
         shell: ${{ inputs.shell }}
 
     - name: Publish to npm
