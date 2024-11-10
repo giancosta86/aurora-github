@@ -27,6 +27,10 @@ inputs:
     description: Relative directory containing the .nvmrc file.
     default: client-tests
 
+  website-directory:
+    description: Relative directory to the project website.
+    default: website
+
   project-directory:
     description: The directory containing Cargo.toml.
     default: .
@@ -108,5 +112,6 @@ runs:
         npm-token: ${{ inputs.npm-token }}
         registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: false
+        website-directory: ${{ inputs.website-directory }}
         project-directory: ${{ inputs.project-directory }}/pkg
         shell: ${{ inputs.shell }}
