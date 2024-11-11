@@ -50,7 +50,6 @@ steps:
 | `source-directory` | **string**  |                Directory containing the website                 |               |
 |     `optional`     | **boolean** | `source-directory` can be empty or refer to a missing directory |   **false**   |
 |     `dry-run`      | **boolean** |           Stops the publication just before uploading           |   **false**   |
-|  `dedicated-env`   | **boolean** |        Set up a context-specific, dedicated environment         |   **true**    |
 |      `shell`       | **string**  |                 The shell used to run commands                  |   **bash**    |
 
 ## Further references

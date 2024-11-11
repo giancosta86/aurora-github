@@ -22,10 +22,6 @@ inputs:
     description: Run check-subpath-exports after the "verify" package script.
     default: true
 
-  custom-test-env:
-    description: Create a dedicated environment for custom tests.
-    default: false
-
   project-directory:
     description: The directory containing package.json.
     default: .
@@ -121,7 +117,6 @@ runs:
       uses: giancosta86/aurora-github/actions/run-custom-tests@v6.0.0
       with:
         optional: true
-        dedicated-env: ${{ inputs.custom-test-env }}
         root-directory: ${{ inputs.project-directory }}/tests
         shell: ${{ inputs.shell }}
 

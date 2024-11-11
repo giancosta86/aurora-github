@@ -76,7 +76,6 @@ runs:
       with:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
-        dedicated-env: false
         shell: ${{ inputs.shell }}
 
     - name: Publish to npm

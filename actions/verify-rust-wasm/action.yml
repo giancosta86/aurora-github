@@ -147,7 +147,6 @@ runs:
       uses: giancosta86/aurora-github/actions/run-custom-tests@v6.0.0
       with:
         optional: true
-        dedicated-env: true
         root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
         shell: ${{ inputs.shell }}
 

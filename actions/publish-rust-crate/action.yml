@@ -65,7 +65,6 @@ runs:
       with:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
-        dedicated-env: true
         shell: ${{ inputs.shell }}
 
     - name: Display the artifact descriptor

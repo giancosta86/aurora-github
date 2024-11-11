@@ -33,17 +33,13 @@ steps:
 
    - Otherwise, if a file named **package.json** exists in the root directory:
 
-     1. run [setup-nodejs-context](../setup-nodejs-context/README.md) with different inputs according to the `dedicated-env` flag:
-
-        - if it is **true**, install run the action in full
-
-        - otherwise, just install the package dependencies
+     1. run [setup-nodejs-context](../setup-nodejs-context/README.md)
 
      1. run the **verify** script in the **scripts** section of **package.json**
 
    - Otherwise, if a file named **Cargo.toml** exists in the root directory:
 
-     1. if the `dedicated-env` input is **true**, run [check-rust-versions](../check-rust-versions/README.md) to enforce a specific Rust toolkit
+     1. if the **rust-toolchain.toml** file exists, run [check-rust-versions](../check-rust-versions/README.md) to enforce a specific Rust toolkit
 
      1. run `cargo test` with the `--all-features` flag
 
@@ -57,14 +53,13 @@ steps:
 
 ## Inputs 📥
 
-|       Name       |    Type     |                   Description                    | Default value |
-| :--------------: | :---------: | :----------------------------------------------: | :-----------: |
-|    `optional`    | **boolean** |  Exit with no error if the tests cannot be run   |   **false**   |
-|  `script-file`   | **string**  |         Relative path to the script file         | **verify.sh** |
-|  `script-shell`  | **string**  |       The shell used to run `script-file`        |   **bash**    |
-| `dedicated-env`  | **boolean** | Set up a context-specific, dedicated environment |   **false**   |
-| `root-directory` | **string**  |        The directory containing the tests        |               |
-|     `shell`      | **string**  |          The shell used to run commands          |   **bash**    |
+|       Name       |    Type     |                  Description                  | Default value |
+| :--------------: | :---------: | :-------------------------------------------: | :-----------: |
+|    `optional`    | **boolean** | Exit with no error if the tests cannot be run |   **false**   |
+|  `script-file`   | **string**  |       Relative path to the script file        | **verify.sh** |
+|  `script-shell`  | **string**  |      The shell used to run `script-file`      |   **bash**    |
+| `root-directory` | **string**  |      The directory containing the tests       |               |
+|     `shell`      | **string**  |        The shell used to run commands         |   **bash**    |
 
 ## Further references
 

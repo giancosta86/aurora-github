@@ -37,7 +37,7 @@ steps:
 
 1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) to verify that the `exports` field in `package.json` actually references existing files.
 
-1. If a **tests** directory exists within `project-directory`, execute [run-custom-tests](../run-custom-tests/README.md) on it, with the `optional` flag enabled; in particular, the `dedicated-env` flag for the called action will be set to the value of the `custom-test-env` input.
+1. If a **tests** directory exists within `project-directory`, execute [run-custom-tests](../run-custom-tests/README.md) on it, with the `optional` flag enabled.
 
    💡The rationale for this step is a parallelism with Rust's **tests** directory - dedicated to verify the crate under test from a _client_ perspective; however, in `verify-npm-package` you have even more fine-grained control over the test process: for example, you can automatically launch _a Bash script_ to test the system, while still relying on the **tests** directory to host utility modules imported by different tests in the **src** directory tree.
 
@@ -57,16 +57,15 @@ steps:
 
 ## Inputs 📥
 
-|           Name            |    Type     |                             Description                             |                  Default value                   |
-| :-----------------------: | :---------: | :-----------------------------------------------------------------: | :----------------------------------------------: |
-| `crash-on-critical-todos` | **boolean** |           Crash the workflow if critical TODOs are found            |                     **true**                     |
-|    `source-file-regex`    | **string**  |              PCRE pattern describing the source files               | **^\\.\\/(src\|tests)\\/.+\\.(c\|m)?(j\|t)sx?$** |
-| `check-artifact-version`  | **boolean** |    Ensure the version in `package.json` matches the branch name     |                     **true**                     |
-|       `enforce-esm`       | **boolean** | Verify that the `type` field is `module` - to create an ESM package |                     **true**                     |
-|  `check-subpath-exports`  | **boolean** |    Run `check-subpath-exports` after the `verify` package script    |                     **true**                     |
-|     `custom-test-env`     | **boolean** |           Create a dedicated environment for custom tests           |                    **false**                     |
-|    `project-directory`    | **string**  |               The directory containing `package.json`               |                      **.**                       |
-|          `shell`          | **string**  |                   The shell used to run commands                    |                     **bash**                     |
+|           Name            |    Type     |                          Description                          |       Default value       |
+| :-----------------------: | :---------: | :-----------------------------------------------------------: | :-----------------------: |
+| `crash-on-critical-todos` | **boolean** |        Crash the workflow if critical TODOs are found         |         **true**          |
+|    `source-file-regex`    | **string**  |           PCRE pattern describing the source files            | view [source](action.yml) |
+| `check-artifact-version`  | **boolean** | Ensure the version in `package.json` matches the branch name  |         **true**          |
+|       `enforce-esm`       | **boolean** | Verify that the `type` field is `module` - for an ESM package |         **true**          |
+|  `check-subpath-exports`  | **boolean** | Run `check-subpath-exports` after the `verify` package script |         **true**          |
+|    `project-directory`    | **string**  |            The directory containing `package.json`            |           **.**           |
+|          `shell`          | **string**  |                The shell used to run commands                 |         **bash**          |
 
 ## Further references
 

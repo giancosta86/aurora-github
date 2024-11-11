@@ -13,10 +13,6 @@ inputs:
     description: Stops the publication just before uploading.
     default: false
 
-  dedicated-env:
-    description: Set up a context-specific, dedicated environment.
-    default: true
-
   shell:
     description: The shell used to run commands.
     default: bash
@@ -47,12 +43,6 @@ runs:
         if [[ -z "${{ inputs.dry-run }}" ]]
         then
           echo "❌Missing action input: 'dry-run'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.dedicated-env }}" ]]
-        then
-          echo "❌Missing action input: 'dedicated-env'!" >&2
           exit 1
         fi
 
