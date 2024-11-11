@@ -22,7 +22,6 @@ When creating actions in a repository acting as a library for GitHub Actions, yo
 |        Name         |    Type    |                      Description                      | Default value |
 | :-----------------: | :--------: | :---------------------------------------------------: | :-----------: |
 | `actions-directory` | **string** | The root of the directory tree containing the actions | **./actions** |
-|       `shell`       | **string** |            The shell used to run commands             |   **bash**    |
 
 ## Further references
 

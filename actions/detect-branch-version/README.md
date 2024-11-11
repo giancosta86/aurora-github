@@ -27,9 +27,7 @@ steps:
 
 ## Inputs 📥
 
-|  Name   |    Type    |          Description           | Default value |
-| :-----: | :--------: | :----------------------------: | :-----------: |
-| `shell` | **string** | The shell used to run commands |   **bash**    |
+_No inputs required._
 
 ## Outputs 📤
 

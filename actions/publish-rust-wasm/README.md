@@ -36,7 +36,6 @@ steps:
 |      `wasm-target`       | **string**  |   The target of the `wasm-pack build` command   |     **web**      |
 | `node-version-directory` | **string**  | Relative directory containing the `.nvmrc` file | **client-tests** |
 |   `project-directory`    | **string**  |      The directory containing `Cargo.toml`      |      **.**       |
-|         `shell`          | **string**  |         The shell used to run commands          |     **bash**     |
 
 ## Further references
 

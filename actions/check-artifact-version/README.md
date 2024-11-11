@@ -19,10 +19,9 @@ steps:
 
 ## Inputs 📥
 
-|        Name         |    Type    |          Description           | Default value |
-| :-----------------: | :--------: | :----------------------------: | :-----------: |
-| `project-directory` | **string** |     The project directory      |     **.**     |
-|       `shell`       | **string** | The shell used to run commands |   **bash**    |
+|        Name         |    Type    |      Description      | Default value |
+| :-----------------: | :--------: | :-------------------: | :-----------: |
+| `project-directory` | **string** | The project directory |     **.**     |
 
 ## Further references
 

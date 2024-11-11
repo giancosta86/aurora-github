@@ -6,15 +6,11 @@ inputs:
     description: The directory containing package.json.
     default: "."
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ ! -f "package.json" ]]
@@ -24,7 +20,7 @@ runs:
         fi
 
     - name: Check the subpath exports
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         main() {
@@ -98,5 +94,6 @@ runs:
             echo "✅"
           fi
         }
+
 
         main

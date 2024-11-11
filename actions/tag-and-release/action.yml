@@ -14,15 +14,11 @@ inputs:
     description: Create/move the 'vX' tag to this commit (X=major version)
     default: false
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
     - name: Ensure the action is invoked when merging a pull request
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         inPullRequestMerging="$(jq -r .pull_request.merged "$GITHUB_EVENT_PATH")"
 
@@ -33,7 +29,7 @@ runs:
         fi
 
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         if [[ -z "${{ inputs.draft-only }}" ]]
         then
@@ -56,11 +52,9 @@ runs:
     - name: Detect branch and version
       id: detect-branch-version
       uses: giancosta86/aurora-github/actions/detect-branch-version@v6.0.0
-      with:
-        shell: ${{ inputs.shell }}
 
     - name: Verify branch and version
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         branch="${{ steps.detect-branch-version.outputs.branch }}"
         defaultBranch="${{ github.event.repository.default_branch }}"
@@ -98,7 +92,7 @@ runs:
 
     - name: Delete Git branch
       if: ${{ inputs.delete-branch == 'true' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         branch="${{ steps.detect-branch-version.outputs.branch }}"
 
@@ -110,7 +104,7 @@ runs:
 
     - name: Create Git tag
       id: create-git-tag
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         version="${{ steps.detect-branch-version.outputs.version }}"
 
@@ -123,7 +117,7 @@ runs:
         echo "tag=$tag" >> $GITHUB_OUTPUT
 
     - name: Create or draft release
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         draftOnly="${{ inputs.draft-only }}"
         version="${{ steps.detect-branch-version.outputs.version }}"
@@ -148,7 +142,7 @@ runs:
 
     - name: Create or move major version tag
       if: ${{ inputs.set-major-tag == 'true' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         major="${{ steps.detect-branch-version.outputs.major }}"
 

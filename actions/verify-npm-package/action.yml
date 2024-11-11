@@ -26,15 +26,11 @@ inputs:
     description: The directory containing package.json.
     default: .
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
@@ -61,6 +57,12 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.check-subpath-exports }}" ]]
+        then
+          echo "❌Missing action input: 'check-subpath-exports'!" >&2
+          exit 1
+        fi
+
         if [[ ! -f "package.json" ]]
         then
           echo "❌The package.json descriptor file does not exist!!" >&2
@@ -72,11 +74,10 @@ runs:
       uses: giancosta86/aurora-github/actions/check-artifact-version@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Enforce ESM
       if: ${{ inputs.enforce-esm == 'true' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         packageType="$(jq -r .type package.json)"
@@ -96,10 +97,9 @@ runs:
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Run the 'verify' script from package.json
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "🔎Now running the 'verify' package.json script..."
@@ -111,14 +111,12 @@ runs:
       uses: giancosta86/aurora-github/actions/check-subpath-exports@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Run optional custom tests from the 'tests' directory
       uses: giancosta86/aurora-github/actions/run-custom-tests@v6.0.0
       with:
         optional: true
         root-directory: ${{ inputs.project-directory }}/tests
-        shell: ${{ inputs.shell }}
 
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v6.0.0
@@ -127,8 +125,7 @@ runs:
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
         display-lines: true
         root-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Print confirmation message
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: echo "✅npm package source files verified!"

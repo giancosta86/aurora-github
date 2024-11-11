@@ -6,10 +6,6 @@ inputs:
     description: The directory containing the project.
     default: .
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
@@ -18,29 +14,26 @@ runs:
       uses: giancosta86/aurora-github/actions/detect-project-tech@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Detect branch and version
       id: detect-branch-version
       uses: giancosta86/aurora-github/actions/detect-branch-version@v6.0.0
-      with:
-        shell: ${{ inputs.shell }}
 
     - name: Check Rust crate version
       if: ${{ steps.detect-project-tech.outputs.project-tech == 'rust' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: grep -Pq '^version\s*=\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' Cargo.toml
 
     - name: Check NodeJS package version
       if: ${{ steps.detect-project-tech.outputs.project-tech == 'nodejs' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: grep -Pq '"version"\s*:\s*"${{ steps.detect-branch-version.outputs.escaped-version }}"' package.json
 
     - name: Fail on unknown project tech
       if: ${{ steps.detect-project-tech.outputs.project-tech == '' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "❌Cannot verify the artifact version for an unknown project tech" >&2

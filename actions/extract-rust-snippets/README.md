@@ -56,7 +56,6 @@ where `N` is the position of the snippet within the Markdown content, starting f
 |    `markdown-file`     | **string** | Relative path of the Markdown file containing the snippets |      **README.md**      |
 | `test-filename-prefix` | **string** |  Relative path prefix for each generated test source file  | **tests/readme_test\_** |
 |  `project-directory`   | **string** |            The directory containing Cargo.toml             |          **.**          |
-|        `shell`         | **string** |               The shell used to run commands               |        **bash**         |
 
 ## Further references
 

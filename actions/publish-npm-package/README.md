@@ -46,7 +46,6 @@ steps:
 |      `dry-run`      | **boolean** |   Run a simulated publication via `--dry-run`   |   **false**   |
 |     `npm-token`     | **string**  | The secret token for publishing to the registry |               |
 | `project-directory` | **string**  |     The directory containing `package.json`     |     **.**     |
-|       `shell`       | **string**  |         The shell used to run commands          |   **bash**    |
 
 ## Further references
 

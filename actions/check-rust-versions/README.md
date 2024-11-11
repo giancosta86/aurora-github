@@ -27,7 +27,6 @@ steps:
 |        Name         |    Type    |              Description              | Default value |
 | :-----------------: | :--------: | :-----------------------------------: | :-----------: |
 | `project-directory` | **string** | The directory containing `Cargo.toml` |     **.**     |
-|       `shell`       | **string** |    The shell used to run commands     |   **bash**    |
 
 ## Further references
 

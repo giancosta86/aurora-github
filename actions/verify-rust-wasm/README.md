@@ -48,7 +48,6 @@ steps:
 |    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         | view the [code](./action.yml) |
 | `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |           **true**            |
 |    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |             **.**             |
-|          `shell`          | **string**  |              The shell used to run commands              |           **bash**            |
 
 ## Further references
 

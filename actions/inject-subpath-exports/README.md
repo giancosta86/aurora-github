@@ -58,7 +58,6 @@ The `mode` input can have the following values:
 |       `mode`        | `prefer-index`, `all` |     Subpath exports generation mode     | **prefer-index** |
 | `source-directory`  |      **string**       |  Relative path to the source directory  |     **src**      |
 | `project-directory` |      **string**       | The directory containing `package.json` |      **.**       |
-|       `shell`       |      **string**       |     The shell used to run commands      |     **bash**     |
 
 ## Further references
 

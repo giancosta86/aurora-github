@@ -59,7 +59,6 @@ steps:
 |  `script-file`   | **string**  |       Relative path to the script file        | **verify.sh** |
 |  `script-shell`  | **string**  |      The shell used to run `script-file`      |   **bash**    |
 | `root-directory` | **string**  |      The directory containing the tests       |               |
-|     `shell`      | **string**  |        The shell used to run commands         |   **bash**    |
 
 ## Further references
 

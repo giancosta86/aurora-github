@@ -22,7 +22,6 @@ steps:
 |   `display-lines`   | **boolean** |               Display the lines with critical TODOs               |   **true**    |
 |      `verbose`      | **boolean** |             Show details such as the filterable paths             |   **false**   |
 |  `root-directory`   | **string**  |                  The root of the directory tree                   |     **.**     |
-|       `shell`       | **string**  |                  The shell used to run commands                   |   **bash**    |
 
 **Please, note**: `source-file-regex` should be designed keeping in mind that it will be applied to a path _always_ relative to `root-directory` and _always_ starting with `./`.
 

@@ -17,15 +17,15 @@ steps:
 
 1. If `source-directory` contains a **package.json** file:
 
-   1. set up a NodeJS environment via [setup-nodejs-context](../setup-nodejs-context/README.md)
+   1. Set up a NodeJS environment via [setup-nodejs-context](../setup-nodejs-context/README.md) in `source-directory`.
 
-   1. run `pnpm build`
+   1. Run `pnpm build`.
 
-   1. the **dist** subdirectory will be the actual website source
+   1. The **dist** subdirectory will contain the actual website.
 
-1. If `dry-run` is set to **true**, interrupt the process without failing
+1. If `dry-run` is set to **true**, interrupt the process without failing.
 
-1. Publish the files to GitHub Pages
+1. Publish the files to GitHub Pages.
 
 ## Requirements
 
@@ -50,7 +50,6 @@ steps:
 | `source-directory` | **string**  |                Directory containing the website                 |               |
 |     `optional`     | **boolean** | `source-directory` can be empty or refer to a missing directory |   **false**   |
 |     `dry-run`      | **boolean** |           Stops the publication just before uploading           |   **false**   |
-|      `shell`       | **string**  |                 The shell used to run commands                  |   **bash**    |
 
 ## Further references
 

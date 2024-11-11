@@ -40,20 +40,22 @@ inputs:
     description: The directory containing Cargo.toml.
     default: .
 
-  shell:
-    description: The shell used to run commands
-    default: bash
-
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.root-directory }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.wasm-pack-version }}" ]]
         then
           echo "❌Missing action input: 'wasm-pack-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.npm-scope }}" ]]
+        then
+          echo "❌Missing action input: 'npm-scope'!" >&2
           exit 1
         fi
 
@@ -109,7 +111,6 @@ runs:
       uses: giancosta86/aurora-github/actions/install-wasm-pack@v6.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
-        shell: ${{ inputs.shell }}
 
     - name: Verify Rust source files
       uses: giancosta86/aurora-github/actions/verify-rust-crate@v6.0.0
@@ -120,10 +121,9 @@ runs:
         source-file-regex: ${{ inputs.source-file-regex }}
         check-artifact-version: ${{ inputs.check-artifact-version }}
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Run headless browser tests
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "🌐Running headless browser tests..."
@@ -131,7 +131,7 @@ runs:
         echo "✅Headless browser tests OK!"
 
     - name: Generate the NodeJS package source files
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
@@ -148,8 +148,7 @@ runs:
       with:
         optional: true
         root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Print confirmation message
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: echo "✅Rust web assembly source files verified!"

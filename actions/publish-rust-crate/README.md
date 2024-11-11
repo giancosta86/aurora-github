@@ -35,7 +35,6 @@ steps:
 |      `cargo-token`      | **string**  |          The secret token for publishing to the registry          |               |
 | `document-all-features` | **boolean** | Enable [Rustdoc for all features](https://docs.rs/about/metadata) |   **true**    |
 |   `project-directory`   | **string**  |               The directory containing `Cargo.toml`               |     **.**     |
-|         `shell`         | **string**  |                  The shell used to run commands                   |   **bash**    |
 
 ## Further references
 

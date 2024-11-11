@@ -27,10 +27,9 @@ steps:
 
 ## Inputs 📥
 
-|        Name         |    Type    |                       Description                        | Default value |
-| :-----------------: | :--------: | :------------------------------------------------------: | :-----------: |
-| `project-directory` | **string** | Contains the project files - especially **package.json** |     **.**     |
-|       `shell`       | **string** |              The shell used to run commands              |   **bash**    |
+|        Name         |    Type    |              Description               | Default value |
+| :-----------------: | :--------: | :------------------------------------: | :-----------: |
+| `project-directory` | **string** | Directory containing the project files |     **.**     |
 
 ## Further references
 

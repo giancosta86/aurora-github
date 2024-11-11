@@ -22,10 +22,9 @@ steps:
 
 ## Inputs 📥
 
-|  Name   |    Type    |          Description           | Default value |
-| :-----: | :--------: | :----------------------------: | :-----------: |
-| `scope` | **string** |     The npm scope to parse     |               |
-| `shell` | **string** | The shell used to run commands |   **bash**    |
+|  Name   |    Type    |      Description       | Default value |
+| :-----: | :--------: | :--------------------: | :-----------: |
+| `scope` | **string** | The npm scope to parse |               |
 
 ## Outputs 📤
 

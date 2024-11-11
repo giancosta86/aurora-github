@@ -3,24 +3,20 @@ description: Conditionally installs a specific NodeJS version, pnpm, as well as 
 
 inputs:
   project-directory:
-    description: Contains the project files - especially package.json.
+    description: Directory containing the project files.
     default: .
-
-  shell:
-    description: The shell used to run commands.
-    default: bash
 
 runs:
   using: composite
   steps:
     - name: Print welcome message
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "💻Setting up NodeJS context in '${{ inputs.project-directory }}'..."
 
     - name: Setup environment variables
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -f ".nvmrc" ]]
@@ -48,14 +44,14 @@ runs:
         node-version-file: ${{ inputs.project-directory }}/.nvmrc
 
     - name: Print NodeJS version
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "🔎node version: $(node --version)"
 
     - name: Detect the requested pnpm version
       if: ${{ env.installNode == 'true' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -f ".pnpmver" ]]
@@ -74,14 +70,14 @@ runs:
         version: ${{ env.pnpmVersion }}
 
     - name: Print pnpm version
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "📦pnpm version: $(pnpm --version)"
 
     - name: Install the dependencies
       if: ${{ env.installDependencies == 'true' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         lockFile="pnpm-lock.yaml"
@@ -97,7 +93,6 @@ runs:
         echo "✅Dependencies installed!"
 
     - name: Print confirmation message
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "✅NodeJS context ready!"
+      run: echo "✅NodeJS context ready!"

@@ -5,15 +5,11 @@ inputs:
   packages:
     description: The packages to install, separated by any spaces or commas.
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         if [[ -z "${{ inputs.packages }}" ]]
         then
@@ -22,7 +18,7 @@ runs:
         fi
 
     - name: Install packages
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         requestedPackages="${{ inputs.packages }}"
 

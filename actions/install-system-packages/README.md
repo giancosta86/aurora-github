@@ -24,7 +24,6 @@ This action installs the requested packages as **root**, without asking for conf
 |    Name    |    Type    |                        Description                         | Default value |
 | :--------: | :--------: | :--------------------------------------------------------: | :-----------: |
 | `packages` | **string** | The packages to install, separated by any spaces or commas |               |
-|  `shell`   | **string** |               The shell used to run commands               |   **bash**    |
 
 ## Further references
 

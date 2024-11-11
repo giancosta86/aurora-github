@@ -65,7 +65,6 @@ steps:
 |       `enforce-esm`       | **boolean** | Verify that the `type` field is `module` - for an ESM package |         **true**          |
 |  `check-subpath-exports`  | **boolean** | Run `check-subpath-exports` after the `verify` package script |         **true**          |
 |    `project-directory`    | **string**  |            The directory containing `package.json`            |           **.**           |
-|          `shell`          | **string**  |                The shell used to run commands                 |         **bash**          |
 
 ## Further references
 

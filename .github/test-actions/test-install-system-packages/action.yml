@@ -5,8 +5,7 @@ runs:
   steps:
     - name: Setup environment variables
       shell: bash
-      run: |
-        echo "expectedCommand=sponge" >> $GITHUB_ENV
+      run: echo "expectedCommand=sponge" >> $GITHUB_ENV
 
     - name: Ensure the command is not installed at first
       shell: bash

@@ -10,24 +10,17 @@ inputs:
     description: The directory containing the project.
     default: .
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
     - uses: giancosta86/aurora-github/actions/detect-branch-version@v6.0.0
       id: version-detector
-      with:
-        shell: ${{ inputs.shell }}
 
     - uses: giancosta86/aurora-github/actions/detect-project-tech@v6.0.0
       if: ${{ inputs.artifact-descriptor == '' }}
       id: tech-detector
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Replace versions
       shell: bash

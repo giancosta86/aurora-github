@@ -5,6 +5,7 @@ runs:
   steps:
     - name: Setup environment variables
       shell: bash
+      working-directory: ./tests/npm-package
       run: |
         rootIndexFile="src/index.ts"
         echo "rootIndexFile=$rootIndexFile" >> $GITHUB_ENV
@@ -17,8 +18,7 @@ runs:
     - name: Ensure the root index file is initially missing
       shell: bash
       working-directory: ./tests/npm-package
-      run: |
-        rm -f "$rootIndexFile"
+      run: rm -f "$rootIndexFile"
 
     - name: Run with prefer-index mode - when the root index file is missing
       uses: ./actions/inject-subpath-exports
