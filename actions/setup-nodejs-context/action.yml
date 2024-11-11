@@ -2,12 +2,8 @@ name: Setup a NodeJS context
 description: Conditionally installs a specific NodeJS version, pnpm, as well as the dependencies listed in package.json.
 
 inputs:
-  pnpm-version:
-    description: The version of pnpm to use.
-    default: 9
-
   project-directory:
-    description: The directory containing package.json.
+    description: Contains the project files - especially package.json.
     default: .
 
   shell:
@@ -17,29 +13,33 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Print welcome message
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "💻Setting up NodeJS context in '${{ inputs.project-directory }}'..."
+
     - name: Setup environment variables
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -f ".nvmrc" ]]
         then
-          echo "installNode=true" >> $GITHUB_ENV
+          installNode=true
         else
-          echo "installNode=false" >> $GITHUB_ENV
+          installNode=false
         fi
+        echo "🔎Install NodeJS? $installNode"
+        echo "installNode=$installNode" >> $GITHUB_ENV
 
         if [[ -f "package.json" ]]
         then
-          echo "installDependencies=true" >> $GITHUB_ENV
+          installDependencies=true
         else
-          echo "installDependencies=false" >> $GITHUB_ENV
+          installDependencies=false
         fi
-
-    - name: Print welcome message
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "💻Setting up NodeJS context in '${{ inputs.project-directory }}'..."
+        echo "🔎Install dependencies? $installDependencies"
+        echo "installDependencies=$installDependencies" >> $GITHUB_ENV
 
     - name: Install NodeJS
       if: ${{ env.installNode == 'true' }}
@@ -53,11 +53,25 @@ runs:
       run: |
         echo "🔎node version: $(node --version)"
 
+    - name: Detect the requested pnpm version
+      if: ${{ env.installNode == 'true' }}
+      shell: ${{ inputs.shell }}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -f ".pnpmver" ]]
+        then
+          pnpmVersion="$(cat .pnpmver)"
+        else
+          pnpmVersion="latest"
+        fi
+        echo "🔬pnpm version to install: '$pnpmVersion'"
+        echo "pnpmVersion=$pnpmVersion" >> $GITHUB_ENV
+
     - name: Install pnpm
       if: ${{ env.installNode == 'true' }}
       uses: pnpm/action-setup@v4
       with:
-        version: ${{ inputs.pnpm-version }}
+        version: ${{ env.pnpmVersion }}
 
     - name: Print pnpm version
       shell: ${{ inputs.shell }}

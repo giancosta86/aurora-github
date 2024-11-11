@@ -3,15 +3,9 @@ name: Test setup-nodejs-context
 runs:
   using: composite
   steps:
-    - name: Setup environment variables
-      shell: bash
-      run: |
-        echo "expectedPnpmVersion=9.7.1" >> $GITHUB_ENV
-
     - name: Setup the NodeJS context
       uses: ./actions/setup-nodejs-context
       with:
-        pnpm-version: ${{ env.expectedPnpmVersion }}
         project-directory: ./tests/npm-package
 
     - name: The expected NodeJS version should be used
@@ -34,7 +28,9 @@ runs:
 
     - name: The expected pnpm version should be used
       shell: bash
+      working-directory: ./tests/npm-package
       run: |
+        expectedPnpmVersion="$(cat .pnpmver)"
         echo "🔎Expected pnpm version: '$expectedPnpmVersion'"
 
         installedPnpmVersion="$(pnpm --version)"
