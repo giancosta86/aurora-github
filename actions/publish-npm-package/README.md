@@ -45,7 +45,6 @@ steps:
 | :-----------------: | :---------: | :---------------------------------------------: | :-----------: |
 |      `dry-run`      | **boolean** |   Run a simulated publication via `--dry-run`   |   **false**   |
 |     `npm-token`     | **string**  | The secret token for publishing to the registry |               |
-|  `frozen-lockfile`  | **boolean** | Fail if `pnpm-lock.yaml` is missing or outdated |   **true**    |
 | `project-directory` | **string**  |     The directory containing `package.json`     |     **.**     |
 |       `shell`       | **string**  |         The shell used to run commands          |   **bash**    |
 

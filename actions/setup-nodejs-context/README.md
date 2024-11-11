@@ -21,7 +21,7 @@ The project directory must contain:
 
 - the **package.json** descriptor, if `install-dependencies` is set to **true**
 
-- an updated `pnpm-lock.yaml` file, if both `install-dependencies` and `frozen-lockfile` are enabled
+- an updated `pnpm-lock.yaml` file, if it's present in the project directory
 
 ## Inputs 📥
 
@@ -31,7 +31,6 @@ The project directory must contain:
 |     `install-pnpm`     | **boolean** |        Install the requested pnpm version        |   **true**    |
 | `install-dependencies` | **boolean** | Install the dependencies for the current package |   **true**    |
 |     `pnpm-version`     | **string**  |            The version of pnpm to use            |     **9**     |
-|   `frozen-lockfile`    | **boolean** | Fail if "pnpm-lock.yaml" is missing or outdated  |   **true**    |
 |  `project-directory`   | **string**  |     The directory containing `package.json`      |     **.**     |
 |        `shell`         | **string**  |          The shell used to run commands          |   **bash**    |
 

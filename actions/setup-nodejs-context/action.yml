@@ -18,10 +18,6 @@ inputs:
     description: The version of pnpm to use.
     default: 9
 
-  frozen-lockfile:
-    description: Fail if "pnpm-lock.yaml" is missing or outdated.
-    default: true
-
   project-directory:
     description: The directory containing package.json.
     default: .
@@ -75,12 +71,6 @@ runs:
 
         if [[ "${{ inputs.install-dependencies }}" == "true" ]]
         then
-          if [[ -z "${{ inputs.frozen-lockfile }}" ]]
-          then
-            echo "❌Missing action input: 'frozen-lockfile'!" >&2
-            exit 1
-          fi
-
           if [[ ! -f "package.json" ]]
           then
             echo "❌The package.json descriptor file does not exist!!" >&2
@@ -123,12 +113,13 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ "${{ inputs.frozen-lockfile }}" == "true" ]]
+        lockFile="pnpm-lock.yaml"
+        if [[ -f "$lockFile" ]]
         then
-          echo "🧊Installing dependencies with frozen lockfile..."
+          echo "🧊Installing dependencies with frozen lockfile, as '$lockFile' is present..."
           pnpm install --frozen-lockfile
         else
-          echo "🌞Installing dependencies without frozen lockfile..."
+          echo "🌞Installing dependencies without frozen lockfile, as '$lockFile' is missing..."
           pnpm install --no-frozen-lockfile
         fi
 

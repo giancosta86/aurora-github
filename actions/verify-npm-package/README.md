@@ -59,7 +59,6 @@ steps:
 
 |           Name            |    Type     |                             Description                             |                  Default value                   |
 | :-----------------------: | :---------: | :-----------------------------------------------------------------: | :----------------------------------------------: |
-|     `frozen-lockfile`     | **boolean** |          Fails if `pnpm-lock.yaml` is missing or outdated           |                     **true**                     |
 | `crash-on-critical-todos` | **boolean** |           Crash the workflow if critical TODOs are found            |                     **true**                     |
 |    `source-file-regex`    | **string**  |              PCRE pattern describing the source files               | **^\\.\\/(src\|tests)\\/.+\\.(c\|m)?(j\|t)sx?$** |
 | `check-artifact-version`  | **boolean** |    Ensure the version in `package.json` matches the branch name     |                     **true**                     |

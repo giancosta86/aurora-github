@@ -106,7 +106,6 @@ runs:
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
-        frozen-lockfile: false
         website-directory: ${{ inputs.website-directory }}
         project-directory: ${{ inputs.project-directory }}/pkg
         shell: ${{ inputs.shell }}

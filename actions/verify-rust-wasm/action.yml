@@ -36,10 +36,6 @@ inputs:
     description: Ensure the version in Cargo.toml matches the branch name.
     default: true
 
-  frozen-lockfile:
-    description: Fail if "pnpm-lock.yaml" is missing or outdated.
-    default: true
-
   project-directory:
     description: The directory containing Cargo.toml.
     default: .
@@ -103,12 +99,6 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.frozen-lockfile }}" ]]
-        then
-          echo "❌Missing action input: 'frozen-lockfile'!" >&2
-          exit 1
-        fi
-
     - name: Parse npm scope
       id: parse-npm-scope
       uses: giancosta86/aurora-github/actions/parse-npm-scope@v6.0.0
@@ -158,7 +148,6 @@ runs:
       with:
         optional: true
         dedicated-env: true
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
         root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
         shell: ${{ inputs.shell }}
 

@@ -9,10 +9,6 @@ inputs:
   npm-token:
     description: The secret token for publishing to the registry.
 
-  frozen-lockfile:
-    description: Fail if 'pnpm-lock.yaml' is missing or outdated.
-    default: true
-
   website-directory:
     description: Relative directory to the project website.
     default: website
@@ -44,12 +40,6 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.frozen-lockfile }}" ]]
-        then
-          echo "❌Missing action input: 'frozen-lockfile'!" >&2
-          exit 1
-        fi
-
         if [[ ! -f "package.json" ]]
         then
           echo "❌The package.json descriptor file does not exist!!" >&2
@@ -66,7 +56,6 @@ runs:
     - name: Setup NodeJS context
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
 

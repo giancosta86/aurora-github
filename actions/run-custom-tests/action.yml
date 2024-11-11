@@ -18,10 +18,6 @@ inputs:
     description: Set up a context-specific, dedicated environment.
     default: false
 
-  frozen-lockfile:
-    description: Fail if "pnpm-lock.yaml" is missing or outdated.
-    default: true
-
   root-directory:
     description: The directory containing the tests.
 
@@ -99,7 +95,6 @@ runs:
       if: ${{ env.strategy == 'nodejs' && inputs.dedicated-env == 'true' }}
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
         project-directory: ${{ inputs.root-directory }}
         shell: ${{ inputs.shell }}
 
@@ -109,7 +104,6 @@ runs:
       with:
         setup-nodejs: false
         install-pnpm: false
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
         project-directory: ${{ inputs.root-directory }}
         shell: ${{ inputs.shell }}
 

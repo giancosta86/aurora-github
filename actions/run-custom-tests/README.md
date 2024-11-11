@@ -37,7 +37,7 @@ steps:
 
         - if it is **true**, install run the action in full
 
-        - otherwise, just install the package dependencies - forwarding the `frozen-lockfile` input
+        - otherwise, just install the package dependencies
 
      1. run the **verify** script in the **scripts** section of **package.json**
 
@@ -57,15 +57,14 @@ steps:
 
 ## Inputs 📥
 
-|       Name        |    Type     |                   Description                    | Default value |
-| :---------------: | :---------: | :----------------------------------------------: | :-----------: |
-|    `optional`     | **boolean** |  Exit with no error if the tests cannot be run   |   **false**   |
-|   `script-file`   | **string**  |         Relative path to the script file         | **verify.sh** |
-|  `script-shell`   | **string**  |       The shell used to run `script-file`        |   **bash**    |
-|  `dedicated-env`  | **boolean** | Set up a context-specific, dedicated environment |   **false**   |
-| `frozen-lockfile` | **boolean** | Fail if "pnpm-lock.yaml" is missing or outdated  |   **true**    |
-| `root-directory`  | **string**  |        The directory containing the tests        |               |
-|      `shell`      | **string**  |          The shell used to run commands          |   **bash**    |
+|       Name       |    Type     |                   Description                    | Default value |
+| :--------------: | :---------: | :----------------------------------------------: | :-----------: |
+|    `optional`    | **boolean** |  Exit with no error if the tests cannot be run   |   **false**   |
+|  `script-file`   | **string**  |         Relative path to the script file         | **verify.sh** |
+|  `script-shell`  | **string**  |       The shell used to run `script-file`        |   **bash**    |
+| `dedicated-env`  | **boolean** | Set up a context-specific, dedicated environment |   **false**   |
+| `root-directory` | **string**  |        The directory containing the tests        |               |
+|     `shell`      | **string**  |          The shell used to run commands          |   **bash**    |
 
 ## Further references
 
