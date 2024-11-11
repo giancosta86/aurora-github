@@ -41,14 +41,13 @@ steps:
 
 ## Inputs 📥
 
-|        Name         |    Type     |                   Description                   |      Default value      |
-| :-----------------: | :---------: | :---------------------------------------------: | :---------------------: |
-|      `dry-run`      | **boolean** |   Run a simulated publication via `--dry-run`   |        **false**        |
-|     `npm-token`     | **string**  | The secret token for publishing to the registry |                         |
-|   `registry-url`    | **string**  |           The URL of the npm registry           | _Official npm registry_ |
-|  `frozen-lockfile`  | **boolean** | Fail if `pnpm-lock.yaml` is missing or outdated |        **true**         |
-| `project-directory` | **string**  |     The directory containing `package.json`     |          **.**          |
-|       `shell`       | **string**  |         The shell used to run commands          |        **bash**         |
+|        Name         |    Type     |                   Description                   | Default value |
+| :-----------------: | :---------: | :---------------------------------------------: | :-----------: |
+|      `dry-run`      | **boolean** |   Run a simulated publication via `--dry-run`   |   **false**   |
+|     `npm-token`     | **string**  | The secret token for publishing to the registry |               |
+|  `frozen-lockfile`  | **boolean** | Fail if `pnpm-lock.yaml` is missing or outdated |   **true**    |
+| `project-directory` | **string**  |     The directory containing `package.json`     |     **.**     |
+|       `shell`       | **string**  |         The shell used to run commands          |   **bash**    |
 
 ## Further references
 

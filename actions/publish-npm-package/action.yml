@@ -9,10 +9,6 @@ inputs:
   npm-token:
     description: The secret token for publishing to the registry.
 
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
   frozen-lockfile:
     description: Fail if 'pnpm-lock.yaml' is missing or outdated.
     default: true
@@ -48,12 +44,6 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.registry-url }}" ]]
-        then
-          echo "❌Missing action input: 'registry-url'!" >&2
-          exit 1
-        fi
-
         if [[ -z "${{ inputs.frozen-lockfile }}" ]]
         then
           echo "❌Missing action input: 'frozen-lockfile'!" >&2
@@ -76,7 +66,6 @@ runs:
     - name: Setup NodeJS context
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
-        registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: ${{ inputs.frozen-lockfile }}
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
@@ -117,4 +106,4 @@ runs:
     - name: Print confirmation message
       shell: ${{ inputs.shell }}
       run: |
-        echo "✅Publication to '${{ inputs.registry-url }}' successful!"
+        echo "✅Npm package published successfully!"

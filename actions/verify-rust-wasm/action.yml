@@ -36,10 +36,6 @@ inputs:
     description: Ensure the version in Cargo.toml matches the branch name.
     default: true
 
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
   frozen-lockfile:
     description: Fail if "pnpm-lock.yaml" is missing or outdated.
     default: true
@@ -107,12 +103,6 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.registry-url }}" ]]
-        then
-          echo "❌Missing action input: 'registry-url'!" >&2
-          exit 1
-        fi
-
         if [[ -z "${{ inputs.frozen-lockfile }}" ]]
         then
           echo "❌Missing action input: 'frozen-lockfile'!" >&2
@@ -168,7 +158,6 @@ runs:
       with:
         optional: true
         dedicated-env: true
-        registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: ${{ inputs.frozen-lockfile }}
         root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
         shell: ${{ inputs.shell }}

@@ -2,10 +2,6 @@ name: Verify npm package
 description: Verifies the source files of a NodeJS package - by running its 'verify' script within the 'scripts' section of 'package.json'.
 
 inputs:
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
   frozen-lockfile:
     description: Fail if "pnpm-lock.yaml" is missing or outdated.
     default: true
@@ -49,12 +45,6 @@ runs:
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.registry-url }}" ]]
-        then
-          echo "❌Missing action input: 'registry-url'!" >&2
-          exit 1
-        fi
-
         if [[ -z "${{ inputs.frozen-lockfile }}" ]]
         then
           echo "❌Missing action input: 'frozen-lockfile'!" >&2
@@ -119,7 +109,6 @@ runs:
     - name: Setup NodeJS context
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
-        registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: ${{ inputs.frozen-lockfile }}
         project-directory: ${{ inputs.project-directory }}
         shell: ${{ inputs.shell }}
@@ -144,7 +133,6 @@ runs:
       with:
         optional: true
         dedicated-env: ${{ inputs.custom-test-env }}
-        registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: ${{ inputs.frozen-lockfile }}
         root-directory: ${{ inputs.project-directory }}/tests
         shell: ${{ inputs.shell }}

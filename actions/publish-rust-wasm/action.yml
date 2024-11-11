@@ -15,10 +15,6 @@ inputs:
   npm-scope:
     description: The npm package scope or "<ROOT>".
 
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
   wasm-target:
     description: The target of the 'wasm-pack build' command.
     default: web
@@ -110,7 +106,6 @@ runs:
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
-        registry-url: ${{ inputs.registry-url }}
         frozen-lockfile: false
         website-directory: ${{ inputs.website-directory }}
         project-directory: ${{ inputs.project-directory }}/pkg

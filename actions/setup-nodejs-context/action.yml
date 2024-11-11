@@ -18,10 +18,6 @@ inputs:
     description: The version of pnpm to use.
     default: 9
 
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
   frozen-lockfile:
     description: Fail if "pnpm-lock.yaml" is missing or outdated.
     default: true
@@ -49,12 +45,6 @@ runs:
 
         if [[ "${{ inputs.setup-nodejs }}" == "true" ]]
         then
-          if [[ -z "${{ inputs.registry-url }}" ]]
-          then
-            echo "❌Missing action input: 'registry-url'!" >&2
-            exit 1
-          fi
-
           if [[ ! -f ".nvmrc" ]]
           then
             echo "❌The .nvmrc version file does not exist!!" >&2
@@ -109,7 +99,6 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version-file: ${{ inputs.project-directory }}/.nvmrc
-        registry-url: ${{ inputs.registry-url }}
 
     - name: Print NodeJS version
       shell: ${{ inputs.shell }}

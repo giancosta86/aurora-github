@@ -26,7 +26,7 @@ steps:
 
 1. Run `wasm-pack build` to verify the generation of the NodeJS package source files.
 
-1. If the directory referenced by the `client-tests-directory` input exists, execute the [run-custom-tests](../run-custom-tests/README.md) action on it, with the `optional` flag enabled and forwarding the related inputs, like `registry-url` and `frozen-lockfile`.
+1. If the directory referenced by the `client-tests-directory` input exists, execute the [run-custom-tests](../run-custom-tests/README.md) action on it, with the `optional` flag enabled.
 
 ## Requirements
 
@@ -47,7 +47,6 @@ steps:
 | `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |           **true**            |
 |    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         | view the [code](./action.yml) |
 | `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |           **true**            |
-|      `registry-url`       | **string**  |               The URL of the npm registry                |    _Official npm registry_    |
 |     `frozen-lockfile`     | **boolean** |     Fails if `pnpm-lock.yaml` is missing or outdated     |           **true**            |
 |    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |             **.**             |
 |          `shell`          | **string**  |              The shell used to run commands              |           **bash**            |

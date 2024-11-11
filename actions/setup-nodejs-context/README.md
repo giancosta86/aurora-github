@@ -25,16 +25,15 @@ The project directory must contain:
 
 ## Inputs 📥
 
-|          Name          |    Type     |                   Description                    |      Default value      |
-| :--------------------: | :---------: | :----------------------------------------------: | :---------------------: |
-|     `setup-nodejs`     | **boolean** |       Set up the requested NodeJS version        |        **true**         |
-|     `install-pnpm`     | **boolean** |        Install the requested pnpm version        |        **true**         |
-| `install-dependencies` | **boolean** | Install the dependencies for the current package |        **true**         |
-|     `pnpm-version`     | **string**  |            The version of pnpm to use            |          **9**          |
-|     `registry-url`     | **string**  |           The URL of the npm registry            | _Official npm registry_ |
-|   `frozen-lockfile`    | **boolean** | Fail if "pnpm-lock.yaml" is missing or outdated  |        **true**         |
-|  `project-directory`   | **string**  |     The directory containing `package.json`      |          **.**          |
-|        `shell`         | **string**  |          The shell used to run commands          |        **bash**         |
+|          Name          |    Type     |                   Description                    | Default value |
+| :--------------------: | :---------: | :----------------------------------------------: | :-----------: |
+|     `setup-nodejs`     | **boolean** |       Set up the requested NodeJS version        |   **true**    |
+|     `install-pnpm`     | **boolean** |        Install the requested pnpm version        |   **true**    |
+| `install-dependencies` | **boolean** | Install the dependencies for the current package |   **true**    |
+|     `pnpm-version`     | **string**  |            The version of pnpm to use            |     **9**     |
+|   `frozen-lockfile`    | **boolean** | Fail if "pnpm-lock.yaml" is missing or outdated  |   **true**    |
+|  `project-directory`   | **string**  |     The directory containing `package.json`      |     **.**     |
+|        `shell`         | **string**  |          The shell used to run commands          |   **bash**    |
 
 ## Further references
 
