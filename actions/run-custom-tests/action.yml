@@ -102,8 +102,6 @@ runs:
       if: ${{ env.strategy == 'nodejs' && inputs.dedicated-env != 'true' }}
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
-        setup-nodejs: false
-        install-pnpm: false
         project-directory: ${{ inputs.root-directory }}
         shell: ${{ inputs.shell }}
 

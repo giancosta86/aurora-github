@@ -1,19 +1,7 @@
 name: Setup a NodeJS context
-description: Sets up a specific NodeJS version and installs pnpm as well as the dependencies listed in package.json; any of these steps can be skipped by disabling the related flag.
+description: Conditionally installs a specific NodeJS version, pnpm, as well as the dependencies listed in package.json.
 
 inputs:
-  setup-nodejs:
-    description: Set up the requested NodeJS version.
-    default: true
-
-  install-pnpm:
-    description: Install the requested pnpm version.
-    default: true
-
-  install-dependencies:
-    description: Install the dependencies for the current package.
-    default: true
-
   pnpm-version:
     description: The version of pnpm to use.
     default: 9
@@ -29,53 +17,22 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
+    - name: Setup environment variables
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.setup-nodejs }}" ]]
+        if [[ -f ".nvmrc" ]]
         then
-          echo "❌Missing action input: 'setup-nodejs'!" >&2
-          exit 1
+          echo "installNode=true" >> $GITHUB_ENV
+        else
+          echo "installNode=false" >> $GITHUB_ENV
         fi
 
-        if [[ "${{ inputs.setup-nodejs }}" == "true" ]]
+        if [[ -f "package.json" ]]
         then
-          if [[ ! -f ".nvmrc" ]]
-          then
-            echo "❌The .nvmrc version file does not exist!!" >&2
-            exit 1
-          fi
-        fi
-
-        if [[ -z "${{ inputs.install-pnpm }}" ]]
-        then
-          echo "❌Missing action input: 'install-pnpm'!" >&2
-          exit 1
-        fi
-
-        if [[ "${{ inputs.install-pnpm }}" == "true" ]]
-        then
-          if [[ -z "${{ inputs.pnpm-version }}" ]]
-          then
-            echo "❌Missing action input: 'pnpm-version'!" >&2
-            exit 1
-          fi
-        fi
-
-        if [[ -z "${{ inputs.install-dependencies }}" ]]
-        then
-          echo "❌Missing action input: 'install-dependencies'!" >&2
-          exit 1
-        fi
-
-        if [[ "${{ inputs.install-dependencies }}" == "true" ]]
-        then
-          if [[ ! -f "package.json" ]]
-          then
-            echo "❌The package.json descriptor file does not exist!!" >&2
-            exit 1
-          fi
+          echo "installDependencies=true" >> $GITHUB_ENV
+        else
+          echo "installDependencies=false" >> $GITHUB_ENV
         fi
 
     - name: Print welcome message
@@ -84,8 +41,8 @@ runs:
       run: |
         echo "💻Setting up NodeJS context in '${{ inputs.project-directory }}'..."
 
-    - name: Setup NodeJS
-      if: ${{ inputs.setup-nodejs == 'true' }}
+    - name: Install NodeJS
+      if: ${{ env.installNode == 'true' }}
       uses: actions/setup-node@v4
       with:
         node-version-file: ${{ inputs.project-directory }}/.nvmrc
@@ -97,7 +54,7 @@ runs:
         echo "🔎node version: $(node --version)"
 
     - name: Install pnpm
-      if: ${{ inputs.install-pnpm == 'true' }}
+      if: ${{ env.installNode == 'true' }}
       uses: pnpm/action-setup@v4
       with:
         version: ${{ inputs.pnpm-version }}
@@ -109,7 +66,7 @@ runs:
         echo "📦pnpm version: $(pnpm --version)"
 
     - name: Install the dependencies
-      if: ${{ inputs.install-dependencies == 'true' }}
+      if: ${{ env.installDependencies == 'true' }}
       shell: ${{ inputs.shell }}
       working-directory: ${{ inputs.project-directory }}
       run: |
