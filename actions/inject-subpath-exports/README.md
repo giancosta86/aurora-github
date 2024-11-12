@@ -43,7 +43,7 @@ The `mode` input can have the following values:
 
 - Existing `exports` entries are **never** deleted - the action can at most alter existing entries with a colliding key.
 
-- The keys reference directories unders `./dist`, **not** under `./<source-directory>`.
+- The keys reference directories under `./dist`, **not** under `./<source-directory>`.
 
 ## Requirements
 

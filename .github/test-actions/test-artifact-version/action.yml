@@ -9,7 +9,7 @@ runs:
     - name: Inject version into Rust crate
       uses: ./actions/inject-branch-version
       with:
-        project-directory: ./tests/rust-crate
+        project-directory: tests/rust-crate
 
     - name: Display updated Rust crate descriptor
       shell: bash
@@ -22,7 +22,7 @@ runs:
     - name: Inject version into Rust web assembly
       uses: ./actions/inject-branch-version
       with:
-        project-directory: ./tests/rust-wasm
+        project-directory: tests/rust-wasm
 
     - name: Display updated Rust web assembly descriptor
       shell: bash
@@ -35,7 +35,7 @@ runs:
     - name: Inject version into NodeJS package
       uses: ./actions/inject-branch-version
       with:
-        project-directory: ./tests/npm-package
+        project-directory: tests/npm-package
 
     - name: Display updated NodeJS package descriptor
       shell: bash
@@ -49,7 +49,7 @@ runs:
       uses: ./actions/inject-branch-version
       with:
         artifact-descriptor: some-descriptor.txt
-        project-directory: ./tests/unknown-tech
+        project-directory: tests/unknown-tech
 
     - name: Display updated unknown tech descriptor
       shell: bash
@@ -62,17 +62,17 @@ runs:
     - name: Version should appear correctly in Rust crate
       uses: ./actions/check-artifact-version
       with:
-        project-directory: ./tests/rust-crate
+        project-directory: tests/rust-crate
 
     - name: Version should appear correctly in Rust wasm
       uses: ./actions/check-artifact-version
       with:
-        project-directory: ./tests/rust-wasm
+        project-directory: tests/rust-wasm
 
     - name: Version should appear correctly in npm package
       uses: ./actions/check-artifact-version
       with:
-        project-directory: ./tests/npm-package
+        project-directory: tests/npm-package
 
     - name: Version should appear correctly in unknown descriptor
       shell: bash

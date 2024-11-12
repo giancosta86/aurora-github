@@ -6,11 +6,11 @@ runs:
     - name: Setup the NodeJS context
       uses: ./actions/setup-nodejs-context
       with:
-        project-directory: ./tests/npm-package
+        project-directory: tests/npm-package
 
     - name: The expected NodeJS version should be used
       shell: bash
-      working-directory: ./tests/npm-package
+      working-directory: tests/npm-package
       run: |
         expectedNodeVersion="$(cat .nvmrc)"
         echo "🔎Expected NodeJS version: '$expectedNodeVersion'"
@@ -28,7 +28,7 @@ runs:
 
     - name: The expected pnpm version should be used
       shell: bash
-      working-directory: ./tests/npm-package
+      working-directory: tests/npm-package
       run: |
         expectedPnpmVersion="$(cat .pnpmver)"
         echo "🔎Expected pnpm version: '$expectedPnpmVersion'"

@@ -4,7 +4,7 @@ description: Prevents cross-branch 'uses:' directives to GitHub actions residing
 inputs:
   actions-directory:
     description: The root of the directory tree containing the actions.
-    default: ./actions
+    default: actions
 
 runs:
   using: composite

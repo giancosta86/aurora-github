@@ -5,8 +5,8 @@ runs:
   steps:
     - uses: ./actions/inject-branch-version
       with:
-        artifact-descriptor: ./tests/npm-package/package.json
+        artifact-descriptor: tests/npm-package/package.json
 
     - uses: ./actions/verify-npm-package
       with:
-        project-directory: ./tests/npm-package
+        project-directory: tests/npm-package

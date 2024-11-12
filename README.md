@@ -10,65 +10,65 @@ In particular, the actions can be grouped by technology:
 
 ## 🦀Rust crate
 
-- [verify-rust-crate](./actions/verify-rust-crate/README.md)
+- [verify-rust-crate](actions/verify-rust-crate/README.md)
 
-- [publish-rust-crate](./actions/publish-rust-crate/README.md)
+- [publish-rust-crate](actions/publish-rust-crate/README.md)
 
 ## 📦NodeJS package
 
-- [verify-npm-package](./actions/verify-npm-package/README.md)
+- [verify-npm-package](actions/verify-npm-package/README.md)
 
-- [publish-npm-package](./actions/publish-npm-package/README.md)
+- [publish-npm-package](actions/publish-npm-package/README.md)
 
-- [inject-subpath-exports](./actions/inject-subpath-exports/README.md)
+- [inject-subpath-exports](actions/inject-subpath-exports/README.md)
 
-- [check-subpath-exports](./actions/check-subpath-exports/README.md)
+- [check-subpath-exports](actions/check-subpath-exports/README.md)
 
 ## 🦀Rust 🌐WebAssembly
 
-- [verify-rust-wasm](./actions/verify-rust-wasm/README.md)
+- [verify-rust-wasm](actions/verify-rust-wasm/README.md)
 
-- [publish-rust-wasm](./actions/publish-rust-wasm/README.md)
+- [publish-rust-wasm](actions/publish-rust-wasm/README.md)
 
 ## 😺GitHub Actions library
 
-- [check-action-references](./actions/check-action-references/README.md)
+- [check-action-references](actions/check-action-references/README.md)
 
 ## 🏷️Semantic versioning
 
-- [detect-branch-version](./actions/detect-branch-version/README.md)
+- [detect-branch-version](actions/detect-branch-version/README.md)
 
-- [inject-branch-version](./actions/inject-branch-version/README.md)
+- [inject-branch-version](actions/inject-branch-version/README.md)
 
-- [check-artifact-version](./actions/check-artifact-version/README.md)
+- [check-artifact-version](actions/check-artifact-version/README.md)
 
-- [tag-and-release](./actions/tag-and-release/README.md)
+- [tag-and-release](actions/tag-and-release/README.md)
 
 ## 🦀Rust utilities
 
-- [check-rust-versions](./actions/check-rust-versions/README.md)
+- [check-rust-versions](actions/check-rust-versions/README.md)
 
-- [extract-rust-snippets](./actions/extract-rust-snippets/README.md)
+- [extract-rust-snippets](actions/extract-rust-snippets/README.md)
 
-- [install-wasm-pack](./actions/install-wasm-pack/README.md)
+- [install-wasm-pack](actions/install-wasm-pack/README.md)
 
 ## 📦NodeJS utilities
 
-- [setup-nodejs-context](./actions/setup-nodejs-context/README.md)
+- [setup-nodejs-context](actions/setup-nodejs-context/README.md)
 
-- [parse-npm-scope](./actions/parse-npm-scope/README.md)
+- [parse-npm-scope](actions/parse-npm-scope/README.md)
 
 ## 🧰General-purpose utilities
 
-- [find-critical-todos](./actions/find-critical-todos/README.md)
+- [find-critical-todos](actions/find-critical-todos/README.md)
 
-- [detect-project-tech](./actions/detect-project-tech/README.md)
+- [detect-project-tech](actions/detect-project-tech/README.md)
 
-- [install-system-packages](./actions/install-system-packages/README.md)
+- [install-system-packages](actions/install-system-packages/README.md)
 
-- [publish-github-pages](./actions/publish-github-pages/README.md)
+- [publish-github-pages](actions/publish-github-pages/README.md)
 
-- [run-custom-tests](./run-custom-tests/README.md)
+- [run-custom-tests](run-custom-tests/README.md)
 
 ## Further references
 
