@@ -6,7 +6,7 @@ inputs:
     description: Directory containing the website.
 
   optional:
-    description: source-directory can be empty or refer to a missing directory.
+    description: Whether "source-directory" can be an empty string or a missing directory.
     default: false
 
   dry-run:
@@ -117,11 +117,25 @@ runs:
       shell: bash
       run: echo "artifactDirectory=${{ inputs.source-directory }}" >> $GITHUB_ENV
 
-    - name: Debug artifact directory
+    - name: Check the artifact directory
       if: ${{ env.strategy != 'exit' }}
       shell: bash
       run: |
         echo "🔎Website artifact directory: '$artifactDirectory'"
+
+        if [[ -d "$artifactDirectory" ]]
+        then
+          echo "✅The artifact directory for the 🌐website exists!"
+        else
+          if [[ "$optional" == "true" ]]
+          then
+            echo "💬Missing website artifact directory - can't proceed"
+            echo "strategy=exit" >> $GITHUB_ENV
+          else
+            echo "❌Missing website artifact directory!" >&2
+            exit 1
+          fi
+        fi
 
     - name: Prevent uploading via dry-run
       if: ${{ env.strategy != 'exit' && inputs.dry-run == 'true' }}

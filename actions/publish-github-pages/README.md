@@ -45,11 +45,11 @@ steps:
 
 ## Inputs 📥
 
-|        Name        |    Type     |                           Description                           | Default value |
-| :----------------: | :---------: | :-------------------------------------------------------------: | :-----------: |
-| `source-directory` | **string**  |                Directory containing the website                 |               |
-|     `optional`     | **boolean** | `source-directory` can be empty or refer to a missing directory |   **false**   |
-|     `dry-run`      | **boolean** |           Stops the publication just before uploading           |   **false**   |
+|        Name        |    Type     |                               Description                                | Default value |
+| :----------------: | :---------: | :----------------------------------------------------------------------: | :-----------: |
+| `source-directory` | **string**  |                     Directory containing the website                     |               |
+|     `optional`     | **boolean** | Whether `source-directory` can be an empty string or a missing directory |   **false**   |
+|     `dry-run`      | **boolean** |               Stops the publication just before uploading                |   **false**   |
 
 ## Outputs 📤
 
