@@ -43,14 +43,14 @@ steps:
 
 ## Inputs 📥
 
-|           Name            |    Type     |                       Description                        |           Default value            |
-| :-----------------------: | :---------: | :------------------------------------------------------: | :--------------------------------: |
-|    `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |              **true**              |
-|      `check-rustdoc`      | **boolean** |    Build the documentation - with warnings as errors     |              **true**              |
-| `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |              **true**              |
-|    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         | **^\\.\\/(src\|tests)\\/.+\\.rs$** |
-| `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |              **true**              |
-|    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |               **.**                |
+|           Name            |    Type     |                       Description                        |       Default value       |
+| :-----------------------: | :---------: | :------------------------------------------------------: | :-----------------------: |
+|    `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |         **true**          |
+|      `check-rustdoc`      | **boolean** |    Build the documentation - with warnings as errors     |         **true**          |
+| `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |         **true**          |
+|    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         | view [source](action.yml) |
+| `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |         **true**          |
+|    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |           **.**           |
 
 ## Further references
 

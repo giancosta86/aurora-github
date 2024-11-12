@@ -3,7 +3,7 @@ description: Displays the versions of the main Rust components, after ensuring t
 
 inputs:
   project-directory:
-    description: The directory containing Cargo.toml.
+    description: The directory containing the toolchain file.
     default: "."
 
 runs:

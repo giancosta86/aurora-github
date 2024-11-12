@@ -14,7 +14,7 @@ inputs:
     default: true
 
   website-directory:
-    description: Relative directory to the project website.
+    description: Relative directory containing the project website.
     default: website
 
   project-directory:
@@ -87,4 +87,4 @@ runs:
 
     - name: Print confirmation message
       shell: bash
-      run: echo "✅Publication of the 🦀Rust crate successful!"
+      run: echo "✅The 🦀Rust crate was published successfully!"

@@ -24,7 +24,7 @@ inputs:
     default: client-tests
 
   website-directory:
-    description: Relative directory to the project website.
+    description: Relative directory containing the project website.
     default: website
 
   project-directory:
@@ -36,6 +36,7 @@ runs:
   steps:
     - name: Validate inputs
       shell: bash
+      working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.dry-run }}" ]]
         then
@@ -52,6 +53,12 @@ runs:
         if [[ -z "${{ inputs.wasm-pack-version }}" ]]
         then
           echo "❌Missing action input: 'wasm-pack-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.npm-scope }}" ]]
+        then
+          echo "❌Missing action input: 'npm-scope'!" >&2
           exit 1
         fi
 

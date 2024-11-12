@@ -23,7 +23,9 @@ steps:
 
 ## Requirements
 
-- a secret publication token, provided by the registry.
+- `cargo-token` is _not_ mandatory when `dry-run` is enabled.
+
+- The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
@@ -34,9 +36,12 @@ steps:
 |        `dry-run`        | **boolean** |            Run a simulated publication via `--dry-run`            |   **false**   |
 |      `cargo-token`      | **string**  |          The secret token for publishing to the registry          |               |
 | `document-all-features` | **boolean** | Enable [Rustdoc for all features](https://docs.rs/about/metadata) |   **true**    |
+|   `website-directory`   | **string**  |         Relative directory containing the project website         |  **website**  |
 |   `project-directory`   | **string**  |               The directory containing `Cargo.toml`               |     **.**     |
 
 ## Further references
+
+- [publish-github-pages](../publish-github-pages/README.md)
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 

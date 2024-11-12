@@ -24,9 +24,9 @@ steps:
 
 ## Inputs 📥
 
-|        Name         |    Type    |              Description              | Default value |
-| :-----------------: | :--------: | :-----------------------------------: | :-----------: |
-| `project-directory` | **string** | The directory containing `Cargo.toml` |     **.**     |
+|        Name         |    Type    |                 Description                 | Default value |
+| :-----------------: | :--------: | :-----------------------------------------: | :-----------: |
+| `project-directory` | **string** | The directory containing the toolchain file |     **.**     |
 
 ## Further references
 

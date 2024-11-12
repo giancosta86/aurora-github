@@ -51,6 +51,12 @@ steps:
 |     `optional`     | **boolean** | `source-directory` can be empty or refer to a missing directory |   **false**   |
 |     `dry-run`      | **boolean** |           Stops the publication just before uploading           |   **false**   |
 
+## Outputs 📤
+
+| Name  |    Type    |           Description            |   Example   |
+| :---: | :--------: | :------------------------------: | :---------: |
+| `url` | **string** | The URL of the published website | _HTTPS url_ |
+
 ## Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)

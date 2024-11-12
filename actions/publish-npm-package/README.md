@@ -17,39 +17,46 @@ steps:
 
 ### Remarks
 
-- This action is designed for _publication_ only - not for _verification_: you may want use [verify-npm-package](../verify-npm-package/README.md) for that.
+- This action is designed for _publication_ only - not for _verification_: you should call [verify-npm-package](../verify-npm-package/README.md) for that instead.
+
+- Before the first publication, running with `dry-run` set to **true** during the _verification_ phase is recommended.
 
 - This action is automatically run by [publish-rust-wasm](../publish-rust-wasm/README.md).
 
 ## How it works
 
-1. Invoke [setup-nodejs-context](../setup-nodejs-context/README.md) to set up a NodeJS environment having `pnpm` and dependencies
+1. Invoke [setup-nodejs-context](../setup-nodejs-context/README.md) to set up a NodeJS environment having `pnpm` and dependencies.
 
-1. Run `pnpm build` if such script has been declared in **package.json**
+1. Run `pnpm build` _if_ such script has been declared in **package.json**.
 
-1. Run `publish-github-pages` with the `optional` flag enabled
+1. Run `publish-github-pages` with the `optional` flag enabled.
 
 1. Run `pnpm publish`
 
 ## Requirements
 
-- The project's package manager must be [pnpm](https://pnpm.io/) - version `9` or later compatible.
-
 - The requirements for [setup-nodejs-context](../setup-nodejs-context/README.md).
+
+- `npm-token` is _not_ mandatory when `dry-run` is enabled.
+
+- The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
 ## Inputs 📥
 
-|        Name         |    Type     |                   Description                   | Default value |
-| :-----------------: | :---------: | :---------------------------------------------: | :-----------: |
-|      `dry-run`      | **boolean** |   Run a simulated publication via `--dry-run`   |   **false**   |
-|     `npm-token`     | **string**  | The secret token for publishing to the registry |               |
-| `project-directory` | **string**  |     The directory containing `package.json`     |     **.**     |
+|        Name         |    Type     |                    Description                    | Default value |
+| :-----------------: | :---------: | :-----------------------------------------------: | :-----------: |
+|      `dry-run`      | **boolean** |    Run a simulated publication via `--dry-run`    |   **false**   |
+|     `npm-token`     | **string**  |  The secret token for publishing to the registry  |               |
+| `website-directory` | **string**  | Relative directory containing the project website |  **website**  |
+| `project-directory` | **string**  |      The directory containing `package.json`      |     **.**     |
 
 ## Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
+
+- [publish-github-pages](../publish-github-pages/README.md)
 
 - [verify-npm-package](../verify-npm-package/README.md)
 
