@@ -30,9 +30,15 @@ In particular, the actions can be grouped by technology:
 
 - [publish-rust-wasm](actions/publish-rust-wasm/README.md)
 
-## 😺GitHub Actions library
+## 😺GitHub Actions
 
 - [check-action-references](actions/check-action-references/README.md)
+
+- [publish-github-pages](actions/publish-github-pages/README.md)
+
+- [detect-project-tech](actions/detect-project-tech/README.md)
+
+- [run-custom-tests](run-custom-tests/README.md)
 
 ## 🏷️Semantic versioning
 
@@ -62,13 +68,7 @@ In particular, the actions can be grouped by technology:
 
 - [find-critical-todos](actions/find-critical-todos/README.md)
 
-- [detect-project-tech](actions/detect-project-tech/README.md)
-
 - [install-system-packages](actions/install-system-packages/README.md)
-
-- [publish-github-pages](actions/publish-github-pages/README.md)
-
-- [run-custom-tests](run-custom-tests/README.md)
 
 ## Further references
 
