@@ -71,6 +71,7 @@ runs:
       with:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        dry-run: ${{ inputs.dry-run }}
 
     - name: Publish to the registry
       shell: bash
