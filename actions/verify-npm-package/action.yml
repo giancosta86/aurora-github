@@ -2,14 +2,6 @@ name: Verify npm package
 description: Verifies the source files of a NodeJS package - by running its 'verify' script within the 'scripts' section of 'package.json'.
 
 inputs:
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
-  frozen-lockfile:
-    description: Fail if "pnpm-lock.yaml" is missing or outdated.
-    default: true
-
   crash-on-critical-todos:
     description: Crash the workflow if critical TODOs are found.
     default: true
@@ -30,37 +22,17 @@ inputs:
     description: Run check-subpath-exports after the "verify" package script.
     default: true
 
-  custom-test-env:
-    description: Create a dedicated environment for custom tests.
-    default: false
-
   project-directory:
     description: The directory containing package.json.
     default: .
-
-  shell:
-    description: The shell used to run commands.
-    default: bash
 
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.registry-url }}" ]]
-        then
-          echo "❌Missing action input: 'registry-url'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.frozen-lockfile }}" ]]
-        then
-          echo "❌Missing action input: 'frozen-lockfile'!" >&2
-          exit 1
-        fi
-
         if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
         then
           echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
@@ -85,6 +57,12 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.check-subpath-exports }}" ]]
+        then
+          echo "❌Missing action input: 'check-subpath-exports'!" >&2
+          exit 1
+        fi
+
         if [[ ! -f "package.json" ]]
         then
           echo "❌The package.json descriptor file does not exist!!" >&2
@@ -93,14 +71,13 @@ runs:
 
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v5.0.0
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Enforce ESM
       if: ${{ inputs.enforce-esm == 'true' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         packageType="$(jq -r .type package.json)"
@@ -117,47 +94,38 @@ runs:
         fi
 
     - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
-        registry-url: ${{ inputs.registry-url }}
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Run the 'verify' script from package.json
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "🔎Now running the 'verify' package.json script..."
         pnpm verify
         echo "✅'verify' script successful!"
 
-    - name: Run optional custom tests from the 'tests' directory
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v5.0.0
-      with:
-        optional: true
-        dedicated-env: ${{ inputs.custom-test-env }}
-        registry-url: ${{ inputs.registry-url }}
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
-        root-directory: ${{ inputs.project-directory }}/tests
-        shell: ${{ inputs.shell }}
-
     - name: Check subpath exports
       if: ${{ inputs.check-subpath-exports == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-subpath-exports@v5.0.0
+      uses: giancosta86/aurora-github/actions/check-subpath-exports@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
+
+    - name: Run optional custom tests from the 'tests' directory
+      uses: giancosta86/aurora-github/actions/run-custom-tests@v6.0.0
+      with:
+        optional: true
+        root-directory: ${{ inputs.project-directory }}/tests
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v5.0.0
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v6.0.0
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
         display-lines: true
         root-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Print confirmation message
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: echo "✅npm package source files verified!"

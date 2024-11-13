@@ -15,10 +15,6 @@ inputs:
   npm-scope:
     description: The npm package scope or "<ROOT>".
 
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
   wasm-target:
     description: The target of the 'wasm-pack build' command.
     default: web
@@ -27,19 +23,20 @@ inputs:
     description: Relative directory containing the .nvmrc file.
     default: client-tests
 
+  website-directory:
+    description: Relative directory containing the project website.
+    default: website
+
   project-directory:
     description: The directory containing Cargo.toml.
     default: .
-
-  shell:
-    description: The shell used to run commands.
-    default: bash
 
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.dry-run }}" ]]
         then
@@ -59,6 +56,12 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.npm-scope }}" ]]
+        then
+          echo "❌Missing action input: 'npm-scope'!" >&2
+          exit 1
+        fi
+
         if [[ -z "${{ inputs.wasm-target }}" ]]
         then
           echo "❌Missing action input: 'wasm-target'!" >&2
@@ -73,18 +76,17 @@ runs:
 
     - name: Parse npm scope
       id: parse-npm-scope
-      uses: giancosta86/aurora-github/actions/parse-npm-scope@v5.0.0
+      uses: giancosta86/aurora-github/actions/parse-npm-scope@v6.0.0
       with:
         scope: ${{ inputs.npm-scope }}
 
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v5.0.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v6.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
-        shell: ${{ inputs.shell }}
 
     - name: Generate the NodeJS package
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
@@ -97,16 +99,14 @@ runs:
         fi
 
     - name: Copy .nvmrc to the generated NodeJS package
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: cp "${{ inputs.node-version-directory }}/.nvmrc" pkg
 
     - name: Publish NodeJS package
-      uses: giancosta86/aurora-github/actions/publish-npm-package@v5.0.0
+      uses: giancosta86/aurora-github/actions/publish-npm-package@v6.0.0
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
-        registry-url: ${{ inputs.registry-url }}
-        frozen-lockfile: false
+        website-directory: ${{ inputs.website-directory }}
         project-directory: ${{ inputs.project-directory }}/pkg
-        shell: ${{ inputs.shell }}

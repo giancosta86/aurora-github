@@ -5,10 +5,9 @@ runs:
   steps:
     - uses: ./actions/inject-branch-version
       with:
-        artifact-descriptor: ./tests/rust-crate/Cargo.toml
+        project-directory: tests/rust-crate
 
     - uses: ./actions/publish-rust-crate
       with:
         dry-run: true
-        cargo-token: ""
-        project-directory: ./tests/rust-crate
+        project-directory: tests/rust-crate

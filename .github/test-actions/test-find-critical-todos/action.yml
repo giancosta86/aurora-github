@@ -5,7 +5,7 @@ runs:
     - id: find-critical-todos-where-existing
       uses: ./actions/find-critical-todos
       with:
-        root-directory: ./tests/unknown-tech/src
+        root-directory: tests/unknown-tech/src
         source-file-regex: \.(js|txt)$
         crash-on-found: false
         verbose: true
@@ -26,7 +26,7 @@ runs:
     - id: find-critical-todos-where-missing
       uses: ./actions/find-critical-todos
       with:
-        root-directory: ./tests/custom
+        root-directory: tests/custom
         source-file-regex: .*
         crash-on-found: true
         verbose: true

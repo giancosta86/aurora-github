@@ -14,7 +14,7 @@ steps:
 
   - uses: PUBLICATION STEP N
 
-  - uses: giancosta86/aurora-github/actions/tag-and-release@v5
+  - uses: giancosta86/aurora-github/actions/tag-and-release@v6
 ```
 
 ## Requirements
@@ -52,7 +52,6 @@ steps:
 |  `draft-only`   | **boolean** |                  Only draft the release                   |   **false**   |
 | `delete-branch` | **boolean** |         Delete the branch after creating the tag          |   **true**    |
 | `set-major-tag` | **boolean** | Create/move the `vX` tag to this commit (X=major version) |   **false**   |
-|     `shell`     | **string**  |              The shell used to run commands               |   **bash**    |
 
 ## Further references
 

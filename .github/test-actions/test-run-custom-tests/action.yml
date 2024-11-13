@@ -26,7 +26,6 @@ runs:
       uses: ./actions/run-custom-tests
       with:
         root-directory: tests/custom/nodejs
-        dedicated-env: true
 
     - name: The NodeJS script should have run correctly
       shell: bash
@@ -46,7 +45,6 @@ runs:
       uses: ./actions/run-custom-tests
       with:
         root-directory: tests/custom/rust
-        dedicated-env: true
 
     - name: The Rust tests should have run correctly
       shell: bash

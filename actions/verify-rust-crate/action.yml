@@ -26,16 +26,12 @@ inputs:
     description: The directory containing Cargo.toml.
     default: .
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.root-directory }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.run-clippy-checks }}" ]]
         then
@@ -69,19 +65,17 @@ runs:
 
     - name: Check artifact version
       if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v5.0.0
+      uses: giancosta86/aurora-github/actions/check-artifact-version@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Check Rust versions
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v5.0.0
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Check format style
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "🎨Checking source code format..."
@@ -90,7 +84,7 @@ runs:
 
     - name: Lint via Clippy - with warnings as errors
       if: ${{ inputs.run-clippy-checks == 'true' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "📎Running clippy checks..."
@@ -99,7 +93,7 @@ runs:
 
     - name: Check if README.md exists
       id: detect-readme
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -f "README.md" ]]
@@ -115,13 +109,12 @@ runs:
 
     - name: Extract code snippets as tests from README.md
       if: ${{ steps.detect-readme.outputs.readme-exists == 'true' }}
-      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v5.0.0
+      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v6.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Run vanilla (no features) tests
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "🔎Running tests with no features enabled..."
@@ -129,7 +122,7 @@ runs:
         echo "✅Tests with no features OK!"
 
     - name: Run full (all features) tests
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "🔬Running tests with all the features enabled..."
@@ -138,7 +131,7 @@ runs:
 
     - name: Run documentation checks - with warnings as errors
       if: ${{ inputs.check-rustdoc == 'true' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "📚Running doctests with all the features enabled..."
@@ -146,14 +139,13 @@ runs:
         echo "✅Doctests with all the features OK!"
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v5.0.0
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v6.0.0
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
         display-lines: true
         root-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Print confirmation message
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: echo "✅Rust crate source files verified!"

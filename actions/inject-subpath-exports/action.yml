@@ -14,15 +14,11 @@ inputs:
     description: The directory containing package.json.
     default: .
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         case "${{ inputs.mode }}" in
@@ -52,14 +48,14 @@ runs:
         fi
 
     - name: Display initial status of the exports
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "📦package.json exports at the beginning of inject-subpath-exports:"
         jq .exports package.json
 
     - name: Generate and inject subpath exports
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         updatePackageJson() {
@@ -137,7 +133,7 @@ runs:
         done
 
     - name: Display final status of the exports
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "📦package.json exports at the end of inject-subpath-exports:"

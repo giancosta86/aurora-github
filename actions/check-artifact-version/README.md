@@ -6,7 +6,7 @@ Ensures the artifact version - expressed according to the project technology - m
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-artifact-version@v5
+  - uses: giancosta86/aurora-github/actions/check-artifact-version@v6
 ```
 
 **Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md) and [verify-npm-package](../verify-npm-package/README.md) by default.
@@ -19,10 +19,9 @@ steps:
 
 ## Inputs 📥
 
-|        Name         |    Type    |          Description           | Default value |
-| :-----------------: | :--------: | :----------------------------: | :-----------: |
-| `project-directory` | **string** |     The project directory      |     **.**     |
-|       `shell`       | **string** | The shell used to run commands |   **bash**    |
+|        Name         |    Type    |      Description      | Default value |
+| :-----------------: | :--------: | :-------------------: | :-----------: |
+| `project-directory` | **string** | The project directory |     **.**     |
 
 ## Further references
 

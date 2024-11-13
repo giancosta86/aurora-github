@@ -12,7 +12,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-npm-package@v5
+  - uses: giancosta86/aurora-github/actions/verify-npm-package@v6
 ```
 
 **IMPORTANT**: please, remember to declare your verification process in the `verify` script within `package.json`! For example:
@@ -35,40 +35,34 @@ steps:
 
 1. Run `pnpm verify` - so that the related script in `package.json` can decide what to do.
 
-1. If a **tests** directory exists within `project-directory`, execute [run-custom-tests](../run-custom-tests/README.md) on it, with the `optional` flag enabled, forwarding parameters like `registry-url` and `frozen-lockfile`; in particular, the `dedicated-env` flag for the called action will be set to the value of the `custom-test-env` input.
+1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) to verify that the `exports` field in `package.json` actually references existing files.
+
+1. If a **tests** directory exists within `project-directory`, execute [run-custom-tests](../run-custom-tests/README.md) on it, with the `optional` flag enabled.
 
    💡The rationale for this step is a parallelism with Rust's **tests** directory - dedicated to verify the crate under test from a _client_ perspective; however, in `verify-npm-package` you have even more fine-grained control over the test process: for example, you can automatically launch _a Bash script_ to test the system, while still relying on the **tests** directory to host utility modules imported by different tests in the **src** directory tree.
 
    **Please, note**: should you need to execute a shell script for testing, a `verify.sh` script, run by Bash, is required; for further details, please refer to [run-custom-tests](../run-custom-tests/README.md).
 
-1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) to verify that the `exports` field in `package.json` actually references existing files.
-
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
 ## Requirements
 
-- The package manager for the project must be [pnpm](https://pnpm.io/) - version `9` or later compatible.
-
 - The entire verification process for the package must be triggered by the `verify` script in `package.json` (see the example).
 
-- The root directory of the project must contain a `.nvmrc` file - declaring the required Node.js version - whose format must be compatible with the `actions/setup-node` action (for example: `vX.Y.Z`).
+- The requirements for [setup-nodejs-context](../setup-nodejs-context/README.md).
 
 - The requirements for [check-artifact-version](../check-artifact-version/README.md), if `check-artifact-version` is enabled.
 
 ## Inputs 📥
 
-|           Name            |    Type     |                             Description                             |                  Default value                   |
-| :-----------------------: | :---------: | :-----------------------------------------------------------------: | :----------------------------------------------: |
-|      `registry-url`       | **string**  |                     The URL of the npm registry                     |             _Official npm registry_              |
-|     `frozen-lockfile`     | **boolean** |          Fails if `pnpm-lock.yaml` is missing or outdated           |                     **true**                     |
-| `crash-on-critical-todos` | **boolean** |           Crash the workflow if critical TODOs are found            |                     **true**                     |
-|    `source-file-regex`    | **string**  |              PCRE pattern describing the source files               | **^\\.\\/(src\|tests)\\/.+\\.(c\|m)?(j\|t)sx?$** |
-| `check-artifact-version`  | **boolean** |    Ensure the version in `package.json` matches the branch name     |                     **true**                     |
-|       `enforce-esm`       | **boolean** | Verify that the `type` field is `module` - to create an ESM package |                     **true**                     |
-|  `check-subpath-exports`  | **boolean** |    Run `check-subpath-exports` after the `verify` package script    |                     **true**                     |
-|     `custom-test-env`     | **boolean** |           Create a dedicated environment for custom tests           |                    **false**                     |
-|    `project-directory`    | **string**  |               The directory containing `package.json`               |                      **.**                       |
-|          `shell`          | **string**  |                   The shell used to run commands                    |                     **bash**                     |
+|           Name            |    Type     |                           Description                           |       Default value       |
+| :-----------------------: | :---------: | :-------------------------------------------------------------: | :-----------------------: |
+| `crash-on-critical-todos` | **boolean** |         Crash the workflow if critical TODOs are found          |         **true**          |
+|    `source-file-regex`    | **string**  |            PCRE pattern describing the source files             | view [source](action.yml) |
+| `check-artifact-version`  | **boolean** |  Ensure the version in `package.json` matches the branch name   |         **true**          |
+|       `enforce-esm`       | **boolean** | Verify that the `type` field is **module** - for an ESM package |         **true**          |
+|  `check-subpath-exports`  | **boolean** | Run `check-subpath-exports` after the **verify** package script |         **true**          |
+|    `project-directory`    | **string**  |             The directory containing `package.json`             |           **.**           |
 
 ## Further references
 

@@ -3,14 +3,23 @@ name: Test publish-github-pages
 runs:
   using: composite
   steps:
-    - name: The test website should be published
-      id: publish-pages
+    - name: A static website should be publishable
+      id: publish-static-pages
       uses: ./actions/publish-github-pages
+      with:
+        source-directory: website/static
+        dry-run: true
+
+    - name: A NextJS website should be publishable
+      id: publish-nextjs-pages
+      uses: ./actions/publish-github-pages
+      with:
+        source-directory: website/nextjs
 
     - name: The URL of the website should be defined
       shell: bash
       run: |
-        websiteUrl="${{ steps.publish-pages.outputs.url }}"
+        websiteUrl="${{ steps.publish-nextjs-pages.outputs.url }}"
 
         if [[ -n "$websiteUrl" ]]
         then

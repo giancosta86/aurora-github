@@ -5,15 +5,11 @@ inputs:
   wasm-pack-version:
     description: The wasm-pack version to install.
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         if [[ -z "${{ inputs.wasm-pack-version }}" ]]
         then
@@ -27,11 +23,11 @@ runs:
         version: 9
 
     - name: Install wasm-pack via pnpm
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: pnpm add -g "wasm-pack@${{ inputs.wasm-pack-version }}"
 
     - name: Print wasm-pack version
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         echo "🔎Now invoking wasm-pack..."
         wasm-pack --version

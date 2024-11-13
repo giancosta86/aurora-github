@@ -8,16 +8,24 @@ Publishes a **Rust** crate - by default, to [crates.io](https://crates.io/) - wi
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-rust-crate@v5
+  - uses: giancosta86/aurora-github/actions/publish-rust-crate@v6
     with:
       cargo-token: ${{ secrets.CARGO_TOKEN }}
 ```
 
 **Please, note**: this action is designed for _publication_ only - not for _verification_: you may want to use [verify-rust-crate](../verify-rust-crate/README.md) for that.
 
+## How it works
+
+1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled
+
+1. Run `cargo publish`, with the `--all-features` flag
+
 ## Requirements
 
-- a secret publication token, provided by the registry.
+- `cargo-token` is _not_ mandatory when `dry-run` is enabled.
+
+- The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
@@ -28,10 +36,12 @@ steps:
 |        `dry-run`        | **boolean** |            Run a simulated publication via `--dry-run`            |   **false**   |
 |      `cargo-token`      | **string**  |          The secret token for publishing to the registry          |               |
 | `document-all-features` | **boolean** | Enable [Rustdoc for all features](https://docs.rs/about/metadata) |   **true**    |
+|   `website-directory`   | **string**  |         Relative directory containing the project website         |  **website**  |
 |   `project-directory`   | **string**  |               The directory containing `Cargo.toml`               |     **.**     |
-|         `shell`         | **string**  |                  The shell used to run commands                   |   **bash**    |
 
 ## Further references
+
+- [publish-github-pages](../publish-github-pages/README.md)
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 

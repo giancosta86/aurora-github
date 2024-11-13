@@ -9,7 +9,7 @@ runs:
   steps:
     - name: Run the requested jq operation on package.json
       shell: bash
-      working-directory: ./tests/npm-package
+      working-directory: tests/npm-package
       run: |
         jq '${{ inputs.jq-operation }}' package.json | sponge package.json
         echo "🔎The 'exports' field is:"
@@ -17,4 +17,4 @@ runs:
 
     - uses: ./actions/check-subpath-exports
       with:
-        project-directory: ./tests/npm-package
+        project-directory: tests/npm-package

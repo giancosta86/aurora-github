@@ -5,8 +5,8 @@ runs:
   steps:
     - uses: ./actions/inject-branch-version
       with:
-        artifact-descriptor: ./tests/rust-crate/Cargo.toml
+        project-directory: tests/rust-crate
 
     - uses: ./actions/verify-rust-crate
       with:
-        project-directory: ./tests/rust-crate
+        project-directory: tests/rust-crate

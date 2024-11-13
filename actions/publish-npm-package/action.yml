@@ -9,27 +9,19 @@ inputs:
   npm-token:
     description: The secret token for publishing to the registry.
 
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
-  frozen-lockfile:
-    description: Fail if 'pnpm-lock.yaml' is missing or outdated.
-    default: true
+  website-directory:
+    description: Relative directory containing the project website.
+    default: website
 
   project-directory:
     description: The directory containing package.json.
     default: .
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.dry-run }}" ]]
@@ -44,18 +36,6 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.registry-url }}" ]]
-        then
-          echo "❌Missing action input: 'registry-url'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.frozen-lockfile }}" ]]
-        then
-          echo "❌Missing action input: 'frozen-lockfile'!" >&2
-          exit 1
-        fi
-
         if [[ ! -f "package.json" ]]
         then
           echo "❌The package.json descriptor file does not exist!!" >&2
@@ -63,22 +43,38 @@ runs:
         fi
 
     - name: Display the artifact descriptor
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "The content of your 📦package.json just before publication is:"
         jq . package.json
 
     - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
-        registry-url: ${{ inputs.registry-url }}
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
-    - name: Publish to npm
-      shell: ${{ inputs.shell }}
+    - name: Try to build the package artifacts
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if jq -e '.scripts.build? != null' package.json > /dev/null
+        then
+          echo "✅'build' script found in package.json - now running it!"
+          pnpm build
+        else
+          echo "💭No 'build' script found in package.json - skipping the build step."
+        fi
+
+    - name: Publish the GitHub Pages website
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v6.0.0
+      with:
+        optional: true
+        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        dry-run: ${{ inputs.dry-run }}
+
+    - name: Publish to the registry
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ "${{ inputs.dry-run }}" == "true" ]]
@@ -91,6 +87,5 @@ runs:
         NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
 
     - name: Print confirmation message
-      shell: ${{ inputs.shell }}
-      run: |
-        echo "✅Publication to '${{ inputs.registry-url }}' successful!"
+      shell: bash
+      run: echo "✅Npm package published successfully!"

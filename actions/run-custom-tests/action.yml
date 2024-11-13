@@ -14,31 +14,21 @@ inputs:
     description: The shell used to run script-file.
     default: bash
 
-  dedicated-env:
-    description: Set up a context-specific, dedicated environment.
-    default: false
-
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
-  frozen-lockfile:
-    description: Fail if "pnpm-lock.yaml" is missing or outdated.
-    default: true
-
   root-directory:
     description: The directory containing the tests.
-
-  shell:
-    description: The shell used to run commands.
-    default: bash
 
 runs:
   using: composite
   steps:
     - name: Detect directory existence
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
+        if [[ -z "${{ inputs.optional }}" ]]
+        then
+          echo "❌Missing action input: 'optional'!" >&2
+          exit 1
+        fi
+
         if [[ ! -d "${{ inputs.root-directory }}" ]]
         then
           if [[ "${{ inputs.optional }}" == "true" ]]
@@ -56,7 +46,7 @@ runs:
 
     - name: Validate inputs
       if: ${{ env.strategy == 'detect' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.root-directory }}
       run: |
         echo "🔬Detecting custom test strategy in directory '${{ inputs.root-directory }}'..."
@@ -67,6 +57,12 @@ runs:
         then
           echo "🐚Custom test script '$scriptFile' found!"
           strategy="script"
+
+          if [[ -z "${{ inputs.script-shell }}" ]]
+          then
+            echo "❌Missing action input: 'script-shell'!" >&2
+            exit 1
+          fi
         elif [[ -f "package.json" ]]
         then
           echo "📦package.json file found!"
@@ -92,7 +88,7 @@ runs:
 
     - name: Run script
       if: ${{ env.strategy == 'script' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.root-directory }}
       run: |
         echo "🐚Now running the custom script '${{ inputs.script-file }}'..."
@@ -100,43 +96,40 @@ runs:
         "${{ inputs.script-shell }}" "${{ inputs.script-file }}"
 
     - name: Setup NodeJS context
-      if: ${{ env.strategy == 'nodejs' && inputs.dedicated-env == 'true' }}
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5.0.0
+      if: ${{ env.strategy == 'nodejs' }}
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
       with:
-        registry-url: ${{ inputs.registry-url }}
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
         project-directory: ${{ inputs.root-directory }}
-        shell: ${{ inputs.shell }}
-
-    - name: Just install NodeJS dependencies
-      if: ${{ env.strategy == 'nodejs' && inputs.dedicated-env != 'true' }}
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5.0.0
-      with:
-        setup-nodejs: false
-        install-pnpm: false
-        registry-url: ${{ inputs.registry-url }}
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
-        project-directory: ${{ inputs.root-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Run the 'verify' script from package.json
       if: ${{ env.strategy == 'nodejs' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.root-directory }}
       run: |
         echo "📦Now running the 'verify' script from package.json..."
         pnpm verify
 
+    - name: Check for the Rust toolchain file
+      if: ${{ env.strategy == 'rust' }}
+      shell: bash
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        if [[ -f "rust-toolchain.toml" ]]
+        then
+          echo "checkRustVersions=true" >> $GITHUB_ENV
+        else
+          echo "checkRustVersions=false" >> $GITHUB_ENV
+        fi
+
     - name: Check Rust versions
-      if: ${{ env.strategy == 'rust' && inputs.dedicated-env == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v5.0.0
+      if: ${{ env.strategy == 'rust' && env.checkRustVersions == 'true' }}
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v6.0.0
       with:
         project-directory: ${{ inputs.root-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Run tests via Cargo
       if: ${{ env.strategy == 'rust' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.root-directory }}
       run: |
         echo "🦀Running Rust tests with all the features enabled..."
@@ -144,5 +137,5 @@ runs:
 
     - name: Print confirmation message
       if: ${{ env.strategy != 'exit' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: echo "✅Custom tests in directory '${{ inputs.root-directory }}' run successfully!"

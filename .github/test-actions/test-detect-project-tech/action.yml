@@ -6,7 +6,7 @@ runs:
     - uses: ./actions/detect-project-tech
       id: detect-rust-crate
       with:
-        project-directory: ./tests/rust-crate
+        project-directory: tests/rust-crate
 
     - name: Tech for Rust crate should be detected
       shell: bash
@@ -35,7 +35,7 @@ runs:
     - uses: ./actions/detect-project-tech
       id: detect-rust-wasm
       with:
-        project-directory: ./tests/rust-wasm
+        project-directory: tests/rust-wasm
 
     - name: Tech for Rust web assembly should be detected
       shell: bash
@@ -64,7 +64,7 @@ runs:
     - uses: ./actions/detect-project-tech
       id: detect-nodejs-package
       with:
-        project-directory: ./tests/npm-package
+        project-directory: tests/npm-package
 
     - name: Tech for NodeJS package should be detected
       shell: bash
@@ -93,7 +93,7 @@ runs:
     - uses: ./actions/detect-project-tech
       id: detect-unknown-tech
       with:
-        project-directory: ./tests/unknown-tech
+        project-directory: tests/unknown-tech
 
     - name: Tech for unknown technology should be an empty string
       shell: bash

@@ -13,19 +13,20 @@ inputs:
     description: Enable Rustdoc for all features.
     default: true
 
+  website-directory:
+    description: Relative directory containing the project website.
+    default: website
+
   project-directory:
     description: The directory containing Cargo.toml.
     default: .
-
-  shell:
-    description: The shell used to run commands.
-    default: bash
 
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.dry-run }}" ]]
         then
@@ -47,7 +48,7 @@ runs:
 
     - name: Enable Rustdoc for all features
       if: ${{ inputs.document-all-features == 'true' }}
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         cat << EOF >> Cargo.toml
@@ -56,8 +57,15 @@ runs:
         all-features = true
         EOF
 
+    - name: Publish the GitHub Pages website
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v6.0.0
+      with:
+        optional: true
+        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        dry-run: ${{ inputs.dry-run }}
+
     - name: Display the artifact descriptor
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "The content of your 🦀Cargo.toml just before publication is:"
@@ -65,7 +73,7 @@ runs:
         echo "🦀🦀🦀"
 
     - name: Publish the crate
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         dryRun="${{ inputs.dry-run }}"
@@ -80,6 +88,5 @@ runs:
         CARGO_REGISTRY_TOKEN: ${{ inputs.cargo-token }}
 
     - name: Print confirmation message
-      shell: ${{ inputs.shell }}
-      run: |
-        echo "✅Publication of the 🦀Rust crate successful!"
+      shell: bash
+      run: echo "✅The 🦀Rust crate was published successfully!"

@@ -6,7 +6,7 @@ Displays the current version of the main **Rust** components, after ensuring tha
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-rust-versions@v5
+  - uses: giancosta86/aurora-github/actions/check-rust-versions@v6
 ```
 
 **Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).
@@ -24,10 +24,9 @@ steps:
 
 ## Inputs 📥
 
-|        Name         |    Type    |              Description              | Default value |
-| :-----------------: | :--------: | :-----------------------------------: | :-----------: |
-| `project-directory` | **string** | The directory containing `Cargo.toml` |     **.**     |
-|       `shell`       | **string** |    The shell used to run commands     |   **bash**    |
+|        Name         |    Type    |                 Description                 | Default value |
+| :-----------------: | :--------: | :-----------------------------------------: | :-----------: |
+| `project-directory` | **string** | The directory containing the toolchain file |     **.**     |
 
 ## Further references
 

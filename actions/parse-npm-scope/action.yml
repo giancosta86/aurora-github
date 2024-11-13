@@ -5,10 +5,6 @@ inputs:
   scope:
     description: The npm scope to parse. Can be either '<ROOT>' or a string with an optional leading "@".
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 outputs:
   actual-scope:
     description: The scope without '@', or the empty string for root scope.
@@ -18,7 +14,7 @@ runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         if [[ -z "${{ inputs.scope }}" ]]
         then
@@ -28,7 +24,7 @@ runs:
 
     - name: Parse the actual npm scope
       id: parse-actual-scope
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: |
         requestedScope="${{ inputs.scope }}"
 

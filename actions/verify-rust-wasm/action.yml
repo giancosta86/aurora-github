@@ -36,32 +36,26 @@ inputs:
     description: Ensure the version in Cargo.toml matches the branch name.
     default: true
 
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
-  frozen-lockfile:
-    description: Fail if "pnpm-lock.yaml" is missing or outdated.
-    default: true
-
   project-directory:
     description: The directory containing Cargo.toml.
     default: .
-
-  shell:
-    description: The shell used to run commands
-    default: bash
 
 runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.root-directory }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -z "${{ inputs.wasm-pack-version }}" ]]
         then
           echo "❌Missing action input: 'wasm-pack-version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.npm-scope }}" ]]
+        then
+          echo "❌Missing action input: 'npm-scope'!" >&2
           exit 1
         fi
 
@@ -107,32 +101,19 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.registry-url }}" ]]
-        then
-          echo "❌Missing action input: 'registry-url'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.frozen-lockfile }}" ]]
-        then
-          echo "❌Missing action input: 'frozen-lockfile'!" >&2
-          exit 1
-        fi
-
     - name: Parse npm scope
       id: parse-npm-scope
-      uses: giancosta86/aurora-github/actions/parse-npm-scope@v5.0.0
+      uses: giancosta86/aurora-github/actions/parse-npm-scope@v6.0.0
       with:
         scope: ${{ inputs.npm-scope }}
 
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v5.0.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v6.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
-        shell: ${{ inputs.shell }}
 
     - name: Verify Rust source files
-      uses: giancosta86/aurora-github/actions/verify-rust-crate@v5.0.0
+      uses: giancosta86/aurora-github/actions/verify-rust-crate@v6.0.0
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
         check-rustdoc: ${{ inputs.check-rustdoc }}
@@ -140,10 +121,9 @@ runs:
         source-file-regex: ${{ inputs.source-file-regex }}
         check-artifact-version: ${{ inputs.check-artifact-version }}
         project-directory: ${{ inputs.project-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Run headless browser tests
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "🌐Running headless browser tests..."
@@ -151,7 +131,7 @@ runs:
         echo "✅Headless browser tests OK!"
 
     - name: Generate the NodeJS package source files
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
@@ -164,15 +144,11 @@ runs:
         fi
 
     - name: Run client tests
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v5.0.0
+      uses: giancosta86/aurora-github/actions/run-custom-tests@v6.0.0
       with:
         optional: true
-        dedicated-env: true
-        registry-url: ${{ inputs.registry-url }}
-        frozen-lockfile: ${{ inputs.frozen-lockfile }}
         root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
-        shell: ${{ inputs.shell }}
 
     - name: Print confirmation message
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: echo "✅Rust web assembly source files verified!"

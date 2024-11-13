@@ -3,20 +3,14 @@ name: Test setup-nodejs-context
 runs:
   using: composite
   steps:
-    - name: Setup environment variables
-      shell: bash
-      run: |
-        echo "expectedPnpmVersion=9.7.1" >> $GITHUB_ENV
-
     - name: Setup the NodeJS context
       uses: ./actions/setup-nodejs-context
       with:
-        pnpm-version: ${{ env.expectedPnpmVersion }}
-        project-directory: ./tests/npm-package
+        project-directory: tests/npm-package
 
     - name: The expected NodeJS version should be used
       shell: bash
-      working-directory: ./tests/npm-package
+      working-directory: tests/npm-package
       run: |
         expectedNodeVersion="$(cat .nvmrc)"
         echo "🔎Expected NodeJS version: '$expectedNodeVersion'"
@@ -34,7 +28,9 @@ runs:
 
     - name: The expected pnpm version should be used
       shell: bash
+      working-directory: tests/npm-package
       run: |
+        expectedPnpmVersion="$(cat .pnpmver)"
         echo "🔎Expected pnpm version: '$expectedPnpmVersion'"
 
         installedPnpmVersion="$(pnpm --version)"
@@ -47,16 +43,3 @@ runs:
           echo "❌The expected pnpm version is not running!" >&2
           exit 1
         fi
-
-    - name: Introduce the parameterless tests
-      shell: bash
-      run: |
-        echo "🕵Now enforcing the NodeJS context with all the steps disabled..."
-
-    - name: Call the action with all the flags disabled
-      uses: ./actions/setup-nodejs-context
-      with:
-        project-directory: ./tests/npm-package
-        setup-nodejs: false
-        install-pnpm: false
-        install-dependencies: false

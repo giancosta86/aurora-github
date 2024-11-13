@@ -1,152 +1,98 @@
 name: Setup a NodeJS context
-description: Sets up a specific NodeJS version and installs pnpm as well as the dependencies listed in package.json; any of these steps can be skipped by disabling the related flag.
+description: Conditionally installs a specific NodeJS version, pnpm, as well as the dependencies listed in package.json.
 
 inputs:
-  setup-nodejs:
-    description: Set up the requested NodeJS version.
-    default: true
-
-  install-pnpm:
-    description: Install the requested pnpm version.
-    default: true
-
-  install-dependencies:
-    description: Install the dependencies for the current package.
-    default: true
-
-  pnpm-version:
-    description: The version of pnpm to use.
-    default: 9
-
-  registry-url:
-    description: The URL of the npm registry.
-    default: https://registry.npmjs.org
-
-  frozen-lockfile:
-    description: Fail if "pnpm-lock.yaml" is missing or outdated.
-    default: true
-
   project-directory:
-    description: The directory containing package.json.
+    description: Directory containing the project files.
     default: .
-
-  shell:
-    description: The shell used to run commands.
-    default: bash
 
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: ${{ inputs.shell }}
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -z "${{ inputs.setup-nodejs }}" ]]
-        then
-          echo "❌Missing action input: 'setup-nodejs'!" >&2
-          exit 1
-        fi
-
-        if [[ "${{ inputs.setup-nodejs }}" == "true" ]]
-        then
-          if [[ -z "${{ inputs.registry-url }}" ]]
-          then
-            echo "❌Missing action input: 'registry-url'!" >&2
-            exit 1
-          fi
-
-          if [[ ! -f ".nvmrc" ]]
-          then
-            echo "❌The .nvmrc version file does not exist!!" >&2
-            exit 1
-          fi
-        fi
-
-        if [[ -z "${{ inputs.install-pnpm }}" ]]
-        then
-          echo "❌Missing action input: 'install-pnpm'!" >&2
-          exit 1
-        fi
-
-        if [[ "${{ inputs.install-pnpm }}" == "true" ]]
-        then
-          if [[ -z "${{ inputs.pnpm-version }}" ]]
-          then
-            echo "❌Missing action input: 'pnpm-version'!" >&2
-            exit 1
-          fi
-        fi
-
-        if [[ -z "${{ inputs.install-dependencies }}" ]]
-        then
-          echo "❌Missing action input: 'install-dependencies'!" >&2
-          exit 1
-        fi
-
-        if [[ "${{ inputs.install-dependencies }}" == "true" ]]
-        then
-          if [[ -z "${{ inputs.frozen-lockfile }}" ]]
-          then
-            echo "❌Missing action input: 'frozen-lockfile'!" >&2
-            exit 1
-          fi
-
-          if [[ ! -f "package.json" ]]
-          then
-            echo "❌The package.json descriptor file does not exist!!" >&2
-            exit 1
-          fi
-        fi
-
     - name: Print welcome message
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "💻Setting up NodeJS context in '${{ inputs.project-directory }}'..."
 
-    - name: Setup NodeJS
-      if: ${{ inputs.setup-nodejs == 'true' }}
+    - name: Setup environment variables
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -f ".nvmrc" ]]
+        then
+          installNode=true
+        else
+          installNode=false
+        fi
+        echo "🔎Install NodeJS? $installNode"
+        echo "installNode=$installNode" >> $GITHUB_ENV
+
+        if [[ -f "package.json" ]]
+        then
+          installDependencies=true
+        else
+          installDependencies=false
+        fi
+        echo "🔎Install dependencies? $installDependencies"
+        echo "installDependencies=$installDependencies" >> $GITHUB_ENV
+
+    - name: Install NodeJS
+      if: ${{ env.installNode == 'true' }}
       uses: actions/setup-node@v4
       with:
         node-version-file: ${{ inputs.project-directory }}/.nvmrc
-        registry-url: ${{ inputs.registry-url }}
 
     - name: Print NodeJS version
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "🔎node version: $(node --version)"
 
+    - name: Detect the requested pnpm version
+      if: ${{ env.installNode == 'true' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -f ".pnpmver" ]]
+        then
+          pnpmVersion="$(cat .pnpmver)"
+        else
+          pnpmVersion="latest"
+        fi
+        echo "🔬pnpm version to install: '$pnpmVersion'"
+        echo "pnpmVersion=$pnpmVersion" >> $GITHUB_ENV
+
     - name: Install pnpm
-      if: ${{ inputs.install-pnpm == 'true' }}
+      if: ${{ env.installNode == 'true' }}
       uses: pnpm/action-setup@v4
       with:
-        version: ${{ inputs.pnpm-version }}
+        version: ${{ env.pnpmVersion }}
 
     - name: Print pnpm version
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "📦pnpm version: $(pnpm --version)"
 
     - name: Install the dependencies
-      if: ${{ inputs.install-dependencies == 'true' }}
-      shell: ${{ inputs.shell }}
+      if: ${{ env.installDependencies == 'true' }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ "${{ inputs.frozen-lockfile }}" == "true" ]]
+        lockFile="pnpm-lock.yaml"
+        if [[ -f "$lockFile" ]]
         then
-          echo "🧊Installing dependencies with frozen lockfile..."
+          echo "🧊Installing dependencies with frozen lockfile, as '$lockFile' is present..."
           pnpm install --frozen-lockfile
         else
-          echo "🌞Installing dependencies without frozen lockfile..."
+          echo "🌞Installing dependencies without frozen lockfile, as '$lockFile' is missing..."
           pnpm install --no-frozen-lockfile
         fi
 
         echo "✅Dependencies installed!"
 
     - name: Print confirmation message
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "✅NodeJS context ready!"
+      run: echo "✅NodeJS context ready!"

@@ -21,10 +21,6 @@ inputs:
     description: The root of the directory tree.
     default: .
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 outputs:
   found:
     description: true if at least one TODO! was found in some file, false otherwise.
@@ -34,7 +30,7 @@ runs:
   using: composite
   steps:
     - name: Validate inputs
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.root-directory }}
       run: |
         if [[ -z "${{ inputs.source-file-regex }}" ]]
@@ -62,13 +58,12 @@ runs:
         fi
 
     - name: Setup environment variables
-      shell: ${{ inputs.shell }}
-      run: |
-        echo "todoText=TODO!" >> $GITHUB_ENV
+      shell: bash
+      run: echo "todoText=TODO!" >> $GITHUB_ENV
 
     - name: Scan the directory tree
       id: scan-directory-tree
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.root-directory }}
       run: |
         sourceFileRegex="${{ inputs.source-file-regex }}"

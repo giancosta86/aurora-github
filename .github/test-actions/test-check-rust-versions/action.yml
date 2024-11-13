@@ -6,9 +6,9 @@ runs:
     - name: Checking Rust versions for Rust crate should work
       uses: ./actions/check-rust-versions
       with:
-        project-directory: ./tests/rust-crate
+        project-directory: tests/rust-crate
 
     - name: Checking Rust versions for Rust web assembly should work
       uses: ./actions/check-rust-versions
       with:
-        project-directory: ./tests/rust-wasm
+        project-directory: tests/rust-wasm

@@ -6,10 +6,6 @@ inputs:
     description: The directory containing the project.
     default: .
 
-  shell:
-    description: The shell used to run commands.
-    default: bash
-
 outputs:
   project-tech:
     description: The detected project tech. Can be 'nodejs', 'rust' or empty string.
@@ -24,7 +20,7 @@ runs:
   steps:
     - name: Detect project tech
       id: detect-project-tech
-      shell: ${{ inputs.shell }}
+      shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ -f "package.json" ]]

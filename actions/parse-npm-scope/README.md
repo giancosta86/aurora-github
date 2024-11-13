@@ -7,7 +7,7 @@ Parses a mandatory [npm scope](https://docs.npmjs.com/cli/v10/using-npm/scope) d
 ```yaml
 steps:
   - id: scope-parser
-    uses: giancosta86/aurora-github/actions/parse-npm-scope@v5
+    uses: giancosta86/aurora-github/actions/parse-npm-scope@v6
     with:
       scope: giancosta86
 ```
@@ -22,10 +22,9 @@ steps:
 
 ## Inputs 📥
 
-|  Name   |    Type    |          Description           | Default value |
-| :-----: | :--------: | :----------------------------: | :-----------: |
-| `scope` | **string** |     The npm scope to parse     |               |
-| `shell` | **string** | The shell used to run commands |   **bash**    |
+|  Name   |    Type    |      Description       | Default value |
+| :-----: | :--------: | :--------------------: | :-----------: |
+| `scope` | **string** | The npm scope to parse |               |
 
 ## Outputs 📤
 

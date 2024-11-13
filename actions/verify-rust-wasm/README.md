@@ -10,7 +10,7 @@ The action can be placed right after checking out the source code:
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v5
+  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v6
     with:
       wasm-pack-version: 0.13.0
       npm-scope: your-npm-scope
@@ -26,7 +26,7 @@ steps:
 
 1. Run `wasm-pack build` to verify the generation of the NodeJS package source files.
 
-1. If the directory referenced by the `client-tests-directory` input exists, execute the [run-custom-tests](../run-custom-tests/README.md) action on it, with the `optional` flag enabled and forwarding the related inputs, like `registry-url` and `frozen-lockfile`.
+1. If the directory referenced by the `client-tests-directory` input exists, execute the [run-custom-tests](../run-custom-tests/README.md) action on it, with the `optional` flag enabled.
 
 ## Requirements
 
@@ -36,21 +36,18 @@ steps:
 
 ## Inputs 📥
 
-|           Name            |    Type     |                       Description                        |         Default value         |
-| :-----------------------: | :---------: | :------------------------------------------------------: | :---------------------------: |
-|    `wasm-pack-version`    | **string**  |            The `wasm-pack` version to install            |                               |
-|        `npm-scope`        | **string**  |            The npm package scope or `<ROOT>`             |                               |
-| `client-tests-directory`  | **string**  |      Relative directory containing the client tests      |       **client-tests**        |
-|       `wasm-target`       | **string**  |       The target of the `wasm-pack build` command        |            **web**            |
-|    `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |           **true**            |
-|      `check-rustdoc`      | **boolean** |    Build the documentation - with warnings as errors     |           **false**           |
-| `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |           **true**            |
-|    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         | view the [code](./action.yml) |
-| `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |           **true**            |
-|      `registry-url`       | **string**  |               The URL of the npm registry                |    _Official npm registry_    |
-|     `frozen-lockfile`     | **boolean** |     Fails if `pnpm-lock.yaml` is missing or outdated     |           **true**            |
-|    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |             **.**             |
-|          `shell`          | **string**  |              The shell used to run commands              |           **bash**            |
+|           Name            |    Type     |                       Description                        |       Default value       |
+| :-----------------------: | :---------: | :------------------------------------------------------: | :-----------------------: |
+|    `wasm-pack-version`    | **string**  |            The `wasm-pack` version to install            |                           |
+|        `npm-scope`        | **string**  |            The npm package scope or `<ROOT>`             |                           |
+| `client-tests-directory`  | **string**  |      Relative directory containing the client tests      |     **client-tests**      |
+|       `wasm-target`       | **string**  |       The target of the `wasm-pack build` command        |          **web**          |
+|    `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |         **true**          |
+|      `check-rustdoc`      | **boolean** |    Build the documentation - with warnings as errors     |         **false**         |
+| `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |         **true**          |
+|    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         | view [source](action.yml) |
+| `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |         **true**          |
+|    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |           **.**           |
 
 ## Further references
 

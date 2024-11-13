@@ -6,13 +6,13 @@ runs:
     - name: Try to generate test files from Markdown file without snippets
       uses: ./actions/extract-rust-snippets
       with:
-        project-directory: ./tests/unknown-tech
+        project-directory: tests/unknown-tech
         markdown-file: NO-SNIPPETS.md
         test-filename-prefix: fake-tests/fake-
 
     - name: The Rust test files should be created
       shell: bash
-      working-directory: ./tests/unknown-tech/fake-tests
+      working-directory: tests/unknown-tech/fake-tests
       run: |
         echo "🔎Inspecting the 'fake-tests' subdirectory..."
         ls -1 2>/dev/null
@@ -28,11 +28,11 @@ runs:
     - name: Generate test files from Markdown file with snippets
       uses: ./actions/extract-rust-snippets
       with:
-        project-directory: ./tests/unknown-tech
+        project-directory: tests/unknown-tech
 
     - name: The Rust test files should be created
       shell: bash
-      working-directory: ./tests/unknown-tech/tests
+      working-directory: tests/unknown-tech/tests
       run: |
         echo "🔎Inspecting the 'tests' subdirectory..."
         ls -1 2>/dev/null
@@ -55,7 +55,7 @@ runs:
 
     - name: The first test must contain the expected Rust source code
       shell: bash
-      working-directory: ./tests/unknown-tech/tests
+      working-directory: tests/unknown-tech/tests
       run: |
         testFile="readme_test_1.rs"
 
@@ -67,7 +67,7 @@ runs:
 
     - name: The second test must contain the expected Rust source code
       shell: bash
-      working-directory: ./tests/unknown-tech/tests
+      working-directory: tests/unknown-tech/tests
       run: |
         testFile="readme_test_2.rs"
 
@@ -80,7 +80,7 @@ runs:
 
     - name: The third test must contain the expected Rust source code
       shell: bash
-      working-directory: ./tests/unknown-tech/tests
+      working-directory: tests/unknown-tech/tests
       run: |
         testFile="readme_test_3.rs"
 

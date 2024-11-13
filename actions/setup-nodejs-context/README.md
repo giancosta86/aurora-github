@@ -1,6 +1,6 @@
 # setup-nodejs-context
 
-Sets up a specific **NodeJS** version and installs [pnpm](https://pnpm.io/) as well as the dependencies listed in **package.json**; any of these steps can be skipped by disabling the related flag.
+Conditionally installs a specific **NodeJS** version, **pnpm**, as well as the dependencies listed in **package.json**.
 
 ## Example
 
@@ -8,33 +8,28 @@ Sets up a specific **NodeJS** version and installs [pnpm](https://pnpm.io/) as w
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v5
+  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6
 ```
 
 **Please, note:** this action is automatically run by [verify-npm-package](../verify-npm-package/README.md) and [publish-npm-package](../publish-npm-package/README.md).
 
+## How it works
+
+1. If a `.nvmrc` file exists, install NodeJS and pnpm; besides, if a `.pnpmver` file also exists, it must contain the required pnpm version - otherwise, the latest one will be requested.
+
+1. If a `package.json` file exists, install the dependencies, with the `--frozen-lockfile` flag enabled only if the `pnpm-lock.yaml` file is present.
+
 ## Requirements
 
-The project directory must contain:
+- if the `.nvmrc` file exists, it must contain the NodeJS version, as expected by [nvm](https://github.com/nvm-sh/nvm).
 
-- the `.nvmrc` file, containing the expected NodeJS version, as expected by [nvm](https://github.com/nvm-sh/nvm) - if `setup-nodejs` is set to **true**
-
-- the **package.json** descriptor, if `install-dependencies` is set to **true**
-
-- an updated `pnpm-lock.yaml` file, if both `install-dependencies` and `frozen-lockfile` are enabled
+- if the `pnpm-lock.yaml` file exists, it must be up-to-date.
 
 ## Inputs 📥
 
-|          Name          |    Type     |                   Description                    |      Default value      |
-| :--------------------: | :---------: | :----------------------------------------------: | :---------------------: |
-|     `setup-nodejs`     | **boolean** |       Set up the requested NodeJS version        |        **true**         |
-|     `install-pnpm`     | **boolean** |        Install the requested pnpm version        |        **true**         |
-| `install-dependencies` | **boolean** | Install the dependencies for the current package |        **true**         |
-|     `pnpm-version`     | **string**  |            The version of pnpm to use            |          **9**          |
-|     `registry-url`     | **string**  |           The URL of the npm registry            | _Official npm registry_ |
-|   `frozen-lockfile`    | **boolean** | Fail if "pnpm-lock.yaml" is missing or outdated  |        **true**         |
-|  `project-directory`   | **string**  |     The directory containing `package.json`      |          **.**          |
-|        `shell`         | **string**  |          The shell used to run commands          |        **bash**         |
+|        Name         |    Type    |              Description               | Default value |
+| :-----------------: | :--------: | :------------------------------------: | :-----------: |
+| `project-directory` | **string** | Directory containing the project files |     **.**     |
 
 ## Further references
 

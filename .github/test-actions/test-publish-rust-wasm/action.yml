@@ -5,12 +5,11 @@ runs:
   steps:
     - uses: ./actions/inject-branch-version
       with:
-        artifact-descriptor: ./tests/rust-wasm/Cargo.toml
+        project-directory: tests/rust-wasm
 
     - uses: ./actions/publish-rust-wasm
       with:
-        project-directory: ./tests/rust-wasm
+        project-directory: tests/rust-wasm
         dry-run: true
-        npm-token: ""
         wasm-pack-version: 0.13.0
         npm-scope: giancosta86
