@@ -5,7 +5,7 @@ runs:
   steps:
     - uses: ./actions/inject-branch-version
       with:
-        artifact-descriptor: tests/rust-wasm/Cargo.toml
+        project-directory: tests/rust-wasm
 
     - uses: ./actions/verify-rust-wasm
       with:
