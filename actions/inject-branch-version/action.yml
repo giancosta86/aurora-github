@@ -4,7 +4,6 @@ description: Injects into a descriptor the version detected from the current Git
 inputs:
   artifact-descriptor:
     description: Relative path to the artifact descriptor - such as 'Cargo.toml' or 'package.json'; if not specified, it will be inferred from the project.
-    default: ""
 
   project-directory:
     description: The directory containing the project.
