@@ -9,7 +9,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/check-subpath-exports@v7
 ```
 
-**Please, note:** this action is automatically run by [verify-npm-package](../verify-npm-package/README.md).
+**Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md).
 
 ## Requirements
 

@@ -21,9 +21,9 @@ steps:
 
 ## Requirements
 
-- the branch name is read from `github.head_ref` if such variable is available - because the action is especially designed for pull-request workflows - and from `github.ref` otherwise.
+- **Essential**: the branch name must have a [semantic version](https://semver.org/) format, optionally preceded by `v`. For example: `v1.0.2`.
 
-- the branch name should have a [semantic version](https://semver.org/) format, optionally preceded by `v`. For example: `v1.0.2`.
+- the branch name is read from `github.head_ref` if such variable is available - because the action is especially designed for pull-request workflows - and from `github.ref` otherwise.
 
 ## Inputs 📥
 

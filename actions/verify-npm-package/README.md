@@ -6,8 +6,6 @@ It is worth noting this action can support any technology - as long as you compl
 
 ## Example
 
-The action can be placed right after checking out the source code:
-
 ```yaml
 steps:
   - uses: actions/checkout@v4

@@ -4,8 +4,6 @@ Publishes a **NodeJS** package to an [npm](https://www.npmjs.com/) registry.
 
 ## Example
 
-The action can be placed right after checking out the source code:
-
 ```yaml
 steps:
   - uses: actions/checkout@v4

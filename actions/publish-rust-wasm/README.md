@@ -4,8 +4,6 @@ Publishes a **Rust** web assembly to an [npm](https://www.npmjs.com/) registry.
 
 ## Example
 
-The action can be placed right after checking out the source code:
-
 ```yaml
 steps:
   - uses: actions/checkout@v4
@@ -18,6 +16,16 @@ steps:
 ```
 
 **Please, note**: this action is designed for _publication_ only - not for verification: you might want to use [verify-rust-wasm](../verify-rust-wasm/README.md) for that.
+
+## How it works
+
+1. Invoke the [install-wasm-pack](../install-wasm-pack/README.md) action, passing all the matching inputs, to install the `wasm-pack` command.
+
+1. Run `wasm-pack build` to generate the NodeJS package source files into the **pkg** directory.
+
+1. Copy the `.nvmrc` file from `node-version-directory` to the **pkg** directory.
+
+1. Call [publish-npm-package](../publish-npm-package/README.md) on the **pkg** directory - passing all the matching inputs - to publish the npm package.
 
 ## Requirements
 
