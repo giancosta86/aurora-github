@@ -99,7 +99,7 @@ runs:
 
     - name: Setup NodeJS context
       if: ${{ env.strategy == 'nodejs' }}
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v6.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v7.0.0
       with:
         project-directory: ${{ inputs.source-directory }}
 

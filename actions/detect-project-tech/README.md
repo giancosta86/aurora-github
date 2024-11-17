@@ -7,7 +7,7 @@ Tries to infer the current project tech - and related aspects - from the source 
 ```yaml
 steps:
   - id: detector
-    uses: giancosta86/aurora-github/actions/detect-project-tech@v6
+    uses: giancosta86/aurora-github/actions/detect-project-tech@v7
 
   - run: |
       projectTech="${{ steps.detector.outputs.project-tech }}"
