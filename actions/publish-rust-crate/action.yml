@@ -58,7 +58,7 @@ runs:
         EOF
 
     - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v6.0.0
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v7.0.0
       with:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}

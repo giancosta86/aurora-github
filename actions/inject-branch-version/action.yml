@@ -12,10 +12,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/detect-branch-version@v6.0.0
+    - uses: giancosta86/aurora-github/actions/detect-branch-version@v7.0.0
       id: version-detector
 
-    - uses: giancosta86/aurora-github/actions/detect-project-tech@v6.0.0
+    - uses: giancosta86/aurora-github/actions/detect-project-tech@v7.0.0
       if: ${{ inputs.artifact-descriptor == '' }}
       id: tech-detector
       with:
