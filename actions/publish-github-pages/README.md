@@ -6,10 +6,14 @@ Publishes a directory as the [GitHub Pages](https://pages.github.com/) website f
 
 ```yaml
 steps:
+  - uses: actions/checkout@v4
+
   - uses: giancosta86/aurora-github/actions/publish-github-pages@v7
+    with:
+      source-directory: .
 ```
 
-**Please, note:** this action is automatically run by [publish-npm-package](../publish-npm-package/README.md), [publish-rust-crate](../publish-rust-crate/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
+**Please, note**: this action is automatically run by [publish-npm-package](../publish-npm-package/README.md), [publish-rust-crate](../publish-rust-crate/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
 
 ## How it works
 
@@ -35,7 +39,7 @@ steps:
 
   - `id-token`: **write**
 
-  **Please, note:** at the same time, you may want to _declare your required default permissions_ - such as `contents`, necessary for some Git operations - because, otherwise, they would be disabled by an explicit `permissions` block.
+  **Please, note**: at the same time, you may want to _declare your required default permissions_ - such as `contents`, necessary for some Git operations - because, otherwise, they would be disabled by an explicit `permissions` block.
 
 - **GitHub Pages** must be enabled for the current repository - and having GitHub Actions as their **source**.
 

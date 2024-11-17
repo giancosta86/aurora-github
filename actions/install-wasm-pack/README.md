@@ -9,7 +9,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/install-wasm-pack@v7
 ```
 
-**Please, note:** this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
+**Please, note**: this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
 
 ## Inputs 📥
 

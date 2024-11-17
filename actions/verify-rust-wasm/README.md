@@ -4,8 +4,6 @@ Verifies the source files of a **Rust** web assembly.
 
 ## Example
 
-The action can be placed right after checking out the source code:
-
 ```yaml
 steps:
   - uses: actions/checkout@v4
@@ -24,7 +22,7 @@ steps:
 
 1. Run `wasm-pack test` to run headless browser tests on Chrome.
 
-1. Run `wasm-pack build` to verify the generation of the NodeJS package source files.
+1. Run `wasm-pack build` to generate the NodeJS package source files.
 
 1. If the directory referenced by the `client-tests-directory` input exists, execute the [run-custom-tests](../run-custom-tests/README.md) action on it, with the `optional` flag enabled.
 

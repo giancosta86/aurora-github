@@ -11,7 +11,7 @@ steps:
       source-file-regex: ^\.\/(src|tests)\/.+\.(c|m)?(j|t)sx?$
 ```
 
-**Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md), [verify-npm-package](../verify-npm-package/README.md) and [verify-rust-wasm](../verify-rust-wasm/README.md).
+**Please, note**: this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md), [verify-npm-package](../verify-npm-package/README.md) and [verify-rust-wasm](../verify-rust-wasm/README.md).
 
 ## Inputs 📥
 

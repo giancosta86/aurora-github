@@ -9,7 +9,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/extract-rust-snippets@v7
 ```
 
-**Please, note:** this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).
+**Please, note**: this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).
 
 ## Requirements
 

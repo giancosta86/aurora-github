@@ -4,8 +4,6 @@ Verifies the source files of a **Rust** crate.
 
 ## Example
 
-The action can be placed right after checking out the source code:
-
 ```yaml
 steps:
   - uses: actions/checkout@v4
@@ -13,7 +11,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/verify-rust-crate@v7
 ```
 
-**Please, note:** this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md).
+**Please, note**: this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md).
 
 ## How it works
 
