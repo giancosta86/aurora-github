@@ -32,9 +32,9 @@ inputs:
     description: PCRE pattern describing the source files.
     default: '^\.\/((src|tests)\/.+\.rs)|(client-tests\/.+\.(c|m)?(j|t)sx?)$'
 
-  check-artifact-version:
-    description: Ensure the version in Cargo.toml matches the branch name.
-    default: true
+  enforce-branch-version:
+    description: The "mode" parameter for "enforce-branch-version".
+    default: inject
 
   project-directory:
     description: The directory containing Cargo.toml.
@@ -95,12 +95,6 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.check-artifact-version }}" ]]
-        then
-          echo "❌Missing action input: 'check-artifact-version'!" >&2
-          exit 1
-        fi
-
     - name: Parse npm scope
       id: parse-npm-scope
       uses: giancosta86/aurora-github/actions/parse-npm-scope@v7.0.0
@@ -119,7 +113,7 @@ runs:
         check-rustdoc: ${{ inputs.check-rustdoc }}
         crash-on-critical-todos: ${{ inputs.crash-on-critical-todos }}
         source-file-regex: ${{ inputs.source-file-regex }}
-        check-artifact-version: ${{ inputs.check-artifact-version }}
+        enforce-branch-version: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
     - name: Run headless browser tests

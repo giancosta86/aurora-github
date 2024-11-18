@@ -1,0 +1,84 @@
+name: Test enforce-branch-version
+
+runs:
+  using: composite
+  steps:
+    - name: Test skipping
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: skip
+        project-directory: tests/rust-crate
+
+    - name: Inject version into NodeJS package
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: inject
+        project-directory: tests/npm-package
+
+    - name: Inject version into Rust crate
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: inject
+        project-directory: tests/rust-crate
+
+    - name: Inject version into Rust web assembly
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: inject
+        project-directory: tests/rust-wasm
+
+    - name: Inject version into unknown project
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: inject
+        artifact-descriptor: some-descriptor.txt
+        project-directory: tests/unknown-tech
+
+    - name: Check version in npm package
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: check
+        project-directory: tests/npm-package
+
+    - name: Check version in Rust crate
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: check
+        project-directory: tests/rust-crate
+
+    - name: Check version in Rust wasm
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: check
+        project-directory: tests/rust-wasm
+
+    - name: Check version for unknown tech
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: check
+        artifact-descriptor: some-descriptor.txt
+        project-directory: tests/unknown-tech
+
+    - name: Check version in npm package passing a custom descriptor
+      uses: ./actions/enforce-branch-version
+      with:
+        mode: check
+        artifact-descriptor: ANYTHING_IGNORED
+        project-directory: tests/npm-package
+
+    - uses: ./actions/detect-branch-version
+      id: version-detector
+
+    - name: Version should have been injected multiple times
+      shell: bash
+      working-directory: tests/unknown-tech
+      run: |
+        version="${{ steps.version-detector.outputs.version }}"
+
+        if grep "A: v$version" some-descriptor.txt && grep "B: '$version'" some-descriptor.txt
+        then
+          echo "✅The version was injected multiple times into the descriptor!"
+        else
+          echo "❌The version was not injected multiple times into a custom descriptor!" >&2
+          exit 1
+        fi

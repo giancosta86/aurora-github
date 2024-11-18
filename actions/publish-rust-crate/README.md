@@ -17,6 +17,8 @@ steps:
 
 ## How it works
 
+1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+
 1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled
 
 1. Run `cargo publish`, with the `--all-features` flag
@@ -31,17 +33,20 @@ steps:
 
 ## Inputs 📥
 
-|          Name           |    Type     |                            Description                            | Default value |
-| :---------------------: | :---------: | :---------------------------------------------------------------: | :-----------: |
-|        `dry-run`        | **boolean** |            Run a simulated publication via `--dry-run`            |   **false**   |
-|      `cargo-token`      | **string**  |          The secret token for publishing to the registry          |               |
-| `document-all-features` | **boolean** | Enable [Rustdoc for all features](https://docs.rs/about/metadata) |   **true**    |
-|   `website-directory`   | **string**  |         Relative directory containing the project website         |  **website**  |
-|   `project-directory`   | **string**  |               The directory containing `Cargo.toml`               |     **.**     |
+|           Name           |          Type           |                            Description                            | Default value |
+| :----------------------: | :---------------------: | :---------------------------------------------------------------: | :-----------: |
+|        `dry-run`         |       **boolean**       |            Run a simulated publication via `--dry-run`            |   **false**   |
+|      `cargo-token`       |       **string**        |          The secret token for publishing to the registry          |               |
+| `document-all-features`  |       **boolean**       | Enable [Rustdoc for all features](https://docs.rs/about/metadata) |   **true**    |
+|   `website-directory`    |       **string**        |         Relative directory containing the project website         |  **website**  |
+| `enforce-branch-version` | `inject`,`check`,`skip` |           Whether and how to enforce the branch version           |  **inject**   |
+|   `project-directory`    |       **string**        |               The directory containing `Cargo.toml`               |     **.**     |
 
 ## Further references
 
 - [publish-github-pages](../publish-github-pages/README.md)
+
+- [enforce-branch-version](../enforce-branch-version/README.md)
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 

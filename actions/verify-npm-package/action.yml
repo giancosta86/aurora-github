@@ -10,9 +10,9 @@ inputs:
     description: PCRE pattern describing the source files.
     default: '^\.\/(src|tests)\/.+\.(c|m)?(j|t)sx?$'
 
-  check-artifact-version:
-    description: Ensure the version in package.json matches the branch name.
-    default: true
+  enforce-branch-version:
+    description: The "mode" parameter for "enforce-branch-version".
+    default: inject
 
   enforce-esm:
     description: Verify that the "type" field is "module" - to create an ESM package.
@@ -45,12 +45,6 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.check-artifact-version }}" ]]
-        then
-          echo "❌Missing action input: 'check-artifact-version'!" >&2
-          exit 1
-        fi
-
         if [[ -z "${{ inputs.enforce-esm }}" ]]
         then
           echo "❌Missing action input: 'enforce-esm'!" >&2
@@ -69,10 +63,10 @@ runs:
           exit 1
         fi
 
-    - name: Check artifact version
-      if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v7.0.0
+    - name: Enforce branch version
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v7.0.0
       with:
+        mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
     - name: Enforce ESM

@@ -41,16 +41,17 @@ steps:
 
 ## Inputs 📥
 
-|           Name           |    Type     |                    Description                    |  Default value   |
-| :----------------------: | :---------: | :-----------------------------------------------: | :--------------: |
-|        `dry-run`         | **boolean** |    Run a simulated publication via `--dry-run`    |    **false**     |
-|       `npm-token`        | **string**  |  The secret token for publishing to the registry  |                  |
-|   `wasm-pack-version`    | **string**  |        The `wasm-pack` version to install         |                  |
-|       `npm-scope`        | **string**  |         The npm package scope or `<ROOT>`         |                  |
-|      `wasm-target`       | **string**  |    The target of the `wasm-pack build` command    |     **web**      |
-| `node-version-directory` | **string**  |  Relative directory containing the `.nvmrc` file  | **client-tests** |
-|   `website-directory`    | **string**  | Relative directory containing the project website |   **website**    |
-|   `project-directory`    | **string**  |       The directory containing `Cargo.toml`       |      **.**       |
+|           Name           |          Type           |                    Description                    |  Default value   |
+| :----------------------: | :---------------------: | :-----------------------------------------------: | :--------------: |
+|        `dry-run`         |       **boolean**       |    Run a simulated publication via `--dry-run`    |    **false**     |
+|       `npm-token`        |       **string**        |  The secret token for publishing to the registry  |                  |
+|   `wasm-pack-version`    |       **string**        |        The `wasm-pack` version to install         |                  |
+|       `npm-scope`        |       **string**        |         The npm package scope or `<ROOT>`         |                  |
+|      `wasm-target`       |       **string**        |    The target of the `wasm-pack build` command    |     **web**      |
+| `node-version-directory` |       **string**        |  Relative directory containing the `.nvmrc` file  | **client-tests** |
+|   `website-directory`    |       **string**        | Relative directory containing the project website |   **website**    |
+| `enforce-branch-version` | `inject`,`check`,`skip` |   Whether and how to enforce the branch version   |    **inject**    |
+|   `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |      **.**       |
 
 ## Further references
 
@@ -63,5 +64,7 @@ steps:
 - [parse-npm-scope](../parse-npm-scope/README.md)
 
 - [verify-rust-wasm](../verify-rust-wasm/README.md)
+
+- [enforce-branch-version](../enforce-branch-version/README.md)
 
 - [aurora-github](../../README.md)

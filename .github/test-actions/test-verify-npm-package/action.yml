@@ -3,10 +3,6 @@ name: Test verify-npm-package
 runs:
   using: composite
   steps:
-    - uses: ./actions/inject-branch-version
-      with:
-        project-directory: tests/npm-package
-
     - uses: ./actions/verify-npm-package
       with:
         project-directory: tests/npm-package

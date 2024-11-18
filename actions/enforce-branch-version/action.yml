@@ -1,0 +1,185 @@
+name: Enforce branch version
+description: Ensures that the version in the artifact descriptor matches the Git branch version - by injecting or merely by checking.
+
+inputs:
+  mode:
+    description: How to enforce the branch version. Can be "inject", "check" or "skip".
+
+  artifact-descriptor:
+    description: Relative path to the artifact descriptor; could be ignored.
+
+  project-directory:
+    description: The directory containing the project.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "📥Requested mode: '${{ inputs.mode }}'"
+
+        case "${{ inputs.mode }}" in
+          inject | check)
+            ;;
+
+          skip)
+            echo "💭Skipping branch version enforcement, as requested..."
+            ;;
+
+          *)
+            echo "❌Invalid value for 'mode' input: '${{ inputs.mode }}'!" >&2
+            exit 1
+        esac
+
+    - uses: giancosta86/aurora-github/actions/detect-project-tech@v7.0.0
+      if: ${{ inputs.mode == 'check' || (inputs.mode != 'skip' && inputs.artifact-descriptor == '') }}
+      id: tech-detector
+      with:
+        project-directory: ${{ inputs.project-directory }}
+
+    - uses: giancosta86/aurora-github/actions/detect-branch-version@v7.0.0
+      if: ${{ inputs.mode != 'skip' }}
+      id: version-detector
+
+    - name: Compute the artifact descriptor
+      if: ${{ inputs.mode != 'skip' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        requestedArtifactDescriptor="${{ inputs.artifact-descriptor }}"
+        echo "📥Requested artifact descriptor: '$requestedArtifactDescriptor'"
+
+        detectedArtifactDescriptor="${{ steps.tech-detector.outputs.artifact-descriptor }}"
+        echo "🔮Detected artifact descriptor: '$detectedArtifactDescriptor'"
+
+        case "${{ inputs.mode }}" in
+          inject)
+            artifactDescriptor="${requestedArtifactDescriptor:-"$detectedArtifactDescriptor"}"
+            ;;
+
+          check)
+            if [[ -n "$detectedArtifactDescriptor" ]]
+            then
+              if [[ -n "$requestedArtifactDescriptor" ]]
+              then
+                echo "💭In this mode, the detected artifact descriptor will take precedence over the requested one"
+              fi
+
+              artifactDescriptor="$detectedArtifactDescriptor"
+            else
+              artifactDescriptor="$requestedArtifactDescriptor"
+            fi
+            ;;
+        esac
+
+        echo "🔎Artifact descriptor: '$artifactDescriptor'"
+
+        if [[ -z "$artifactDescriptor" ]]
+        then
+          echo "❌No artifact descriptor requested - and it can't be detected!" >&2;
+          exit 1;
+        fi
+
+        if [[ ! -f "$artifactDescriptor" ]]
+        then
+          echo "❌Cannot find the artifact descriptor file: '$artifactDescriptor'!" >&2;
+          exit 1;
+        fi
+
+        echo "artifactDescriptor=$artifactDescriptor" >> $GITHUB_ENV
+
+    - name: Inject version into the descriptor
+      if: ${{ inputs.mode == 'inject' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        version="${{ steps.version-detector.outputs.version }}"
+        echo "🔎Detected branch version: '$version'"
+
+        echo "🧬Injecting the branch version into the descriptor..."
+        sed -i "s/0\.0\.0/${version}/g" "$artifactDescriptor"
+        echo "✅Version injected!"
+
+    - name: Print the artifact descriptor
+      if: ${{ inputs.mode != 'skip' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        case "${{ steps.tech-detector.outputs.project-tech }}" in
+          nodejs)
+            echo "📦NodeJS descriptor:"
+            jq . "$artifactDescriptor"
+            echo "📦📦📦"
+            ;;
+
+          rust)
+            echo "🦀Rust crate descriptor:"
+            cat "$artifactDescriptor"
+            echo "🦀🦀🦀"
+            ;;
+
+          *)
+            echo "🎁Unknown tech descriptor:"
+            cat "$artifactDescriptor"
+            echo "🎁🎁🎁"
+        esac
+
+    - name: Extract NodeJS package version
+      if: ${{ inputs.mode == 'check' && steps.tech-detector.outputs.project-tech == 'nodejs' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "📤Extracting the artifact version from the 📦NodeJS descriptor ('$artifactDescriptor')..."
+
+        artifactVersion="$(jq -r .version "$artifactDescriptor")"
+
+        echo "artifactVersion=$artifactVersion" >> $GITHUB_ENV
+
+    - name: Extract Rust crate version
+      if: ${{ inputs.mode == 'check' && steps.tech-detector.outputs.project-tech == 'rust' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "📤Extracting the artifact version from the 🦀Rust descriptor ('$artifactDescriptor')..."
+
+        artifactVersion="$(grep '^version' Cargo.toml | cut -d '"' -f2)"
+
+        echo "artifactVersion=$artifactVersion" >> $GITHUB_ENV
+
+    - name: Ensure the artifact version matches the branch version
+      if: ${{ inputs.mode == 'check' && steps.tech-detector.outputs.project-tech != '' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        branchVersion="${{ steps.version-detector.outputs.version }}"
+        echo "🔎Branch version: '$branchVersion'"
+        echo "🔎Artifact version: '$artifactVersion'"
+
+        if [[ "$artifactVersion" == "$branchVersion" ]]
+        then
+          echo "✅The descriptor version matches the branch version!"
+        else
+          echo "❌The descriptor version and the branch version do not match!" >&2
+          exit 1
+        fi
+
+    - name: Check unknown artifact version
+      if: ${{ inputs.mode == 'check' && steps.tech-detector.outputs.project-tech == '' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        branchVersion="${{ steps.version-detector.outputs.version }}"
+        echo "🔎Branch version: '$branchVersion'"
+
+        echo "🔎Ensuring the branch version exists in the 🎁unknown tech descriptor ('$artifactDescriptor')..."
+
+        if grep -q "$branchVersion" "$artifactDescriptor"
+        then
+          echo "✅Version found in the descriptor!"
+        else
+          echo "❌The branch version cannot be found in the artifact descriptor!" >&2
+          exit 1
+        fi

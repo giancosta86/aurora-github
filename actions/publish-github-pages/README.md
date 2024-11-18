@@ -21,6 +21,8 @@ steps:
 
 1. If `source-directory` contains a **package.json** file:
 
+   1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+
    1. Set up a NodeJS environment via [setup-nodejs-context](../setup-nodejs-context/README.md) in `source-directory`.
 
    1. Run `pnpm build`.
@@ -49,11 +51,12 @@ steps:
 
 ## Inputs 📥
 
-|        Name        |    Type     |                               Description                                | Default value |
-| :----------------: | :---------: | :----------------------------------------------------------------------: | :-----------: |
-| `source-directory` | **string**  |                     Directory containing the website                     |               |
-|     `optional`     | **boolean** | Whether `source-directory` can be an empty string or a missing directory |   **false**   |
-|     `dry-run`      | **boolean** |               Stops the publication just before uploading                |   **false**   |
+|           Name           |          Type           |                             Description                             | Default value |
+| :----------------------: | :---------------------: | :-----------------------------------------------------------------: | :-----------: |
+|    `source-directory`    |       **string**        |                  Directory containing the website                   |               |
+|        `optional`        |       **boolean**       | Whether `source-directory` can be empty string or missing directory |   **false**   |
+| `enforce-branch-version` | `inject`,`check`,`skip` |            Whether and how to enforce the branch version            |  **inject**   |
+|        `dry-run`         |       **boolean**       |             Stops the publication just before uploading             |   **false**   |
 
 ## Outputs 📤
 

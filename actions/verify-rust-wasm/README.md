@@ -34,18 +34,18 @@ steps:
 
 ## Inputs 📥
 
-|           Name            |    Type     |                       Description                        |       Default value       |
-| :-----------------------: | :---------: | :------------------------------------------------------: | :-----------------------: |
-|    `wasm-pack-version`    | **string**  |            The `wasm-pack` version to install            |                           |
-|        `npm-scope`        | **string**  |            The npm package scope or `<ROOT>`             |                           |
-| `client-tests-directory`  | **string**  |      Relative directory containing the client tests      |     **client-tests**      |
-|       `wasm-target`       | **string**  |       The target of the `wasm-pack build` command        |          **web**          |
-|    `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |         **true**          |
-|      `check-rustdoc`      | **boolean** |    Build the documentation - with warnings as errors     |         **false**         |
-| `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |         **true**          |
-|    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         | view [source](action.yml) |
-| `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |         **true**          |
-|    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |           **.**           |
+|           Name            |          Type           |                    Description                    |       Default value       |
+| :-----------------------: | :---------------------: | :-----------------------------------------------: | :-----------------------: |
+|    `wasm-pack-version`    |       **string**        |        The `wasm-pack` version to install         |                           |
+|        `npm-scope`        |       **string**        |         The npm package scope or `<ROOT>`         |                           |
+| `client-tests-directory`  |       **string**        |  Relative directory containing the client tests   |     **client-tests**      |
+|       `wasm-target`       |       **string**        |    The target of the `wasm-pack build` command    |          **web**          |
+|    `run-clippy-checks`    |       **boolean**       |             Enable linting via Clippy             |         **true**          |
+|      `check-rustdoc`      |       **boolean**       | Build the documentation - with warnings as errors |         **false**         |
+| `crash-on-critical-todos` |       **boolean**       |  Crash the workflow if critical TODOs are found   |         **true**          |
+|    `source-file-regex`    |       **string**        |     PCRE pattern describing the source files      | view [source](action.yml) |
+| `enforce-branch-version`  | `inject`,`check`,`skip` |   Whether and how to enforce the branch version   |        **inject**         |
+|    `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
 
 ## Further references
 
@@ -57,8 +57,8 @@ steps:
 
 - [install-wasm-pack](../install-wasm-pack/README.md)
 
-- [check-artifact-version](../check-artifact-version/README.md)
-
 - [verify-rust-crate](../verify-rust-crate/README.md)
+
+- [enforce-branch-version](../enforce-branch-version/README.md)
 
 - [aurora-github](../../README.md)

@@ -18,9 +18,9 @@ inputs:
     description: PCRE pattern describing the source files.
     default: '^\.\/(src|tests)\/.+\.rs$'
 
-  check-artifact-version:
-    description: Ensure the version in Cargo.toml matches the branch name.
-    default: true
+  enforce-branch-version:
+    description: The "mode" parameter for "enforce-branch-version".
+    default: inject
 
   project-directory:
     description: The directory containing Cargo.toml.
@@ -57,16 +57,10 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.check-artifact-version }}" ]]
-        then
-          echo "❌Missing action input: 'check-artifact-version'!" >&2
-          exit 1
-        fi
-
-    - name: Check artifact version
-      if: ${{ inputs.check-artifact-version == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-artifact-version@v7.0.0
+    - name: Enforce branch version
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v7.0.0
       with:
+        mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
     - name: Check Rust versions

@@ -6,8 +6,12 @@ inputs:
     description: Directory containing the website.
 
   optional:
-    description: Whether "source-directory" can be an empty string or a missing directory.
+    description: Whether "source-directory" can be empty string or missing directory.
     default: false
+
+  enforce-branch-version:
+    description: The "mode" parameter for "enforce-branch-version".
+    default: inject
 
   dry-run:
     description: Stops the publication just before uploading.
@@ -96,6 +100,13 @@ runs:
       shell: bash
       run: |
         echo "🔎Website publication strategy: '$strategy'"
+
+    - name: Enforce branch version
+      if: ${{ env.strategy == 'nodejs' }}
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v7.0.0
+      with:
+        mode: ${{ inputs.enforce-branch-version }}
+        project-directory: ${{ inputs.source-directory }}
 
     - name: Setup NodeJS context
       if: ${{ env.strategy == 'nodejs' }}

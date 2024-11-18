@@ -3,10 +3,6 @@ name: Test publish-npm-package
 runs:
   using: composite
   steps:
-    - uses: ./actions/inject-branch-version
-      with:
-        project-directory: tests/npm-package
-
     - uses: ./actions/publish-npm-package
       with:
         dry-run: true
