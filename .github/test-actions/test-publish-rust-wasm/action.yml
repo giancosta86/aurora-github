@@ -3,10 +3,6 @@ name: Test publish-rust-wasm
 runs:
   using: composite
   steps:
-    - uses: ./actions/inject-branch-version
-      with:
-        project-directory: tests/rust-wasm
-
     - uses: ./actions/publish-rust-wasm
       with:
         project-directory: tests/rust-wasm

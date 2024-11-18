@@ -48,14 +48,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-detect-project-tech
 
-  test-artifact-version:
+  test-enforce-branch-version:
     runs-on: ubuntu-latest
     needs:
       - test-detect-branch-version
       - test-detect-project-tech
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-artifact-version
+      - uses: ./.github/test-actions/test-enforce-branch-version
 
   test-extract-rust-snippets:
     runs-on: ubuntu-latest
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - test-check-rust-versions
-      - test-artifact-version
+      - test-enforce-branch-version
       - test-find-critical-todos
       - test-extract-rust-snippets
     steps:
@@ -77,7 +77,9 @@ jobs:
 
   test-publish-rust-crate:
     runs-on: ubuntu-latest
-    needs: test-publish-github-pages
+    needs:
+      - test-publish-github-pages
+      - test-enforce-branch-version
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-publish-rust-crate
@@ -85,7 +87,7 @@ jobs:
   test-verify-npm-package:
     runs-on: ubuntu-latest
     needs:
-      - test-artifact-version
+      - test-enforce-branch-version
       - test-find-critical-todos
       - test-check-subpath-exports
       - test-setup-nodejs-context
@@ -97,6 +99,7 @@ jobs:
   test-publish-npm-package:
     runs-on: ubuntu-latest
     needs:
+      - test-enforce-branch-version
       - test-setup-nodejs-context
       - test-publish-github-pages
     steps:
@@ -167,7 +170,9 @@ jobs:
 
   test-publish-github-pages:
     runs-on: ubuntu-latest
-    needs: test-setup-nodejs-context
+    needs:
+      - test-setup-nodejs-context
+      - test-enforce-branch-version
     permissions:
       pages: write
       id-token: write
@@ -193,7 +198,7 @@ jobs:
       - test-install-wasm-pack
       - test-check-rust-versions
       - test-detect-project-tech
-      - test-artifact-version
+      - test-enforce-branch-version
       - test-verify-rust-crate
       - test-publish-rust-crate
       - test-verify-npm-package

@@ -44,9 +44,7 @@ In particular, the actions can be grouped by technology:
 
 - [detect-branch-version](actions/detect-branch-version/README.md)
 
-- [inject-branch-version](actions/inject-branch-version/README.md)
-
-- [check-artifact-version](actions/check-artifact-version/README.md)
+- [enforce-branch-version](actions/enforce-branch-version/README.md)
 
 - [tag-and-release](actions/tag-and-release/README.md)
 

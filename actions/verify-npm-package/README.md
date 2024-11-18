@@ -25,7 +25,7 @@ steps:
 
 ## How it works
 
-1. Optionally run [check-artifact-version](../check-artifact-version/README.md), to ensure that the artifact version in `package.json` matches the version detected from the name of the current Git branch.
+1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
 1. Ensure that the package is based on **ESM** - via the `"type": "module"` attribute in `package.json`; this default behavior can be disabled.
 
@@ -49,18 +49,16 @@ steps:
 
 - The requirements for [setup-nodejs-context](../setup-nodejs-context/README.md).
 
-- The requirements for [check-artifact-version](../check-artifact-version/README.md), if `check-artifact-version` is enabled.
-
 ## Inputs 📥
 
-|           Name            |    Type     |                           Description                           |       Default value       |
-| :-----------------------: | :---------: | :-------------------------------------------------------------: | :-----------------------: |
-| `crash-on-critical-todos` | **boolean** |         Crash the workflow if critical TODOs are found          |         **true**          |
-|    `source-file-regex`    | **string**  |            PCRE pattern describing the source files             | view [source](action.yml) |
-| `check-artifact-version`  | **boolean** |  Ensure the version in `package.json` matches the branch name   |         **true**          |
-|       `enforce-esm`       | **boolean** | Verify that the `type` field is **module** - for an ESM package |         **true**          |
-|  `check-subpath-exports`  | **boolean** | Run `check-subpath-exports` after the **verify** package script |         **true**          |
-|    `project-directory`    | **string**  |             The directory containing `package.json`             |           **.**           |
+|           Name            |          Type           |                       Description                       |       Default value       |
+| :-----------------------: | :---------------------: | :-----------------------------------------------------: | :-----------------------: |
+| `crash-on-critical-todos` |       **boolean**       |     Crash the workflow if critical TODOs are found      |         **true**          |
+|    `source-file-regex`    |       **string**        |        PCRE pattern describing the source files         | view [source](action.yml) |
+| `enforce-branch-version`  | `inject`,`check`,`skip` |      Whether and how to enforce the branch version      |        **inject**         |
+|       `enforce-esm`       |       **boolean**       | Verify that the package.json `type` field is **module** |         **true**          |
+|  `check-subpath-exports`  |       **boolean**       | Run `check-subpath-exports` after the **verify** script |         **true**          |
+|    `project-directory`    |       **string**        |         The directory containing `package.json`         |           **.**           |
 
 ## Further references
 
@@ -68,7 +66,7 @@ steps:
 
 - [check-subpath-exports](../check-subpath-exports/README.md)
 
-- [check-artifact-version](../check-artifact-version/README.md)
+- [enforce-branch-version](../enforce-branch-version/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

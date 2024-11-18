@@ -23,6 +23,8 @@ steps:
 
 ## How it works
 
+1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+
 1. Invoke [setup-nodejs-context](../setup-nodejs-context/README.md) to set up a NodeJS environment having `pnpm` and dependencies.
 
 1. Run `pnpm build` _if_ such script has been declared in **package.json**.
@@ -43,16 +45,19 @@ steps:
 
 ## Inputs 📥
 
-|        Name         |    Type     |                    Description                    | Default value |
-| :-----------------: | :---------: | :-----------------------------------------------: | :-----------: |
-|      `dry-run`      | **boolean** |    Run a simulated publication via `--dry-run`    |   **false**   |
-|     `npm-token`     | **string**  |  The secret token for publishing to the registry  |               |
-| `website-directory` | **string**  | Relative directory containing the project website |  **website**  |
-| `project-directory` | **string**  |      The directory containing `package.json`      |     **.**     |
+|           Name           |          Type           |                    Description                    | Default value |
+| :----------------------: | :---------------------: | :-----------------------------------------------: | :-----------: |
+|        `dry-run`         |       **boolean**       |    Run a simulated publication via `--dry-run`    |   **false**   |
+|       `npm-token`        |       **string**        |  The secret token for publishing to the registry  |               |
+|   `website-directory`    |       **string**        | Relative directory containing the project website |  **website**  |
+| `enforce-branch-version` | `inject`,`check`,`skip` |   Whether and how to enforce the branch version   |  **inject**   |
+|   `project-directory`    |       **string**        |      The directory containing `package.json`      |     **.**     |
 
 ## Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
+
+- [enforce-branch-version](../enforce-branch-version/README.md)
 
 - [publish-github-pages](../publish-github-pages/README.md)
 

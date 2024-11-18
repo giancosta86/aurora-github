@@ -15,7 +15,7 @@ steps:
 
 ## How it works
 
-1. Optionally run [check-artifact-version](../check-artifact-version/README.md), to ensure that the artifact version in `Cargo.toml` matches the version detected from the name of the current Git branch.
+1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
 1. Display the version info for the main components of the Rust toolchain - verifying the existence of `rust-toolchain.toml`.
 
@@ -37,18 +37,16 @@ steps:
 
 - `rust-toolchain.toml` must be present in `project-directory` - as described in [check-rust-versions](../check-rust-versions/README.md)
 
-- The requirements for [check-artifact-version](../check-artifact-version/README.md), if `check-artifact-version` is enabled.
-
 ## Inputs 📥
 
-|           Name            |    Type     |                       Description                        |       Default value       |
-| :-----------------------: | :---------: | :------------------------------------------------------: | :-----------------------: |
-|    `run-clippy-checks`    | **boolean** |                Enable linting via Clippy                 |         **true**          |
-|      `check-rustdoc`      | **boolean** |    Build the documentation - with warnings as errors     |         **true**          |
-| `crash-on-critical-todos` | **boolean** |      Crash the workflow if critical TODOs are found      |         **true**          |
-|    `source-file-regex`    | **string**  |         PCRE pattern describing the source files         | view [source](action.yml) |
-| `check-artifact-version`  | **boolean** | Ensure the version in Cargo.toml matches the branch name |         **true**          |
-|    `project-directory`    | **string**  |          The directory containing `Cargo.toml`           |           **.**           |
+|           Name            |          Type           |                    Description                    |       Default value       |
+| :-----------------------: | :---------------------: | :-----------------------------------------------: | :-----------------------: |
+|    `run-clippy-checks`    |       **boolean**       |             Enable linting via Clippy             |         **true**          |
+|      `check-rustdoc`      |       **boolean**       | Build the documentation - with warnings as errors |         **true**          |
+| `crash-on-critical-todos` |       **boolean**       |  Crash the workflow if critical TODOs are found   |         **true**          |
+|    `source-file-regex`    |       **string**        |     PCRE pattern describing the source files      | view [source](action.yml) |
+| `enforce-branch-version`  | `inject`,`check`,`skip` |   Whether and how to enforce the branch version   |        **inject**         |
+|    `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
 
 ## Further references
 
@@ -58,7 +56,7 @@ steps:
 
 - [find-critical-todos](../find-critical-todos/README.md)
 
-- [check-artifact-version](../check-artifact-version/README.md)
+- [enforce-branch-version](../enforce-branch-version/README.md)
 
 - [check-rust-versions](../check-rust-versions/README.md)
 

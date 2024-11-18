@@ -13,6 +13,10 @@ inputs:
     description: Relative directory containing the project website.
     default: website
 
+  enforce-branch-version:
+    description: The "mode" parameter for "enforce-branch-version".
+    default: inject
+
   project-directory:
     description: The directory containing package.json.
     default: .
@@ -42,12 +46,11 @@ runs:
           exit 1
         fi
 
-    - name: Display the artifact descriptor
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "The content of your 📦package.json just before publication is:"
-        jq . package.json
+    - name: Enforce branch version
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v7.0.0
+      with:
+        mode: ${{ inputs.enforce-branch-version }}
+        project-directory: ${{ inputs.project-directory }}
 
     - name: Setup NodeJS context
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v7.0.0
@@ -72,6 +75,15 @@ runs:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
         dry-run: ${{ inputs.dry-run }}
+        enforce-branch-version: ${{ inputs.enforce-branch-version }}
+
+    - name: Display the artifact descriptor
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "The content of your 📦package.json just before publication is:"
+        jq . package.json
+        echo "📦📦📦"
 
     - name: Publish to the registry
       shell: bash

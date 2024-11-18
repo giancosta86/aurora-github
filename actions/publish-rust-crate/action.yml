@@ -17,6 +17,10 @@ inputs:
     description: Relative directory containing the project website.
     default: website
 
+  enforce-branch-version:
+    description: The "mode" parameter for "enforce-branch-version".
+    default: inject
+
   project-directory:
     description: The directory containing Cargo.toml.
     default: .
@@ -46,6 +50,12 @@ runs:
           exit 1
         fi
 
+    - name: Enforce branch version
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v7.0.0
+      with:
+        mode: ${{ inputs.enforce-branch-version }}
+        project-directory: ${{ inputs.project-directory }}
+
     - name: Enable Rustdoc for all features
       if: ${{ inputs.document-all-features == 'true' }}
       shell: bash
@@ -63,6 +73,7 @@ runs:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
         dry-run: ${{ inputs.dry-run }}
+        enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
     - name: Display the artifact descriptor
       shell: bash

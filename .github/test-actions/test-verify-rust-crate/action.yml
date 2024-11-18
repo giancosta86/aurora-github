@@ -3,10 +3,6 @@ name: Test verify-rust-crate
 runs:
   using: composite
   steps:
-    - uses: ./actions/inject-branch-version
-      with:
-        project-directory: tests/rust-crate
-
     - uses: ./actions/verify-rust-crate
       with:
         project-directory: tests/rust-crate
