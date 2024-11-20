@@ -52,7 +52,7 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "📦package.json exports at the beginning of inject-subpath-exports:"
-        jq .exports package.json
+        jq -C .exports package.json
 
     - name: Generate and inject subpath exports
       shell: bash
@@ -137,4 +137,4 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "📦package.json exports at the end of inject-subpath-exports:"
-        jq .exports package.json
+        jq -C .exports package.json

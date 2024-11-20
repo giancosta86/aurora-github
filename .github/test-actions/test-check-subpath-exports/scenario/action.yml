@@ -13,7 +13,7 @@ runs:
       run: |
         jq '${{ inputs.jq-operation }}' package.json | sponge package.json
         echo "🔎The 'exports' field is:"
-        jq '.exports' package.json
+        jq -C '.exports' package.json
 
     - uses: ./actions/check-subpath-exports
       with:
