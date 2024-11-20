@@ -111,7 +111,7 @@ runs:
         case "${{ steps.tech-detector.outputs.project-tech }}" in
           nodejs)
             echo "📦NodeJS descriptor:"
-            jq . "$artifactDescriptor"
+            jq -C . "$artifactDescriptor"
             echo "📦📦📦"
             ;;
 

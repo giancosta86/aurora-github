@@ -82,7 +82,7 @@ runs:
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "The content of your 📦package.json just before publication is:"
-        jq . package.json
+        jq -C . package.json
         echo "📦📦📦"
 
     - name: Publish to the registry
