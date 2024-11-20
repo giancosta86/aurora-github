@@ -1,0 +1,71 @@
+name: Test tag-and-release
+
+runs:
+  using: composite
+  steps:
+    - name: Draft a release
+      id: draft-release-without-major
+      uses: ./actions/tag-and-release
+      with:
+        dry-run: true
+        draft-only: true
+        set-major-tag: false
+
+    - name: Publish a release
+      id: publish-release
+      uses: ./actions/tag-and-release
+      with:
+        dry-run: true
+        draft-only: false
+        set-major-tag: true
+
+    - uses: ./actions/detect-branch-version
+      id: version-detector
+
+    - name: Check the release tag
+      shell: bash
+      run: |
+        branchVersion="${{ steps.version-detector.outputs.version }}"
+        echo "🔎Branch version: '$branchVersion'"
+
+        releaseTag="${{ steps.publish-release.outputs.release-tag }}"
+        echo "🔎Release tag: '$releaseTag'"
+
+        if [[ "$releaseTag" == "v$branchVersion" ]]
+        then
+          echo "✅The release tag derives from the current branch version!"
+        else
+          echo "❌The release tag does not derive from the current branch version!" >&2
+          exit 1
+        fi
+
+    - name: Verify the major tag is empty when it was not requested
+      shell: bash
+      run: |
+        majorTag="${{ steps.draft-release-without-major.outputs.major-tag }}"
+        echo "🔎Major tag: '$majorTag'"
+
+        if [[ -z "$majorTag" ]]
+        then
+          echo "✅The major tag is empty, as expected, because it was not requested!"
+        else
+          echo "❌The major tag should be empty when not requested!" >&2
+          exit 1
+        fi
+
+    - name: Verify the major tag is correct when it was requested
+      shell: bash
+      run: |
+        majorVersion="${{ steps.version-detector.outputs.major }}"
+        echo "🔎Major version: '$majorVersion'"
+
+        majorTag="${{ steps.publish-release.outputs.major-tag }}"
+        echo "🔎Major tag: '$majorTag'"
+
+        if [[ "$majorTag" == "v$majorVersion" ]]
+        then
+          echo "✅The major tag derives from the current major version!"
+        else
+          echo "❌The major tag does not derive from the current major version!" >&2
+          exit 1
+        fi
