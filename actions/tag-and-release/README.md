@@ -1,39 +1,29 @@
 # tag-and-release
 
-Creates a **Git** tag and a **GitHub** release, from a Git branch named according to [semver](https://semver.org/); by default, it also deletes the current branch.
+Creates a **Git** tag and a **GitHub** release, from a Git branch named according to [semver](https://semver.org/) - that is deleted during the process.
 
 ## Example
 
-This action is designed to be the very last step in a _publication_ workflow:
-
 ```yaml
 steps:
-  - uses: PUBLICATION STEP 1
-
-  - uses: PUBLICATION STEP 2
-
-  - uses: PUBLICATION STEP N
-
   - uses: giancosta86/aurora-github/actions/tag-and-release@v7
 ```
 
 ## Requirements
 
-- This action can only be used in a workflow running while **merging a pull request**.
+- This action can only be used in a workflow running while **merging a pull request** - unless its `dry-run` input is set to **true**; as a corollary, it cannot be run from the _default_ branch of the repository
 
 - The following [permission](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work - especially during the _branch deletion_ process:
 
   - `contents`: **write**
 
-  It is already active by default - but declaring other permissions will implictly disable it.
+  It is already active by default - but declaring other permissions will implicitly disable it.
 
 - GitHub Actions must have **read/write** permissions on the repository.
 
-- this action will not run on the _default_ branch of the repository.
+- The branch name can safely start with `v` - and it actually should - because the tags are created after the deletion of the branch.
 
-- the branch name can safely start with `v`, as long as `delete-branch` is **true** (the default), because the tags are created after the deletion of the branch.
-
-- the ones discussed for [detect-branch-version](../detect-branch-version/README.md).
+- The requirements discussed for [detect-branch-version](../detect-branch-version/README.md) also apply.
 
 ## How it works
 
@@ -49,9 +39,16 @@ steps:
 
 |      Name       |    Type     |                        Description                        | Default value |
 | :-------------: | :---------: | :-------------------------------------------------------: | :-----------: |
-|  `draft-only`   | **boolean** |                  Only draft the release                   |   **false**   |
-| `delete-branch` | **boolean** |         Delete the branch after creating the tag          |   **true**    |
+|  `draft-only`   | **boolean** |        Only draft the release - do not publish it         |   **false**   |
 | `set-major-tag` | **boolean** | Create/move the `vX` tag to this commit (X=major version) |   **false**   |
+|    `dry-run`    | **boolean** |        Run the action without performing commands         |   **false**   |
+
+## Outputs 📤
+
+|     Name      |    Type    |               Description                |  Example   |
+| :-----------: | :--------: | :--------------------------------------: | :--------: |
+| `release-tag` | **string** | The Git tag associated with the release  | **v7.4.9** |
+|  `major-tag`  | **string** | The Git tag of the major version, if set |   **v7**   |
 
 ## Further references
 

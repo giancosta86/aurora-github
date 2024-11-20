@@ -1,33 +1,31 @@
 name: Tag and release
-description: Creates a Git tag and a GitHub release, from a Git branch named according to semver; by default, it also deletes the current branch.
+description: Creates a Git tag and a GitHub release, from a Git branch - named according to semver - that is deleted during the process.
 
 inputs:
   draft-only:
-    description: Only draft the release.
+    description: Only draft the release - do not publish it.
     default: false
-
-  delete-branch:
-    description: Delete the branch after creating the tag.
-    default: true
 
   set-major-tag:
-    description: Create/move the 'vX' tag to this commit (X=major version)
+    description: Create/move the 'vX' tag to this commit (X=major version).
     default: false
+
+  dry-run:
+    description: Run the action without performing commands.
+    default: false
+
+outputs:
+  release-tag:
+    description: The Git tag associated with the release.
+    value: ${{ steps.create-release.outputs.release-tag }}
+
+  major-tag:
+    description: The Git tag of the major version, if set.
+    value: ${{ steps.set-major-tag.outputs.major-tag }}
 
 runs:
   using: composite
   steps:
-    - name: Ensure the action is invoked when merging a pull request
-      shell: bash
-      run: |
-        inPullRequestMerging="$(jq -r .pull_request.merged "$GITHUB_EVENT_PATH")"
-
-        if [[ "$inPullRequestMerging" != "true" ]]
-        then
-          echo "❌This action can only be invoked when merging a pull request!" >&2
-          exit 1
-        fi
-
     - name: Validate inputs
       shell: bash
       run: |
@@ -37,15 +35,35 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.delete-branch }}" ]]
-        then
-          echo "❌Missing action input: 'delete-branch'!" >&2
-          exit 1
-        fi
-
         if [[ -z "${{ inputs.set-major-tag }}" ]]
         then
           echo "❌Missing action input: 'set-major-tag'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.dry-run }}" ]]
+        then
+          echo "❌Missing action input: 'dry-run'!" >&2
+          exit 1
+        fi
+
+    - name: Display inputs
+      shell: bash
+      run: |
+        echo "📥draft-only: ${{ inputs.draft-only }}"
+        echo "📥set-major-tag: ${{ inputs.set-major-tag }}"
+        echo "📥dry-run: ${{ inputs.dry-run }}"
+
+    - name: Ensure the action is invoked when merging a pull request, except for dry-run
+      shell: bash
+      run: |
+        inPullRequestMerging="$(jq -r .pull_request.merged "$GITHUB_EVENT_PATH")"
+
+        echo "🔎Merging a pull request? $inPullRequestMerging"
+
+        if [[ "$inPullRequestMerging" != "true" && "${{ inputs.dry-run }}" != "true" ]]
+        then
+          echo "❌This action can only be invoked when merging a pull request!" >&2
           exit 1
         fi
 
@@ -57,20 +75,24 @@ runs:
       shell: bash
       run: |
         branch="${{ steps.detect-branch-version.outputs.branch }}"
-        defaultBranch="${{ github.event.repository.default_branch }}"
-        version="${{ steps.detect-branch-version.outputs.version }}"
-        major="${{ steps.detect-branch-version.outputs.major }}"
-        setMajorTag=${{ inputs.set-major-tag == 'true' }}
 
         if [[ -n "$branch" ]]
         then
-          echo "🌲Current branch: '$branch'"
+          echo "🌲Detected branch: '$branch'"
         else
           echo "❌The current Git branch could not be detected!" >&2
           exit 1
         fi
 
-        echo "🌲Default repository branch: '$defaultBranch'"
+        defaultBranch="${{ github.event.repository.default_branch }}"
+
+        if [[ -n "$defaultBranch" ]]
+        then
+          echo "🌲Default repository branch: '$defaultBranch'"
+        else
+          echo "❌The default repository branch could not be detected!" >&2
+          exit 1
+        fi
 
         if [[ "$branch" == "$defaultBranch" ]]
         then
@@ -78,31 +100,47 @@ runs:
           exit 1
         fi
 
-        if [[ -z "$version" ]]
+        version="${{ steps.detect-branch-version.outputs.version }}"
+
+        if [[ -n "$version" ]]
         then
+          echo "🔎Detected version: '$version'"
+        else
           echo "❌The current version could not be detected from the Git branch ('$branch')!" >&2
           exit 1
         fi
 
-        if [[ "$setMajorTag" == "true" && -z "$major" ]]
+        setMajorTag=${{ inputs.set-major-tag }}
+
+        if [[ "$setMajorTag" == "true" ]]
         then
-          echo "❌The major version could not be detected!" >&2
-          exit 1
+          major="${{ steps.detect-branch-version.outputs.major }}"
+
+          if [[ -n "$major" ]]
+          then
+            echo "🔎Detected major version: '$major'"
+          else
+            echo "❌The major version could not be detected!" >&2
+            exit 1
+          fi
         fi
 
     - name: Delete Git branch
-      if: ${{ inputs.delete-branch == 'true' }}
       shell: bash
       run: |
         branch="${{ steps.detect-branch-version.outputs.branch }}"
 
         echo "Deleting Git 🌲branch '$branch'..."
 
-        git push origin --delete "$branch"
+        if [[ "${{ inputs.dry-run }}" != "true" ]]
+        then
+          git push origin --delete "$branch"
+          echo "🌲Branch deleted!"
+        else
+          echo "💭Just simulating branch deletion, in dry-run mode..."
+        fi
 
-        echo "🌲Branch deleted!"
-
-    - name: Create Git tag
+    - name: Create the Git tag
       id: create-git-tag
       shell: bash
       run: |
@@ -110,38 +148,165 @@ runs:
 
         tag="v${version}"
         echo "📌Creating and pushing Git tag '$tag'..."
-        git tag "$tag"
-        git push origin "$tag"
-        echo "📌Tag created and pushed!"
+
+        if [[ "${{ inputs.dry-run }}" != "true" ]]
+        then
+          git tag "$tag"
+          git push origin "$tag"
+          echo "📌Tag created and pushed!"
+        else
+          echo "💭Just simulating Git tag creation, in dry-run mode..."
+        fi
 
         echo "tag=$tag" >> $GITHUB_OUTPUT
 
-    - name: Create or draft release
+    - name: Publish or draft release
+      id: create-release
       shell: bash
       run: |
-        draftOnly="${{ inputs.draft-only }}"
-        version="${{ steps.detect-branch-version.outputs.version }}"
         tag="${{ steps.create-git-tag.outputs.tag }}"
+        echo "📌Release tag: '$tag'..."
 
-        repoBasename="$(basename "$GITHUB_REPOSITORY")"
-        releaseTitle="$repoBasename $version"
-        releaseRecapMessage="release '$releaseTitle' from tag '$tag'"
+        baseSha="$(jq -r '.pull_request.base.sha' "$GITHUB_EVENT_PATH")"
+        echo "🏰Base SHA: '$baseSha'"
 
-        if [[ "$draftOnly" = true ]]
-        then
-          echo "📝Drafting $releaseRecapMessage..."
-          gh release create "$tag" --title "$releaseTitle" --draft
-          echo "📝Release drafted!"
-        else
-          echo "🌟Creating $releaseRecapMessage..."
-          gh release create "$tag" --title "$releaseTitle"
-          echo "🌟Release created!"
-        fi
+        headSha="$(jq -r '.pull_request.head.sha' "$GITHUB_EVENT_PATH")"
+        echo "👤Head SHA: '$headSha'"
+
+        function createRelease() {
+          local repoBasename="$(basename "$GITHUB_REPOSITORY")"
+          echo "🧭Repository basename: '$repoBasename'"
+
+          local version="${{ steps.detect-branch-version.outputs.version }}"
+          echo "🔎Version: '$version'"
+
+          local releaseTitle="$repoBasename $version"
+          echo "🔎Release title: '$releaseTitle'"
+
+          local draftOnly="${{ inputs.draft-only }}"
+          echo "🔎Draft only? $draftOnly"
+
+          local releaseNotesFile="$(mktemp)"
+          generateReleaseNotes "$releaseNotesFile"
+
+          if [[ "$draftOnly" == "true" ]]
+          then
+            echo "📝Drafting release '$releaseTitle'..."
+
+            if [[ "${{ inputs.dry-run }}" != "true" ]]
+            then
+              gh release create "$tag" --title "$releaseTitle" --latest --notes-file "$releaseNotesFile" --draft
+
+              echo "📝Release drafted!"
+            else
+              echo "💭Just simulating draft release creation, in dry-run mode..."
+            fi
+          else
+            echo "🌟Publishing release '$releaseTitle'..."
+
+            if [[ "${{ inputs.dry-run }}" != "true" ]]
+            then
+              gh release create "$tag" --title "$releaseTitle" --latest --notes-file "$releaseNotesFile"
+
+              echo "🌟Release published!"
+            else
+              echo "💭Just simulating release creation, in dry-run mode..."
+            fi
+          fi
+        }
+
+        function generateReleaseNotes() {
+          local outputFile="$1"
+
+          writeCommitList "$outputFile"
+
+          echo "---" >> "$outputFile"
+
+          writePullRequestData "$outputFile"
+
+          echo >> "$outputFile"
+
+          writeChangeLog "$outputFile"
+
+          echo "📝Release notes generated!"
+          cat "$outputFile"
+          echo "📝📝📝"
+        }
+
+        function writeCommitList() {
+          local outputFile="$1"
+
+          echo "📥Retrieving Git logs..."
+          git fetch origin "$baseSha" "$headSha"
+          git rev-parse --verify "$baseSha" > /dev/null
+          git rev-parse --verify "$headSha" > /dev/null
+          echo "✅Git logs retrieved!"
+
+          echo "📥Retrieving Git tags..."
+          gitErrorLog="$(mktemp)"
+          if git fetch --tags > /dev/null 2> "$gitErrorLog"
+          then
+            echo "✅Git tags retrieved!"
+          else
+            echo "❌Cannot retrieve the Git tags, because of these errors:" >&2
+            cat "$gitErrorLog" >&2
+            echo "❌❌❌" >&2
+            exit 1
+          fi
+
+          printGitLogsAsMarkdown "§+-+§" >> "$outputFile"
+        }
+
+        function printGitLogsAsMarkdown() {
+          local marker="$1"
+
+          git log --no-merges --reverse --pretty=format:"$marker* %B" "$baseSha".."$headSha" | sed "
+          s/^/  /
+          s/^  $marker//
+          "
+        }
+
+        function writePullRequestData() {
+          local outputFile="$1"
+
+          local pullRequestTitle="$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")"
+          echo "🔎Pull request title: '$pullRequestTitle'"
+
+          local pullRequestNumber="$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")"
+          echo "🔎Pull request number: '$pullRequestNumber'"
+
+          echo -e "**Pull request**: $pullRequestTitle (#$pullRequestNumber):" >> "$outputFile"
+        }
+
+        function writeChangeLog() {
+          local outputFile="$1"
+
+          local mostSpecificBaseTag="$(git tag --points-at "$baseSha" | awk '{ print length, $0 }' | sort -nr | cut -d' ' -f2- | head -n 1)"
+
+          if [[ -n "$mostSpecificBaseTag" ]]
+          then
+            echo "📌Tag '$mostSpecificBaseTag' found for the '$baseSha' base SHA"
+            local baseReference="$mostSpecificBaseTag"
+          else
+            echo "💭No tags associated with the '$baseSha' base SHA - using it directly"
+            local baseReference="$baseSha"
+          fi
+
+          echo "🧭Base reference: '$baseReference'"
+          echo "📌Release tag: '$tag'"
+
+          echo "**Full changelog**: https://github.com/$GITHUB_REPOSITORY/compare/$baseReference..$tag" >> "$outputFile"
+        }
+
+        createRelease
+
+        echo "release-tag=$tag" >> $GITHUB_OUTPUT
       env:
         GH_TOKEN: ${{ github.token }}
 
     - name: Create or move major version tag
       if: ${{ inputs.set-major-tag == 'true' }}
+      id: set-major-tag
       shell: bash
       run: |
         major="${{ steps.detect-branch-version.outputs.major }}"
@@ -149,6 +314,15 @@ runs:
         majorTag="v${major}"
 
         echo "🪩Setting major version tag '$majorTag'..."
-        git tag -f "$majorTag"
-        git push origin "$majorTag" --force
-        echo "🪩Major version tag set!"
+
+        if [[ "${{ inputs.dry-run }}" != "true" ]]
+        then
+          git tag -f "$majorTag"
+          git push origin "$majorTag" --force
+
+          echo "🪩Major version tag set!"
+        else
+          echo "💭Just simulating major version tag creation, in dry-run mode..."
+        fi
+
+        echo "major-tag=$majorTag" >> $GITHUB_OUTPUT
