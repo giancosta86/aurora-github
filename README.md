@@ -48,6 +48,8 @@ In particular, the actions can be grouped by technology:
 
 - [tag-and-release](actions/tag-and-release/README.md)
 
+- [upload-release-assets](actions/upload-release-assets/README.md)
+
 ## 🦀Rust utilities
 
 - [check-rust-versions](actions/check-rust-versions/README.md)

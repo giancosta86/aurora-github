@@ -1,0 +1,57 @@
+name: Upload release assets
+description: Uploads one or more asset files to a GitHub release.
+
+inputs:
+  release-tag:
+    description: The tag of the target release.
+
+  files:
+    description: The relative paths of the asset files to upload.
+
+  overwrite:
+    description: Overwrite existing assets in the release.
+    default: true
+
+  source-directory:
+    description: Directory containing the files.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      working-directory: ${{ inputs.source-directory }}
+      run: |
+        if [[ -z "${{ inputs.release-tag }}" ]]
+        then
+          echo "❌Missing action input: 'release-tag'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.files }}" ]]
+        then
+          echo "❌Missing action input: 'files'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.overwrite }}" ]]
+        then
+          echo "❌Missing action input: 'overwrite'!" >&2
+          exit 1
+        fi
+
+    - name: Publish release assets
+      shell: bash
+      working-directory: ${{ inputs.source-directory }}
+      run: |
+        if [[ "${{ inputs.overwrite}}" == "true" ]]
+        then
+          flags="--clobber"
+        else
+          flags=""
+        fi
+
+        gh release upload "$flags" "${{ inputs.release-tag }}" ${{ inputs.files }}
+      env:
+        GH_TOKEN: ${{ github.token }}

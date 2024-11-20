@@ -13,13 +13,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./actions/check-action-references
 
-  test-tag-and-release:
-    runs-on: ubuntu-latest
-    needs: check-preconditions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-tag-and-release
-
   test-find-critical-todos:
     runs-on: ubuntu-latest
     needs: check-preconditions
@@ -33,6 +26,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-detect-branch-version
+
+  test-tag-and-release:
+    runs-on: ubuntu-latest
+    needs: test-detect-branch-version
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-tag-and-release
 
   test-install-wasm-pack:
     runs-on: ubuntu-latest
@@ -196,13 +196,20 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-run-custom-tests
 
+  test-upload-release-assets:
+    runs-on: ubuntu-latest
+    needs: check-preconditions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-upload-release-assets
+
   verify:
     runs-on: ubuntu-latest
     needs:
       - check-preconditions
-      - test-tag-and-release
       - test-find-critical-todos
       - test-detect-branch-version
+      - test-tag-and-release
       - test-install-wasm-pack
       - test-check-rust-versions
       - test-detect-project-tech
@@ -221,6 +228,7 @@ jobs:
       - test-setup-nodejs-context
       - test-publish-github-pages
       - test-run-custom-tests
+      - test-upload-release-assets
 
     steps:
       - name: Show completion message
