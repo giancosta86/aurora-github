@@ -4,6 +4,7 @@ description: Publishes a directory as the GitHub Pages website for the current r
 inputs:
   source-directory:
     description: Directory containing the website.
+    default: .
 
   optional:
     description: Whether "source-directory" can be empty string or missing directory.

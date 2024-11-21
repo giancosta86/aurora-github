@@ -9,8 +9,6 @@ steps:
   - uses: actions/checkout@v4
 
   - uses: giancosta86/aurora-github/actions/publish-github-pages@v7
-    with:
-      source-directory: .
 ```
 
 **Please, note**: this action is automatically run by [publish-npm-package](../publish-npm-package/README.md), [publish-rust-crate](../publish-rust-crate/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
@@ -53,7 +51,7 @@ steps:
 
 |           Name           |          Type           |                             Description                             | Default value |
 | :----------------------: | :---------------------: | :-----------------------------------------------------------------: | :-----------: |
-|    `source-directory`    |       **string**        |                  Directory containing the website                   |               |
+|    `source-directory`    |       **string**        |                  Directory containing the website                   |     **.**     |
 |        `optional`        |       **boolean**       | Whether `source-directory` can be empty string or missing directory |   **false**   |
 | `enforce-branch-version` | `inject`,`check`,`skip` |            Whether and how to enforce the branch version            |  **inject**   |
 |        `dry-run`         |       **boolean**       |             Stops the publication just before uploading             |   **false**   |
