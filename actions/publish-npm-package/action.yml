@@ -40,6 +40,18 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.website-directory }}" ]]
+        then
+          echo "❌Missing action input: 'website-directory'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
+        then
+          echo "❌Missing action input: 'enforce-branch-version'!" >&2
+          exit 1
+        fi
+
         if [[ ! -f "package.json" ]]
         then
           echo "❌The package.json descriptor file does not exist!!" >&2

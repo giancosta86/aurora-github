@@ -45,6 +45,12 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
+        then
+          echo "❌Missing action input: 'enforce-branch-version'!" >&2
+          exit 1
+        fi
+
         if [[ -z "${{ inputs.enforce-esm }}" ]]
         then
           echo "❌Missing action input: 'enforce-esm'!" >&2
