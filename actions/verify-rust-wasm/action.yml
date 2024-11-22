@@ -95,6 +95,12 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
+        then
+          echo "❌Missing action input: 'enforce-branch-version'!" >&2
+          exit 1
+        fi
+
     - name: Parse npm scope
       id: parse-npm-scope
       uses: giancosta86/aurora-github/actions/parse-npm-scope@v7.0.0

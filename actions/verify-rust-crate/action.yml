@@ -57,6 +57,12 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
+        then
+          echo "❌Missing action input: 'enforce-branch-version'!" >&2
+          exit 1
+        fi
+
     - name: Enforce branch version
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v7.0.0
       with:
