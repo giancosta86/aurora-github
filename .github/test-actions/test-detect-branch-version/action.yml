@@ -11,10 +11,11 @@ runs:
       run: |
         branch="${{ steps.detector.outputs.branch }}"
 
-        echo "🔎Branch retrieved from action: '$branch'"
-        if [[ -z "$branch" ]]
+        if [[ -n "$branch" ]]
         then
-          echo "❌The branch should not be empty!" >&2
+          echo "🌲Branch retrieved from action: '$branch'"
+        else
+          echo "❌The branch could not be detected!" >&2
           exit 1
         fi
 
@@ -24,10 +25,12 @@ runs:
         headRef="${{ github.head_ref }}"
         branch="${{ steps.detector.outputs.branch }}"
 
-        echo "🔎Head ref in pull request: '$headRef'"
+        echo "🌲Head ref in pull request: '$headRef'"
 
-        if [[ "$branch" != "$headRef" ]]
+        if [[ "$branch" == "$headRef" ]]
         then
+          echo "✅The detected branch coincides with the head ref!"
+        else
           echo "❌The branch ('$branch') should match the head_ref ('$headRef')!" >&2
           exit 1
         fi
@@ -37,10 +40,11 @@ runs:
       run: |
         version="${{ steps.detector.outputs.version }}"
 
-        echo "🔎Version retrieved from action: '$version'"
-        if [[ -z "$version" ]]
+        if [[ -n "$version" ]]
         then
-          echo "❌The version should not be empty!" >&2
+          echo "🔎Version retrieved from action: '$version'"
+        else
+          echo "❌The version could not be detected!" >&2
           exit 1
         fi
 
@@ -50,8 +54,11 @@ runs:
         escapedVersion="${{ steps.detector.outputs.escaped-version }}"
 
         echo "🔎Escaped version retrieved from action: '$escapedVersion'"
-        if ! echo "$escapedVersion"  | grep -Pq "\\\."
+
+        if echo "$escapedVersion"  | grep -Pq "\\\."
         then
+          echo "✅The escaped version contains '\.', as expected!"
+        else
           echo "❌The escaped version should include '\.'!" >&2
           exit 1
         fi
@@ -61,9 +68,10 @@ runs:
       run: |
         major="${{ steps.detector.outputs.major }}"
 
-        echo "🔎Major version component: '$major'"
-        if [[ -z "$major" ]]
+        if [[ -n "$major" ]]
         then
-          echo "❌The major component should not be empty!" >&2
+          echo "🪩Major version component: '$major'"
+        else
+          echo "❌The major component could not be detected!" >&2
           exit 1
         fi

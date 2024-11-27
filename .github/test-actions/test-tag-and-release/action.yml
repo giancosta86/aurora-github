@@ -11,6 +11,20 @@ runs:
         draft-only: true
         set-major-tag: false
 
+    - name: Verify the major tag is empty when it was not requested
+      shell: bash
+      run: |
+        majorTag="${{ steps.draft-release-without-major.outputs.major-tag }}"
+        echo "🔎Major tag: '$majorTag'"
+
+        if [[ -z "$majorTag" ]]
+        then
+          echo "✅The major tag is empty, as expected, because it was not requested!"
+        else
+          echo "❌The major tag should be empty when not requested!" >&2
+          exit 1
+        fi
+
     - name: Publish a release
       id: publish-release
       uses: ./actions/tag-and-release
@@ -36,20 +50,6 @@ runs:
           echo "✅The release tag derives from the current branch version!"
         else
           echo "❌The release tag does not derive from the current branch version!" >&2
-          exit 1
-        fi
-
-    - name: Verify the major tag is empty when it was not requested
-      shell: bash
-      run: |
-        majorTag="${{ steps.draft-release-without-major.outputs.major-tag }}"
-        echo "🔎Major tag: '$majorTag'"
-
-        if [[ -z "$majorTag" ]]
-        then
-          echo "✅The major tag is empty, as expected, because it was not requested!"
-        else
-          echo "❌The major tag should be empty when not requested!" >&2
           exit 1
         fi
 

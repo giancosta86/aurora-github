@@ -8,46 +8,101 @@ runs:
       run: |
         echo "tag=test-release" >> $GITHUB_ENV
 
-    - name: Ensure a draft release for testing exists
-      shell: bash
+        downloadDirectory="$(mktemp -d)"
+        echo "downloadDirectory=$downloadDirectory" >> $GITHUB_ENV
+
+    - shell: bash
+      run: |
+        echo "🧹Preventively deleting the '$tag' release and its tag, if existing..."
+
+        if gh release delete --cleanup-tag --yes "$tag" > /dev/null 2>&1
+        then
+          echo "✅Pre-existing test release and tag deleted!"
+        fi
+      env:
+        GH_TOKEN: ${{ github.token }}
+
+    - shell: bash
       run: |
         echo "📝Now creating a '$tag' tag just for the tests..."
-        git tag "$tag"
+        git tag -f "$tag"
         git push origin "$tag"
-        echo "✅Test tags created!"
+        echo "✅Test tag created!"
 
         echo "📝Now creating a '$tag' draft release just for the tests..."
-        gh release create "$tag" --draft --title "Test release" --notes "This version is used by the tests!"
+        gh release create "$tag" --draft --title "Test release" --notes "This volatile release is only used by the tests!"
         echo "✅Test release created!"
       env:
         GH_TOKEN: ${{ github.token }}
 
-    - name: Upload assets
-      uses: ./actions/upload-release-assets
+    - shell: bash
+      run: echo "🎭Uploading a single asset..."
+
+    - uses: ./actions/upload-release-assets
       with:
         release-tag: ${{ env.tag }}
         source-directory: website/static
         files: index.html
 
-    - name: Upload multiple assets, also using quotes
-      uses: ./actions/upload-release-assets
+    - shell: bash
+      run: echo "🎭Uploading multiple assets - also using quotes..."
+
+    - uses: ./actions/upload-release-assets
       with:
         release-tag: ${{ env.tag }}
         source-directory: website/nextjs/public
         files: next.svg 'favicon.png'
 
-    - name: Re-upload the same asset
-      uses: ./actions/upload-release-assets
+    - shell: bash
+      run: echo "🎭Re-uploading one of the previous assets..."
+
+    - uses: ./actions/upload-release-assets
       with:
         release-tag: ${{ env.tag }}
         source-directory: website/nextjs/public
         files: favicon.png
         overwrite: true
 
-    - name: Delete the test release
-      shell: bash
+    - shell: bash
+      run: echo "🎭Downloading the uploaded assets..."
+
+    - shell: bash
       run: |
-        echo "🚮Now deleting the '$tag' test release and its tag..."
+        for fileName in "index.html" "next.svg" "favicon.png"
+        do
+          gh release download "$tag" -p "$fileName" -D "$downloadDirectory"
+        done
+      env:
+        GH_TOKEN: ${{ github.token }}
+
+    - shell: bash
+      run: echo "🎭Checking the integrity of the downloaded assets..."
+
+    - shell: bash
+      run: |
+        function checkFileIntegrity() {
+          local fileName="$1"
+          local sourceDirectory="$2"
+
+          local downloadedFile="$downloadDirectory/$fileName"
+          local originalFile="$sourceDirectory/$fileName"
+
+          if cmp -s "$downloadedFile" "$originalFile"
+          then
+            echo "✅Asset '$fileName' is OK!"
+          else
+            echo "❌Asset '$fileName' is corrupted!"
+            exit 1
+          fi
+        }
+
+        checkFileIntegrity "index.html" "website/static"
+        checkFileIntegrity "next.svg" "website/nextjs/public"
+        checkFileIntegrity "favicon.png" "website/nextjs/public"
+
+    - shell: bash
+      run: |
+        echo "🚮Now deleting the '$tag' release and its tag..."
         gh release delete --cleanup-tag --yes "$tag"
         echo "✅Test release and tag deleted!"
       env:

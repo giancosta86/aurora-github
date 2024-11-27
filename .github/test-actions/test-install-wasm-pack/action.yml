@@ -18,8 +18,10 @@ runs:
 
         echo "🔎Detected wasm-pack version: '$wasmPackVersion'"
 
-        if [[ "$wasmPackVersion" != "$expectedVersion" ]]
+        if [[ "$wasmPackVersion" == "$expectedVersion" ]]
         then
+          echo "✅The requested wasm-pack version is in use!"
+        else
           echo "❌The expected wasm-pack version ('$expectedVersion') is not installed!" >&2
           exit 1
         fi

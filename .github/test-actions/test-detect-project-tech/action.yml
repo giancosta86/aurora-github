@@ -4,6 +4,41 @@ runs:
   using: composite
   steps:
     - uses: ./actions/detect-project-tech
+      id: detect-nodejs-package
+      with:
+        project-directory: tests/npm-package
+
+    - name: Tech for NodeJS package should be detected
+      shell: bash
+      run: |
+        tech="${{ steps.detect-nodejs-package.outputs.project-tech }}"
+
+        echo "🔎Technology retrieved for 📦NodeJS package: '$tech'"
+
+        if [[ "$tech" == "nodejs" ]]
+        then
+          echo "✅Tech OK for 📦NodeJS package!"
+        else
+          echo "❌Incorrect project tech!" >&2
+          exit 1
+        fi
+
+    - name: Artifact descriptor for NodeJS package should be detected
+      shell: bash
+      run: |
+        artifactDescriptor="${{ steps.detect-nodejs-package.outputs.artifact-descriptor }}"
+
+        echo "🔎Artifact descriptor retrieved for 📦NodeJS package: '$artifactDescriptor'"
+
+        if [[ "$artifactDescriptor" == "package.json" ]]
+        then
+          echo "✅Artifact descriptor OK for 📦NodeJS package!"
+        else
+          echo "❌Incorrect artifact descriptor!" >&2
+          exit 1
+        fi
+
+    - uses: ./actions/detect-project-tech
       id: detect-rust-crate
       with:
         project-directory: tests/rust-crate
@@ -13,9 +48,12 @@ runs:
       run: |
         tech="${{ steps.detect-rust-crate.outputs.project-tech }}"
 
-        echo "🔎Technology retrieved for 🦀Rust: '$tech'"
-        if [[ "$tech" != "rust" ]]
+        echo "🔎Technology retrieved for 🦀Rust crate: '$tech'"
+
+        if [[ "$tech" == "rust" ]]
         then
+          echo "✅Tech OK for 🦀Rust crate!"
+        else
           echo "❌Incorrect project tech!" >&2
           exit 1
         fi
@@ -25,9 +63,12 @@ runs:
       run: |
         artifactDescriptor="${{ steps.detect-rust-crate.outputs.artifact-descriptor }}"
 
-        echo "🔎Artifact descriptor retrieved for 🦀Rust: '$artifactDescriptor'"
-        if [[ "$artifactDescriptor" != "Cargo.toml" ]]
+        echo "🔎Artifact descriptor retrieved for 🦀Rust crate: '$artifactDescriptor'"
+
+        if [[ "$artifactDescriptor" == "Cargo.toml" ]]
         then
+          echo "✅Artifact descriptor OK for 🦀Rust crate!"
+        else
           echo "❌Incorrect artifact descriptor!" >&2
           exit 1
         fi
@@ -43,8 +84,11 @@ runs:
         tech="${{ steps.detect-rust-wasm.outputs.project-tech }}"
 
         echo "🔎Technology retrieved for 🦀Rust 🌐web assembly: '$tech'"
-        if [[ "$tech" != "rust" ]]
+
+        if [[ "$tech" == "rust" ]]
         then
+          echo "✅Tech OK for 🦀Rust 🌐web assembly!"
+        else
           echo "❌Incorrect project tech!" >&2
           exit 1
         fi
@@ -55,37 +99,11 @@ runs:
         artifactDescriptor="${{ steps.detect-rust-wasm.outputs.artifact-descriptor }}"
 
         echo "🔎Artifact descriptor retrieved for 🦀Rust 🌐web assembly: '$artifactDescriptor'"
-        if [[ "$artifactDescriptor" != "Cargo.toml" ]]
+
+        if [[ "$artifactDescriptor" == "Cargo.toml" ]]
         then
-          echo "❌Incorrect artifact descriptor!" >&2
-          exit 1
-        fi
-
-    - uses: ./actions/detect-project-tech
-      id: detect-nodejs-package
-      with:
-        project-directory: tests/npm-package
-
-    - name: Tech for NodeJS package should be detected
-      shell: bash
-      run: |
-        tech="${{ steps.detect-nodejs-package.outputs.project-tech }}"
-
-        echo "🔎Technology retrieved for 📦NodeJS: '$tech'"
-        if [[ "$tech" != "nodejs" ]]
-        then
-          echo "❌Incorrect project tech!" >&2
-          exit 1
-        fi
-
-    - name: Artifact descriptor for NodeJS package should be detected
-      shell: bash
-      run: |
-        artifactDescriptor="${{ steps.detect-nodejs-package.outputs.artifact-descriptor }}"
-
-        echo "🔎Artifact descriptor retrieved for 📦NodeJS: '$artifactDescriptor'"
-        if [[ "$artifactDescriptor" != "package.json" ]]
-        then
+          echo "✅Artifact descriptor OK for 🦀Rust 🌐web assembly!"
+        else
           echo "❌Incorrect artifact descriptor!" >&2
           exit 1
         fi
@@ -101,8 +119,11 @@ runs:
         tech="${{ steps.detect-unknown-tech.outputs.project-tech }}"
 
         echo "🔎Technology retrieved for 🎁unknown stack: '$tech'"
-        if [[ ! -z "$tech" ]]
+
+        if [[ -z "$tech" ]]
         then
+          echo "✅Tech empty, as expected, for 🎁unknown stack"
+        else
           echo "❌Incorrect project tech!" >&2
           exit 1
         fi
@@ -113,8 +134,11 @@ runs:
         artifactDescriptor="${{ steps.detect-unknown-tech.outputs.artifact-descriptor }}"
 
         echo "🔎Artifact descriptor retrieved for 🎁unknown stack: '$artifactDescriptor'"
-        if [[ ! -z "$artifactDescriptor" ]]
+
+        if [[ -z "$artifactDescriptor" ]]
         then
+          echo "✅Artifact descriptor empty, as expected, for 🎁unknown stack"
+        else
           echo "❌Incorrect artifact descriptor!" >&2
           exit 1
         fi

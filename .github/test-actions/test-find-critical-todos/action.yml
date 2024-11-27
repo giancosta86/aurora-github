@@ -15,12 +15,12 @@ runs:
       run: |
         found="${{ steps.find-critical-todos-where-existing.outputs.found }}"
 
-        if [[ "$found" != "true" ]]
+        if [[ "$found" == "true" ]]
         then
+          echo "✅Critical TODOs found, as expected"
+        else
           echo "❌The expected critical TODOs have not been found!" >&2
           exit 1
-        else
-          echo "✅Critical TODOs found, as expected"
         fi
 
     - id: find-critical-todos-where-missing
@@ -36,10 +36,10 @@ runs:
       run: |
         found="${{ steps.find-critical-todos-where-missing.outputs.found }}"
 
-        if [[ "$found" == "true" ]]
+        if [[ "$found" != "true" ]]
         then
+          echo "✅Critical TODOs not found, as expected"
+        else
           echo "❌Critical TODOs have been found where they should be missing!" >&2
           exit 1
-        else
-          echo "✅Critical TODOs not found, as expected"
         fi
