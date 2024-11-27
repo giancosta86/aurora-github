@@ -1,0 +1,91 @@
+name: generate-wasm-target
+description: Generates the source files for a WebAssembly target from a Rust project.
+
+inputs:
+  target:
+    description: The target of the 'wasm-pack build' command.
+
+  npm-scope:
+    description: The package scope or "<ROOT>", for npm targets.
+
+  development:
+    description: Enable debugging info.
+
+  target-directory:
+    description: Directory (relative to 'project-directory') for the generated target.
+
+  project-directory:
+    description: The directory containing Cargo.toml.
+    default: "."
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -z "${{ inputs.target }}" ]]
+        then
+          echo "❌Missing action input: 'target'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.development }}" ]]
+        then
+          echo "❌Missing action input: 'development'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.target-directory }}" ]]
+        then
+          echo "❌Missing action input: 'target-directory'!" >&2
+          exit 1
+        fi
+
+    - name: Parse npm scope
+      id: parse-npm-scope
+      if: ${{ inputs.npm-scope != '' }}
+      uses: giancosta86/aurora-github/actions/parse-npm-scope@v7.0.0
+      with:
+        scope: ${{ inputs.npm-scope }}
+
+    - name: Create the WebAssembly project
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        target="${{ inputs.target }}"
+        echo "📥Target: '$target'"
+
+        echo "📥Requested npm-scope: '${{ inputs.npm-scope }}'"
+
+        scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
+        echo "🔎Actual npm scope: '$scope'"
+
+        development="${{ inputs.development }}"
+        echo "📥Development? $development"
+
+        echo "Project directory: '${{ inputs.project-directory }}'"
+
+        targetDirectory="${{ inputs.target-directory }}"
+        echo "📥Target directory: '$targetDirectory'"
+
+        echo "📦Generating the WebAssembly project files..."
+
+        if [[ "$development" == "true" ]]
+        then
+          modeArg="--dev"
+        else
+          modeArg="--release"
+        fi
+
+        if [[ -n "$scope" ]]
+        then
+          scopeArg="--scope $scope"
+        else
+          scopeArg=""
+        fi
+
+        wasm-pack build --target "$target" $modeArg $scopeArg --out-dir "$targetDirectory"
+
+        echo "✅WebAssembly project ready in '${{ inputs.target-directory }}'!"

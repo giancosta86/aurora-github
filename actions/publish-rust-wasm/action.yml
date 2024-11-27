@@ -90,29 +90,19 @@ runs:
           exit 1
         fi
 
-    - name: Parse npm scope
-      id: parse-npm-scope
-      uses: giancosta86/aurora-github/actions/parse-npm-scope@v7.0.0
-      with:
-        scope: ${{ inputs.npm-scope }}
-
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/actions/install-wasm-pack@v7.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
 
-    - name: Generate the NodeJS package
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
-
-        if [[ -z "$scope" ]]
-        then
-          wasm-pack build --release --target "${{ inputs.wasm-target }}"
-        else
-          wasm-pack build --release --target "${{ inputs.wasm-target }}" --scope "$scope"
-        fi
+    - name: Generate the NodeJS package source files
+      uses: giancosta86/aurora-github/actions/generate-wasm-target@v7.0.0
+      with:
+        target: ${{ inputs.wasm-target }}
+        npm-scope: ${{ inputs.npm-scope }}
+        development: false
+        target-directory: pkg
+        project-directory: ${{ inputs.project-directory }}
 
     - name: Copy .nvmrc to the generated NodeJS package
       shell: bash

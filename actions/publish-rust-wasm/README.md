@@ -21,7 +21,7 @@ steps:
 
 1. Invoke the [install-wasm-pack](../install-wasm-pack/README.md) action, passing all the matching inputs, to install the `wasm-pack` command.
 
-1. Run `wasm-pack build` to generate the NodeJS package source files into the **pkg** directory.
+1. Invoke [generate-wasm-target](../generate-wasm-target/README.md) to generate the NodeJS package source files in the **pkg** subdirectory.
 
 1. Copy the `.nvmrc` file from `node-version-directory` to the **pkg** directory.
 
@@ -54,6 +54,8 @@ steps:
 |   `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |      **.**       |
 
 ## Further references
+
+- [generate-wasm-target](../generate-wasm-target/README.md)
 
 - [publish-npm-package](../publish-npm-package/README.md)
 
