@@ -93,10 +93,13 @@ runs:
 
         echo "found=$found" >> $GITHUB_OUTPUT
 
-        if [[ "$found" == "true" && "$crashOnFound" == "true" ]]
+        if [[ "$found" == "true" ]]
         then
-          echo "❌Critical TODOs found!" >&2
-          exit 1
+          if  [[ "$crashOnFound" == "true" ]]
+          then
+            echo "❌Critical TODOs found!" >&2
+            exit 1
+          fi
         else
           echo "✅No critical TODOs found!"
         fi
