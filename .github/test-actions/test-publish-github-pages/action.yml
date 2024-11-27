@@ -3,12 +3,18 @@ name: Test publish-github-pages
 runs:
   using: composite
   steps:
+    - shell: bash
+      run: echo "🎭Now publishing static files with dry-run enabled..."
+
     - name: A static website should be publishable
       id: publish-static-pages
       uses: ./actions/publish-github-pages
       with:
         source-directory: website/static
         dry-run: true
+
+    - shell: bash
+      run: echo "🎭Now publishing a NextJS site..."
 
     - name: A NextJS website should be publishable
       id: publish-nextjs-pages
@@ -23,7 +29,7 @@ runs:
 
         if [[ -n "$websiteUrl" ]]
         then
-          echo "🌐Website available at: '$websiteUrl'"
+          echo "✅Website published and available at: '$websiteUrl'"
         else
           echo "❌Website not available!" >&2
           exit 1

@@ -27,7 +27,7 @@ runs:
 
         if which "$expectedCommand"
         then
-          echo "✅OK!"
+          echo "✅The expected command is now available!"
         else
           echo "❌The expected command was not installed!" >&2
           exit 1
