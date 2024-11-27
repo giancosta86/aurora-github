@@ -101,12 +101,6 @@ runs:
           exit 1
         fi
 
-    - name: Parse npm scope
-      id: parse-npm-scope
-      uses: giancosta86/aurora-github/actions/parse-npm-scope@v7.0.0
-      with:
-        scope: ${{ inputs.npm-scope }}
-
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/actions/install-wasm-pack@v7.0.0
       with:
@@ -131,17 +125,14 @@ runs:
         echo "✅Headless browser tests OK!"
 
     - name: Generate the NodeJS package source files
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
+      uses: giancosta86/aurora-github/actions/generate-wasm-target@v7.0.0
+      with:
+        target: ${{ inputs.wasm-target }}
+        npm-scope: ${{ inputs.npm-scope }}
+        development: true
+        target-directory: pkg
+        project-directory: ${{ inputs.project-directory }}
 
-        if [[ -z "$scope" ]]
-        then
-          wasm-pack build --dev --target "${{ inputs.wasm-target }}"
-        else
-          wasm-pack build --dev --target "${{ inputs.wasm-target }}" --scope "$scope"
-        fi
 
     - name: Run client tests
       uses: giancosta86/aurora-github/actions/run-custom-tests@v7.0.0

@@ -1,0 +1,79 @@
+name: Test generate-wasm-target
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/install-wasm-pack
+      with:
+        wasm-pack-version: 0.13.0
+
+    - uses: ./actions/detect-branch-version
+      id: version-detector
+
+    - uses: ./actions/enforce-branch-version
+      with:
+        mode: inject
+        project-directory: tests/rust-wasm
+
+    - shell: bash
+      run: echo "🎭Now generating a dev project with 'web' target..."
+
+    - uses: ./actions/generate-wasm-target
+      with:
+        target: web
+        npm-scope: giancosta86
+        development: true
+        target-directory: pkg-web
+        project-directory: tests/rust-wasm
+
+    - name: The package name should be correct
+      shell: bash
+      working-directory: tests/rust-wasm/pkg-web
+      run: |
+        packageName="$(jq -r .name package.json)"
+        echo "🔎Name field in the generated package.json: '$packageName'"
+
+        if [[ "$packageName" == "@giancosta86/test-wasm" ]]
+        then
+          echo "✅The generated package.json has the expected name!"
+        else
+          echo "❌Unexpected value for the 'name' field in package.json!"
+          exit 1
+        fi
+
+    - name: The package version should be correct
+      shell: bash
+      working-directory: tests/rust-wasm/pkg-web
+      run: |
+        packageVersion="$(jq -r .version package.json)"
+        echo "🔎Version field in the generated package.json: '$packageVersion'"
+
+        if [[ "$packageVersion" == "${{ steps.version-detector.outputs.version }}" ]]
+        then
+          echo "✅The generated package.json has the expected version!"
+        else
+          echo "❌Unexpected value for the 'version' field in package.json!"
+          exit 1
+        fi
+
+    - shell: bash
+      run: echo "🎭Now generating a release project with 'deno' target..."
+
+    - uses: ./actions/generate-wasm-target
+      with:
+        target: deno
+        npm-scope: giancosta86
+        development: false
+        target-directory: pkg-deno
+        project-directory: tests/rust-wasm
+
+    - shell: bash
+      working-directory: tests/rust-wasm/pkg-deno
+      run: |
+        if [[ ! -f "package.json" ]]
+        then
+          echo "✅No package.json was generated for Deno, as expected!"
+        else
+          echo "❌Why was package.json generated for Deno?"
+          exit 1
+        fi
