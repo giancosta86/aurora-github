@@ -31,13 +31,13 @@ and indirectly by:
 
 ## How it works
 
-1. If `mode` is **skip**, the action just does nothing
+1. If `mode` is **skip**, just exit the action flow.
 
-1. The _artifact descriptor_ is computed as follows:
+1. If `artifact-descriptor` is not specified, try to detect it from a list of supported ones - currently:
 
-   - If `mode` is **inject**: the `artifact-descriptor` input, if specified, takes precedence over the descriptor detected by [detect-project-tech](../detect-project-tech/README.md)
+   - **package.json** - for 📦**NodeJS**
 
-   - If `mode` is **check**: `artifact-descriptor` is taken into account _only_ if no descriptor is detected by [detect-project-tech](../detect-project-tech/README.md)
+   - **Cargo.toml** - for 🦀**Rust**
 
 1. Evaluate the `mode` input:
 
@@ -53,21 +53,23 @@ and indirectly by:
 
      1. Perform a _technology-specific_ version check:
 
-        - for **package.json**, check the value in the **version** field
+        - for 📦**NodeJS**, check the **version** field in **package.json**
 
-        - for **Cargo.toml**, check the **version** field
+        - for 🦀**Rust**, check the **version** field in **Cargo.toml**
 
         - for any other technology, verify that the branch version exists at least once in the descriptor
 
+## Requirements
+
+- The `artifact-descriptor` - no matter whether declared or detected - must exist in the file system.
+
 ## Inputs 📥
 
-|         Name          |          Type           |                        Description                         | Default value |
-| :-------------------: | :---------------------: | :--------------------------------------------------------: | :-----------: |
-|        `mode`         | `inject`,`check`,`skip` |         How the branch version should be enforced          |               |
-| `artifact-descriptor` |       **string**        | Relative path to the artifact descriptor; could be ignored |               |
-|  `project-directory`  |       **string**        |            The directory containing the project            |     **.**     |
-
-The `artifact-descriptor` input is ignored in **check** mode if [detect-project-tech](../detect-project-tech/README.md) finds a known descriptor within `project-directory`.
+|         Name          |          Type           |                Description                | Default value |
+| :-------------------: | :---------------------: | :---------------------------------------: | :-----------: |
+|        `mode`         | `inject`,`check`,`skip` | How the branch version should be enforced |               |
+| `artifact-descriptor` |       **string**        | Relative path to the artifact descriptor  |               |
+|  `project-directory`  |       **string**        |   The directory containing the project    |     **.**     |
 
 ## Further references
 
@@ -84,8 +86,6 @@ The `artifact-descriptor` input is ignored in **check** mode if [detect-project-
 - [verify-rust-wasm](../verify-rust-wasm/README.md)
 
 - [publish-rust-wasm](../publish-rust-wasm/README.md)
-
-- [detect-project-tech](../detect-project-tech/README.md)
 
 - [detect-branch-version](../detect-branch-version/README.md)
 

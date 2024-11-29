@@ -6,7 +6,7 @@ inputs:
     description: How to enforce the branch version. Can be "inject", "check" or "skip".
 
   artifact-descriptor:
-    description: Relative path to the artifact descriptor; could be ignored.
+    description: Relative path to the artifact descriptor.
 
   project-directory:
     description: The directory containing the project.
@@ -34,64 +34,77 @@ runs:
             exit 1
         esac
 
-    - uses: giancosta86/aurora-github/actions/detect-project-tech@v7.0.0
-      if: ${{ inputs.mode == 'check' || (inputs.mode != 'skip' && inputs.artifact-descriptor == '') }}
-      id: tech-detector
-      with:
-        project-directory: ${{ inputs.project-directory }}
-
-    - uses: giancosta86/aurora-github/actions/detect-branch-version@v7.0.0
-      if: ${{ inputs.mode != 'skip' }}
-      id: version-detector
-
-    - name: Compute the artifact descriptor
+    - name: Ensure the descriptor exists
       if: ${{ inputs.mode != 'skip' }}
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        requestedArtifactDescriptor="${{ inputs.artifact-descriptor }}"
-        echo "📥Requested artifact descriptor: '$requestedArtifactDescriptor'"
+        requestedDescriptor="${{ inputs.artifact-descriptor }}"
+        echo "📥Requested descriptor: '$requestedDescriptor'"
 
-        detectedArtifactDescriptor="${{ steps.tech-detector.outputs.artifact-descriptor }}"
-        echo "🔮Detected artifact descriptor: '$detectedArtifactDescriptor'"
+        if [[ -n "$requestedDescriptor" ]]
+        then
+          echo "✅Artifact descriptor provided!"
+          artifactDescriptor="$requestedDescriptor"
+        else
+          echo "🔮Trying to detect the artifact descriptor..."
 
-        case "${{ inputs.mode }}" in
-          inject)
-            artifactDescriptor="${requestedArtifactDescriptor:-"$detectedArtifactDescriptor"}"
-            ;;
-
-          check)
-            if [[ -n "$detectedArtifactDescriptor" ]]
-            then
-              if [[ -n "$requestedArtifactDescriptor" ]]
-              then
-                echo "💭In this mode, the detected artifact descriptor will take precedence over the requested one"
-              fi
-
-              artifactDescriptor="$detectedArtifactDescriptor"
-            else
-              artifactDescriptor="$requestedArtifactDescriptor"
-            fi
-            ;;
-        esac
+          if [[ -f "package.json" ]]
+          then
+            echo "📦package.json descriptor for NodeJS detected!"
+            artifactDescriptor="package.json"
+          elif [[ -f "Cargo.toml" ]]
+          then
+            echo "🦀Cargo.toml descriptor for Rust detected!"
+            artifactDescriptor="Cargo.toml"
+          else
+            echo "💭No supported descriptors found..."
+            artifactDescriptor=""
+          fi
+        fi
 
         echo "🔎Artifact descriptor: '$artifactDescriptor'"
 
         if [[ -z "$artifactDescriptor" ]]
         then
-          echo "❌No artifact descriptor requested - and it can't be detected!" >&2;
-          exit 1;
+          echo "❌No artifact descriptor requested - and none can be detected!" >&2
+          exit 1
         fi
 
         if [[ ! -f "$artifactDescriptor" ]]
         then
-          echo "❌Cannot find the artifact descriptor file: '$artifactDescriptor'!" >&2;
-          exit 1;
+          echo "❌Cannot find the artifact descriptor file: '$artifactDescriptor'!" >&2
+          exit 1
         fi
 
         echo "artifactDescriptor=$artifactDescriptor" >> $GITHUB_ENV
 
-    - name: Inject version into the descriptor
+    - name: Infer the technology
+      if: ${{ inputs.mode != 'skip' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        case "$(basename "$artifactDescriptor")" in
+          package.json)
+            tech="nodejs"
+            ;;
+
+          Cargo.toml)
+            tech="rust"
+            ;;
+
+          *)
+            tech=""
+        esac
+
+        echo "🤖Inferred technology: '${tech}'"
+        echo "tech=$tech" >> $GITHUB_ENV
+
+    - uses: giancosta86/aurora-github/actions/detect-branch-version@v7.0.0
+      if: ${{ inputs.mode != 'skip' }}
+      id: version-detector
+
+    - name: Inject the branch version into the descriptor
       if: ${{ inputs.mode == 'inject' }}
       shell: bash
       working-directory: ${{ inputs.project-directory }}
@@ -103,12 +116,12 @@ runs:
         sed -i "s/0\.0\.0/${version}/g" "$artifactDescriptor"
         echo "✅Version injected!"
 
-    - name: Print the artifact descriptor
+    - name: Print the content of the artifact descriptor
       if: ${{ inputs.mode != 'skip' }}
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        case "${{ steps.tech-detector.outputs.project-tech }}" in
+        case "$tech" in
           nodejs)
             echo "📦NodeJS descriptor:"
             jq -C . "$artifactDescriptor"
@@ -127,8 +140,8 @@ runs:
             echo "🎁🎁🎁"
         esac
 
-    - name: Extract NodeJS package version
-      if: ${{ inputs.mode == 'check' && steps.tech-detector.outputs.project-tech == 'nodejs' }}
+    - name: Extract the NodeJS package version
+      if: ${{ inputs.mode == 'check' && env.tech == 'nodejs' }}
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -138,8 +151,8 @@ runs:
 
         echo "artifactVersion=$artifactVersion" >> $GITHUB_ENV
 
-    - name: Extract Rust crate version
-      if: ${{ inputs.mode == 'check' && steps.tech-detector.outputs.project-tech == 'rust' }}
+    - name: Extract the Rust crate version
+      if: ${{ inputs.mode == 'check' && env.tech == 'rust' }}
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -150,7 +163,7 @@ runs:
         echo "artifactVersion=$artifactVersion" >> $GITHUB_ENV
 
     - name: Ensure the artifact version matches the branch version
-      if: ${{ inputs.mode == 'check' && steps.tech-detector.outputs.project-tech != '' }}
+      if: ${{ inputs.mode == 'check' && env.tech != '' }}
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -167,7 +180,7 @@ runs:
         fi
 
     - name: Check unknown artifact version
-      if: ${{ inputs.mode == 'check' && steps.tech-detector.outputs.project-tech == '' }}
+      if: ${{ inputs.mode == 'check' && env.tech == '' }}
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
