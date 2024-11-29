@@ -38,8 +38,6 @@ In particular, the actions can be grouped by technology:
 
 - [publish-github-pages](actions/publish-github-pages/README.md)
 
-- [detect-project-tech](actions/detect-project-tech/README.md)
-
 - [run-custom-tests](run-custom-tests/README.md)
 
 ## 🏷️Semantic versioning
