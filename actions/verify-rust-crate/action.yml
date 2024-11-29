@@ -19,7 +19,7 @@ inputs:
     default: '^\.\/(src|tests)\/.+\.rs$'
 
   enforce-branch-version:
-    description: The "mode" parameter for "enforce-branch-version".
+    description: How the branch version should be enforced.
     default: inject
 
   project-directory:
