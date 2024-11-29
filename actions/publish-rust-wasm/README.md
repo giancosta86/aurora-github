@@ -11,7 +11,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/publish-rust-wasm@v7
     with:
       npm-token: ${{ secrets.NPM_TOKEN }}
-      wasm-pack-version: 0.13.0
+      wasm-pack-version: 0.13.1
       npm-scope: your-npm-scope
 ```
 

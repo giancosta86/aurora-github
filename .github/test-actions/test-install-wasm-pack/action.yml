@@ -5,7 +5,7 @@ runs:
   steps:
     - name: Setup environment variables
       shell: bash
-      run: echo "expectedVersion=0.13.0" >> $GITHUB_ENV
+      run: echo "expectedVersion=0.13.1" >> $GITHUB_ENV
 
     - uses: ./actions/install-wasm-pack
       with:

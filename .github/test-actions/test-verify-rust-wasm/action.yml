@@ -7,4 +7,4 @@ runs:
       with:
         project-directory: tests/rust-wasm
         npm-scope: giancosta86
-        wasm-pack-version: 0.13.0
+        wasm-pack-version: 0.13.1
