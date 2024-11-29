@@ -24,11 +24,14 @@ runs:
 
     - name: Install wasm-pack via pnpm
       shell: bash
-      run: pnpm add -g "wasm-pack@${{ inputs.wasm-pack-version }}"
+      run: |
+        echo "🌐Installing wasm-pack ${{ inputs.wasm-pack-version }}..."
+        pnpm add -g "wasm-pack@${{ inputs.wasm-pack-version }}"
+        echo "✅wasm-pack installed!"
 
     - name: Print wasm-pack version
       shell: bash
       run: |
-        echo "🔎Now invoking wasm-pack..."
+        echo "🔎Now ensuring wasm-pack is available..."
         wasm-pack --version
-        echo "✅wasm-pack installed!"
+        echo "✅wasm-pack ready!"
