@@ -63,7 +63,7 @@ and indirectly by:
 
 |         Name          |          Type           |                        Description                         | Default value |
 | :-------------------: | :---------------------: | :--------------------------------------------------------: | :-----------: |
-|        `mode`         | `inject`,`check`,`skip` |       Whether and how to enforce the branch version        |               |
+|        `mode`         | `inject`,`check`,`skip` |         How the branch version should be enforced          |               |
 | `artifact-descriptor` |       **string**        | Relative path to the artifact descriptor; could be ignored |               |
 |  `project-directory`  |       **string**        |            The directory containing the project            |     **.**     |
 

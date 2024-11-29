@@ -18,7 +18,7 @@ inputs:
     default: website
 
   enforce-branch-version:
-    description: The "mode" parameter for "enforce-branch-version".
+    description: How the branch version should be enforced.
     default: inject
 
   project-directory:

@@ -50,7 +50,7 @@ steps:
 |        `dry-run`         |       **boolean**       |    Run a simulated publication via `--dry-run`    |   **false**   |
 |       `npm-token`        |       **string**        |  The secret token for publishing to the registry  |               |
 |   `website-directory`    |       **string**        | Relative directory containing the project website |  **website**  |
-| `enforce-branch-version` | `inject`,`check`,`skip` |   Whether and how to enforce the branch version   |  **inject**   |
+| `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |  **inject**   |
 |   `project-directory`    |       **string**        |      The directory containing `package.json`      |     **.**     |
 
 ## Further references

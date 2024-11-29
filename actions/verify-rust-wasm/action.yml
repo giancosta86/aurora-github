@@ -33,7 +33,7 @@ inputs:
     default: '^\.\/((src|tests)\/.+\.rs)|(client-tests\/.+\.(c|m)?(j|t)sx?)$'
 
   enforce-branch-version:
-    description: The "mode" parameter for "enforce-branch-version".
+    description: How the branch version should be enforced.
     default: inject
 
   project-directory:
@@ -132,7 +132,6 @@ runs:
         development: true
         target-directory: pkg
         project-directory: ${{ inputs.project-directory }}
-
 
     - name: Run client tests
       uses: giancosta86/aurora-github/actions/run-custom-tests@v7.0.0

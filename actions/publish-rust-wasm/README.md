@@ -50,7 +50,7 @@ steps:
 |      `wasm-target`       |       **string**        |    The target of the `wasm-pack build` command    |     **web**      |
 | `node-version-directory` |       **string**        |  Relative directory containing the `.nvmrc` file  | **client-tests** |
 |   `website-directory`    |       **string**        | Relative directory containing the project website |   **website**    |
-| `enforce-branch-version` | `inject`,`check`,`skip` |   Whether and how to enforce the branch version   |    **inject**    |
+| `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |    **inject**    |
 |   `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |      **.**       |
 
 ## Further references

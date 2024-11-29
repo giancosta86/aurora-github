@@ -44,7 +44,7 @@ steps:
 |      `check-rustdoc`      |       **boolean**       | Build the documentation - with warnings as errors |         **false**         |
 | `crash-on-critical-todos` |       **boolean**       |  Crash the workflow if critical TODOs are found   |         **true**          |
 |    `source-file-regex`    |       **string**        |     PCRE pattern describing the source files      | view [source](action.yml) |
-| `enforce-branch-version`  | `inject`,`check`,`skip` |   Whether and how to enforce the branch version   |        **inject**         |
+| `enforce-branch-version`  | `inject`,`check`,`skip` |     How the branch version should be enforced     |        **inject**         |
 |    `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
 
 ## Further references

@@ -53,8 +53,8 @@ steps:
 | :----------------------: | :---------------------: | :-----------------------------------------------------------------: | :-----------: |
 |    `source-directory`    |       **string**        |                  Directory containing the website                   |     **.**     |
 |        `optional`        |       **boolean**       | Whether `source-directory` can be empty string or missing directory |   **false**   |
-| `enforce-branch-version` | `inject`,`check`,`skip` |            Whether and how to enforce the branch version            |  **inject**   |
-|        `dry-run`         |       **boolean**       |             Stops the publication just before uploading             |   **false**   |
+| `enforce-branch-version` | `inject`,`check`,`skip` |              How the branch version should be enforced              |  **inject**   |
+|        `dry-run`         |       **boolean**       |             Stop the publication just before uploading              |   **false**   |
 
 ## Outputs 📤
 
