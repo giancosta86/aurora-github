@@ -10,7 +10,7 @@ steps:
 
   - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v7
     with:
-      wasm-pack-version: 0.13.0
+      wasm-pack-version: 0.13.1
       npm-scope: your-npm-scope
 ```
 
