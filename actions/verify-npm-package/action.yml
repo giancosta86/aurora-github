@@ -70,7 +70,7 @@ runs:
         fi
 
     - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v7.0.0
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v7.0.1
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
@@ -94,7 +94,7 @@ runs:
         fi
 
     - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v7.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v7.0.1
       with:
         project-directory: ${{ inputs.project-directory }}
 
@@ -108,18 +108,18 @@ runs:
 
     - name: Check subpath exports
       if: ${{ inputs.check-subpath-exports == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-subpath-exports@v7.0.0
+      uses: giancosta86/aurora-github/actions/check-subpath-exports@v7.0.1
       with:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Run optional custom tests from the 'tests' directory
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v7.0.0
+      uses: giancosta86/aurora-github/actions/run-custom-tests@v7.0.1
       with:
         optional: true
         root-directory: ${{ inputs.project-directory }}/tests
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v7.0.0
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v7.0.1
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}

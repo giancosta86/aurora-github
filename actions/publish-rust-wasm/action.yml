@@ -91,12 +91,12 @@ runs:
         fi
 
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v7.0.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v7.0.1
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
 
     - name: Generate the NodeJS package source files
-      uses: giancosta86/aurora-github/actions/generate-wasm-target@v7.0.0
+      uses: giancosta86/aurora-github/actions/generate-wasm-target@v7.0.1
       with:
         target: ${{ inputs.wasm-target }}
         npm-scope: ${{ inputs.npm-scope }}
@@ -110,7 +110,7 @@ runs:
       run: cp "${{ inputs.node-version-directory }}/.nvmrc" pkg
 
     - name: Publish NodeJS package
-      uses: giancosta86/aurora-github/actions/publish-npm-package@v7.0.0
+      uses: giancosta86/aurora-github/actions/publish-npm-package@v7.0.1
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
