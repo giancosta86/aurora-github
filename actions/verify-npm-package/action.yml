@@ -8,7 +8,7 @@ inputs:
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    default: '^\.\/(src|tests)\/.+\.(c|m)?(j|t)sx?$'
+    default: '^\.\/(src|(tests(?!\/node_modules\/)))\/.+\.(c|m)?(j|t)sx?$'
 
   enforce-branch-version:
     description: How the branch version should be enforced.
