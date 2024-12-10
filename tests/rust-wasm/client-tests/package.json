@@ -19,5 +19,8 @@
     "test:watch": "vitest",
     "verify": "pnpm test"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": "20.15.1"
+  }
 }

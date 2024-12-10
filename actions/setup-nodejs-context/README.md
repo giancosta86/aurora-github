@@ -1,6 +1,6 @@
 # setup-nodejs-context
 
-Conditionally installs a specific **NodeJS** version, **pnpm**, as well as the dependencies listed in **package.json**.
+Conditionally installs **NodeJS** along with **pnpm**, as well as the dependencies listed in **package.json**.
 
 ## Example
 
@@ -15,21 +15,55 @@ steps:
 
 ## How it works
 
-1. If a `.nvmrc` file exists, install NodeJS and pnpm; besides, if a `.pnpmver` file also exists, it must contain the required pnpm version - otherwise, the latest one will be requested.
+1. If **package.json** - which must exist - declares the following field:
 
-1. If a `package.json` file exists, install the dependencies, with the `--frozen-lockfile` flag enabled only if the `pnpm-lock.yaml` file is present.
+   ```json
+   {
+     "engines": {
+       "node": "..."
+     }
+   }
+   ```
+
+   an entire NodeJS toolchain will be set up; in particular:
+
+   1. The requested **NodeJS** version - or a compatible one, if a range is passed - will be installed via [actions/setup-node](https://github.com/actions/setup-node)
+
+   1. **pnpm** will be downloaded via [pnpm/action-setup](https://github.com/pnpm/action-setup).
+
+      As for the version:
+
+      - if **package.json** explicitly provides a `packageManager` reference:
+
+        ```json
+        {
+          "packageManager": "pnpm@..."
+        }
+        ```
+
+        it will be resolved
+
+      - otherwise, the **latest** version will be installed
+
+1. No matter whether the toolchain was installed, retrieve the dependencies - as follows:
+
+   - 🧊 if **pnpm-lock.yaml** exists, it is considered _frozen_ via the `--frozen-lockfile` flag
+
+   - 🌞 otherwise, `--no-frozen-lockfile` is passed explicitly
 
 ## Requirements
 
-- if the `.nvmrc` file exists, it must contain the NodeJS version, as expected by [nvm](https://github.com/nvm-sh/nvm).
+- The **package.json** descriptor must exist in `project-directory`.
 
-- if the `pnpm-lock.yaml` file exists, it must be up-to-date.
+- The `packageManager` field can be missing, but it can't reference another package manager.
+
+- If the **pnpm-lock.yaml** file exists, it must be up-to-date - because it's considered _frozen_.
 
 ## Inputs 📥
 
-|        Name         |    Type    |              Description               | Default value |
-| :-----------------: | :--------: | :------------------------------------: | :-----------: |
-| `project-directory` | **string** | Directory containing the project files |     **.**     |
+|        Name         |    Type    |               Description               | Default value |
+| :-----------------: | :--------: | :-------------------------------------: | :-----------: |
+| `project-directory` | **string** | The directory containing `package.json` |     **.**     |
 
 ## Further references
 
@@ -37,7 +71,9 @@ steps:
 
 - [publish-npm-package](../publish-npm-package/README.md)
 
-- [Node Version Manager](https://github.com/nvm-sh/nvm)
+- [actions/setup-node](https://github.com/actions/setup-node)
+
+- [pnpm/action-setup](https://github.com/pnpm/action-setup)
 
 - [pnpm](https://pnpm.io/)
 
