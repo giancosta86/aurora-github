@@ -18,6 +18,13 @@ runs:
     - shell: bash
       run: echo "🎭Now generating a dev project with 'web' target..."
 
+    - name: Set up the expected versions
+      shell: bash
+      run: |
+        echo "expectedNodeJsVersion=20.15.1" >> $GITHUB_ENV
+
+        echo "expectedPnpmVersion=9.6.0" >> $GITHUB_ENV
+
     - uses: ./actions/generate-wasm-target
       with:
         target: web
@@ -25,12 +32,14 @@ runs:
         development: true
         target-directory: pkg-web
         project-directory: tests/rust-wasm
+        nodejs-version: ${{ env.expectedNodeJsVersion }}
+        pnpm-version: ${{ env.expectedPnpmVersion }}
 
     - name: The package name should be correct
       shell: bash
       working-directory: tests/rust-wasm/pkg-web
       run: |
-        packageName="$(jq -r .name package.json)"
+        packageName="$(jq -r '.name' package.json)"
         echo "🔎Name field in the generated package.json: '$packageName'"
 
         if [[ "$packageName" == "@giancosta86/test-wasm" ]]
@@ -45,7 +54,7 @@ runs:
       shell: bash
       working-directory: tests/rust-wasm/pkg-web
       run: |
-        packageVersion="$(jq -r .version package.json)"
+        packageVersion="$(jq -r '.version' package.json)"
         echo "🔎Version field in the generated package.json: '$packageVersion'"
 
         if [[ "$packageVersion" == "${{ steps.version-detector.outputs.version }}" ]]
@@ -53,6 +62,36 @@ runs:
           echo "✅The generated package.json has the expected version!"
         else
           echo "❌Unexpected value for the 'version' field in package.json!"
+          exit 1
+        fi
+
+    - name: The injected NodeJS version should be correct
+      shell: bash
+      working-directory: tests/rust-wasm/pkg-web
+      run: |
+        nodeJsVersion="$(jq -r '.engines.node' package.json)"
+        echo "🔎NodeJS version field in the generated package.json: '$nodeJsVersion'"
+
+        if [[ "$nodeJsVersion" == "${{ env.expectedNodeJsVersion }}" ]]
+        then
+          echo "✅The generated package.json requires the expected NodeJS version!"
+        else
+          echo "❌Unexpected value for the 'engines / node' field in package.json!"
+          exit 1
+        fi
+
+    - name: The injected pnpm version should be correct
+      shell: bash
+      working-directory: tests/rust-wasm/pkg-web
+      run: |
+        pnpmReference="$(jq -r '.packageManager' package.json)"
+        echo "🔎pnpm reference field in the generated package.json: '$pnpmReference'"
+
+        if [[ "$pnpmReference" == "pnpm@${{ env.expectedPnpmVersion }}" ]]
+        then
+          echo "✅The generated package.json references the expected pnpm version!"
+        else
+          echo "❌Unexpected value for the 'packageManager' field in package.json!"
           exit 1
         fi
 
