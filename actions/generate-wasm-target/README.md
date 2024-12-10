@@ -17,7 +17,13 @@ steps:
 
 ## How it works
 
-This action invokes [wasm-pack](https://rustwasm.github.io/wasm-pack/) - with arguments depending on the inputs - to generate a WebAssembly project from the given Rust sources.
+1. Invoke [wasm-pack](https://rustwasm.github.io/wasm-pack/) - with arguments depending on the inputs - to generate a WebAssembly project from the given Rust sources.
+
+1. If `nodejs-version` is passed, inject it into the `engines / node` field of **package.json**
+
+1. If `pnpm-version` is passed, inject it into the `packageManager` field of **package.json**, with value preceded by `pnpm@`
+
+1. If **package.json** was actually generated, display it
 
 ## Requirements
 
@@ -29,6 +35,8 @@ This action invokes [wasm-pack](https://rustwasm.github.io/wasm-pack/) - with ar
 | :-----------------: | :---------: | :------------------------------------------------------------------: | :-----------: |
 |      `target`       | **string**  |             The target of the `wasm-pack build` command              |               |
 |     `npm-scope`     | **string**  |            The package scope or `<ROOT>`, for npm targets            |               |
+|  `nodejs-version`   | **string**  |           The `engines / node` version within package.json           |               |
+|   `pnpm-version`    | **string**  |      The `packageManager` reference to pnpm within package.json      |               |
 |    `development`    | **boolean** |                        Enable debugging info                         |               |
 | `target-directory`  | **string**  | Directory (relative to `project-directory`) for the generated target |               |
 | `project-directory` | **string**  |                The directory containing `Cargo.toml`                 |     **.**     |
