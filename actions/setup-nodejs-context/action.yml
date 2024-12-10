@@ -1,70 +1,93 @@
 name: Setup a NodeJS context
-description: Conditionally installs a specific NodeJS version, pnpm, as well as the dependencies listed in package.json.
+description: Conditionally installs NodeJS along with pnpm, as well as the dependencies listed in package.json.
 
 inputs:
   project-directory:
-    description: Directory containing the project files.
+    description: The directory containing package.json.
     default: .
 
 runs:
   using: composite
   steps:
-    - name: Print welcome message
+    - name: Verify package.json
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         echo "💻Setting up NodeJS context in '${{ inputs.project-directory }}'..."
 
-    - name: Setup environment variables
+        if [[ ! -f "package.json" ]]
+        then
+          echo "❌The package.json descriptor is missing!" >&2
+          exit 1
+        fi
+
+    - name: Detect toolchain request
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -f ".nvmrc" ]]
-        then
-          installNode=true
-        else
-          installNode=false
-        fi
-        echo "🔎Install NodeJS? $installNode"
-        echo "installNode=$installNode" >> $GITHUB_ENV
+        requestedNodeVersion="$(jq -r '.engines.node // ""' package.json)"
 
-        if [[ -f "package.json" ]]
+        if [[ -n "$requestedNodeVersion" ]]
         then
-          installDependencies=true
+          echo "🔎NodeJS version requested in package.json: '$requestedNodeVersion'"
+          installToolchain=true
         else
-          installDependencies=false
+          echo "💭No requested NodeJS version in package.json..."
+          installToolchain=false
         fi
-        echo "🔎Install dependencies? $installDependencies"
-        echo "installDependencies=$installDependencies" >> $GITHUB_ENV
+
+        echo "echo 🔎Install NodeJS toolchain? $installToolchain"
+
+        echo "requestedNodeVersion=$requestedNodeVersion" >> $GITHUB_ENV
+        echo "installToolchain=$installToolchain" >> $GITHUB_ENV
 
     - name: Install NodeJS
-      if: ${{ env.installNode == 'true' }}
+      if: ${{ env.installToolchain == 'true' }}
       uses: actions/setup-node@v4
       with:
-        node-version-file: ${{ inputs.project-directory }}/.nvmrc
+        node-version: ${{ env.requestedNodeVersion }}
 
     - name: Print NodeJS version
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "🔎node version: $(node --version)"
+        echo "🎡NodeJS version: '$(node --version)'"
 
     - name: Detect the requested pnpm version
-      if: ${{ env.installNode == 'true' }}
+      if: ${{ env.installToolchain == 'true' }}
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -f ".pnpmver" ]]
+        packageManagerReference="$(jq -r '.packageManager // ""' package.json)"
+
+        echo "📦Package manager reference: '$packageManagerReference'"
+
+        if [[ -n "$packageManagerReference" ]]
         then
-          pnpmVersion="$(cat .pnpmver)"
+          requestedPackageManager="$(echo "$packageManagerReference" | cut -d '@' -f 1)"
+
+          if [[ "$requestedPackageManager" != "pnpm" ]]
+          then
+            echo "❌The package manager must be pnpm!" >&2
+            exit 1
+          fi
+
+          requestedPnpmVersion="$(echo "$packageManagerReference" | cut -d '@' -f 2)"
+
+          echo "🔎Requested pnpm version: '$requestedPnpmVersion'"
+
+          pnpmVersion="$requestedPnpmVersion"
         else
+          echo "🌟Defaulting to the latest pnpm version!"
           pnpmVersion="latest"
         fi
+
         echo "🔬pnpm version to install: '$pnpmVersion'"
+
         echo "pnpmVersion=$pnpmVersion" >> $GITHUB_ENV
 
     - name: Install pnpm
-      if: ${{ env.installNode == 'true' }}
+      if: ${{ env.installToolchain == 'true' }}
       uses: pnpm/action-setup@v4
       with:
         version: ${{ env.pnpmVersion }}
@@ -76,23 +99,25 @@ runs:
         echo "📦pnpm version: $(pnpm --version)"
 
     - name: Install the dependencies
-      if: ${{ env.installDependencies == 'true' }}
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         lockFile="pnpm-lock.yaml"
+
         if [[ -f "$lockFile" ]]
         then
           echo "🧊Installing dependencies with frozen lockfile, as '$lockFile' is present..."
-          pnpm install --frozen-lockfile
+          lockFileArg="--frozen-lockfile"
         else
           echo "🌞Installing dependencies without frozen lockfile, as '$lockFile' is missing..."
-          pnpm install --no-frozen-lockfile
+          lockFileArg="--no-frozen-lockfile"
         fi
+
+        pnpm install $lockFileArg
 
         echo "✅Dependencies installed!"
 
     - name: Print confirmation message
       shell: bash
       working-directory: ${{ inputs.project-directory }}
-      run: echo "✅NodeJS context ready!"
+      run: echo "✅NodeJS context in '${{ inputs.project-directory }}' ready!"
