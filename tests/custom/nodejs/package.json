@@ -3,5 +3,8 @@
   "scripts": {
     "verify": "echo 'NodeJS-generated content' > generated-file.txt"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": "20.15.1"
+  }
 }
