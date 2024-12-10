@@ -6,7 +6,7 @@ Verifies that all the [subpath exports](https://nodejs.org/api/packages.html#sub
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-subpath-exports@v7
+  - uses: giancosta86/aurora-github/actions/check-subpath-exports@v8
 ```
 
 **Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md).

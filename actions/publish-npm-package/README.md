@@ -8,7 +8,7 @@ Publishes a **NodeJS** package to an [npm](https://www.npmjs.com/) registry.
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-npm-package@v7
+  - uses: giancosta86/aurora-github/actions/publish-npm-package@v8
     with:
       npm-token: ${{ secrets.NPM_TOKEN }}
 ```
