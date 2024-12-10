@@ -97,18 +97,37 @@ runs:
         jq -C . package.json
         echo "📦📦📦"
 
+    - name: Ensure the package manager configuration file exists
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        npmConfigPath=".npmrc"
+
+        if [[ ! -f "$npmConfigPath" ]]
+        then
+          echo "🌟It seems you don't have a $npmConfigPath file - generating a default one..."
+
+          echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > "$npmConfigPath"
+        fi
+
+        echo "🎀The content of the $npmConfigPath configuration file is:"
+        cat "$npmConfigPath"
+        echo "🎀🎀🎀"
+
     - name: Publish to the registry
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         if [[ "${{ inputs.dry-run }}" == "true" ]]
         then
-          pnpm publish --no-git-checks --access public --dry-run
+          dryRunArg="--dry-run"
         else
-          pnpm publish --no-git-checks --access public
+          dryRunArg=""
         fi
+
+        pnpm publish --no-git-checks --access public $dryRunArg
       env:
-        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+        NPM_TOKEN: ${{ inputs.npm-token }}
 
     - name: Print confirmation message
       shell: bash
