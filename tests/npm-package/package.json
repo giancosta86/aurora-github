@@ -8,5 +8,9 @@
     "build": "echo '✅NodeJS build simulated!'",
     "verify": "pnpm test && pnpm build"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": "20.15.1"
+  },
+  "packageManager": "pnpm@9.7.1"
 }
