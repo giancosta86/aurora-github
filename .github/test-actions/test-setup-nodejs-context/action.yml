@@ -12,10 +12,10 @@ runs:
       shell: bash
       working-directory: tests/npm-package
       run: |
-        expectedNodeVersion="$(cat .nvmrc)"
+        expectedNodeVersion="$(jq -r '.engines.node' package.json)"
         echo "🔎Expected NodeJS version: '$expectedNodeVersion'"
 
-        installedNodeVersion="$(node --version)"
+        installedNodeVersion="$(node --version | sed s/^v//)"
         echo "🔎Installed NodeJS version: '$installedNodeVersion'"
 
         if [[ "$expectedNodeVersion" == "$installedNodeVersion" ]]
@@ -30,7 +30,7 @@ runs:
       shell: bash
       working-directory: tests/npm-package
       run: |
-        expectedPnpmVersion="$(cat .pnpmver)"
+        expectedPnpmVersion="$(jq -r '.packageManager' package.json | sed s/^pnpm@//)"
         echo "🔎Expected pnpm version: '$expectedPnpmVersion'"
 
         installedPnpmVersion="$(pnpm --version)"
