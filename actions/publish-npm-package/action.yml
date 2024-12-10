@@ -64,6 +64,23 @@ runs:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
+    - name: Ensure the package manager configuration file exists
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        npmConfigPath=".npmrc"
+
+        if [[ ! -f "$npmConfigPath" ]]
+        then
+          echo "🌟It seems you don't have a $npmConfigPath file - generating a default one..."
+
+          echo 'https://registry.npmjs.org/:_authToken=${NPM_TOKEN}' > "$npmConfigPath"
+        fi
+
+        echo "🎀The content of the $npmConfigPath configuration file is:"
+        cat "$npmConfigPath"
+        echo "🎀🎀🎀"
+
     - name: Setup NodeJS context
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v8.0.0
       with:
@@ -103,12 +120,14 @@ runs:
       run: |
         if [[ "${{ inputs.dry-run }}" == "true" ]]
         then
-          pnpm publish --no-git-checks --access public --dry-run
+          dryRunArg="--dry-run"
         else
-          pnpm publish --no-git-checks --access public
+          dryRunArg=""
         fi
+
+        pnpm publish --no-git-checks --access public $dryRunArg
       env:
-        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+        NPM_TOKEN: ${{ inputs.npm-token }}
 
     - name: Print confirmation message
       shell: bash

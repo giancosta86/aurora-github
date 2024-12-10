@@ -25,19 +25,21 @@ steps:
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
+1. If the `.npmrc` file does not exist, generate a new one - publishing to the official npm registry and using the **NPM_TOKEN** environment variable as the authentication token.
+
 1. Invoke [setup-nodejs-context](../setup-nodejs-context/README.md) to set up a NodeJS environment having `pnpm` and dependencies.
 
 1. Run `pnpm build` _if_ such script has been declared in **package.json**.
 
 1. Run `publish-github-pages` with the `optional` flag enabled.
 
-1. Run `pnpm publish`
+1. Run `pnpm publish`, with the value of `npm-token` injected into the **NPM_TOKEN** environment variable - accessible, for example, from the `.npmrc` configuration file.
 
 ## Requirements
 
 - The requirements for [setup-nodejs-context](../setup-nodejs-context/README.md).
 
-- `npm-token` is _not_ mandatory when `dry-run` is enabled.
+- `npm-token` is **mandatory** - unless `dry-run` is enabled
 
 - The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
 
