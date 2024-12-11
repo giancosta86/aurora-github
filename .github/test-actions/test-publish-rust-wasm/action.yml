@@ -8,4 +8,5 @@ runs:
         project-directory: tests/rust-wasm
         dry-run: true
         wasm-pack-version: 0.13.1
+        nodejs-version: 20.15.1
         npm-scope: giancosta86
