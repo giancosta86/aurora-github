@@ -59,13 +59,30 @@ runs:
         fi
 
     - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v7.0.1
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v8.0.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
+    - name: Ensure the package manager configuration file exists
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        npmConfigPath=".npmrc"
+
+        if [[ ! -f "$npmConfigPath" ]]
+        then
+          echo "💭It seems you don't have a $npmConfigPath file - generating a default one..."
+
+          echo 'https://registry.npmjs.org/:_authToken=${NPM_TOKEN}' > "$npmConfigPath"
+        fi
+
+        echo "🎀The content of the $npmConfigPath configuration file is:"
+        cat "$npmConfigPath"
+        echo "🎀🎀🎀"
+
     - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v7.0.1
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v8.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
 
@@ -82,7 +99,7 @@ runs:
         fi
 
     - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v7.0.1
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v8.0.0
       with:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
@@ -103,12 +120,14 @@ runs:
       run: |
         if [[ "${{ inputs.dry-run }}" == "true" ]]
         then
-          pnpm publish --no-git-checks --access public --dry-run
+          dryRunArg="--dry-run"
         else
-          pnpm publish --no-git-checks --access public
+          dryRunArg=""
         fi
+
+        pnpm publish --no-git-checks --access public $dryRunArg
       env:
-        NODE_AUTH_TOKEN: ${{ inputs.npm-token }}
+        NPM_TOKEN: ${{ inputs.npm-token }}
 
     - name: Print confirmation message
       shell: bash

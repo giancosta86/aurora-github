@@ -8,22 +8,54 @@ Conditionally installs a specific **NodeJS** version, **pnpm**, as well as the d
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v7
+  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v8
 ```
 
 **Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md) and [publish-npm-package](../publish-npm-package/README.md).
 
 ## How it works
 
-1. If a `.nvmrc` file exists, install NodeJS and pnpm; besides, if a `.pnpmver` file also exists, it must contain the required pnpm version - otherwise, the latest one will be requested.
+1. If **package.json** declares a NodeJS version via the following field:
 
-1. If a `package.json` file exists, install the dependencies, with the `--frozen-lockfile` flag enabled only if the `pnpm-lock.yaml` file is present.
+   ```json
+   {
+     "engines": {
+       "node": "..."
+     }
+   }
+   ```
+
+   an entire NodeJS toolchain will be set up; in particular:
+
+   1. **NodeJS** will be installed via [actions/setup-node](https://github.com/actions/setup-node), asking for the given version - which could have a variety of formats, as explained in the related documentation
+
+   1. **pnpm** will be downloaded via [pnpm/action-setup](https://github.com/pnpm/action-setup).
+
+      As for the version:
+
+      - if **package.json** explicitly requests a specific version:
+
+        ```json
+        {
+          "packageManager": "pnpm@..."
+        }
+        ```
+
+        it will be used
+
+      - otherwise, the **latest** version will be installed
+
+1. No matter whether the toolchain was installed, retrieve the dependencies - as follows:
+
+   - 🧊 if **pnpm-lock.yaml** exists, it is considered _frozen_ via the `--frozen-lockfile` flag
+
+   - 🌞 otherwise, `--no-frozen-lockfile` is passed explicitly
 
 ## Requirements
 
-- if the `.nvmrc` file exists, it must contain the NodeJS version, as expected by [nvm](https://github.com/nvm-sh/nvm).
+- The **package.json** descriptor must exist
 
-- if the `pnpm-lock.yaml` file exists, it must be up-to-date.
+- If the **pnpm-lock.yaml** file exists, it must be up-to-date - because it's considered _frozen_.
 
 ## Inputs 📥
 

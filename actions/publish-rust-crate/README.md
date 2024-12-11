@@ -8,7 +8,7 @@ Publishes a **Rust** crate - by default, to [crates.io](https://crates.io/) - wi
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-rust-crate@v7
+  - uses: giancosta86/aurora-github/actions/publish-rust-crate@v8
     with:
       cargo-token: ${{ secrets.CARGO_TOKEN }}
 ```
