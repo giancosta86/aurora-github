@@ -23,15 +23,15 @@ steps:
 
 1. Invoke [generate-wasm-target](../generate-wasm-target/README.md) to generate the NodeJS package source files in the **pkg** subdirectory.
 
-1. Copy the `.nvmrc` file from `node-version-directory` to the **pkg** directory.
+1. If a `.npmrc` configuration file exists in `project-directory`, copy it to **pkg**
 
 1. Call [publish-npm-package](../publish-npm-package/README.md) on the **pkg** directory - passing all the matching inputs - to publish the npm package.
 
 ## Requirements
 
-- You must create a `.nvmrc` file, declaring the required Node.js version, whose format must be compatible with the [setup-nodejs-context](../setup-nodejs-context/README.md) action (for example: `vX.Y.Z`): such file will most probably reside in a `client-tests` subdirectory - designed for NodeJS tests - but you can customize this aspect via the `node-version-directory` input.
+- the `nodejs-version` input is required for the build process; optionally, you can set the `pnpm-version` input as well, in order to request a specific pnpm version.
 
-- `npm-token` is _not_ mandatory when `dry-run` is enabled.
+- `npm-token` is **mandatory** - unless `dry-run` is enabled
 
 - The requirements for [publish-npm-package](../publish-npm-package/README.md).
 
@@ -41,17 +41,18 @@ steps:
 
 ## Inputs 📥
 
-|           Name           |          Type           |                    Description                    |  Default value   |
-| :----------------------: | :---------------------: | :-----------------------------------------------: | :--------------: |
-|        `dry-run`         |       **boolean**       |    Run a simulated publication via `--dry-run`    |    **false**     |
-|       `npm-token`        |       **string**        |  The secret token for publishing to the registry  |                  |
-|   `wasm-pack-version`    |       **string**        |        The `wasm-pack` version to install         |                  |
-|       `npm-scope`        |       **string**        |         The npm package scope or `<ROOT>`         |                  |
-|      `wasm-target`       |       **string**        |    The target of the `wasm-pack build` command    |     **web**      |
-| `node-version-directory` |       **string**        |  Relative directory containing the `.nvmrc` file  | **client-tests** |
-|   `website-directory`    |       **string**        | Relative directory containing the project website |   **website**    |
-| `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |    **inject**    |
-|   `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |      **.**       |
+|           Name           |          Type           |                        Description                         | Default value |
+| :----------------------: | :---------------------: | :--------------------------------------------------------: | :-----------: |
+|        `dry-run`         |       **boolean**       |        Run a simulated publication via `--dry-run`         |   **false**   |
+|       `npm-token`        |       **string**        |      The secret token for publishing to the registry       |               |
+|   `wasm-pack-version`    |       **string**        |             The `wasm-pack` version to install             |               |
+|       `npm-scope`        |       **string**        |             The npm package scope or `<ROOT>`              |               |
+|     `nodejs-version`     |       **string**        |      The `engines / node` version within package.json      |               |
+|      `pnpm-version`      |       **string**        | The `packageManager` reference to pnpm within package.json |               |
+|      `wasm-target`       |       **string**        |        The target of the `wasm-pack build` command         |    **web**    |
+|   `website-directory`    |       **string**        |     Relative directory containing the project website      |  **website**  |
+| `enforce-branch-version` | `inject`,`check`,`skip` |         How the branch version should be enforced          |  **inject**   |
+|   `project-directory`    |       **string**        |           The directory containing `Cargo.toml`            |     **.**     |
 
 ## Further references
 
