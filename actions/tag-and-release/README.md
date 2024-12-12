@@ -2,14 +2,14 @@
 
 Creates a **Git** tag and a **GitHub** release, from a Git branch named according to [semver](https://semver.org/) - that is deleted during the process.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
   - uses: giancosta86/aurora-github/actions/tag-and-release@v8
 ```
 
-## Requirements
+## ☑️Requirements
 
 - This action can only be used in a workflow running while **merging a pull request** - unless its `dry-run` input is set to **true**; as a corollary, it cannot be run from the _default_ branch of the repository
 
@@ -25,7 +25,7 @@ steps:
 
 - The requirements discussed for [detect-branch-version](../detect-branch-version/README.md) also apply.
 
-## How it works
+## 💡How it works
 
 1. By default, delete the current Git branch.
 
@@ -45,7 +45,7 @@ steps:
 
 1. Optionally, _create or move_ the tag of the major version related to the current version - for example, `vX`.
 
-## Inputs 📥
+## 📥Inputs
 
 |          Name          |    Type     |                        Description                        | Default value |
 | :--------------------: | :---------: | :-------------------------------------------------------: | :-----------: |
@@ -54,14 +54,14 @@ steps:
 |    `set-major-tag`     | **boolean** | Create/move the `vX` tag to this commit (X=major version) |   **false**   |
 |       `dry-run`        | **boolean** |        Run the action without performing commands         |   **false**   |
 
-## Outputs 📤
+## 📤Outputs
 
 |     Name      |    Type    |               Description                |  Example   |
 | :-----------: | :--------: | :--------------------------------------: | :--------: |
 | `release-tag` | **string** | The Git tag associated with the release  | **v7.4.9** |
 |  `major-tag`  | **string** | The Git tag of the major version, if set |   **v7**   |
 
-## Further references
+## 🌐Further references
 
 - [semver](https://semver.org/)
 
