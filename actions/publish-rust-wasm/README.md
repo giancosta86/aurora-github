@@ -2,7 +2,7 @@
 
 Publishes a **Rust** web assembly to an [npm](https://www.npmjs.com/) registry.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -17,7 +17,7 @@ steps:
 
 **Please, note**: this action is designed for _publication_ only - not for verification: you might want to use [verify-rust-wasm](../verify-rust-wasm/README.md) for that.
 
-## How it works
+## 💡How it works
 
 1. Invoke the [install-wasm-pack](../install-wasm-pack/README.md) action, passing all the matching inputs, to install the `wasm-pack` command.
 
@@ -27,7 +27,7 @@ steps:
 
 1. Call [publish-npm-package](../publish-npm-package/README.md) on the **pkg** directory - passing all the matching inputs - to publish the npm package.
 
-## Requirements
+## ☑️Requirements
 
 - the `nodejs-version` input is required for the build process; optionally, you can set the `pnpm-version` input as well, in order to request a specific pnpm version.
 
@@ -39,7 +39,7 @@ steps:
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
-## Inputs 📥
+## 📥Inputs
 
 |           Name           |          Type           |                        Description                         | Default value |
 | :----------------------: | :---------------------: | :--------------------------------------------------------: | :-----------: |
@@ -54,7 +54,7 @@ steps:
 | `enforce-branch-version` | `inject`,`check`,`skip` |         How the branch version should be enforced          |  **inject**   |
 |   `project-directory`    |       **string**        |           The directory containing `Cargo.toml`            |     **.**     |
 
-## Further references
+## 🌐Further references
 
 - [generate-wasm-target](../generate-wasm-target/README.md)
 

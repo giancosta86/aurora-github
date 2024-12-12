@@ -70,6 +70,6 @@ In particular, the actions can be grouped by technology:
 
 - [install-system-packages](actions/install-system-packages/README.md)
 
-## Further references
+## 🌐Further references
 
 - [GitHub actions](https://docs.github.com/en/actions)

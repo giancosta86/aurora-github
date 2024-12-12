@@ -2,7 +2,7 @@
 
 Extracts the version from the name of the current **Git** branch, returning both.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -19,17 +19,17 @@ steps:
       echo "🔎Major component: '${major}'"
 ```
 
-## Requirements
+## ☑️Requirements
 
 - **Essential**: the branch name must have a [semantic version](https://semver.org/) format, optionally preceded by `v`. For example: `v1.0.2`.
 
 - the branch name is read from `github.head_ref` if such variable is available - because the action is especially designed for pull-request workflows - and from `github.ref` otherwise.
 
-## Inputs 📥
+## 📥Inputs
 
 _No inputs required._
 
-## Outputs 📤
+## 📤Outputs
 
 |       Name        |    Type    |                         Description                          |   Example   |
 | :---------------: | :--------: | :----------------------------------------------------------: | :---------: |
@@ -38,7 +38,7 @@ _No inputs required._
 | `escaped-version` | **string** |        The escaped version - for regular expressions         | **2\.4\.8** |
 |      `major`      | **string** |             The `major` component of the version             |    **2**    |
 
-## Further references
+## 🌐Further references
 
 - [semantic version](https://semver.org/)
 

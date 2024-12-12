@@ -2,7 +2,7 @@
 
 Uploads one or more asset files to a **GitHub** release.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -13,17 +13,17 @@ steps:
       source-directory: dist
 ```
 
-## How it works
+## 💡How it works
 
 This action calls the [gh release upload](https://cli.github.com/manual/gh_release_upload) command to upload the given files.
 
-## Requirements
+## ☑️Requirements
 
 - The `release-tag` input must be the tag of an existing release - which could be, for example, the `release-tag` output of the [tag-and-release](../tag-and-release/README.md) action.
 
 - The `files` input must be passed just like a string of relative file paths on the Bash command line.
 
-## Inputs 📥
+## 📥Inputs
 
 |        Name        |    Type     |                   Description                   | Default value |
 | :----------------: | :---------: | :---------------------------------------------: | :-----------: |
@@ -32,7 +32,7 @@ This action calls the [gh release upload](https://cli.github.com/manual/gh_relea
 |    `overwrite`     | **boolean** |    Overwrite existing assets in the release     |   **true**    |
 | `source-directory` | **string**  |         Directory containing the files          |     **.**     |
 
-## Further references
+## 🌐Further references
 
 - [tag-and-release](../tag-and-release/README.md)
 

@@ -2,7 +2,7 @@
 
 Executes arbitrary tests within a given directory; it runs a **shell** script by default, but can also run _pnpm_ (for **NodeJS**) or _cargo_ (for **Rust**).
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -19,7 +19,7 @@ steps:
 
 - This action is already called by [verify-npm-package](../verify-npm-package/README.md) to optionally run the tests in the **tests** directory.
 
-## How it works
+## 💡How it works
 
 1. If `root-directory` does not exist:
 
@@ -49,9 +49,9 @@ steps:
 
      - otherwise, crash the workflow
 
-## Requirements
+## ☑️Requirements
 
-## Inputs 📥
+## 📥Inputs
 
 |       Name       |    Type     |                  Description                  | Default value |
 | :--------------: | :---------: | :-------------------------------------------: | :-----------: |
@@ -60,7 +60,7 @@ steps:
 |  `script-shell`  | **string**  |      The shell used to run `script-file`      |   **bash**    |
 | `root-directory` | **string**  |      The directory containing the tests       |               |
 
-## Further references
+## 🌐Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 

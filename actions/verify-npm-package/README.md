@@ -4,7 +4,7 @@ Verifies the source files of a **NodeJS** package - by running its `verify` scri
 
 It is worth noting this action can support any technology - as long as you comply with the requirements described below.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -23,7 +23,7 @@ steps:
 }
 ```
 
-## How it works
+## 💡How it works
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
@@ -43,13 +43,13 @@ steps:
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
-## Requirements
+## ☑️Requirements
 
 - The entire verification process for the package must be triggered by the `verify` script in `package.json` (see the example).
 
 - The requirements for [setup-nodejs-context](../setup-nodejs-context/README.md).
 
-## Inputs 📥
+## 📥Inputs
 
 |           Name            |          Type           |                       Description                       |       Default value       |
 | :-----------------------: | :---------------------: | :-----------------------------------------------------: | :-----------------------: |
@@ -60,7 +60,7 @@ steps:
 |  `check-subpath-exports`  |       **boolean**       | Run `check-subpath-exports` after the **verify** script |         **true**          |
 |    `project-directory`    |       **string**        |         The directory containing `package.json`         |           **.**           |
 
-## Further references
+## 🌐Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 
