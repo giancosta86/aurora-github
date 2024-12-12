@@ -31,17 +31,28 @@ steps:
 
 1. Create a new tag - for example, `vX.Y.Z` - containing the semantic version inferred from the branch name.
 
+1. Generate the release notes - based on the Git commit list
+
+1. If `notes-file-processor` is not an empty string, it will be interpreted as the filename - relative to `project-directory` - of a **Bash** script that:
+
+   - must take in input (via `$1`) the path of the temporary file containing the generated release notes
+
+   - can arbitrarily alter the content of such file - and even call other interpreters
+
+   - does not need the `#!` prelude, nor the _executable flag_
+
 1. Create or draft a GitHub release.
 
 1. Optionally, _create or move_ the tag of the major version related to the current version - for example, `vX`.
 
 ## Inputs 📥
 
-|      Name       |    Type     |                        Description                        | Default value |
-| :-------------: | :---------: | :-------------------------------------------------------: | :-----------: |
-|  `draft-only`   | **boolean** |        Only draft the release - do not publish it         |   **false**   |
-| `set-major-tag` | **boolean** | Create/move the `vX` tag to this commit (X=major version) |   **false**   |
-|    `dry-run`    | **boolean** |        Run the action without performing commands         |   **false**   |
+|          Name          |    Type     |                        Description                        | Default value |
+| :--------------------: | :---------: | :-------------------------------------------------------: | :-----------: |
+|      `draft-only`      | **boolean** |        Only draft the release - do not publish it         |   **false**   |
+| `notes-file-processor` | **string**  |      Bash script editing the generated release notes      |               |
+|    `set-major-tag`     | **boolean** | Create/move the `vX` tag to this commit (X=major version) |   **false**   |
+|       `dry-run`        | **boolean** |        Run the action without performing commands         |   **false**   |
 
 ## Outputs 📤
 
