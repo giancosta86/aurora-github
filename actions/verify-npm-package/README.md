@@ -27,8 +27,6 @@ steps:
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
-1. Ensure that the package is based on **ESM** - via the `"type": "module"` attribute in `package.json`; this default behavior can be disabled.
-
 1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 1. Run `pnpm verify` - so that the related script in `package.json` can decide what to do.
@@ -56,7 +54,6 @@ steps:
 | `crash-on-critical-todos` |       **boolean**       |     Crash the workflow if critical TODOs are found      |         **true**          |
 |    `source-file-regex`    |       **string**        |        PCRE pattern describing the source files         | view [source](action.yml) |
 | `enforce-branch-version`  | `inject`,`check`,`skip` |        How the branch version should be enforced        |        **inject**         |
-|       `enforce-esm`       |       **boolean**       | Verify that the package.json `type` field is **module** |         **true**          |
 |  `check-subpath-exports`  |       **boolean**       | Run `check-subpath-exports` after the **verify** script |         **true**          |
 |    `project-directory`    |       **string**        |         The directory containing `package.json`         |           **.**           |
 

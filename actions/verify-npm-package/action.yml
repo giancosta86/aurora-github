@@ -14,10 +14,6 @@ inputs:
     description: How the branch version should be enforced.
     default: inject
 
-  enforce-esm:
-    description: Verify that the "type" field is "module" - to create an ESM package.
-    default: true
-
   check-subpath-exports:
     description: Run check-subpath-exports after the "verify" package script.
     default: true
@@ -51,12 +47,6 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.enforce-esm }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-esm'!" >&2
-          exit 1
-        fi
-
         if [[ -z "${{ inputs.check-subpath-exports }}" ]]
         then
           echo "❌Missing action input: 'check-subpath-exports'!" >&2
@@ -74,24 +64,6 @@ runs:
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
-
-    - name: Enforce ESM
-      if: ${{ inputs.enforce-esm == 'true' }}
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        packageType="$(jq -r .type package.json)"
-        expectedType="module"
-
-        echo "🔎Detected package type: '$packageType'"
-
-        if [[ "$packageType" == "$expectedType" ]]
-        then
-          echo "✅This npm package is based on ESM!"
-        else
-          echo "❌The package type must be '$expectedType'!" >&2
-          exit 1
-        fi
 
     - name: Setup NodeJS context
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v8.0.0
