@@ -59,13 +59,13 @@ runs:
         fi
 
     - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v8.0.0
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v8.0.1
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
     - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v8.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v8.0.1
       with:
         project-directory: ${{ inputs.project-directory }}
 
@@ -82,7 +82,7 @@ runs:
         fi
 
     - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v8.0.0
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v8.0.1
       with:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
