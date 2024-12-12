@@ -31,7 +31,7 @@ steps:
 
 1. Run `publish-github-pages` with the `optional` flag enabled.
 
-1. If the `.npmrc` file does not exist, generate a new one - publishing to the official npm registry and using the **NPM_TOKEN** environment variable as the authentication token.
+1. If the `.npmrc` file does not exist, generate a new one - publishing to the official npm registry and using the **NPM_TOKEN** environment variable as the authentication token. The `.npmrc` file will be displayed only if auto-generated.
 
 1. Run `pnpm publish`, with the value of `npm-token` injected into the **NPM_TOKEN** environment variable - accessible, for example, from the `.npmrc` configuration file.
 

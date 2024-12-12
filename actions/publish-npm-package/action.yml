@@ -108,11 +108,13 @@ runs:
           echo "🌟It seems you don't have a $npmConfigPath file - generating a default one..."
 
           echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > "$npmConfigPath"
-        fi
 
-        echo "🎀The content of the $npmConfigPath configuration file is:"
-        cat "$npmConfigPath"
-        echo "🎀🎀🎀"
+          echo "🎀Your auto-generated $npmConfigPath configuration file is:"
+          cat "$npmConfigPath"
+          echo "🎀🎀🎀"
+        else
+          echo "🌟You already have a custom $npmConfigPath file - ready to publish!"
+        fi
 
     - name: Publish to the registry
       shell: bash
