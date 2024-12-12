@@ -2,7 +2,7 @@
 
 Conditionally installs **NodeJS** along with **pnpm**, as well as the dependencies listed in **package.json**.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -13,7 +13,7 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md) and [publish-npm-package](../publish-npm-package/README.md).
 
-## How it works
+## 💡How it works
 
 1. If **package.json** - which must exist - declares the following field:
 
@@ -51,7 +51,7 @@ steps:
 
    - 🌞 otherwise, `--no-frozen-lockfile` is passed explicitly
 
-## Requirements
+## ☑️Requirements
 
 - The **package.json** descriptor must exist in `project-directory`.
 
@@ -59,13 +59,13 @@ steps:
 
 - If the **pnpm-lock.yaml** file exists, it must be up-to-date - because it's considered _frozen_.
 
-## Inputs 📥
+## 📥Inputs
 
 |        Name         |    Type    |               Description               | Default value |
 | :-----------------: | :--------: | :-------------------------------------: | :-----------: |
 | `project-directory` | **string** | The directory containing `package.json` |     **.**     |
 
-## Further references
+## 🌐Further references
 
 - [verify-npm-package](../verify-npm-package/README.md)
 

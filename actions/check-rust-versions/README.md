@@ -2,7 +2,7 @@
 
 Displays the current version of the main **Rust** components, after ensuring that `rust-toolchain.toml` is in the project directory.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -11,7 +11,7 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).
 
-## Requirements
+## ☑️Requirements
 
 - the [toolchain file](https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file) file must exist within `project-directory`.
 
@@ -22,13 +22,13 @@ steps:
   channel = "1.80.0"
   ```
 
-## Inputs 📥
+## 📥Inputs
 
 |        Name         |    Type    |                 Description                 | Default value |
 | :-----------------: | :--------: | :-----------------------------------------: | :-----------: |
 | `project-directory` | **string** | The directory containing the toolchain file |     **.**     |
 
-## Further references
+## 🌐Further references
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 

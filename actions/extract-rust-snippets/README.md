@@ -2,7 +2,7 @@
 
 Extracts **Rust** code snippets from a **Markdown** file to standalone test files.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -11,7 +11,7 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).
 
-## Requirements
+## ☑️Requirements
 
 - each code snippet must reside in a ` ```rust` code block and must define a `main()`function returning a type supporting`.unwrap()`, such as `Result<(), Box<dyn Error>`:
 
@@ -28,7 +28,7 @@ steps:
 
 - the Markdown file must exist, but it is not required to contain code snippets: in this case, no test file will be generated.
 
-## How it works
+## 💡How it works
 
 The action extracts each Rust snippet from the given Markdown file, creating a test file containing:
 
@@ -49,7 +49,7 @@ Each test file has this relative path:
 
 where `N` is the position of the snippet within the Markdown content, starting from **1**.
 
-## Inputs 📥
+## 📥Inputs
 
 |          Name          |    Type    |                        Description                         |      Default value      |
 | :--------------------: | :--------: | :--------------------------------------------------------: | :---------------------: |
@@ -57,7 +57,7 @@ where `N` is the position of the snippet within the Markdown content, starting f
 | `test-filename-prefix` | **string** |  Relative path prefix for each generated test source file  | **tests/readme_test\_** |
 |  `project-directory`   | **string** |            The directory containing Cargo.toml             |          **.**          |
 
-## Further references
+## 🌐Further references
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 

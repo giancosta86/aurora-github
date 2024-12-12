@@ -2,7 +2,7 @@
 
 Parses a mandatory [npm scope](https://docs.npmjs.com/cli/v10/using-npm/scope) declaration.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -12,7 +12,7 @@ steps:
       scope: giancosta86
 ```
 
-## Requirements
+## ☑️Requirements
 
 - The `scope` input _must_ be declared. It can be:
 
@@ -20,19 +20,19 @@ steps:
 
   - the _package scope_ as a string, with an optional leading `@`
 
-## Inputs 📥
+## 📥Inputs
 
 |  Name   |    Type    |      Description       | Default value |
 | :-----: | :--------: | :--------------------: | :-----------: |
 | `scope` | **string** | The npm scope to parse |               |
 
-## Outputs 📤
+## 📤Outputs
 
 |      Name      |    Type    |                        Description                        |     Example     |
 | :------------: | :--------: | :-------------------------------------------------------: | :-------------: |
 | `actual-scope` | **string** | The scope without '@', or the empty string for root scope | **giancosta86** |
 
-## Further references
+## 🌐Further references
 
 - [npm scope](https://docs.npmjs.com/cli/v10/using-npm/scope)
 

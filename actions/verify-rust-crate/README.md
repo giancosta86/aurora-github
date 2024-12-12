@@ -2,7 +2,7 @@
 
 Verifies the source files of a **Rust** crate.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -13,7 +13,7 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md).
 
-## How it works
+## 💡How it works
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
@@ -33,11 +33,11 @@ steps:
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
-## Requirements
+## ☑️Requirements
 
 - `rust-toolchain.toml` must be present in `project-directory` - as described in [check-rust-versions](../check-rust-versions/README.md)
 
-## Inputs 📥
+## 📥Inputs
 
 |           Name            |          Type           |                    Description                    |       Default value       |
 | :-----------------------: | :---------------------: | :-----------------------------------------------: | :-----------------------: |
@@ -48,7 +48,7 @@ steps:
 | `enforce-branch-version`  | `inject`,`check`,`skip` |     How the branch version should be enforced     |        **inject**         |
 |    `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
 
-## Further references
+## 🌐Further references
 
 - [extract-rust-snippets](../extract-rust-snippets/README.md)
 
