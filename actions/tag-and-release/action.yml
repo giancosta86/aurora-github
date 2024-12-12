@@ -6,6 +6,9 @@ inputs:
     description: Only draft the release - do not publish it.
     default: false
 
+  notes-file-processor:
+    description: Bash script editing the generated release notes.
+
   set-major-tag:
     description: Create/move the 'vX' tag to this commit (X=major version).
     default: false
@@ -188,6 +191,20 @@ runs:
 
           local releaseNotesFile="$(mktemp)"
           generateReleaseNotes "$releaseNotesFile"
+
+          notesFileProcessor=${{ inputs.notes-file-processor }}
+          if [[ -n "$notesFileProcessor" ]]
+          then
+            echo "🖋Release notes file processor found: '$notesFileProcessor'"
+
+            bash "$notesFileProcessor" "$releaseNotesFile"
+
+            echo "🎀Processed release notes:"
+            cat "$releaseNotesFile"
+            echo "🎀🎀🎀"
+          else
+            echo "💭No release notes file processor..."
+          fi
 
           if [[ "$draftOnly" == "true" ]]
           then
