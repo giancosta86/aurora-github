@@ -32,6 +32,7 @@ runs:
         dry-run: true
         draft-only: false
         set-major-tag: true
+        notes-file-processor: .github/process-release-notes.sh
 
     - uses: ./actions/detect-branch-version
       id: version-detector
