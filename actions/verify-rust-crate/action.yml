@@ -64,13 +64,13 @@ runs:
         fi
 
     - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v8.0.0
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v8.0.1
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
     - name: Check Rust versions
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v8.0.0
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v8.0.1
       with:
         project-directory: ${{ inputs.project-directory }}
 
@@ -109,7 +109,7 @@ runs:
 
     - name: Extract code snippets as tests from README.md
       if: ${{ steps.detect-readme.outputs.readme-exists == 'true' }}
-      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v8.0.0
+      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v8.0.1
       with:
         project-directory: ${{ inputs.project-directory }}
 
@@ -139,7 +139,7 @@ runs:
         echo "✅Doctests with all the features OK!"
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v8.0.0
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v8.0.1
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
