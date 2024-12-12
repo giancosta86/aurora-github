@@ -17,3 +17,4 @@ jobs:
       - uses: ./actions/tag-and-release
         with:
           set-major-tag: true
+          notes-file-processor: .github/process-release-notes.sh
