@@ -2,7 +2,7 @@
 
 Verifies that all the [subpath exports](https://nodejs.org/api/packages.html#subpath-exports) in **package.json** actually match existing files.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -11,17 +11,17 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md).
 
-## Requirements
+## ☑️Requirements
 
 - The `jq` command (especially version **1.7**) must be available in the operating system.
 
-## Inputs 📥
+## 📥Inputs
 
 |        Name         |    Type    |               Description               | Default value |
 | :-----------------: | :--------: | :-------------------------------------: | :-----------: |
 | `project-directory` | **string** | The directory containing `package.json` |     **.**     |
 
-## Further references
+## 🌐Further references
 
 - [package.json - subpath exports](https://nodejs.org/api/packages.html#subpath-exports)
 

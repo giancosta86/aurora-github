@@ -2,7 +2,7 @@
 
 Publishes a **Rust** crate - by default, to [crates.io](https://crates.io/) - with all of its features enabled.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -15,7 +15,7 @@ steps:
 
 **Please, note**: this action is designed for _publication_ only - not for _verification_: you may want to use [verify-rust-crate](../verify-rust-crate/README.md) for that.
 
-## How it works
+## 💡How it works
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
@@ -23,7 +23,7 @@ steps:
 
 1. Run `cargo publish`, with the `--all-features` flag
 
-## Requirements
+## ☑️Requirements
 
 - `cargo-token` is _not_ mandatory when `dry-run` is enabled.
 
@@ -31,7 +31,7 @@ steps:
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
-## Inputs 📥
+## 📥Inputs
 
 |           Name           |          Type           |                            Description                            | Default value |
 | :----------------------: | :---------------------: | :---------------------------------------------------------------: | :-----------: |
@@ -42,7 +42,7 @@ steps:
 | `enforce-branch-version` | `inject`,`check`,`skip` |             How the branch version should be enforced             |  **inject**   |
 |   `project-directory`    |       **string**        |               The directory containing `Cargo.toml`               |     **.**     |
 
-## Further references
+## 🌐Further references
 
 - [publish-github-pages](../publish-github-pages/README.md)
 

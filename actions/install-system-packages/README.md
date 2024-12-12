@@ -2,7 +2,7 @@
 
 Installs software using the platform's package manager.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -11,20 +11,20 @@ steps:
       packages: moreutils
 ```
 
-## Requirements
+## ☑️Requirements
 
 This action currently requires an operating system with the `apt-get` package manager.
 
-## How it works
+## 💡How it works
 
 This action installs the requested packages as **root**, without asking for confirmation.
 
-## Inputs 📥
+## 📥Inputs
 
 |    Name    |    Type    |                        Description                         | Default value |
 | :--------: | :--------: | :--------------------------------------------------------: | :-----------: |
 | `packages` | **string** | The packages to install, separated by any spaces or commas |               |
 
-## Further references
+## 🌐Further references
 
 - [aurora-github](../../README.md)

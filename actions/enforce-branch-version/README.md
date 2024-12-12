@@ -2,7 +2,7 @@
 
 Ensures that the version in the artifact descriptor matches the **Git** branch version - by injecting or merely by checking.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -29,7 +29,7 @@ and indirectly by:
 
 - [publish-rust-wasm](../publish-rust-wasm/README.md)
 
-## How it works
+## 💡How it works
 
 1. If `mode` is **skip**, just exit the action flow.
 
@@ -59,11 +59,11 @@ and indirectly by:
 
         - for any other technology, verify that the branch version exists at least once in the descriptor
 
-## Requirements
+## ☑️Requirements
 
 - The `artifact-descriptor` - no matter whether declared or detected - must exist in the file system.
 
-## Inputs 📥
+## 📥Inputs
 
 |         Name          |          Type           |                Description                | Default value |
 | :-------------------: | :---------------------: | :---------------------------------------: | :-----------: |
@@ -71,7 +71,7 @@ and indirectly by:
 | `artifact-descriptor` |       **string**        | Relative path to the artifact descriptor  |               |
 |  `project-directory`  |       **string**        |   The directory containing the project    |     **.**     |
 
-## Further references
+## 🌐Further references
 
 - [verify-npm-package](../verify-npm-package/README.md)
 

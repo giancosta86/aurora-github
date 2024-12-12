@@ -2,7 +2,7 @@
 
 Installs [wasm-pack](https://rustwasm.github.io/wasm-pack/), for creating **Rust**-based web assemblies.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -11,13 +11,13 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
 
-## Inputs 📥
+## 📥Inputs
 
 |        Name         |    Type    |           Description            | Default value |
 | :-----------------: | :--------: | :------------------------------: | :-----------: |
 | `wasm-pack-version` | **string** | The wasm-pack version to install |               |
 
-## Further references
+## 🌐Further references
 
 - [verify-rust-wasm](../verify-rust-wasm/README.md)
 

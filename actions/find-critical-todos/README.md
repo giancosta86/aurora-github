@@ -2,7 +2,7 @@
 
 Looks for _critical TODOs_ - that is, instances of the `TODO!` string - in source files.
 
-## Example
+## 🃏Example
 
 ```yaml
 steps:
@@ -13,7 +13,7 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md), [verify-npm-package](../verify-npm-package/README.md) and [verify-rust-wasm](../verify-rust-wasm/README.md).
 
-## Inputs 📥
+## 📥Inputs
 
 |        Name         |    Type     |                            Description                            | Default value |
 | :-----------------: | :---------: | :---------------------------------------------------------------: | :-----------: |
@@ -25,13 +25,13 @@ steps:
 
 **Please, note**: `source-file-regex` should be designed keeping in mind that it will be applied to a path _always_ relative to `root-directory` and _always_ starting with `./`.
 
-## Outputs 📤
+## 📤Outputs
 
 |  Name   |    Type     |                                 Description                                  |  Example  |
 | :-----: | :---------: | :--------------------------------------------------------------------------: | :-------: |
 | `found` | **boolean** | **true** if at least one `TODO!` was found in some file, **false** otherwise | **false** |
 
-## Further references
+## 🌐Further references
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 
