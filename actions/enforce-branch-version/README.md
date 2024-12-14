@@ -21,6 +21,10 @@ steps:
 
 - [publish-rust-crate](../publish-rust-crate/README.md)
 
+- [verify-jvm-project](../verify-jvm-project/README.md)
+
+- [publish-jvm-project](../publish-jvm-project/README.md)
+
 - [publish-github-pages](../publish-github-pages/README.md)
 
 and indirectly by:
@@ -39,6 +43,10 @@ and indirectly by:
 
    - **Cargo.toml** - for 🦀**Rust**
 
+   - **pom.xml** - for 🪶**Maven**
+
+   - **build.gradle** or **build.gradle.kts** - for 🐘**Gradle**
+
 1. Evaluate the `mode` input:
 
    - If the value is **inject**:
@@ -56,6 +64,10 @@ and indirectly by:
         - for 📦**NodeJS**, check the **version** field in **package.json**
 
         - for 🦀**Rust**, check the **version** field in **Cargo.toml**
+
+        - for 🪶**Maven**, check the `<version>` field in **pom.xml**
+
+        - for 🐘**Gradle**, check the `version` field in **build.gradle** or **build.gradle.kts**
 
         - for any other technology, verify that the branch version exists at least once in the descriptor
 
@@ -80,6 +92,10 @@ and indirectly by:
 - [verify-rust-crate](../verify-rust-crate/README.md)
 
 - [publish-rust-crate](../publish-rust-crate/README.md)
+
+- [verify-jvm-project](../verify-jvm-project/README.md)
+
+- [publish-jvm-project](../publish-jvm-project/README.md)
 
 - [publish-github-pages](../publish-github-pages/README.md)
 
