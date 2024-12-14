@@ -4,15 +4,21 @@ _Elegant workflows for GitHub Actions_
 
 ![Schema](docs/schema.png)
 
-**aurora-github** is a gallery of GitHub actions designed to create elegant and minimalist _pipelines_ for a variety of technologies - focusing on [GitHub flow](https://docs.github.com/en/get-started/using-github/github-flow) best practices such as _default branch protection_, _pull requests_ and _convention-over-configuration_.
+**aurora-github** is a gallery of GitHub actions designed to create elegant and minimalist _pipelines_ for a variety of technologies - focusing on best practices such as _default branch protection_, _pull requests_ and _convention-over-configuration_.
 
-In particular, the actions can be grouped by technology:
+In particular, for most actions **it is essential to name branches according to semantic versioning** - like `v4.2.7`: this ensures a smooth workflow while remaning largely compatible with other flows - for example, multiple _feature branches_ can stem from a given _version branch_.
 
-## 🦀Rust crate
+The actions can be grouped by technology:
+
+## 🦀Rust
 
 - [verify-rust-crate](actions/verify-rust-crate/README.md)
 
 - [publish-rust-crate](actions/publish-rust-crate/README.md)
+
+- [check-rust-versions](actions/check-rust-versions/README.md)
+
+- [extract-rust-snippets](actions/extract-rust-snippets/README.md)
 
 ## 📦NodeJS package
 
@@ -24,21 +30,43 @@ In particular, the actions can be grouped by technology:
 
 - [check-subpath-exports](actions/check-subpath-exports/README.md)
 
+- [setup-nodejs-context](actions/setup-nodejs-context/README.md)
+
+- [parse-npm-scope](actions/parse-npm-scope/README.md)
+
 ## 🦀Rust 🌐WebAssembly
 
 - [verify-rust-wasm](actions/verify-rust-wasm/README.md)
 
 - [publish-rust-wasm](actions/publish-rust-wasm/README.md)
 
+- [install-wasm-pack](actions/install-wasm-pack/README.md)
+
 - [generate-wasm-target](actions/generate-wasm-target/README.md)
 
-## 😺GitHub Actions
+## ☕Java ecosystem
+
+- [verify-jvm-project](actions/verify-jvm-project/README.md)
+
+- [publish-jvm-project](actions/publish-jvm-project/README.md)
+
+- [install-via-sdkman](actions/install-via-sdkman/README.md)
+
+## 🐍Python
+
+- [verify-python-package](actions/verify-python-package/README.md)
+
+- [publish-python-package](actions/publish-python-package/README.md)
+
+## 😺GitHub
 
 - [check-action-references](actions/check-action-references/README.md)
 
 - [publish-github-pages](actions/publish-github-pages/README.md)
 
 - [run-custom-tests](actions/run-custom-tests/README.md)
+
+- [check-project-license](actions/check-project-license/README.md)
 
 ## 🏷️Semantic versioning
 
@@ -49,20 +77,6 @@ In particular, the actions can be grouped by technology:
 - [tag-and-release](actions/tag-and-release/README.md)
 
 - [upload-release-assets](actions/upload-release-assets/README.md)
-
-## 🦀Rust utilities
-
-- [check-rust-versions](actions/check-rust-versions/README.md)
-
-- [extract-rust-snippets](actions/extract-rust-snippets/README.md)
-
-- [install-wasm-pack](actions/install-wasm-pack/README.md)
-
-## 📦NodeJS utilities
-
-- [setup-nodejs-context](actions/setup-nodejs-context/README.md)
-
-- [parse-npm-scope](actions/parse-npm-scope/README.md)
 
 ## 🧰General-purpose utilities
 
