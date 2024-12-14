@@ -1,0 +1,80 @@
+name: Install SDK via SDKMAN!.
+description: Installs the requested SDK using SDKMAN!.
+
+inputs:
+  candidate:
+    description: Identifier (in SDKMAN!) of the SDK to install.
+
+  version:
+    description: Identifier (in SDKMAN!) of the version .
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      run: |
+        if [[ -z "${{ inputs.candidate }}" ]]
+        then
+          echo "❌Missing action input: 'candidate'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.version }}" ]]
+        then
+          echo "❌Missing action input: 'version'!" >&2
+          exit 1
+        fi
+
+    - name: Setup environment variables
+      shell: bash
+      run: |
+        sdkmanHome="$HOME/.sdkman"
+
+        echo "sdkmanHome=$sdkmanHome" >> $GITHUB_ENV
+
+    - name: Ensure SDKMAN! is installed
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if type -t sdk
+        then
+          echo "🚀It seems SDKMAN! is already installed and ready to run!"
+          exit 0
+        fi
+
+        if [[ -d "$sdkmanHome" ]]
+        then
+          echo "☑It seems that SDKMAN! was previously installed"
+          exit 0
+        fi
+
+        echo "📥Installing SDKMAN!..."
+
+        curl -s "https://get.sdkman.io" | bash
+
+        echo "🚀SDKMAN installed!"
+
+    - name: Install the requested candidate
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        candidate="${{ inputs.candidate }}"
+        version="${{ inputs.version }}"
+
+        if ! type -t sdk
+        then
+          echo '🚀Setting up SDKMAN!...'
+
+          source "$sdkmanHome/bin/sdkman-init.sh"
+
+          echo "✅SDKMAN! ready!"
+        fi
+
+        echo "📥Installing $candidate($version)..."
+
+        sdk install "$candidate" "$version"
+
+        echo "PATH=$sdkmanHome/candidates/candidate/$version:$PATH" >> $GITHUB_ENV
+
+        echo "✅$candidate($version) installed!"
