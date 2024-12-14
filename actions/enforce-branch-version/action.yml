@@ -57,6 +57,18 @@ runs:
           then
             echo "🦀Cargo.toml descriptor for Rust detected!"
             artifactDescriptor="Cargo.toml"
+          elif [[ -f "pom.xml" ]]
+          then
+            echo "🪶pom.xml descriptor for Maven detected!"
+            artifactDescriptor="pom.xml"
+          elif [[ -f "build.gradle" ]]
+          then
+            echo "🐘build.gradle descriptor for Gradle detected!"
+            artifactDescriptor="build.gradle"
+          elif [[ -f "build.gradle.kts" ]]
+          then
+            echo "🐘build.gradle.kts descriptor for Gradle detected!"
+            artifactDescriptor="build.gradle.kts"
           else
             echo "💭No supported descriptors found..."
             artifactDescriptor=""
@@ -93,6 +105,14 @@ runs:
             tech="rust"
             ;;
 
+          pom.xml)
+            tech="maven"
+            ;;
+
+          build.gradle | build.gradle.kts)
+            tech="gradle"
+            ;;
+
           *)
             tech=""
         esac
@@ -123,19 +143,31 @@ runs:
       run: |
         case "$tech" in
           nodejs)
-            echo "📦NodeJS descriptor:"
+            echo "📦NodeJS descriptor ($artifactDescriptor):"
             jq -C . "$artifactDescriptor"
             echo "📦📦📦"
             ;;
 
           rust)
-            echo "🦀Rust crate descriptor:"
+            echo "🦀Rust crate descriptor ($artifactDescriptor):"
             cat "$artifactDescriptor"
             echo "🦀🦀🦀"
             ;;
 
+          maven)
+            echo "🪶Maven project descriptor ($artifactDescriptor):"
+            cat "$artifactDescriptor"
+            echo "🪶🪶🪶"
+            ;;
+
+          gradle)
+            echo "🐘Gradle project descriptor ($artifactDescriptor):"
+            cat "$artifactDescriptor"
+            echo "🐘🐘🐘"
+            ;;
+
           *)
-            echo "🎁Unknown tech descriptor:"
+            echo "🎁Unknown tech descriptor ($artifactDescriptor):"
             cat "$artifactDescriptor"
             echo "🎁🎁🎁"
         esac
@@ -159,6 +191,34 @@ runs:
         echo "📤Extracting the artifact version from the 🦀Rust descriptor ('$artifactDescriptor')..."
 
         artifactVersion="$(grep '^version' Cargo.toml | cut -d '"' -f2)"
+
+        echo "artifactVersion=$artifactVersion" >> $GITHUB_ENV
+
+    - name: Extract the Maven project version
+      if: ${{ inputs.mode == 'check' && env.tech == 'maven' }}
+      shell: python
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        import os
+        import xml.etree.ElementTree as ET
+
+        tree = ET.parse('pom.xml')
+        root = tree.getroot()
+        namespaces = {'mvn': root.tag.split('}')[0].strip('{}')}
+
+        version = root.find('.//mvn:version', namespaces).text
+
+        with open(os.environ['GITHUB_ENV'], 'a') as env_file:
+            env_file.write(f"version={version}\n")
+
+    - name: Extract the Gradle project version
+      if: ${{ inputs.mode == 'check' && env.tech == 'gradle' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "📤Extracting the artifact version from the 🐘Gradle descriptor ('$artifactDescriptor')..."
+
+        artifactVersion="$(cat build.gradle.kts |  grep -P '^version\s+=\s+["'\''].+?["'\'']$' | cut -d '=' -f 2 | sed "s/[\"' ]//g")"
 
         echo "artifactVersion=$artifactVersion" >> $GITHUB_ENV
 

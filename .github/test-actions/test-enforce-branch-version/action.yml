@@ -36,6 +36,22 @@ runs:
         project-directory: tests/rust-wasm
 
     - shell: bash
+      run: echo "🎭Testing 'inject' mode for 🪶Maven project..."
+
+    - uses: ./actions/enforce-branch-version
+      with:
+        mode: inject
+        project-directory: tests/maven-project
+
+    - shell: bash
+      run: echo "🎭Testing 'inject' mode for 🐘Gradle project..."
+
+    - uses: ./actions/enforce-branch-version
+      with:
+        mode: inject
+        project-directory: tests/gradle-project
+
+    - shell: bash
       run: echo "🎭Testing 'inject' mode for 🎁unknown tech stack..."
 
     - uses: ./actions/enforce-branch-version
@@ -67,6 +83,22 @@ runs:
       with:
         mode: check
         project-directory: tests/rust-wasm
+
+    - shell: bash
+      run: echo "🎭Testing 'check' mode for 🪶Maven project..."
+
+    - uses: ./actions/enforce-branch-version
+      with:
+        mode: check
+        project-directory: tests/maven-project
+
+    - shell: bash
+      run: echo "🎭Testing 'check' mode for 🐘Gradle project..."
+
+    - uses: ./actions/enforce-branch-version
+      with:
+        mode: check
+        project-directory: tests/gradle-project
 
     - shell: bash
       run: echo "🎭Testing 'check' mode for 🎁unknown tech stack..."
