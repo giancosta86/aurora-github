@@ -32,6 +32,14 @@ In particular, the actions can be grouped by technology:
 
 - [generate-wasm-target](actions/generate-wasm-target/README.md)
 
+## ☕Java ecosystem
+
+- [verify-jvm-project](actions/verify-jvm-project/README.md)
+
+- [publish-jvm-project](actions/publish-jvm-project/README.md)
+
+- [install-via-sdkman](actions/install-via-sdkman/README.md)
+
 ## 😺GitHub Actions
 
 - [check-action-references](actions/check-action-references/README.md)
