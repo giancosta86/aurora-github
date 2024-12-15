@@ -148,12 +148,12 @@ jobs:
   #     - uses: actions/checkout@v4
   #     - uses: ./.github/test-actions/test-verify-maven-project
 
-  test-install-system-packages:
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-install-system-packages
+  # test-install-system-packages:
+  #   runs-on: ubuntu-24.04
+  #   needs: test-check-action-references
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-install-system-packages
 
   # test-inject-subpath-exports:
   #   runs-on: ubuntu-24.04
@@ -210,6 +210,13 @@ jobs:
   #     - uses: actions/checkout@v4
   #     - uses: ./.github/test-actions/test-upload-release-assets
 
+  test-install-via-sdkman:
+    runs-on: ubuntu-24.04
+    needs: test-check-action-references
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-install-via-sdkman
+
   verify:
     runs-on: ubuntu-24.04
     needs:
@@ -230,13 +237,14 @@ jobs:
       # - test-verify-rust-wasm
       # - test-publish-rust-wasm
       # - test-verify-maven-project
-      - test-install-system-packages
+      # - test-install-system-packages
       # - test-inject-subpath-exports
       # - test-check-subpath-exports
       # - test-setup-nodejs-context
       # - test-publish-github-pages
       # - test-run-custom-tests
       # - test-upload-release-assets
+      - test-install-via-sdkman
 
     steps:
       - name: Show completion message
