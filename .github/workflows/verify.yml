@@ -27,6 +27,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-find-critical-todos
 
+  test-enforce-branch-version:
+    runs-on: ubuntu-24.04
+    needs: test-check-action-references
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-enforce-branch-version
+
   test-tag-and-release:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
@@ -47,13 +54,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-check-rust-versions
-
-  test-enforce-branch-version:
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-enforce-branch-version
 
   test-extract-rust-snippets:
     runs-on: ubuntu-24.04
@@ -139,6 +139,15 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-publish-rust-wasm
 
+  test-verify-maven-project:
+    runs-on: ubuntu-24.04
+    needs:
+      - test-enforce-branch-version
+      - test-find-critical-todos
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-verify-maven-project
+
   test-install-system-packages:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
@@ -207,10 +216,10 @@ jobs:
       - test-detect-branch-version
       - test-check-action-references
       - test-find-critical-todos
+      - test-enforce-branch-version
       - test-tag-and-release
       - test-install-wasm-pack
       - test-check-rust-versions
-      - test-enforce-branch-version
       - test-extract-rust-snippets
       - test-verify-npm-package
       - test-publish-npm-package
@@ -220,6 +229,7 @@ jobs:
       - test-generate-wasm-target
       - test-verify-rust-wasm
       - test-publish-rust-wasm
+      - test-verify-maven-project
       - test-install-system-packages
       - test-inject-subpath-exports
       - test-check-subpath-exports
