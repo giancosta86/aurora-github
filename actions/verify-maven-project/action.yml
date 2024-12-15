@@ -1,0 +1,109 @@
+name: Verify Maven project
+description: Verifies the source files of a Maven project.
+
+inputs:
+  java-version:
+    description: Java version (in SDKMAN) to install.
+
+  maven-version:
+    description: Maven version (in SDKMAN) to install.
+
+  maven-quiet:
+    description: Run Maven in quiet (-q) mode
+    default: true
+
+  crash-on-critical-todos:
+    description: Crash the workflow if critical TODOs are found.
+    default: true
+
+  source-file-regex:
+    description: PCRE pattern describing the source files.
+    default: '^\.\/src\/.+\.(java|scala|kt)$'
+
+  enforce-branch-version:
+    description: How the branch version should be enforced.
+    default: inject
+
+  project-directory:
+    description: The directory containing pom.xml.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -z "${{ inputs.maven-quiet }}" ]]
+        then
+          echo "❌Missing action input: 'maven-quiet'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
+        then
+          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.source-file-regex }}" ]]
+        then
+          echo "❌Missing action input: 'source-file-regex'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
+        then
+          echo "❌Missing action input: 'enforce-branch-version'!" >&2
+          exit 1
+        fi
+
+    - name: Enforce branch version
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v8.1.0
+      with:
+        mode: ${{ inputs.enforce-branch-version }}
+        project-directory: ${{ inputs.project-directory }}
+
+    - name: Install Java
+      if: ${{ inputs.java-version != '' }}
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v8.1.0
+      with:
+        candidate: java
+        version: ${{ inputs.java-version }}
+
+    - name: Install Maven
+      if: ${{ inputs.maven-version != '' }}
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v8.1.0
+      with:
+        candidate: maven
+        version: ${{ inputs.maven-version }}
+
+    - name: Run Maven
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ "${{ inputs.maven-quiet }}" == "true" ]]
+        then
+          quietArg="-q"
+        else
+          quietArg=""
+        fi
+
+        echo "🪶Running Maven to verify the project..."
+
+        mvn -B $quietArg verify
+
+        echo "✅Verification successful!"
+
+    - name: Check for critical TODOs
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v8.1.0
+      with:
+        source-file-regex: ${{ inputs.source-file-regex }}
+        crash-on-found: ${{ inputs.crash-on-critical-todos }}
+        display-lines: true
+        root-directory: ${{ inputs.project-directory }}
+
+    - name: Print confirmation message
+      shell: bash
+      run: echo "✅Maven project verified!"
