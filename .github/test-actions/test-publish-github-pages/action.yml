@@ -7,10 +7,18 @@ runs:
       run: echo "🎭Now publishing static files with dry-run enabled..."
 
     - name: A static website should be publishable
-      id: publish-static-pages
       uses: ./actions/publish-github-pages
       with:
         source-directory: website/static
+        dry-run: true
+
+    - shell: bash
+      run: echo "🎭Now publishing a Maven-generated site with dry-run enabled..."
+
+    - name: A Maven-generated website should be publishable
+      uses: ./actions/publish-github-pages
+      with:
+        source-directory: tests/maven-project
         dry-run: true
 
     - shell: bash
