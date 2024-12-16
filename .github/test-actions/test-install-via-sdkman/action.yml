@@ -1,0 +1,41 @@
+name: Test install-via-sdkman
+
+runs:
+  using: composite
+  steps:
+    - name: Setup environment variables
+      shell: bash
+      run: echo "expectedMavenVersion=3.9.9" >> $GITHUB_ENV
+
+    - name: Ensure the expected Maven version is not installed
+      shell: bash
+      run: |
+        mavenVersion="$(mvn --version | head -n 1 | cut -d ' ' -f 3)"
+
+        echo "🔎Initial Maven version: '$mavenVersion'"
+
+        if [[ "$mavenVersion" == "$expectedMavenVersion" ]]
+        then
+          echo "❌The installed Maven version coincides with the expected one, making the test meaningless"
+          exit 1
+        fi
+
+    - uses: ./actions/install-via-sdkman
+      with:
+        candidate: maven
+        version: ${{ env.expectedMavenVersion }}
+
+    - name: The expected Maven version should be available
+      shell: bash
+      run: |
+        mavenVersion="$(mvn --version | head -n 1 | cut -d ' ' -f 3)"
+
+        echo "🔎Detected Maven version: '$mavenVersion'"
+
+        if [[ "$mavenVersion" == "$expectedMavenVersion" ]]
+        then
+          echo "✅The requested Maven version is in use!"
+        else
+          echo "❌The expected Maven version ('$expectedMavenVersion') is not installed!" >&2
+          exit 1
+        fi

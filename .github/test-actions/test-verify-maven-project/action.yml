@@ -1,0 +1,36 @@
+name: Test verify-maven-project
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/detect-branch-version
+      id: version-detector
+
+    - uses: ./actions/verify-maven-project
+      with:
+        project-directory: tests/maven-project
+
+    - name: Display versions
+      shell: bash
+      run: |
+        echo "☕Java version: $(java --version | head -n 1)"
+
+        echo "🪶Maven version: $(mvn --version | head -n 1)"
+
+    - name: Run the generated jar
+      shell: bash
+      working-directory: tests/maven-project
+      run: |
+        version="${{ steps.version-detector.outputs.version }}"
+
+        programOutput="$(java -jar target/test-maven-project-$version.jar)"
+
+        echo "🔎Program output: '$programOutput'"
+
+        if [[ "$programOutput" == "Hello, world - from Kotlin! 🥳" ]]
+        then
+          echo "✅Maven project verified and run successfully!"
+        else
+          echo "❌Unexpected program output!" >&2
+          exit 1
+        fi

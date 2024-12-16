@@ -14,7 +14,7 @@ runs:
     - name: The expected wasm-pack version should be available
       shell: bash
       run: |
-        wasmPackVersion=$(wasm-pack --version | cut -d' ' -f2)
+        wasmPackVersion="$(wasm-pack --version | cut -d' ' -f2)"
 
         echo "🔎Detected wasm-pack version: '$wasmPackVersion'"
 

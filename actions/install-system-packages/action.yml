@@ -2,8 +2,15 @@ name: Install system packages
 description: Installs software using the platform's package manager.
 
 inputs:
+  required-command:
+    description: When declared, the packages are installed only if the command is missing.
+
   packages:
     description: The packages to install, separated by any spaces or commas.
+
+  initial-update:
+    description: Update the package list before the first installation.
+    default: true
 
 runs:
   using: composite
@@ -17,15 +24,89 @@ runs:
           exit 1
         fi
 
+        if [[ -z "${{ inputs.initial-update }}" ]]
+        then
+          echo "❌Missing action input: 'initial-update'!" >&2
+          exit 1
+        fi
+
+    - name: Determine whether the packages should be installed
+      shell: bash
+      run: |
+        requiredCommand="${{inputs.required-command}}"
+
+        installPackages=true
+
+        if [[ -n "$requiredCommand" ]]
+        then
+          echo "📥Required command: '$requiredCommand'"
+
+          if type "$requiredCommand" > /dev/null 2>&1
+          then
+            echo "✅Required command '$requiredCommand' available - no need to install it!"
+
+            installPackages=false
+          else
+            echo "💫Required command '$requiredCommand' not available - now installing its packages..."
+          fi
+
+        else
+          echo "💫No required command passed - the requested packages will be installed unconditionally"
+        fi
+
+        echo "🔎Install packages? $installPackages"
+
+        echo "installPackages=$installPackages" >> $GITHUB_ENV
+
+    - name: Update the package list
+      if: ${{ env.installPackages == 'true' && inputs.initial-update == 'true' }}
+      shell: bash
+      run: |
+        flagFile="$HOME/install-system-packages-updated"
+
+        if [[ -f "$flagFile" ]]
+        then
+          echo "💡The package list has already been updated!"
+          exit 0
+        fi
+
+        echo "📥Updating the package list..."
+
+        outputFile="$(mktemp)"
+
+        if ! sudo apt-get update &> "$outputFile"
+        then
+          echo "❌Error while updating the package list! Installer log:"
+          cat "$outputFile"
+          echo "❌❌❌"
+
+          exit 1
+        fi
+
+        touch "$flagFile"
+
     - name: Install packages
+      if: ${{ env.installPackages == 'true' }}
       shell: bash
       run: |
         requestedPackages="${{ inputs.packages }}"
 
         actualPackages="$(echo "$requestedPackages" | perl -pe 's/[\s,]+/ /g')"
 
-        echo "📦Now installing packages: $actualPackages"
+        echo "📥Requested packages: $actualPackages"
 
-        sudo apt-get install -y $actualPackages
+        outputFile="$(mktemp)"
+
+        echo "📦Installing packages..."
+
+        if ! sudo apt-get install -y $actualPackages &> "$outputFile"
+        then
+          echo "❌Error while installing the packages! Installer log:"
+          cat "$outputFile"
+          echo "❌❌❌"
+
+          exit 1
+        fi
+
 
         echo "✅Packages installed!"

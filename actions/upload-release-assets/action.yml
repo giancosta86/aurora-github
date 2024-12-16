@@ -47,11 +47,11 @@ runs:
       run: |
         if [[ "${{ inputs.overwrite}}" == "true" ]]
         then
-          flags="--clobber"
+          clobberArg="--clobber"
         else
-          flags=""
+          clobberArg=""
         fi
 
-        gh release upload "$flags" "${{ inputs.release-tag }}" ${{ inputs.files }}
+        gh release upload $clobberArg "${{ inputs.release-tag }}" ${{ inputs.files }}
       env:
         GH_TOKEN: ${{ github.token }}

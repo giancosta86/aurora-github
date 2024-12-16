@@ -16,6 +16,9 @@ runs:
           exit 1
         fi
 
+    - shell: bash
+      run: echo "🎭Running unconditional installation..."
+
     - uses: ./actions/install-system-packages
       with:
         packages: jq, moreutils
@@ -32,3 +35,11 @@ runs:
           echo "❌The expected command was not installed!" >&2
           exit 1
         fi
+
+    - shell: bash
+      run: echo "🎭Running conditional installation for existing command..."
+
+    - uses: ./actions/install-system-packages
+      with:
+        required-command: sponge
+        packages: moreutils

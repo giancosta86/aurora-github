@@ -57,6 +57,10 @@ runs:
           then
             echo "🦀Cargo.toml descriptor for Rust detected!"
             artifactDescriptor="Cargo.toml"
+          elif [[ -f "pom.xml" ]]
+          then
+            echo "🪶pom.xml descriptor for Maven detected!"
+            artifactDescriptor="pom.xml"
           else
             echo "💭No supported descriptors found..."
             artifactDescriptor=""
@@ -93,6 +97,10 @@ runs:
             tech="rust"
             ;;
 
+          pom.xml)
+            tech="maven"
+            ;;
+
           *)
             tech=""
         esac
@@ -100,7 +108,7 @@ runs:
         echo "🤖Inferred technology: '${tech}'"
         echo "tech=$tech" >> $GITHUB_ENV
 
-    - uses: giancosta86/aurora-github/actions/detect-branch-version@v8.0.1
+    - uses: giancosta86/aurora-github/actions/detect-branch-version@v8.1.0
       if: ${{ inputs.mode != 'skip' }}
       id: version-detector
 
@@ -134,6 +142,12 @@ runs:
             echo "🦀🦀🦀"
             ;;
 
+          maven)
+            echo "🪶Maven project descriptor:"
+            cat "$artifactDescriptor"
+            echo "🪶🪶🪶"
+            ;;
+
           *)
             echo "🎁Unknown tech descriptor:"
             cat "$artifactDescriptor"
@@ -161,6 +175,23 @@ runs:
         artifactVersion="$(grep '^version' Cargo.toml | cut -d '"' -f2)"
 
         echo "artifactVersion=$artifactVersion" >> $GITHUB_ENV
+
+    - name: Extract the Maven project version
+      if: ${{ inputs.mode == 'check' && env.tech == 'maven' }}
+      shell: python
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        import os
+        import xml.etree.ElementTree as ET
+
+        tree = ET.parse('pom.xml')
+        root = tree.getroot()
+        namespaces = {'mvn': root.tag.split('}')[0].strip('{}')}
+
+        version = root.find('.//mvn:version', namespaces).text
+
+        with open(os.environ['GITHUB_ENV'], 'a') as env_file:
+            env_file.write(f"version={version}\n")
 
     - name: Ensure the artifact version matches the branch version
       if: ${{ inputs.mode == 'check' && env.tech != '' }}

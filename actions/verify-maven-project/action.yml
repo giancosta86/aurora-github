@@ -1,25 +1,31 @@
-name: Verify npm package
-description: Verifies the source files of a NodeJS package - by running its 'verify' script within the 'scripts' section of 'package.json'.
+name: Verify Maven project
+description: Verifies the source files of a Maven project.
 
 inputs:
+  java-version:
+    description: Java version (in SDKMAN) to install.
+
+  maven-version:
+    description: Maven version (in SDKMAN) to install.
+
+  maven-quiet:
+    description: Run Maven in quiet (-q) mode
+    default: true
+
   crash-on-critical-todos:
     description: Crash the workflow if critical TODOs are found.
     default: true
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    default: '^\.\/(src|(tests(?!\/node_modules\/)))\/.+\.(c|m)?(j|t)sx?$'
+    default: '^\.\/src\/.+\.(java|scala|kt)$'
 
   enforce-branch-version:
     description: How the branch version should be enforced.
     default: inject
 
-  check-subpath-exports:
-    description: Run check-subpath-exports after the "verify" package script.
-    default: true
-
   project-directory:
-    description: The directory containing package.json.
+    description: The directory containing pom.xml.
     default: .
 
 runs:
@@ -29,6 +35,12 @@ runs:
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
+        if [[ -z "${{ inputs.maven-quiet }}" ]]
+        then
+          echo "❌Missing action input: 'maven-quiet'!" >&2
+          exit 1
+        fi
+
         if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
         then
           echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
@@ -47,48 +59,42 @@ runs:
           exit 1
         fi
 
-        if [[ -z "${{ inputs.check-subpath-exports }}" ]]
-        then
-          echo "❌Missing action input: 'check-subpath-exports'!" >&2
-          exit 1
-        fi
-
-        if [[ ! -f "package.json" ]]
-        then
-          echo "❌The package.json descriptor file does not exist!!" >&2
-          exit 1
-        fi
-
     - name: Enforce branch version
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v8.1.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
-    - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v8.1.0
+    - name: Install Java
+      if: ${{ inputs.java-version != '' }}
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v8.1.0
       with:
-        project-directory: ${{ inputs.project-directory }}
+        candidate: java
+        version: ${{ inputs.java-version }}
 
-    - name: Run the 'verify' script from package.json
+    - name: Install Maven
+      if: ${{ inputs.maven-version != '' }}
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v8.1.0
+      with:
+        candidate: maven
+        version: ${{ inputs.maven-version }}
+
+    - name: Run Maven
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "🔎Now running the 'verify' package.json script..."
-        pnpm verify
-        echo "✅'verify' script successful!"
+        if [[ "${{ inputs.maven-quiet }}" == "true" ]]
+        then
+          quietArg="-q"
+        else
+          quietArg=""
+        fi
 
-    - name: Check subpath exports
-      if: ${{ inputs.check-subpath-exports == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-subpath-exports@v8.1.0
-      with:
-        project-directory: ${{ inputs.project-directory }}
+        echo "🪶Running Maven to verify the project..."
 
-    - name: Run optional custom tests from the 'tests' directory
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v8.1.0
-      with:
-        optional: true
-        root-directory: ${{ inputs.project-directory }}/tests
+        mvn -B $quietArg verify
+
+        echo "✅Verification successful!"
 
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v8.1.0
@@ -100,4 +106,4 @@ runs:
 
     - name: Print confirmation message
       shell: bash
-      run: echo "✅npm package source files verified!"
+      run: echo "✅Maven project verified!"
