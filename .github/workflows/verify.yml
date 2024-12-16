@@ -27,12 +27,12 @@ jobs:
   #     - uses: actions/checkout@v4
   #     - uses: ./.github/test-actions/test-find-critical-todos
 
-  # test-enforce-branch-version:
-  #   runs-on: ubuntu-24.04
-  #   needs: test-check-action-references
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: ./.github/test-actions/test-enforce-branch-version
+  test-enforce-branch-version:
+    runs-on: ubuntu-24.04
+    needs: test-check-action-references
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-enforce-branch-version
 
   # test-tag-and-release:
   #   runs-on: ubuntu-24.04
@@ -175,24 +175,24 @@ jobs:
   #         packages: moreutils
   #     - uses: ./.github/test-actions/test-check-subpath-exports
 
-  # test-setup-nodejs-context:
-  #   runs-on: ubuntu-24.04
-  #   needs: test-check-action-references
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: ./.github/test-actions/test-setup-nodejs-context
+  test-setup-nodejs-context:
+    runs-on: ubuntu-24.04
+    needs: test-check-action-references
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-setup-nodejs-context
 
-  # test-publish-github-pages:
-  #   runs-on: ubuntu-24.04
-  #   needs:
-  #     - test-setup-nodejs-context
-  #     - test-enforce-branch-version
-  #   permissions:
-  #     pages: write
-  #     id-token: write
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: ./.github/test-actions/test-publish-github-pages
+  test-publish-github-pages:
+    runs-on: ubuntu-24.04
+    needs:
+      - test-setup-nodejs-context
+      - test-enforce-branch-version
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-publish-github-pages
 
   # test-run-custom-tests:
   #   runs-on: ubuntu-24.04
@@ -223,7 +223,7 @@ jobs:
       - test-detect-branch-version
       - test-check-action-references
       # - test-find-critical-todos
-      # - test-enforce-branch-version
+      - test-enforce-branch-version
       # - test-tag-and-release
       # - test-install-wasm-pack
       # - test-check-rust-versions
@@ -240,8 +240,8 @@ jobs:
       # - test-install-system-packages
       # - test-inject-subpath-exports
       # - test-check-subpath-exports
-      # - test-setup-nodejs-context
-      # - test-publish-github-pages
+      - test-setup-nodejs-context
+      - test-publish-github-pages
       # - test-run-custom-tests
       # - test-upload-release-assets
       - test-install-via-sdkman
