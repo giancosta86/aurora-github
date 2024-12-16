@@ -26,84 +26,89 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
+    - name: Set up strategy
       shell: bash
       run: |
-        if [[ -z "${{ inputs.optional }}" ]]
-        then
-          echo "❌Missing action input: 'optional'!" >&2
-          exit 1
-        fi
+        strategy="exit"
 
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+        main() {
+          validateInputs
 
-        if [[ -z "${{ inputs.dry-run }}" ]]
-        then
-          echo "❌Missing action input: 'dry-run'!" >&2
-          exit 1
-        fi
-
-    - name: Print description message
-      shell: bash
-      run: echo "🌐Now trying to publish to GitHub Pages..."
-
-    - name: Setup environment variables
-      shell: bash
-      run: |
-        optional="${{ inputs.optional }}"
-        sourceDirectory="${{ inputs.source-directory }}"
-        strategy=exit
-
-        if [[ -z "$sourceDirectory" ]]
-        then
-          if [[ "$optional" == "true" ]]
+          if setupEnvironment
           then
-            echo "💬Missing action input: 'source-directory' - won't proceed"
-          else
-            echo "❌Missing action input: 'source-directory'!" >&2
+            detectSourceStrategy
+          fi
+
+          echo "🔎Website build strategy: '$strategy'"
+          echo "strategy=$strategy" >> $GITHUB_ENV
+        }
+
+        validateInputs() {
+          if [[ -z "${{ inputs.optional }}" ]]
+          then
+            echo "❌Missing action input: 'optional'!" >&2
             exit 1
           fi
-        elif [[ ! -d "$sourceDirectory" ]]
-        then
-          if [[ "$optional" == "true" ]]
+
+          if [[ -z "${{ inputs.enforce-branch-version }}" ]]
           then
-            echo "💬Missing website directory '$sourceDirectory' - can't proceed"
-          else
-            echo "❌Missing website directory '$sourceDirectory'!" >&2
+            echo "❌Missing action input: 'enforce-branch-version'!" >&2
             exit 1
           fi
-        else
-          echo "🌐Website directory '$sourceDirectory' found!"
-          strategy=detect
-        fi
 
-        echo "strategy=$strategy" >> $GITHUB_ENV
+          if [[ -z "${{ inputs.dry-run }}" ]]
+          then
+            echo "❌Missing action input: 'dry-run'!" >&2
+            exit 1
+          fi
+        }
 
-    - name: Detect website technology
-      if: ${{ env.strategy == 'detect' }}
-      shell: bash
-      working-directory: ${{ inputs.source-directory }}
-      run: |
-        if [[ -f "package.json" ]]
-        then
-          strategy=nodejs
-        else
-          strategy="static-files"
-        fi
+        setupEnvironment() {
+          local sourceDirectory="${{ inputs.source-directory }}"
+          local optional="${{ inputs.optional }}"
 
-        echo "strategy=$strategy" >> $GITHUB_ENV
+          if [[ -z "$sourceDirectory" ]]
+          then
+            if [[ "$optional" == "true" ]]
+            then
+              echo "💬Missing action input: 'source-directory' - can't proceed"
+              return 1
+            else
+              echo "❌Missing action input: 'source-directory'!" >&2
+              exit 1
+            fi
+          elif [[ ! -d "$sourceDirectory" ]]
+          then
+            if [[ "$optional" == "true" ]]
+            then
+              echo "💬Missing website directory '$sourceDirectory' - can't proceed"
+              return 1
+            else
+              echo "❌Missing website directory '$sourceDirectory'!" >&2
+              exit 1
+            fi
+          else
+            echo "🌐Website source directory '$sourceDirectory' found!"
+            cd "$sourceDirectory"
+          fi
+        }
 
-    - name: Debug publication strategy
-      shell: bash
-      run: |
-        echo "🔎Website publication strategy: '$strategy'"
+        detectSourceStrategy() {
+          if [[ -f "package.json" ]]
+          then
+            strategy=nodejs
+          elif [[ -f "pom.xml" ]]
+          then
+            strategy=maven
+          else
+            strategy="static-files"
+          fi
+        }
+
+        main
 
     - name: Enforce branch version
-      if: ${{ env.strategy == 'nodejs' }}
+      if: ${{ env.strategy == 'nodejs' || env.strategy == 'maven' }}
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v8.1.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
@@ -115,13 +120,30 @@ runs:
       with:
         project-directory: ${{ inputs.source-directory }}
 
-    - name: Create artifacts via NodeJS
+    - name: Create the website via NodeJS
       if: ${{ env.strategy == 'nodejs' }}
       shell: bash
       working-directory: ${{ inputs.source-directory }}
       run: |
+        echo "📦Now building the website via NodeJS..."
         pnpm build
+        echo "✅Website ready!"
+
         artifactDirectory=${{ inputs.source-directory }}/dist
+
+        echo "artifactDirectory=$artifactDirectory" >> $GITHUB_ENV
+
+    - name: Create the website via Maven
+      if: ${{ env.strategy == 'maven' }}
+      shell: bash
+      working-directory: ${{ inputs.source-directory }}
+      run: |
+        echo "🪶Now building the website via Maven..."
+        mvn -q site
+        echo "✅Website ready!"
+
+        artifactDirectory=${{ inputs.source-directory }}/target/site
+
         echo "artifactDirectory=$artifactDirectory" >> $GITHUB_ENV
 
     - name: Setup static artifacts
@@ -129,32 +151,41 @@ runs:
       shell: bash
       run: echo "artifactDirectory=${{ inputs.source-directory }}" >> $GITHUB_ENV
 
-    - name: Check the artifact directory
-      if: ${{ env.strategy != 'exit' }}
+    - if: ${{ env.strategy != 'exit' }}
       shell: bash
       run: |
-        echo "🔎Website artifact directory: '$artifactDirectory'"
+        main() {
+          checkArtifactDirectory
+          skipUploadingOnDryRun
+        }
 
-        if [[ -d "$artifactDirectory" ]]
-        then
-          echo "✅The artifact directory for the 🌐website exists!"
-        else
-          if [[ "$optional" == "true" ]]
+        checkArtifactDirectory() {
+          echo "🔎Website artifact directory: '$artifactDirectory'"
+
+          if [[ -d "$artifactDirectory" ]]
           then
-            echo "💬Missing website artifact directory - can't proceed"
-            echo "strategy=exit" >> $GITHUB_ENV
+            echo "✅The artifact directory for the 🌐website exists!"
           else
-            echo "❌Missing website artifact directory!" >&2
-            exit 1
+            if [[ "${{ inputs.optional }}" == "true" ]]
+            then
+              echo "💬Missing website artifact directory - can't proceed"
+              echo "strategy=exit" >> $GITHUB_ENV
+            else
+              echo "❌Missing website artifact directory!" >&2
+              exit 1
+            fi
           fi
-        fi
+        }
 
-    - name: Prevent uploading via dry-run
-      if: ${{ env.strategy != 'exit' && inputs.dry-run == 'true' }}
-      shell: bash
-      run: |
-        echo "💭Skipping publication, as requested by dry-run."
-        echo "strategy=exit" >> $GITHUB_ENV
+        skipUploadingOnDryRun() {
+          if [[ "${{ inputs.dry-run }}" == "true" ]]
+          then
+            echo "💭Skipping publication, as requested by dry-run."
+            echo "strategy=exit" >> $GITHUB_ENV
+          fi
+        }
+
+        main
 
     - name: Upload website artifacts
       if: ${{ env.strategy != 'exit' }}

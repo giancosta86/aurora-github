@@ -17,15 +17,25 @@ steps:
 
 1. If `source-directory` is set to an empty string (the default) or refers to a missing directory, if `optional` is set to **true** the action will simply exit, otherwise the workflow will fail.
 
-1. If `source-directory` contains a **package.json** file:
+1. If `source-directory` contains:
 
-   1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+   - a **package.json** file:
 
-   1. Set up a NodeJS environment via [setup-nodejs-context](../setup-nodejs-context/README.md) in `source-directory`.
+     1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
-   1. Run `pnpm build`.
+     1. Set up a NodeJS environment via [setup-nodejs-context](../setup-nodejs-context/README.md) in `source-directory`.
 
-   1. The **dist** subdirectory will contain the actual website.
+     1. Run `pnpm build`.
+
+     1. The **dist** subdirectory will contain the actual website.
+
+   - a **pom.xml** file:
+
+     1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+
+     1. Run `mvn site`.
+
+     1. The **target/site** subdirectory will contain the actual website.
 
 1. If `dry-run` is set to **true**, interrupt the process without failing.
 
