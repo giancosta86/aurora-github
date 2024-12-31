@@ -74,69 +74,71 @@ runs:
       with:
         project-directory: ${{ inputs.project-directory }}
 
-    - name: Check format style
-      shell: bash
+    - shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "🎨Checking source code format..."
-        cargo fmt --check
-        echo "✅Source code format OK!"
+        checkStyle() {
+          checkFormat
 
-    - name: Lint via Clippy - with warnings as errors
-      if: ${{ inputs.run-clippy-checks == 'true' }}
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "📎Running clippy checks..."
-        cargo clippy --all-targets --all-features -- -D warnings
-        echo "✅Clippy checks OK!"
+          if [[ "${{ inputs.run-clippy-checks }}" == "true" ]]
+          then
+            runClippyChecks
+          fi
+        }
 
-    - name: Check if README.md exists
-      id: detect-readme
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -f "README.md" ]]
-        then
-          echo "🗒️README.md found! Trying to extract snippets!"
-          readmeExists=true
-        else
-          echo "💭README.md not found - unable to extract snippets."
-          readmeExists=false
-        fi
+        checkFormat() {
+          echo "🎨Checking source code format..."
+          cargo fmt --check
+          echo "✅Source code format OK!"
+        }
 
-        echo "readme-exists=$readmeExists" >> $GITHUB_OUTPUT
+        runClippyChecks() {
+          echo "📎Running clippy checks..."
+          cargo clippy --all-targets --all-features -- -D warnings
+          echo "✅Clippy checks OK!"
+        }
+
+        checkStyle
 
     - name: Extract code snippets as tests from README.md
-      if: ${{ steps.detect-readme.outputs.readme-exists == 'true' }}
       uses: giancosta86/aurora-github/actions/extract-rust-snippets@v8.1.0
       with:
+        optional: true
         project-directory: ${{ inputs.project-directory }}
 
-    - name: Run vanilla (no features) tests
-      shell: bash
+    - shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "🔎Running tests with no features enabled..."
-        cargo test
-        echo "✅Tests with no features OK!"
+        runTests() {
+          runVanillaTests
 
-    - name: Run full (all features) tests
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "🔬Running tests with all the features enabled..."
-        cargo test --all-features
-        echo "✅Tests with all the features OK!"
+          runAllFeaturesTests
 
-    - name: Run documentation checks - with warnings as errors
-      if: ${{ inputs.check-rustdoc == 'true' }}
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "📚Running doctests with all the features enabled..."
-        RUSTDOCFLAGS="-D warnings" cargo doc --all-features
-        echo "✅Doctests with all the features OK!"
+          if [[ "${{ inputs.check-rustdoc }}" == "true" ]]
+          then
+            runDocTests
+          fi
+        }
+
+        runVanillaTests() {
+          echo "🔎Running tests with no features enabled..."
+          cargo test
+          echo "✅Tests with no features OK!"
+        }
+
+        runAllFeaturesTests() {
+          echo "🔬Running tests with all the features enabled..."
+          cargo test --all-features
+          echo "✅Tests with all the features OK!"
+        }
+
+        runDocTests() {
+          echo "📚Running doctests with all the features enabled..."
+          RUSTDOCFLAGS="-D warnings" cargo doc --all-features
+          echo "✅Doctests with all the features OK!"
+        }
+
+        runTests
 
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v8.1.0

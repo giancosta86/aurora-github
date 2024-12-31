@@ -19,7 +19,7 @@ steps:
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
-1. Prepare the descriptor - especially via `document-all-features`
+1. Prepare the descriptor - for example, enabling documentation for all the features
 
 1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled
 

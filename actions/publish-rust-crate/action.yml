@@ -108,14 +108,14 @@ runs:
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        dryRun="${{ inputs.dry-run }}"
-
-        if [[ "$dryRun" == "true" ]]
+        if [[ "${{ inputs.dry-run }}" == "true" ]]
         then
-          cargo publish --all-features --allow-dirty --dry-run
+          dryRunArg="--dry-run"
         else
-          cargo publish --all-features --allow-dirty
+          dryRunArg=""
         fi
+
+        cargo publish --all-features --allow-dirty $dryRunArg
       env:
         CARGO_REGISTRY_TOKEN: ${{ inputs.cargo-token }}
 

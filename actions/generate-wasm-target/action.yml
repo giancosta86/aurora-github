@@ -76,7 +76,7 @@ runs:
         pnpmVersion="${{ inputs.pnpm-version }}"
         echo "📥pnpm version: '$pnpmVersion'"
 
-        echo "Project directory: '${{ inputs.project-directory }}'"
+        echo "📥Project directory: '${{ inputs.project-directory }}'"
 
         targetDirectory="${{ inputs.target-directory }}"
         echo "📥Target directory: '$targetDirectory'"

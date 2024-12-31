@@ -192,7 +192,7 @@ runs:
           local releaseNotesFile="$(mktemp)"
           generateReleaseNotes "$releaseNotesFile"
 
-          notesFileProcessor=${{ inputs.notes-file-processor }}
+          local notesFileProcessor=${{ inputs.notes-file-processor }}
           if [[ -n "$notesFileProcessor" ]]
           then
             echo "🖋Release notes file processor found: '$notesFileProcessor'"
@@ -260,7 +260,7 @@ runs:
           echo "✅Git logs retrieved!"
 
           echo "📥Retrieving Git tags..."
-          gitErrorLog="$(mktemp)"
+          local gitErrorLog="$(mktemp)"
           if git fetch --tags > /dev/null 2> "$gitErrorLog"
           then
             echo "✅Git tags retrieved!"
