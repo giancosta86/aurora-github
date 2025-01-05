@@ -1,0 +1,237 @@
+name: Publish JVM project
+description: Publishes a project for the Java Virtual Machine - using Maven or Gradle.
+
+inputs:
+  dry-run:
+    description: Run a simulated publication.
+    default: false
+
+  auth-user:
+    description: The username for publishing.
+
+  auth-token:
+    description: The secret token for publishing.
+
+  java-version:
+    description: Java version (in SDKMAN) to install.
+
+  tool-version:
+    description: Build tool version (in SDKMAN) to install.
+
+  quiet-tool:
+    description: Run the build tool in quiet mode
+    default: true
+
+  website-directory:
+    description: Relative directory containing the project website.
+    default: website
+
+  enforce-branch-version:
+    description: How the branch version should be enforced.
+    default: inject
+
+  project-directory:
+    description: The directory containing the project descriptor.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -z "${{ inputs.dry-run }}" ]]
+        then
+          echo "❌Missing action input: 'dry-run'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.website-directory }}" ]]
+        then
+          echo "❌Missing action input: 'website-directory'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
+        then
+          echo "❌Missing action input: 'enforce-branch-version'!" >&2
+          exit 1
+        fi
+
+    - name: Enforce branch version
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v8.1.0
+      with:
+        mode: ${{ inputs.enforce-branch-version }}
+        project-directory: ${{ inputs.project-directory }}
+
+    - name: Setup Python context
+      shell: bash
+      run: |
+        pythonPath="${{ github.action_path }}/../../core/python"
+        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
+
+        echo "INPUT_PROJECT_DIRECTORY=${{ inputs.project-directory }}" >> $GITHUB_ENV
+
+    - name: Detect the build tool
+      shell: python
+      run: |
+        from core.jvm import get_jvm_build_tool, Inputs
+
+        inputs = Inputs.from_env()
+
+        get_jvm_build_tool(inputs).write_to_github_env()
+
+    - name: Install Java
+      if: ${{ inputs.java-version != '' }}
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v8.1.0
+      with:
+        candidate: java
+        version: ${{ inputs.java-version }}
+
+    - name: Install Maven
+      if: ${{ env.buildTool == 'mvn' && inputs.tool-version != '' }}
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v8.1.0
+      with:
+        candidate: maven
+        version: ${{ inputs.tool-version }}
+
+    - name: Install Gradle
+      if: ${{ env.buildTool == 'gradle' && inputs.tool-version != '' }}
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v8.1.0
+      with:
+        candidate: gradle
+        version: ${{ inputs.tool-version }}
+
+    - name: Prepare Maven settings
+      if: ${{ env.buildTool == 'mvn' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        settingsDirectory="$HOME/.m2"
+        settingsBasename="settings.xml"
+
+        main() {
+          echo "🪶Setting up Maven settings..."
+
+          mkdir -p "$settingsDirectory"
+
+          if [[ -f "$settingsBasename" ]]
+          then
+            echo "✅$settingsBasename found in the project directory! Now copying it to '$settingsDirectory'..."
+            cp "$settingsBasename" "$settingsDirectory"
+          else
+            echo "🌟Providing a default '$settingsBasename' file for 🪶Maven..."
+            copyDefaultSettings
+            checkServerInPom
+          fi
+
+          echo "✅Maven settings file ready!"
+        }
+
+        copyDefaultSettings() {
+          cp "${{ github.action_path }}/$settingsBasename" "$settingsDirectory"
+
+          echo "The content of the generated 🪶$settingsBasename is:"
+          cat "$settingsDirectory/$settingsBasename"
+          echo "🪶🪶🪶"
+        }
+
+        checkServerInPom() {
+          local serverName="target-server"
+
+          if grep -q "$serverName" $descriptor
+          then
+            echo "✅Server '$serverName' found in $descriptor!"
+          else
+            echo "💭Server '$serverName' not used in $descriptor..."
+          fi
+        }
+
+        main
+
+    - name: Prepare Gradle settings
+      if: ${{ env.buildTool == 'gradle' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        echo "🐘Checking the (optional) use of environment variables in $descriptor"
+
+        for envVar in "JVM_AUTH_USER" "JVM_AUTH_TOKEN"
+        do
+          if grep -q "$envVar" $descriptor
+          then
+            echo "✅'$envVar' referenced by the project descriptor!"
+          else
+            echo "💭'$envVar' environment variable not referenced in $descriptor..."
+          fi
+        done
+
+        echo "🐘🐘🐘"
+
+    - name: Publish the GitHub Pages website
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v8.1.0
+      with:
+        optional: true
+        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        dry-run: ${{ inputs.dry-run }}
+        enforce-branch-version: ${{ inputs.enforce-branch-version }}
+
+    - name: Publish via Maven
+      if: ${{ env.buildTool == 'mvn' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ "${{ inputs.dry-run }}" == "true" ]]
+        then
+          dryRunDirectory="target/dry-run"
+          echo "📁dry-run mode enabled - publishing to '$dryRunDirectory' local directory instead..."
+
+          dryRunArg="-DaltDeploymentRepository=target-server::default::file:$dryRunDirectory"
+        else
+          dryRunArg=""
+        fi
+
+        if [[ "${{ inputs.quiet-tool }}" == "true" ]]
+        then
+          quietToolArg="-q"
+        else
+          quietToolArg=""
+        fi
+
+        echo "🪶Running Maven to publish the project..."
+
+        mvn -B $dryRunArg $quietToolArg deploy
+
+        echo "✅Publication via Maven successful!"
+      env:
+        JVM_AUTH_USER: ${{ inputs.auth-user }}
+        JVM_AUTH_TOKEN: ${{ inputs.auth-token }}
+
+    - name: Publish via Gradle
+      if: ${{ env.buildTool == 'gradle' }}
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ "${{ inputs.dry-run }}" == "true" ]]
+        then
+          dryRunArg="--dry-run"
+        else
+          dryRunArg=""
+        fi
+
+        if [[ "${{ inputs.quiet-tool }}" == "true" ]]
+        then
+          quietToolArg="-q"
+        else
+          quietToolArg=""
+        fi
+
+        echo "🐘Running Gradle to publish the project..."
+
+        gradle --no-daemon --no-scan $dryRunArg $quietToolArg publish
+
+        echo "✅Publication via Gradle successful!"
+      env:
+        JVM_AUTH_USER: ${{ inputs.auth-user }}
+        JVM_AUTH_TOKEN: ${{ inputs.auth-token }}
