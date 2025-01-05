@@ -11,6 +11,10 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
 
+## ☑️Requirements
+
+The **npm** command must be available on the system.
+
 ## 📥Inputs
 
 |        Name         |    Type    |           Description            | Default value |

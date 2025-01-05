@@ -23,68 +23,74 @@ runs:
     - name: Detect directory existence
       shell: bash
       run: |
-        if [[ -z "${{ inputs.optional }}" ]]
-        then
-          echo "❌Missing action input: 'optional'!" >&2
-          exit 1
-        fi
+        main() {
+          validateInputs
+          detectTestStrategy
+        }
 
-        if [[ ! -d "${{ inputs.root-directory }}" ]]
-        then
-          if [[ "${{ inputs.optional }}" == "true" ]]
+        validateInputs() {
+          if [[ -z "${{ inputs.optional }}" ]]
           then
-            echo "💭Skipping optional tests in missing directory: '${{ inputs.root-directory }}'"
-            echo "strategy=exit" >> $GITHUB_ENV
-            exit 0
+            echo "❌Missing action input: 'optional'!" >&2
+            exit 1
+          fi
+
+          if [[ -d "${{ inputs.root-directory }}" ]]
+          then
+            cd "${{ inputs.root-directory }}"
           else
-            echo "❌Cannot run custom tests in missing directory: '${{ inputs.root-directory }}'" >&2
-            exit 1
+            if [[ "${{ inputs.optional }}" == "true" ]]
+            then
+              echo "💭Skipping optional tests in missing directory: '${{ inputs.root-directory }}'"
+              echo "strategy=exit" >> $GITHUB_ENV
+              exit 0
+            else
+              echo "❌Cannot run custom tests in missing directory: '${{ inputs.root-directory }}'" >&2
+              exit 1
+            fi
           fi
-        fi
+        }
 
-        echo "strategy=detect" >> $GITHUB_ENV
+        detectTestStrategy() {
+          echo "🔬Detecting custom test strategy in directory '${{ inputs.root-directory }}'..."
 
-    - name: Validate inputs
-      if: ${{ env.strategy == 'detect' }}
-      shell: bash
-      working-directory: ${{ inputs.root-directory }}
-      run: |
-        echo "🔬Detecting custom test strategy in directory '${{ inputs.root-directory }}'..."
+          local scriptFile="${{ inputs.script-file }}"
 
-        scriptFile="${{ inputs.script-file }}"
-
-        if [[ -n "$scriptFile" && -f "$scriptFile" ]]
-        then
-          echo "🐚Custom test script '$scriptFile' found!"
-          strategy="script"
-
-          if [[ -z "${{ inputs.script-shell }}" ]]
+          if [[ -n "$scriptFile" && -f "$scriptFile" ]]
           then
-            echo "❌Missing action input: 'script-shell'!" >&2
-            exit 1
-          fi
-        elif [[ -f "package.json" ]]
-        then
-          echo "📦package.json file found!"
-          strategy="nodejs"
-        elif [[ -f "Cargo.toml" ]]
-        then
-          echo "🦀Cargo.toml file found!"
-          strategy="rust"
-        else
-          if [[ "${{ inputs.optional }}" == "true" ]]
+            echo "🐚Custom test script '$scriptFile' found!"
+            local strategy="script"
+
+            if [[ -z "${{ inputs.script-shell }}" ]]
+            then
+              echo "❌Missing action input: 'script-shell'!" >&2
+              exit 1
+            fi
+          elif [[ -f "package.json" ]]
           then
-            echo "💭No supported strategy detected for the optional custom tests"
-            strategy="exit"
+            echo "📦package.json file found!"
+            local strategy="nodejs"
+          elif [[ -f "Cargo.toml" ]]
+          then
+            echo "🦀Cargo.toml file found!"
+            local strategy="rust"
           else
-            echo "❌Cannot run custom tests: no supported test strategy could be detected!" >&2
-            exit 1
+            if [[ "${{ inputs.optional }}" == "true" ]]
+            then
+              echo "💭No supported strategy detected for the optional custom tests"
+              local strategy="exit"
+            else
+              echo "❌Cannot run custom tests: no supported test strategy could be detected!" >&2
+              exit 1
+            fi
           fi
-        fi
 
-        echo "🔎Test strategy: '$strategy'"
+          echo "🔎Test strategy: '$strategy'"
 
-        echo "strategy=$strategy" >> $GITHUB_ENV
+          echo "strategy=$strategy" >> $GITHUB_ENV
+        }
+
+        main
 
     - name: Run script
       if: ${{ env.strategy == 'script' }}

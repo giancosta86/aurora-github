@@ -64,86 +64,101 @@ runs:
         echo "📥Target: '$target'"
 
         echo "📥Requested npm-scope: '${{ inputs.npm-scope }}'"
-
         scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
         echo "🔎Actual npm scope: '$scope'"
 
         development="${{ inputs.development }}"
         echo "📥Development? $development"
 
+        nodejsVersion="${{ inputs.nodejs-version }}"
+        echo "📥NodeJS version: '$nodejsVersion'"
+
+        pnpmVersion="${{ inputs.pnpm-version }}"
+        echo "📥pnpm version: '$pnpmVersion'"
+
         echo "Project directory: '${{ inputs.project-directory }}'"
 
         targetDirectory="${{ inputs.target-directory }}"
         echo "📥Target directory: '$targetDirectory'"
 
-        echo "📦Generating the WebAssembly project files..."
+        main() {
+          generateWebAssemblyTarget
 
-        if [[ "$development" == "true" ]]
-        then
-          modeArg="--dev"
-        else
-          modeArg="--release"
-        fi
+          pushd "$targetDirectory"
 
-        if [[ -n "$scope" ]]
-        then
-          scopeArg="--scope $scope"
-        else
-          scopeArg=""
-        fi
+          if [[ -n "$nodejsVersion" ]]
+          then
+            injectNodeJsVersion
+          fi
 
-        wasm-pack build --target "$target" $modeArg $scopeArg --out-dir "$targetDirectory"
+          if [[ -n "$pnpmVersion" ]]
+          then
+            injectPnpmVersion
+          fi
 
-    - name: Inject the requested NodeJS version into package.json
-      if: ${{ inputs.nodejs-version != '' }}
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}/${{ inputs.target-directory }}
-      run: |
-        if [[ ! -f "package.json" ]]
-        then
-          echo "❌package.json was not generated for this target - cannot inject the requested NodeJS version!"
-          exit 1
-        fi
+          tryToDisplayPackageJson
 
-        nodejsVersion="${{ inputs.nodejs-version }}"
-        echo "🧬Injecting the requested NodeJS version ('$nodejsVersion')..."
+          popd
 
-        tempDescriptor="$(mktemp)"
-        jq '.engines.node = "'"$nodejsVersion"'"' package.json > "$tempDescriptor"
-        mv "$tempDescriptor" package.json
+          echo "✅WebAssembly target ready in '$targetDirectory'!"
+        }
 
-    - name: Inject the requested pnpm version into package.json
-      if: ${{ inputs.pnpm-version != '' }}
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}/${{ inputs.target-directory }}
-      run: |
-        if [[ ! -f "package.json" ]]
-        then
-          echo "❌package.json was not generated for this target - cannot inject the requested pnpm version!"
-          exit 1
-        fi
+        generateWebAssemblyTarget() {
+          echo "📦Generating the WebAssembly project files..."
 
-        pnpmVersion="${{ inputs.pnpm-version }}"
-        echo "🧬Injecting the requested pnpm version ('$pnpmVersion')..."
+          if [[ "$development" == "true" ]]
+          then
+            local modeArg="--dev"
+          else
+            local modeArg="--release"
+          fi
 
-        tempDescriptor="$(mktemp)"
-        jq '.packageManager = "pnpm@'"$pnpmVersion"'"' package.json > "$tempDescriptor"
-        mv "$tempDescriptor" package.json
+          if [[ -n "$scope" ]]
+          then
+            local scopeArg="--scope $scope"
+          else
+            local scopeArg=""
+          fi
 
-    - name: Display the generated package.json descriptor
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}/${{ inputs.target-directory }}
-      run: |
-        if [[ -f "package.json" ]]
-        then
-          echo "📦Generated package.json descriptor for the '${{ inputs.target}}' target:"
-          jq -C '.' package.json
-        else
-          echo "💭No package.json descriptor generated for the '${{ inputs.target}}' target..."
-        fi
+          wasm-pack build --target "$target" $modeArg $scopeArg --out-dir "$targetDirectory"
+        }
 
-    - name: Display success message
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "✅WebAssembly target ready in '${{ inputs.target-directory }}'!"
+        injectNodeJsVersion() {
+          if [[ ! -f "package.json" ]]
+          then
+            echo "❌package.json was not generated for this target - cannot inject the requested NodeJS version!"
+            exit 1
+          fi
+
+          echo "🧬Injecting the requested NodeJS version ('$nodejsVersion')..."
+
+          local tempDescriptor="$(mktemp)"
+          jq '.engines.node = "'"$nodejsVersion"'"' package.json > "$tempDescriptor"
+          mv "$tempDescriptor" package.json
+        }
+
+        injectPnpmVersion() {
+          if [[ ! -f "package.json" ]]
+          then
+            echo "❌package.json was not generated for this target - cannot inject the requested pnpm version!"
+            exit 1
+          fi
+
+          echo "🧬Injecting the requested pnpm version ('$pnpmVersion')..."
+
+          local tempDescriptor="$(mktemp)"
+          jq '.packageManager = "pnpm@'"$pnpmVersion"'"' package.json > "$tempDescriptor"
+          mv "$tempDescriptor" package.json
+        }
+
+        tryToDisplayPackageJson() {
+          if [[ -f "package.json" ]]
+          then
+            echo "📦Generated package.json descriptor for the '$target' target:"
+            jq -C '.' package.json
+          else
+            echo "💭No package.json descriptor generated for the '$target' target..."
+          fi
+        }
+
+        main

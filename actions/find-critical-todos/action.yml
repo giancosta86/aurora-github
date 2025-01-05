@@ -24,82 +24,96 @@ inputs:
 outputs:
   found:
     description: true if at least one TODO! was found in some file, false otherwise.
-    value: ${{ steps.scan-directory-tree.outputs.found }}
+    value: ${{ steps.main.outputs.found }}
 
 runs:
   using: composite
   steps:
-    - name: Validate inputs
+    - id: main
       shell: bash
       working-directory: ${{ inputs.root-directory }}
       run: |
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
+        todoText="TODO!"
 
-        if [[ -z "${{ inputs.crash-on-found }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-found'!" >&2
-          exit 1
-        fi
+        main() {
+          validateInputs
+          scanDirectoryTree
+        }
 
-        if [[ -z "${{ inputs.display-lines }}" ]]
-        then
-          echo "❌Missing action input: 'display-lines'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.verbose }}" ]]
-        then
-          echo "❌Missing action input: 'verbose'!" >&2
-          exit 1
-        fi
-
-    - name: Setup environment variables
-      shell: bash
-      run: echo "todoText=TODO!" >> $GITHUB_ENV
-
-    - name: Scan the directory tree
-      id: scan-directory-tree
-      shell: bash
-      working-directory: ${{ inputs.root-directory }}
-      run: |
-        sourceFileRegex="${{ inputs.source-file-regex }}"
-        displayLines="${{ inputs.display-lines }}"
-        crashOnFound="${{ inputs.crash-on-found }}"
-
-        if [[ "$displayLines" == "true" ]]
-        then
-          quietArg=""
-        else
-          quietArg="-q"
-        fi
-
-        if [[ "${{ inputs.verbose }}" == "true" ]]
-        then
-          echo "🔎File list to filter when looking for TODOs:"
-          find -type f -print
-          echo "🔎🔎🔎"
-        fi
-
-        if find -type f -print0 | grep -zP "${sourceFileRegex}" | xargs -0 grep -Hn $quietArg "$todoText"
-        then
-          found=true
-        else
-          found=false
-        fi
-
-        echo "found=$found" >> $GITHUB_OUTPUT
-
-        if [[ "$found" == "true" ]]
-        then
-          if  [[ "$crashOnFound" == "true" ]]
+        validateInputs() {
+          if [[ -z "${{ inputs.source-file-regex }}" ]]
           then
-            echo "❌Critical TODOs found!" >&2
+            echo "❌Missing action input: 'source-file-regex'!" >&2
             exit 1
           fi
-        else
-          echo "✅No critical TODOs found!"
-        fi
+
+          if [[ -z "${{ inputs.crash-on-found }}" ]]
+          then
+            echo "❌Missing action input: 'crash-on-found'!" >&2
+            exit 1
+          fi
+
+          if [[ -z "${{ inputs.display-lines }}" ]]
+          then
+            echo "❌Missing action input: 'display-lines'!" >&2
+            exit 1
+          fi
+
+          if [[ -z "${{ inputs.verbose }}" ]]
+          then
+            echo "❌Missing action input: 'verbose'!" >&2
+            exit 1
+          fi
+        }
+
+        scanDirectoryTree() {
+          local sourceFileRegex="${{ inputs.source-file-regex }}"
+          echo "📥Source file regex: '$sourceFileRegex'"
+
+          local crashOnFound="${{ inputs.crash-on-found }}"
+          echo "📥Crash on found: $crashOnFound"
+
+          local displayLines="${{ inputs.display-lines }}"
+          echo "📥Display lines: $displayLines"
+
+          local verbose="${{ inputs.verbose }}"
+          echo "📥Verbose: $verbose"
+
+          if [[ "$verbose" == "true" ]]
+          then
+            echo "🔎File list to filter when looking for TODOs:"
+            find -type f -print
+            echo "🔎🔎🔎"
+          fi
+
+          if [[ "$displayLines" == "true" ]]
+          then
+            local quietArg=""
+          else
+            local quietArg="-q"
+          fi
+
+          if find -type f -print0 | grep -zP "$sourceFileRegex" | xargs -0 grep --color=always -Hn $quietArg "$todoText"
+          then
+            local found=true
+          else
+            local found=false
+          fi
+
+          echo "found=$found" >> $GITHUB_OUTPUT
+
+          if [[ "$found" == "true" ]]
+          then
+            if  [[ "$crashOnFound" == "true" ]]
+            then
+              echo "❌Critical TODOs found!" >&2
+              exit 1
+            else
+              echo "⚠️Critical TODOs found!"
+            fi
+          else
+            echo "✅No critical TODOs found!"
+          fi
+        }
+
+        main

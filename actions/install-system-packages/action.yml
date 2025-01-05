@@ -15,98 +15,100 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
+    - shell: bash
       run: |
-        if [[ -z "${{ inputs.packages }}" ]]
-        then
-          echo "❌Missing action input: 'packages'!" >&2
-          exit 1
-        fi
+        main() {
+          validateInputs
 
-        if [[ -z "${{ inputs.initial-update }}" ]]
-        then
-          echo "❌Missing action input: 'initial-update'!" >&2
-          exit 1
-        fi
-
-    - name: Determine whether the packages should be installed
-      shell: bash
-      run: |
-        requiredCommand="${{inputs.required-command}}"
-
-        installPackages=true
-
-        if [[ -n "$requiredCommand" ]]
-        then
-          echo "📥Required command: '$requiredCommand'"
-
-          if type "$requiredCommand" > /dev/null 2>&1
+          if ! shouldRunInstaller
           then
-            echo "✅Required command '$requiredCommand' available - no need to install it!"
-
-            installPackages=false
-          else
-            echo "💫Required command '$requiredCommand' not available - now installing its packages..."
+            exit 0
           fi
 
-        else
-          echo "💫No required command passed - the requested packages will be installed unconditionally"
-        fi
+          if [[ "${{ inputs.initial-update }}" == 'true' ]]
+          then
+            updatePackageList
+          fi
 
-        echo "🔎Install packages? $installPackages"
+          installPackages
+        }
 
-        echo "installPackages=$installPackages" >> $GITHUB_ENV
+        validateInputs() {
+          if [[ -z "${{ inputs.packages }}" ]]
+          then
+            echo "❌Missing action input: 'packages'!" >&2
+            exit 1
+          fi
 
-    - name: Update the package list
-      if: ${{ env.installPackages == 'true' && inputs.initial-update == 'true' }}
-      shell: bash
-      run: |
-        flagFile="$HOME/install-system-packages-updated"
+          if [[ -z "${{ inputs.initial-update }}" ]]
+          then
+            echo "❌Missing action input: 'initial-update'!" >&2
+            exit 1
+          fi
+        }
 
-        if [[ -f "$flagFile" ]]
-        then
-          echo "💡The package list has already been updated!"
-          exit 0
-        fi
+        shouldRunInstaller() {
+          local requiredCommand="${{inputs.required-command}}"
 
-        echo "📥Updating the package list..."
+          if [[ -n "$requiredCommand" ]]
+          then
+            echo "📥Required command: '$requiredCommand'"
 
-        outputFile="$(mktemp)"
+            if type "$requiredCommand" > /dev/null 2>&1
+            then
+              echo "✅Required command '$requiredCommand' available - no need to install it!"
+              return 1
+            else
+              echo "💫Required command '$requiredCommand' not available - now installing its packages..."
+            fi
+          else
+            echo "💫No required command passed - the requested packages will be installed unconditionally"
+          fi
 
-        if ! sudo apt-get update &> "$outputFile"
-        then
-          echo "❌Error while updating the package list! Installer log:"
-          cat "$outputFile"
-          echo "❌❌❌"
+          return 0
+        }
 
-          exit 1
-        fi
+        updatePackageList() {
+          local flagFile="$HOME/install-system-packages-updated"
 
-        touch "$flagFile"
+          if [[ -f "$flagFile" ]]
+          then
+            echo "💡The package list has already been updated!"
+            return 0
+          fi
 
-    - name: Install packages
-      if: ${{ env.installPackages == 'true' }}
-      shell: bash
-      run: |
-        requestedPackages="${{ inputs.packages }}"
+          echo "📥Updating the package list..."
 
-        actualPackages="$(echo "$requestedPackages" | perl -pe 's/[\s,]+/ /g')"
+          runQuietly "sudo apt-get update"
+        }
 
-        echo "📥Requested packages: $actualPackages"
+        runQuietly() {
+          local commandLine="$1"
 
-        outputFile="$(mktemp)"
+          local outputFile="$(mktemp)"
 
-        echo "📦Installing packages..."
+          if ! $commandLine &> "$outputFile"
+          then
+            echo "❌Error while running the command! Log:"
+            cat "$outputFile"
+            echo "❌❌❌"
 
-        if ! sudo apt-get install -y $actualPackages &> "$outputFile"
-        then
-          echo "❌Error while installing the packages! Installer log:"
-          cat "$outputFile"
-          echo "❌❌❌"
+            exit 1
+          fi
+        }
 
-          exit 1
-        fi
+        installPackages() {
+          local requestedPackages="${{ inputs.packages }}"
 
+          echo "📥Requested packages: $requestedPackages"
 
-        echo "✅Packages installed!"
+          local actualPackages="$(echo "$requestedPackages" | perl -pe 's/[\s,]+/ /g')"
+
+          echo "📦Installing packages..."
+
+          runQuietly "sudo apt-get install -y $actualPackages"
+
+          echo "✅Packages installed!"
+        }
+
+        main

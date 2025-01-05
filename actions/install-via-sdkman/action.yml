@@ -11,70 +11,76 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      run: |
-        if [[ -z "${{ inputs.candidate }}" ]]
-        then
-          echo "❌Missing action input: 'candidate'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.version }}" ]]
-        then
-          echo "❌Missing action input: 'version'!" >&2
-          exit 1
-        fi
-
-    - name: Setup environment variables
-      shell: bash
+    - shell: bash
       run: |
         sdkmanHome="$HOME/.sdkman"
 
-        echo "sdkmanHome=$sdkmanHome" >> $GITHUB_ENV
+        validateInputs() {
+          if [[ -z "${{ inputs.candidate }}" ]]
+          then
+            echo "❌Missing action input: 'candidate'!" >&2
+            exit 1
+          fi
 
-    - name: Ensure SDKMAN! is installed
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if type -t sdk
-        then
-          echo "🚀It seems SDKMAN! is already installed and ready to run!"
-          exit 0
-        fi
+          if [[ -z "${{ inputs.version }}" ]]
+          then
+            echo "❌Missing action input: 'version'!" >&2
+            exit 1
+          fi
+        }
 
-        if [[ -d "$sdkmanHome" ]]
-        then
-          echo "☑It seems that SDKMAN! was previously installed"
-          exit 0
-        fi
+        ensureSdkmanInstalled() {
+          if type -t sdk
+          then
+            echo "🚀It seems SDKMAN! is already installed and ready to run!"
+            return 0
+          fi
 
-        echo "📥Installing SDKMAN!..."
+          if [[ -d "$sdkmanHome" ]]
+          then
+            echo "☑It seems that SDKMAN! was previously installed"
+            return 0
+          fi
 
-        curl -s "https://get.sdkman.io" | bash
+          echo "📥Installing SDKMAN!..."
 
-        echo "🚀SDKMAN installed!"
+          curl -s "https://get.sdkman.io" | bash
 
-    - name: Install the requested candidate
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        candidate="${{ inputs.candidate }}"
-        version="${{ inputs.version }}"
+          echo "🚀SDKMAN installed!"
+        }
 
-        if ! type -t sdk
-        then
-          echo '🚀Setting up SDKMAN!...'
+        ensureSdkmanReady() {
+          if ! type -t sdk
+          then
+            echo '🚀Setting up SDKMAN!...'
 
-          source "$sdkmanHome/bin/sdkman-init.sh"
+            source "$sdkmanHome/bin/sdkman-init.sh"
+          fi
 
           echo "✅SDKMAN! ready!"
-        fi
+        }
 
-        echo "📥Installing $candidate($version)..."
+        installCandidateSdk() {
+          local candidate="${{ inputs.candidate }}"
+          local version="${{ inputs.version }}"
 
-        sdk install "$candidate" "$version"
+          echo "📥Installing $candidate($version)..."
 
-        echo "PATH=$sdkmanHome/candidates/candidate/$version:$PATH" >> $GITHUB_ENV
+          sdk install "$candidate" "$version"
 
-        echo "✅$candidate($version) installed!"
+          echo "PATH=$sdkmanHome/candidates/candidate/$version:$PATH" >> $GITHUB_ENV
+
+          echo "✅$candidate($version) installed!"
+        }
+
+        main() {
+          validateInputs
+
+          ensureSdkmanInstalled
+
+          ensureSdkmanReady
+
+          installCandidateSdk
+        }
+
+        main
