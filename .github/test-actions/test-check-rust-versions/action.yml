@@ -3,10 +3,16 @@ name: Test check-rust-versions
 runs:
   using: composite
   steps:
+    - shell: bash
+      run: echo "🎭Testing on Rust crate..."
+
     - name: Checking Rust versions for Rust crate should work
       uses: ./actions/check-rust-versions
       with:
         project-directory: tests/rust-crate
+
+    - shell: bash
+      run: echo "🎭Testing on Rust Wasm..."
 
     - name: Checking Rust versions for Rust web assembly should work
       uses: ./actions/check-rust-versions

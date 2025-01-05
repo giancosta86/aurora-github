@@ -2,8 +2,11 @@ name: Test find-critical-todos
 runs:
   using: composite
   steps:
-    - id: find-critical-todos-where-existing
-      uses: ./actions/find-critical-todos
+    - shell: bash
+      run: echo "🎭Find existing critical TODOs without crashing..."
+
+    - uses: ./actions/find-critical-todos
+      id: find-existing-critical-todos
       with:
         root-directory: tests/unknown-tech/src
         source-file-regex: \.(js|txt)$
@@ -13,7 +16,7 @@ runs:
     - name: Critical TODOs should be found when existing
       shell: bash
       run: |
-        found="${{ steps.find-critical-todos-where-existing.outputs.found }}"
+        found="${{ steps.find-existing-critical-todos.outputs.found }}"
 
         if [[ "$found" == "true" ]]
         then
@@ -23,8 +26,11 @@ runs:
           exit 1
         fi
 
-    - id: find-critical-todos-where-missing
-      uses: ./actions/find-critical-todos
+    - shell: bash
+      run: echo "🎭Look for inexisting critical TODOs..."
+
+    - uses: ./actions/find-critical-todos
+      id: look-for-missing-critical-todos
       with:
         root-directory: tests/custom
         source-file-regex: .*
@@ -34,7 +40,7 @@ runs:
     - name: Critical TODOs should not be found where they are missing
       shell: bash
       run: |
-        found="${{ steps.find-critical-todos-where-missing.outputs.found }}"
+        found="${{ steps.look-for-missing-critical-todos.outputs.found }}"
 
         if [[ "$found" != "true" ]]
         then
