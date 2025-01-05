@@ -11,7 +11,9 @@ runs:
       shell: bash
       working-directory: tests/npm-package
       run: |
-        jq '${{ inputs.jq-operation }}' package.json | sponge package.json
+        jq '${{ inputs.jq-operation }}' package.json > package.json.temp
+        mv package.json.temp package.json
+
         echo "🔎The 'exports' field is:"
         jq -C '.exports' package.json
 

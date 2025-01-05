@@ -20,8 +20,10 @@ runs:
       working-directory: tests/npm-package
       run: rm -f "$rootIndexFile"
 
-    - name: Run with prefer-index mode - when the root index file is missing
-      uses: ./actions/inject-subpath-exports
+    - shell: bash
+      run: echo "🎭Run with prefer-index mode - when the root index file is missing..."
+
+    - uses: ./actions/inject-subpath-exports
       with:
         project-directory: tests/npm-package
         mode: prefer-index
@@ -50,8 +52,10 @@ runs:
         cp package.json.original package.json
         touch "$rootIndexFile"
 
-    - name: Run again with prefer-index mode - now that the root index exists
-      uses: ./actions/inject-subpath-exports
+    - shell: bash
+      run: echo "🎭Run again with prefer-index mode - now that the root index exists..."
+
+    - uses: ./actions/inject-subpath-exports
       with:
         project-directory: tests/npm-package
         mode: prefer-index
@@ -79,10 +83,14 @@ runs:
       run: |
         cp package.json.original package.json
 
-        jq '.exports += {"./my-export": {"types": "./dist/my-export/index.d.ts", "import": "./dist/my-export/index.js"}}' package.json | sponge package.json
+        jq '.exports += {"./my-export": {"types": "./dist/my-export/index.d.ts", "import": "./dist/my-export/index.js"}}' package.json > package.json.temp
 
-    - name: Run action with 'all' mode
-      uses: ./actions/inject-subpath-exports
+        mv package.json.temp package.json
+
+    - shell: bash
+      run: echo "🎭Run action with 'all' mode..."
+
+    - uses: ./actions/inject-subpath-exports
       with:
         project-directory: tests/npm-package
         mode: all

@@ -3,6 +3,9 @@ name: Test parse-npm-scope
 runs:
   using: composite
   steps:
+    - shell: bash
+      run: echo "🎭Parsing root scope..."
+
     - name: Parse root scope
       uses: ./actions/parse-npm-scope
       id: root-detector
@@ -23,6 +26,9 @@ runs:
           exit 1
         fi
 
+    - shell: bash
+      run: echo "🎭Parsing scope without leading @..."
+
     - name: Parse scope without leading '@'
       uses: ./actions/parse-npm-scope
       id: without-leading-detector
@@ -42,6 +48,9 @@ runs:
           echo "❌Incorrect scope detected!" >&2
           exit 1
         fi
+
+    - shell: bash
+      run: echo "🎭Parsing scope with leading @..."
 
     - name: Parse scope with leading '@'
       uses: ./actions/parse-npm-scope

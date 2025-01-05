@@ -52,6 +52,14 @@ runs:
         project-directory: tests/gradle-project
 
     - shell: bash
+      run: echo "🎭Testing 'inject' mode for 🐍Python library..."
+
+    - uses: ./actions/enforce-branch-version
+      with:
+        mode: inject
+        project-directory: tests/python-lib
+
+    - shell: bash
       run: echo "🎭Testing 'inject' mode for 🎁unknown tech stack..."
 
     - uses: ./actions/enforce-branch-version
@@ -99,6 +107,14 @@ runs:
       with:
         mode: check
         project-directory: tests/gradle-project
+
+    - shell: bash
+      run: echo "🎭Testing 'check' mode for 🐍Python library..."
+
+    - uses: ./actions/enforce-branch-version
+      with:
+        mode: check
+        project-directory: tests/python-lib
 
     - shell: bash
       run: echo "🎭Testing 'check' mode for 🎁unknown tech stack..."
