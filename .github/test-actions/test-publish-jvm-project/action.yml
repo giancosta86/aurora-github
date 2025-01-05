@@ -1,0 +1,28 @@
+name: Test publish-jvm-project
+
+inputs:
+  jvm-token:
+    description: The token used when publishing to a Maven repo
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo "🎭Testing publication via Maven..."
+
+    - uses: ./actions/publish-jvm-project
+      with:
+        dry-run: true
+        project-directory: tests/maven-project
+        auth-user: giancosta86
+        auth-token: ${{ inputs.jvm-token }}
+
+    - shell: bash
+      run: echo "🎭Testing publication via Gradle..."
+
+    - uses: ./actions/publish-jvm-project
+      with:
+        dry-run: true
+        project-directory: tests/gradle-project
+        auth-user: giancosta86
+        auth-token: ${{ inputs.jvm-token }}
