@@ -13,28 +13,20 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
+    - name: Setup Python context
       shell: bash
       run: |
-        if [[ -z "${{ inputs.scope }}" ]]
-        then
-          echo "❌Missing action input: 'scope'!" >&2
-          exit 1
-        fi
+        pythonPath="${{ github.action_path }}/../.."
+        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
 
-    - name: Parse the actual npm scope
+        echo "INPUT_SCOPE=${{ inputs.scope }}" >> $GITHUB_ENV
+
+    - name: Call the Python implementation
       id: parse-actual-scope
-      shell: bash
+      shell: python
       run: |
-        requestedScope="${{ inputs.scope }}"
+        from core.parse_npm_scope import parse_npm_scope, Inputs
 
-        if [[ "$requestedScope" == "<ROOT>" ]]
-        then
-          actualScope=""
-          echo "🫚Root npm scope detected!"
-        else
-          actualScope="$(echo "$requestedScope" | sed 's/^@//')"
-          echo "🖌️Custom npm scope detected: '$actualScope'"
-        fi
+        inputs = Inputs.from_env()
 
-        echo "actual-scope=$actualScope" >> $GITHUB_OUTPUT
+        parse_npm_scope(inputs).write_to_github_output()

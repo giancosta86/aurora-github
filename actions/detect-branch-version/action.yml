@@ -21,26 +21,16 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Detect version from branch
-      id: detect-version
+    - name: Setup Python context
       shell: bash
       run: |
-        headRef="${{ github.head_ref }}"
-        ref="${{ github.ref }}"
+        pythonPath="${{ github.action_path }}/../.."
+        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
 
-        branch="${headRef:-"$ref"}"
-        echo "🌲Current Git branch: '$branch'"
+    - name: Call the Python implementation
+      id: detect-version
+      shell: python
+      run: |
+        from core.detect_branch_version import detect_branch_version_info
 
-        version="$(echo "$branch" | xargs basename | sed 's/^v//')"
-        echo "🦋Detected version: '$version'"
-
-        escapedVersion=$(echo "$version" | sed 's/\./\\\./g')
-        echo "🧵Escaped version: '$escapedVersion'"
-
-        major="$(echo "$version" | cut -d'.' -f1 | cut -d'-' -f1 | cut -d'+' -f1)"
-        echo "💎Major component: '$major'"
-
-        echo "branch=$branch" >> $GITHUB_OUTPUT
-        echo "version=$version" >> $GITHUB_OUTPUT
-        echo "escaped-version=$escapedVersion" >> $GITHUB_OUTPUT
-        echo "major=$major" >> $GITHUB_OUTPUT
+        detect_branch_version_info().write_to_github_output()

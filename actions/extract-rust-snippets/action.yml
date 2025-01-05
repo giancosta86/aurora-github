@@ -6,6 +6,10 @@ inputs:
     description: Relative path of the Markdown file containing the snippets.
     default: README.md
 
+  optional:
+    description: Just do nothing if `mardown-file` does not exist.
+    default: false
+
   test-filename-prefix:
     description: Relative path prefix for each generated test source file.
     default: tests/readme_test_
@@ -17,81 +21,22 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
-      working-directory: ${{ inputs.project-directory }}
+    - name: Setup Python context
+      shell: bash
       run: |
-        markdownFile="${{ inputs.markdown-file }}"
-        testFileNamePrefix="${{ inputs.test-filename-prefix }}"
+        pythonPath="${{ github.action_path }}/../.."
+        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
 
-        main() {
-          validateInputs
-          extractSnippetsToFiles
-          injectTestBootstrapCode
-          listGeneratedTestFiles
-        }
+        echo "INPUT_MARKDOWN_FILE=${{ inputs.markdown-file }}" >> $GITHUB_ENV
+        echo "INPUT_OPTIONAL=${{ inputs.optional }}" >> $GITHUB_ENV
+        echo "INPUT_TEST_FILENAME_PREFIX=${{ inputs.test-filename-prefix }}" >> $GITHUB_ENV
+        echo "INPUT_PROJECT_DIRECTORY=${{ inputs.project-directory }}" >> $GITHUB_ENV
 
-        validateInputs() {
-          if [[ -z "${{ inputs.markdown-file }}" ]]
-          then
-            echo "❌Missing action input: 'markdown-file'!" >&2
-            exit 1
-          fi
+    - name: Call the Python implementation
+      shell: python
+      run: |
+        from core.extract_rust_snippets import extract_rust_snippets, Inputs
 
-          if [[ ! -f "${{ inputs.markdown-file }}" ]]
-          then
-            echo "❌Missing source Markdown file: '${{ inputs.markdown-file }}'!" >&2
-            exit 1
-          fi
+        inputs = Inputs.from_env()
 
-          if [[ -z "${{ inputs.test-filename-prefix }}" ]]
-          then
-            echo "❌Missing action input: 'test-filename-prefix'!" >&2
-            exit 1
-          fi
-        }
-
-        extractSnippetsToFiles() {
-          local testDirectory=$(dirname "$testFileNamePrefix")
-          echo "📁Creating test directory: '${testDirectory}'"
-          mkdir -p "$testDirectory"
-          echo "✅Directory created!"
-
-          echo "🔁Trying to extract tests from Rust snippets in Markdown..."
-          awk '/```rust/{f="'"$testFileNamePrefix"'" ++n ".rs"; next} /```/{f=""} f{print > f}' "$markdownFile"
-          echo "✅Process completed!"
-        }
-
-        injectTestBootstrapCode() {
-          shopt -s nullglob
-
-          local testFile
-          for testFile in "$testFileNamePrefix"*.rs
-          do
-            echo -n "🧬Injecting test code into '$testFile'..."
-            cat << EOF >> "$testFile"
-
-          #[test]
-          fn run_code_snippet() {
-            main().unwrap();
-          }
-        EOF
-            echo "✅"
-          done
-        }
-
-        listGeneratedTestFiles() {
-          local testDirectory="$(dirname "$testFileNamePrefix")"
-
-          local testFiles=$(ls -1 "$testFileNamePrefix"*.rs 2>/dev/null || true)
-
-          if [ -z "$testFiles" ]
-          then
-            echo "💭No test files generated from Rust snippets"
-          else
-            echo "🔎Generated 🦀Rust test files from Markdown snippets:"
-            echo "$testFiles"
-            echo "✅Test files generated successfully!"
-          fi
-        }
-
-        main
+        extract_rust_snippets(inputs)
