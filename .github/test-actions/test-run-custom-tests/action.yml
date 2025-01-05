@@ -3,8 +3,10 @@ name: Test run-custom-tests
 runs:
   using: composite
   steps:
-    - name: Test the "script" strategy
-      uses: ./actions/run-custom-tests
+    - shell: bash
+      run: echo "🎭Testing the 'script' strategy..."
+
+    - uses: ./actions/run-custom-tests
       with:
         root-directory: tests/custom/script
 
@@ -22,8 +24,10 @@ runs:
           exit 1
         fi
 
-    - name: Test the "nodejs" strategy
-      uses: ./actions/run-custom-tests
+    - shell: bash
+      run: echo "🎭Testing the 'nodejs' strategy..."
+
+    - uses: ./actions/run-custom-tests
       with:
         root-directory: tests/custom/nodejs
 
@@ -41,8 +45,10 @@ runs:
           exit 1
         fi
 
-    - name: Test the "rust" strategy
-      uses: ./actions/run-custom-tests
+    - shell: bash
+      run: echo "🎭Testing the 'rust' strategy..."
+
+    - uses: ./actions/run-custom-tests
       with:
         root-directory: tests/custom/rust
 
@@ -60,14 +66,18 @@ runs:
           exit 1
         fi
 
-    - name: Run tests on inexisting directory
-      uses: ./actions/run-custom-tests
+    - shell: bash
+      run: echo "🎭Trying to run tests from inexisting directory..."
+
+    - uses: ./actions/run-custom-tests
       with:
         root-directory: tests/custom/TOTALLY_INEXISTING
         optional: true
 
-    - name: Run tests on directory with no tests
-      uses: ./actions/run-custom-tests
+    - shell: bash
+      run: echo "🎭Trying to run tests from a directory containing no tests..."
+
+    - uses: ./actions/run-custom-tests
       with:
         root-directory: tests/custom
         optional: true

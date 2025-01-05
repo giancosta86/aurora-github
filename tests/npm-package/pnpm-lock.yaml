@@ -6,4 +6,18 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      '@giancosta86/typed-env':
+        specifier: ^2.0.3
+        version: 2.0.3
+
+packages:
+
+  '@giancosta86/typed-env@2.0.3':
+    resolution: {integrity: sha512-ARUtDtimr2KlJjy9yOfBwGj+LFOPR1clIcgnCO+50sN+mSkP+BEvJd7y+lcHvWk3+9aMmHyekOVHk62TYpEvmg==}
+    engines: {node: '>=16.16.0'}
+
+snapshots:
+
+  '@giancosta86/typed-env@2.0.3': {}

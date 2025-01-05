@@ -3,6 +3,61 @@ name: Test setup-nodejs-context
 runs:
   using: composite
   steps:
+    - name: Setup environment variables
+      shell: bash
+      working-directory: tests/npm-package
+      run: |
+        expectedNodeVersion="$(jq -r '.engines.node' package.json)"
+        echo "🔎Expected NodeJS version: '$expectedNodeVersion'"
+
+        expectedPnpmVersion="$(jq -r '.packageManager' package.json | sed s/^pnpm@//)"
+        echo "🔎Expected pnpm version: '$expectedPnpmVersion'"
+
+        echo "expectedNodeVersion=$expectedNodeVersion" >> $GITHUB_ENV
+        echo "expectedPnpmVersion=$expectedPnpmVersion" >> $GITHUB_ENV
+        echo "dependenciesDirectory=node_modules" >> $GITHUB_ENV
+
+    - name: The expected NodeJS version should not be pre-installed
+      shell: bash
+      working-directory: tests/npm-package
+      run: |
+        if type node &> /dev/null
+        then
+          installedNodeVersion="$(node --version | sed s/^v//)"
+          echo "🔎Pre-installed NodeJS version: '$installedNodeVersion'"
+
+          if [[ "$installedNodeVersion" == "$expectedNodeVersion" ]]
+          then
+            echo "❌The expected NodeJS version is pre-installed!" >&2
+            exit 1
+          fi
+        else
+          echo "💭NodeJS not preinstalled..."
+        fi
+
+    - name: The expected pnpm version should not be pre-installed
+      shell: bash
+      working-directory: tests/npm-package
+      run: |
+        if type pnpm &> /dev/null
+        then
+          installedPnpmVersion="$(pnpm --version)"
+          echo "🔎Pre-installed pnpm version: '$installedPnpmVersion'"
+
+          if [[ "$installedPnpmVersion" == "$expectedPnpmVersion" ]]
+          then
+            echo "❌The expected pnpm version is pre-installed!" >&2
+            exit 1
+          fi
+        else
+          echo "💭pnpm not preinstalled..."
+        fi
+
+    - name: Ensure the dependencies are not installed
+      shell: bash
+      working-directory: tests/npm-package
+      run: rm -rf "$dependenciesDirectory"
+
     - name: Setup the NodeJS context
       uses: ./actions/setup-nodejs-context
       with:
@@ -12,13 +67,10 @@ runs:
       shell: bash
       working-directory: tests/npm-package
       run: |
-        expectedNodeVersion="$(jq -r '.engines.node' package.json)"
-        echo "🔎Expected NodeJS version: '$expectedNodeVersion'"
-
         installedNodeVersion="$(node --version | sed s/^v//)"
         echo "🔎Installed NodeJS version: '$installedNodeVersion'"
 
-        if [[ "$expectedNodeVersion" == "$installedNodeVersion" ]]
+        if [[ "$installedNodeVersion" == "$expectedNodeVersion" ]]
         then
           echo "✅The requested NodeJS version is being used!"
         else
@@ -30,16 +82,25 @@ runs:
       shell: bash
       working-directory: tests/npm-package
       run: |
-        expectedPnpmVersion="$(jq -r '.packageManager' package.json | sed s/^pnpm@//)"
-        echo "🔎Expected pnpm version: '$expectedPnpmVersion'"
-
         installedPnpmVersion="$(pnpm --version)"
         echo "🔎Installed pnpm version: '$installedPnpmVersion'"
 
-        if [[ "$expectedPnpmVersion" == "$installedPnpmVersion" ]]
+        if [[ "$installedPnpmVersion" == "$expectedPnpmVersion" ]]
         then
           echo "✅The expected pnpm version is being used!"
         else
           echo "❌The expected pnpm version is not running!" >&2
+          exit 1
+        fi
+
+    - name: The dependencies should have been installed
+      shell: bash
+      working-directory: tests/npm-package
+      run: |
+        if [[ -d "$dependenciesDirectory" ]]
+        then
+          echo "✅The dependencies have been installed!"
+        else
+          echo "❌The dependencies have not been installed!" >&2
           exit 1
         fi
