@@ -51,6 +51,8 @@ and indirectly by:
 
    - **build.gradle** or **build.gradle.kts** - for 🐘**Gradle**
 
+   - **pyproject.toml** - for 🐍**Python**
+
 1. Evaluate the `mode` input:
 
    - If the value is **inject**:
@@ -72,6 +74,8 @@ and indirectly by:
         - for 🪶**Maven**, check the `<version>` field in **pom.xml**
 
         - for 🐘**Gradle**, check the `version` field in **build.gradle** or **build.gradle.kts**
+
+        - for 🐍**Python**, check the `version` field in **pyproject.toml**
 
         - for any other technology, verify that the branch version exists at least once in the descriptor
 
