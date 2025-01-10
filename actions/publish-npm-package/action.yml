@@ -73,13 +73,9 @@ runs:
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if jq -e '.scripts.build? != null' package.json > /dev/null
-        then
-          echo "✅'build' script found in package.json - now running it!"
-          pnpm build
-        else
-          echo "💭No 'build' script found in package.json - skipping the build step."
-        fi
+        source "${{ github.action_path }}/../../core/bash/npmPackage.sh"
+
+        tryToRunNpmBuildScript
 
     - name: Publish the GitHub Pages website
       uses: giancosta86/aurora-github/actions/publish-github-pages@v8.1.0

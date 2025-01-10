@@ -78,6 +78,14 @@ runs:
         pnpm verify
         echo "✅'verify' script successful!"
 
+    - name: Try to build the package artifacts
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        source "${{ github.action_path }}/../../core/bash/npmPackage.sh"
+
+        tryToRunNpmBuildScript
+
     - name: Check subpath exports
       if: ${{ inputs.check-subpath-exports == 'true' }}
       uses: giancosta86/aurora-github/actions/check-subpath-exports@v8.1.0
