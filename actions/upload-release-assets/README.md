@@ -6,7 +6,7 @@ Uploads one or more asset files to a **GitHub** release.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/upload-release-assets@v8
+  - uses: giancosta86/aurora-github/actions/upload-release-assets@v9
     with:
       release-tag: v3.0.2
       files: logo.png data.zip

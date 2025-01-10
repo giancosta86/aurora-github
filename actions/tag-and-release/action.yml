@@ -72,7 +72,7 @@ runs:
 
     - name: Detect branch and version
       id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-version@v8.1.0
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v9.0.0
 
     - name: Verify branch and version
       shell: bash

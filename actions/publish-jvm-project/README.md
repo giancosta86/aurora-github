@@ -8,7 +8,7 @@ Publishes a project for the **Java Virtual Machine** - using **Maven** or **Grad
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-jvm-project@v8
+  - uses: giancosta86/aurora-github/actions/publish-jvm-project@v9
     with:
       auth-user: userOnTheServer
       auth-token: ${{ secrets.SERVER_TOKEN }}

@@ -6,7 +6,7 @@ Generates the source files for a **WebAssembly** target from a **Rust** project.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/generate-wasm-target@v8
+  - uses: giancosta86/aurora-github/actions/generate-wasm-target@v9
     with:
       target: web
       npm-scope: npmuser

@@ -6,7 +6,7 @@ Looks for _critical TODOs_ - that is, instances of the `TODO!` string - in sourc
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/find-critical-todos@v8
+  - uses: giancosta86/aurora-github/actions/find-critical-todos@v9
     with:
       source-file-regex: ^\.\/(src|tests)\/.+\.(c|m)?(j|t)sx?$
 ```
