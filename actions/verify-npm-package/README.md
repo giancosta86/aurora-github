@@ -29,7 +29,9 @@ steps:
 
 1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
 
-1. Run `pnpm verify` - so that the related script in `package.json` can decide what to do.
+1. Run `pnpm verify` - so that the related script in **package.json** can decide what to do.
+
+1. Run `pnpm build` - if the **build** script is defined in **package.json**.
 
 1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) to verify that the `exports` field in `package.json` actually references existing files.
 
