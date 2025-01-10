@@ -102,12 +102,12 @@ runs:
         fi
 
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v8.1.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v9.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
 
     - name: Verify Rust source files
-      uses: giancosta86/aurora-github/actions/verify-rust-crate@v8.1.0
+      uses: giancosta86/aurora-github/actions/verify-rust-crate@v9.0.0
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
         check-rustdoc: ${{ inputs.check-rustdoc }}
@@ -125,7 +125,7 @@ runs:
         echo "✅Headless browser tests OK!"
 
     - name: Generate the NodeJS package source files
-      uses: giancosta86/aurora-github/actions/generate-wasm-target@v8.1.0
+      uses: giancosta86/aurora-github/actions/generate-wasm-target@v9.0.0
       with:
         target: ${{ inputs.wasm-target }}
         npm-scope: ${{ inputs.npm-scope }}
@@ -134,7 +134,7 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Run client tests
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v8.1.0
+      uses: giancosta86/aurora-github/actions/run-custom-tests@v9.0.0
       with:
         optional: true
         root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}

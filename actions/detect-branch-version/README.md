@@ -7,7 +7,7 @@ Extracts the version from the name of the current **Git** branch, returning both
 ```yaml
 steps:
   - id: detector
-    uses: giancosta86/aurora-github/actions/detect-branch-version@v8
+    uses: giancosta86/aurora-github/actions/detect-branch-version@v9
 
   - run: |
       branch="${{ steps.detector.outputs.branch }}"

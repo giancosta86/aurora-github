@@ -8,7 +8,7 @@ Verifies the source files of a **Rust** crate.
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-rust-crate@v8
+  - uses: giancosta86/aurora-github/actions/verify-rust-crate@v9
 ```
 
 **Please, note**: this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md).

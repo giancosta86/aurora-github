@@ -8,7 +8,7 @@ Conditionally installs **NodeJS** along with **pnpm**, as well as the dependenci
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v8
+  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v9
 ```
 
 **Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md) and [publish-npm-package](../publish-npm-package/README.md).
