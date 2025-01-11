@@ -25,6 +25,8 @@ steps:
 
 ## 💡How it works
 
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
 1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
@@ -60,6 +62,8 @@ steps:
 |    `project-directory`    |       **string**        |         The directory containing `package.json`         |           **.**           |
 
 ## 🌐Further references
+
+- [check-project-license](../check-project-license/README.md)
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 

@@ -49,6 +49,8 @@ steps:
 
 ## 🌐Further references
 
+- [check-project-license](../check-project-license/README.md)
+
 - [generate-wasm-target](../generate-wasm-target/README.md)
 
 - [run-custom-tests](../run-custom-tests/README.md)

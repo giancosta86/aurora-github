@@ -13,6 +13,8 @@ steps:
 
 ## 💡How it works
 
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
 1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**; upon installation, the latest version will be retrieved if `pdm-version` is not specified.
@@ -41,14 +43,10 @@ steps:
 
 ## 🌐Further references
 
-- [extract-rust-snippets](../extract-rust-snippets/README.md)
-
-- [verify-rust-wasm](../verify-rust-wasm/README.md)
-
-- [find-critical-todos](../find-critical-todos/README.md)
+- [check-project-license](../check-project-license/README.md)
 
 - [enforce-branch-version](../enforce-branch-version/README.md)
 
-- [check-rust-versions](../check-rust-versions/README.md)
+- [find-critical-todos](../find-critical-todos/README.md)
 
 - [aurora-github](../../README.md)
