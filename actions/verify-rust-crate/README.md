@@ -15,6 +15,8 @@ steps:
 
 ## 💡How it works
 
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
 1. Display the version info for the main components of the Rust toolchain - verifying the existence of `rust-toolchain.toml`.
@@ -49,6 +51,8 @@ steps:
 |    `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
 
 ## 🌐Further references
+
+- [check-project-license](../check-project-license/README.md)
 
 - [extract-rust-snippets](../extract-rust-snippets/README.md)
 

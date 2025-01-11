@@ -13,6 +13,8 @@ steps:
 
 ## 💡How it works
 
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
 1. Determine the build tool:
@@ -52,6 +54,8 @@ steps:
 |    `project-directory`    |       **string**        | The directory containing the project descriptor |           **.**           |
 
 ## 🌐Further references
+
+- [check-project-license](../check-project-license/README.md)
 
 - [install-via-sdkman](../install-via-sdkman/README.md)
 

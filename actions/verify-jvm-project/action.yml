@@ -59,6 +59,9 @@ runs:
           exit 1
         fi
 
+    - name: Check the project license
+      uses: giancosta86/aurora-github/actions/check-project-license@v9.0.0
+
     - name: Setup Python context
       shell: bash
       run: |

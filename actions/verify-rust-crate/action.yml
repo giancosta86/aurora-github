@@ -63,6 +63,9 @@ runs:
           exit 1
         fi
 
+    - name: Check the project license
+      uses: giancosta86/aurora-github/actions/check-project-license@v9.0.0
+
     - name: Enforce branch version
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v9.0.0
       with:
