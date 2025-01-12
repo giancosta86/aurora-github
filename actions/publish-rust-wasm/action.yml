@@ -123,11 +123,18 @@ runs:
           echo "💭No .npmrc configuration file found in the project directory..."
         fi
 
+    - name: Publish the GitHub Pages website
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v9.0.0
+      with:
+        optional: true
+        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        dry-run: ${{ inputs.dry-run }}
+        enforce-branch-version: ${{ inputs.enforce-branch-version }}
+
     - name: Publish NodeJS package
       uses: giancosta86/aurora-github/actions/publish-npm-package@v9.0.0
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
-        website-directory: ${{ inputs.website-directory }}
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}/pkg
