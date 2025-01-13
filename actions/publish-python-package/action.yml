@@ -1,0 +1,99 @@
+name: Publish Python package
+description: Publishes a Python package using PDM.
+
+inputs:
+  dry-run:
+    description: Run a simulated publication.
+    default: false
+
+  pdm-version:
+    description: Version of PDM that should be used.
+
+  index-url:
+    description: URL of the target index.
+
+  index-user:
+    description: User for publishing to the index.
+
+  index-secret:
+    description: Password/token for publishing to the index.
+
+  website-directory:
+    description: Relative directory containing the project website.
+    default: website
+
+  enforce-branch-version:
+    description: How the branch version should be enforced.
+    default: inject
+
+  project-directory:
+    description: The directory containing pyproject.toml.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ -z "${{ inputs.dry-run }}" ]]
+        then
+          echo "❌Missing action input: 'dry-run'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.website-directory }}" ]]
+        then
+          echo "❌Missing action input: 'website-directory'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
+        then
+          echo "❌Missing action input: 'enforce-branch-version'!" >&2
+          exit 1
+        fi
+
+    - name: Enforce branch version
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v9.0.0
+      with:
+        mode: ${{ inputs.enforce-branch-version }}
+        project-directory: ${{ inputs.project-directory }}
+
+    - name: Ensure pdm
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        source "${{ github.action_path }}/../../core/bash/pdm.sh"
+
+        ensurePdm
+
+    - name: Publish the GitHub Pages website
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v9.0.0
+      with:
+        optional: true
+        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        dry-run: ${{ inputs.dry-run }}
+        enforce-branch-version: ${{ inputs.enforce-branch-version }}
+
+    - name: Publish the package
+      shell: bash
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        if [[ "${{ inputs.dry-run }}" == "true" ]]
+        then
+          echo "💭dry-run is enabled: just building the 🐍Python project..."
+          pdm build
+        else
+          echo "📤Publishing the 🐍Python project..."
+          pdm publish $dryRunArg
+        fi
+      env:
+        PDM_PUBLISH_REPO: ${{ inputs.index-url }}
+        PDM_PUBLISH_USERNAME: ${{ inputs.index-user }}
+        PDM_PUBLISH_PASSWORD: ${{ inputs.index-secret }}
+
+    - name: Print confirmation message
+      shell: bash
+      run: echo "✅The 🐍Python project was published successfully!"

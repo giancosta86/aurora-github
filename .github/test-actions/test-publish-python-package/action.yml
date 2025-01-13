@@ -1,0 +1,20 @@
+name: Test publish-python-package
+
+inputs:
+  index-secret:
+    description: The password/token for publishing to the index
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/publish-python-package
+      with:
+        dry-run: true
+
+        index-url: https://api.repsy.io/pypi/giancosta86/pyground
+
+        index-user: giancosta86
+
+        index-secret: ${{ inputs.index-secret }}
+
+        project-directory: tests/python-lib

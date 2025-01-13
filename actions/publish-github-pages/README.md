@@ -15,6 +15,7 @@ steps:
 
 - [publish-jvm-project](../publish-jvm-project/README.md)
 
+- [publish-python-package](../publish-python-package/README.md)
 
 - [publish-npm-package](../publish-npm-package/README.md)
 
