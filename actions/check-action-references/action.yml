@@ -9,35 +9,19 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Detect branch and version
-      id: detect-branch-version
-      uses: giancosta86/aurora-github/actions/detect-branch-version@v8.1.0
-
-    - name: Fail on cross-branch local references
+    - name: Setup Python context
       shell: bash
-      working-directory: ${{ inputs.actions-directory }}
       run: |
-        branch="${{ steps.detect-branch-version.outputs.branch }}"
-        echo "🌲Current branch: '$branch'"
+        pythonPath="${{ github.action_path }}/../../core/python"
+        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
 
-        fullRepo="$GITHUB_REPOSITORY"
-        echo "🧭Full repository name: '$fullRepo'"
+        echo "INPUT_ACTIONS_DIRECTORY=${{ inputs.actions-directory }}" >> $GITHUB_ENV
 
-        hasReferencesToOtherBranches=false
+    - name: Call the Python implementation
+      shell: python
+      run: |
+        from core.check_action_references import check_action_references, Inputs
 
-        while IFS= read -r referenceLine
-        do
-          if [[ "$referenceLine" != *@"${branch}" ]]
-          then
-            echo "⛔Cross-branch reference found: $referenceLine" >&2
-            hasReferencesToOtherBranches=true
-          fi
-        done < <(find -name '*.yml' -print | xargs grep -Pn "uses:\s+${fullRepo}/")
+        inputs = Inputs.from_env()
 
-        if [[ "$hasReferencesToOtherBranches" == "true" ]]
-        then
-          echo "❌There are references to actions within '${{ inputs.actions-directory }}' residing in other branches!" >&2
-          exit 1
-        else
-          echo "✅No cross-branch action references detected!"
-        fi
+        check_action_references(inputs)
