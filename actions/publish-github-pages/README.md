@@ -11,7 +11,16 @@ steps:
   - uses: giancosta86/aurora-github/actions/publish-github-pages@v8
 ```
 
-**Please, note**: this action is automatically run by [publish-npm-package](../publish-npm-package/README.md), [publish-rust-crate](../publish-rust-crate/README.md) and [publish-rust-wasm](../publish-rust-wasm/README.md).
+**Please, note**: this action is automatically run by:
+
+- [publish-jvm-project](../publish-jvm-project/README.md)
+
+
+- [publish-npm-package](../publish-npm-package/README.md)
+
+- [publish-rust-crate](../publish-rust-crate/README.md)
+
+- [publish-rust-wasm](../publish-rust-wasm/README.md).
 
 ## 💡How it works
 
