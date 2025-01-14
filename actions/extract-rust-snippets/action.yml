@@ -17,79 +17,81 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -z "${{ inputs.markdown-file }}" ]]
-        then
-          echo "❌Missing action input: 'markdown-file'!" >&2
-          exit 1
-        fi
-
-        if [[ ! -f "${{ inputs.markdown-file }}" ]]
-        then
-          echo "❌Missing source Markdown file: '${{ inputs.markdown-file }}'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.test-filename-prefix }}" ]]
-        then
-          echo "❌Missing action input: 'test-filename-prefix'!" >&2
-          exit 1
-        fi
-
-    - name: Extract the Rust snippets from Markdown file
-      shell: bash
+    - shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
         markdownFile="${{ inputs.markdown-file }}"
         testFileNamePrefix="${{ inputs.test-filename-prefix }}"
 
-        testDirectory=$(dirname "$testFileNamePrefix")
-        echo "📁Creating test directory: '${testDirectory}'"
-        mkdir -p "$testDirectory"
-        echo "✅Directory created!"
-
-        echo "🔁Trying to extract tests from Rust snippets in Markdown..."
-        awk '/```rust/{f="'"$testFileNamePrefix"'" ++n ".rs"; next} /```/{f=""} f{print > f}' "$markdownFile"
-        echo "✅Process completed!"
-
-    - name: Inject the test code into the test files
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        testFileNamePrefix="${{ inputs.test-filename-prefix }}"
-
-        shopt -s nullglob
-
-        for testFile in "$testFileNamePrefix"*.rs
-        do
-          echo -n "🧬Injecting test code into '$testFile'..."
-          cat << EOF >> "$testFile"
-
-        #[test]
-        fn run_code_snippet() {
-          main().unwrap();
+        main() {
+          validateInputs
+          extractSnippetsToFiles
+          injectTestBootstrapCode
+          listGeneratedTestFiles
         }
+
+        validateInputs() {
+          if [[ -z "${{ inputs.markdown-file }}" ]]
+          then
+            echo "❌Missing action input: 'markdown-file'!" >&2
+            exit 1
+          fi
+
+          if [[ ! -f "${{ inputs.markdown-file }}" ]]
+          then
+            echo "❌Missing source Markdown file: '${{ inputs.markdown-file }}'!" >&2
+            exit 1
+          fi
+
+          if [[ -z "${{ inputs.test-filename-prefix }}" ]]
+          then
+            echo "❌Missing action input: 'test-filename-prefix'!" >&2
+            exit 1
+          fi
+        }
+
+        extractSnippetsToFiles() {
+          local testDirectory=$(dirname "$testFileNamePrefix")
+          echo "📁Creating test directory: '${testDirectory}'"
+          mkdir -p "$testDirectory"
+          echo "✅Directory created!"
+
+          echo "🔁Trying to extract tests from Rust snippets in Markdown..."
+          awk '/```rust/{f="'"$testFileNamePrefix"'" ++n ".rs"; next} /```/{f=""} f{print > f}' "$markdownFile"
+          echo "✅Process completed!"
+        }
+
+        injectTestBootstrapCode() {
+          shopt -s nullglob
+
+          local testFile
+          for testFile in "$testFileNamePrefix"*.rs
+          do
+            echo -n "🧬Injecting test code into '$testFile'..."
+            cat << EOF >> "$testFile"
+
+          #[test]
+          fn run_code_snippet() {
+            main().unwrap();
+          }
         EOF
-          echo "✅"
-        done
+            echo "✅"
+          done
+        }
 
-    - name: Display the extracted test files
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        testFileNamePrefix="${{ inputs.test-filename-prefix }}"
-        testDirectory="$(dirname "$testFileNamePrefix")"
+        listGeneratedTestFiles() {
+          local testDirectory="$(dirname "$testFileNamePrefix")"
 
-        testFiles=$(ls -1 "$testFileNamePrefix"*.rs 2>/dev/null || true)
+          local testFiles=$(ls -1 "$testFileNamePrefix"*.rs 2>/dev/null || true)
 
-        if [ -z "$testFiles" ]
-        then
-          echo "💭No test files generated from Rust snippets"
-        else
-          echo "🔎Generated 🦀Rust test files from Markdown snippets:"
-          echo "$testFiles"
-          echo "✅Test files generated successfully!"
-        fi
+          if [ -z "$testFiles" ]
+          then
+            echo "💭No test files generated from Rust snippets"
+          else
+            echo "🔎Generated 🦀Rust test files from Markdown snippets:"
+            echo "$testFiles"
+            echo "✅Test files generated successfully!"
+          fi
+        }
+
+        main

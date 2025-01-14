@@ -17,47 +17,117 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
+    - shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        case "${{ inputs.mode }}" in
-          "prefer-index" | all)
-            ;;
-          *)
-            echo "❌Invalid value for 'mode' input: '${{ inputs.mode }}'!" >&2
+        main() {
+          validateInputs
+          displayInitialExports
+          performInjection
+          displayFinalExports
+        }
+
+        validateInputs() {
+          case "${{ inputs.mode }}" in
+            "prefer-index" | all)
+              ;;
+            *)
+              echo "❌Invalid value for 'mode' input: '${{ inputs.mode }}'!" >&2
+              exit 1
+          esac
+
+          if [[ -z "${{ inputs.source-directory }}" ]]
+          then
+            echo "❌Missing action input: 'source-directory'!" >&2
             exit 1
-        esac
+          fi
 
-        if [[ -z "${{ inputs.source-directory }}" ]]
-        then
-          echo "❌Missing action input: 'source-directory'!" >&2
-          exit 1
-        fi
+          if [[ ! -f "package.json" ]]
+          then
+            echo "❌The package.json descriptor file does not exist!!" >&2
+            exit 1
+          fi
 
-        if [[ ! -f "package.json" ]]
-        then
-          echo "❌The package.json descriptor file does not exist!!" >&2
-          exit 1
-        fi
+          if [[ ! -d "${{ inputs.source-directory }}" ]]
+          then
+            echo "❌Source directory '${{ inputs.source-directory }}' does not exist!" >&2
+            exit 1
+          fi
+        }
 
-        if [[ ! -d "${{ inputs.source-directory }}" ]]
-        then
-          echo "❌Source directory '${{ inputs.source-directory }}' does not exist!" >&2
-          exit 1
-        fi
+        displayInitialExports() {
+          echo "📦package.json exports at the beginning of inject-subpath-exports:"
+          jq -C .exports package.json
+        }
 
-    - name: Display initial status of the exports
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "📦package.json exports at the beginning of inject-subpath-exports:"
-        jq -C .exports package.json
+        performInjection() {
+          local mode="${{ inputs.mode }}"
+          local sourceDirectory="${{ inputs.source-directory }}"
 
-    - name: Generate and inject subpath exports
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
+          local rootIndexNames=("index.ts" "index.js")
+
+          local rootIndexName
+          for rootIndexName in ${rootIndexNames[@]}
+          do
+            local potentialRootIndex="$sourceDirectory/$rootIndexName"
+
+            echo "🔎Looking for potential root index: '${potentialRootIndex}'"
+
+            if [[ -f "$potentialRootIndex" ]]
+            then
+              local rootIndex="$potentialRootIndex"
+              break
+            fi
+          done
+
+          if [[ -n "$rootIndex" ]]
+          then
+            echo "✅Root index file found: '$rootIndex'!"
+
+            updatePackageJson "$(cat <<EOF
+              .exports += {
+                ".": {
+                  types: "./dist/index.d.ts",
+                  import: "./dist/index.js"
+                }
+              }
+        EOF
+            )"
+
+            if [[ "$mode" == "prefer-index" ]]
+            then
+              echo "🐹In this mode, since the root index has been found, no more subpath exports will be injected"
+
+              return 0
+            fi
+          else
+            echo "💭No root index file found..."
+          fi
+
+          find "$sourceDirectory" -mindepth 2 -maxdepth 2 -type f -regex '.*/index\.\(t\|j\)s' | sort | while IFS= read -r subIndexFile
+          do
+            local exportName="$(dirname "$subIndexFile" | xargs basename)"
+
+            local distExportDirectory="./dist/$exportName"
+
+            echo "✅Export '${exportName}' provided by dist directory: '${distExportDirectory}'"
+
+            local declarationsFile="${distExportDirectory}/index.d.ts"
+
+            local esmFile="${distExportDirectory}/index.js"
+
+            updatePackageJson "$(cat <<EOF
+              .exports += {
+                "./$exportName": {
+                  types: "$declarationsFile",
+                  import: "$esmFile"
+                }
+              }
+        EOF
+            )"
+          done
+        }
+
         updatePackageJson() {
           local updatingExpression="$1"
 
@@ -67,74 +137,9 @@ runs:
           mv "$tempPackage" package.json
         }
 
-        mode="${{ inputs.mode }}"
-        sourceDirectory="${{ inputs.source-directory }}"
+        displayFinalExports() {
+          echo "📦package.json exports at the end of inject-subpath-exports:"
+          jq -C .exports package.json
+        }
 
-        rootIndexNames=("index.ts" "index.js")
-
-        for rootIndexName in ${rootIndexNames[@]}
-        do
-          potentialRootIndex="$sourceDirectory/$rootIndexName"
-
-          echo "🔎Looking for potential root index: '${potentialRootIndex}'"
-
-          if [[ -f "$potentialRootIndex" ]]
-          then
-            rootIndex="$potentialRootIndex"
-            break
-          fi
-        done
-
-        if [[ -n "$rootIndex" ]]
-        then
-          echo "✅Root index file found: '$rootIndex'!"
-
-          updatePackageJson "$(cat <<EOF
-            .exports += {
-              ".": {
-                types: "./dist/index.d.ts",
-                import: "./dist/index.js"
-              }
-            }
-        EOF
-          )"
-
-          if [[ "$mode" == "prefer-index" ]]
-          then
-            echo "🐹In this mode, since the root index has been found, no more subpath exports will be injected"
-
-            exit 0
-          fi
-        else
-          echo "💭No root index file found..."
-        fi
-
-        find "$sourceDirectory" -mindepth 2 -maxdepth 2 -type f -regex '.*/index\.\(t\|j\)s' | sort | while IFS= read -r subIndexFile
-        do
-          exportName="$(dirname "$subIndexFile" | xargs basename)"
-
-          distExportDirectory="./dist/$exportName"
-
-          echo "✅Export '${exportName}' provided by dist directory: '${distExportDirectory}'"
-
-          declarationsFile="${distExportDirectory}/index.d.ts"
-
-          esmFile="${distExportDirectory}/index.js"
-
-          updatePackageJson "$(cat <<EOF
-            .exports += {
-              "./$exportName": {
-                types: "$declarationsFile",
-                import: "$esmFile"
-              }
-            }
-        EOF
-          )"
-        done
-
-    - name: Display final status of the exports
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "📦package.json exports at the end of inject-subpath-exports:"
-        jq -C .exports package.json
+        main

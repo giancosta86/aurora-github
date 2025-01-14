@@ -8,30 +8,38 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
+    - shell: bash
       run: |
-        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
-        then
-          echo "❌Missing action input: 'wasm-pack-version'!" >&2
-          exit 1
-        fi
+        main() {
+          validateInputs
+          installWasmPack
+          printWasmPackVersion
+        }
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@v4
-      with:
-        version: 9
+        validateInputs() {
+          if [[ -z "${{ inputs.wasm-pack-version }}" ]]
+          then
+            echo "❌Missing action input: 'wasm-pack-version'!" >&2
+            exit 1
+          fi
+        }
 
-    - name: Install wasm-pack via pnpm
-      shell: bash
-      run: |
-        echo "🌐Installing wasm-pack ${{ inputs.wasm-pack-version }}..."
-        pnpm add -g "wasm-pack@${{ inputs.wasm-pack-version }}"
-        echo "✅wasm-pack installed!"
+        installWasmPack() {
+          local requestedVersion="${{ inputs.wasm-pack-version }}"
 
-    - name: Print wasm-pack version
-      shell: bash
-      run: |
-        echo "🔎Now ensuring wasm-pack is available..."
-        wasm-pack --version
-        echo "✅wasm-pack ready!"
+          echo "🌐Installing wasm-pack $requestedVersion..."
+
+          npm install -g "wasm-pack@$requestedVersion"
+
+          echo "✅wasm-pack installed!"
+        }
+
+        printWasmPackVersion() {
+          echo "🔎Now ensuring wasm-pack is available..."
+
+          wasm-pack --version
+
+          echo "✅wasm-pack ready!"
+        }
+
+        main

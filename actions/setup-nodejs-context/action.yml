@@ -21,7 +21,8 @@ runs:
           exit 1
         fi
 
-    - name: Detect toolchain request
+    - name: Detect toolchain constraints
+      id: detect-toolchain-constraints
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -38,14 +39,15 @@ runs:
 
         echo "echo 🔎Install NodeJS toolchain? $installToolchain"
 
-        echo "requestedNodeVersion=$requestedNodeVersion" >> $GITHUB_ENV
-        echo "installToolchain=$installToolchain" >> $GITHUB_ENV
+        echo "install-toolchain=$installToolchain" >> $GITHUB_OUTPUT
+
+        echo "requested-node-version=$requestedNodeVersion" >> $GITHUB_OUTPUT
 
     - name: Install NodeJS
-      if: ${{ env.installToolchain == 'true' }}
+      if: ${{ steps.detect-toolchain-constraints.outputs.install-toolchain == 'true' }}
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ env.requestedNodeVersion }}
+        node-version: ${{ steps.detect-toolchain-constraints.outputs.requested-node-version }}
 
     - name: Print NodeJS version
       shell: bash
@@ -54,7 +56,8 @@ runs:
         echo "🎡NodeJS version: '$(node --version)'"
 
     - name: Detect the requested pnpm version
-      if: ${{ env.installToolchain == 'true' }}
+      if: ${{ steps.detect-toolchain-constraints.outputs.install-toolchain == 'true' }}
+      id: detect-pnpm-version
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -84,13 +87,13 @@ runs:
 
         echo "🔬pnpm version to install: '$pnpmVersion'"
 
-        echo "pnpmVersion=$pnpmVersion" >> $GITHUB_ENV
+        echo "requested-pnpm-version=$pnpmVersion" >> $GITHUB_OUTPUT
 
     - name: Install pnpm
-      if: ${{ env.installToolchain == 'true' }}
+      if: ${{ steps.detect-toolchain-constraints.outputs.install-toolchain == 'true' }}
       uses: pnpm/action-setup@v4
       with:
-        version: ${{ env.pnpmVersion }}
+        version: ${{ steps.detect-pnpm-version.outputs.requested-pnpm-version }}
 
     - name: Print pnpm version
       shell: bash

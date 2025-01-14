@@ -19,39 +19,45 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
+    - shell: bash
       working-directory: ${{ inputs.source-directory }}
       run: |
-        if [[ -z "${{ inputs.release-tag }}" ]]
-        then
-          echo "❌Missing action input: 'release-tag'!" >&2
-          exit 1
-        fi
+        main() {
+          validateInputs
+          publishReleaseAssets
+        }
 
-        if [[ -z "${{ inputs.files }}" ]]
-        then
-          echo "❌Missing action input: 'files'!" >&2
-          exit 1
-        fi
+        validateInputs() {
+          if [[ -z "${{ inputs.release-tag }}" ]]
+          then
+            echo "❌Missing action input: 'release-tag'!" >&2
+            exit 1
+          fi
 
-        if [[ -z "${{ inputs.overwrite }}" ]]
-        then
-          echo "❌Missing action input: 'overwrite'!" >&2
-          exit 1
-        fi
+          if [[ -z "${{ inputs.files }}" ]]
+          then
+            echo "❌Missing action input: 'files'!" >&2
+            exit 1
+          fi
 
-    - name: Publish release assets
-      shell: bash
-      working-directory: ${{ inputs.source-directory }}
-      run: |
-        if [[ "${{ inputs.overwrite}}" == "true" ]]
-        then
-          flags="--clobber"
-        else
-          flags=""
-        fi
+          if [[ -z "${{ inputs.overwrite }}" ]]
+          then
+            echo "❌Missing action input: 'overwrite'!" >&2
+            exit 1
+          fi
+        }
 
-        gh release upload "$flags" "${{ inputs.release-tag }}" ${{ inputs.files }}
+        publishReleaseAssets() {
+          if [[ "${{ inputs.overwrite }}" == "true" ]]
+          then
+            local clobberArg="--clobber"
+          else
+            local clobberArg=""
+          fi
+
+          gh release upload $clobberArg "${{ inputs.release-tag }}" ${{ inputs.files }}
+        }
+
+        main
       env:
         GH_TOKEN: ${{ github.token }}

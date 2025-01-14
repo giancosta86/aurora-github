@@ -9,25 +9,33 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Ensure the toolchain file is present
-      shell: bash
+    - shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
-        toolchainFile="rust-toolchain.toml"
+        main() {
+          checkToolchainFile
+          printToolVersions
+        }
 
-        if [[ ! -f "$toolchainFile" ]]
-        then
-          echo "❌Missing toolchain file: '$toolchainFile'" >&2
-          exit 1
-        fi
+        checkToolchainFile() {
+          local toolchainFile="rust-toolchain.toml"
 
-    - name: Print Rust tool versions
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "🦀Rust toolchain versions:"
-        cargo --version
-        rustc --version
-        cargo fmt --version
-        cargo clippy --version
-        echo "🦀🦀🦀"
+          if [[ -f "$toolchainFile" ]]
+          then
+            echo "✅Toolchain file found: $toolchainFile"
+          else
+            echo "❌Missing toolchain file: '$toolchainFile'" >&2
+            exit 1
+          fi
+        }
+
+        printToolVersions() {
+          echo "🦀Rust toolchain versions:"
+          cargo --version
+          rustc --version
+          cargo fmt --version
+          cargo clippy --version
+          echo "🦀🦀🦀"
+        }
+
+        main
