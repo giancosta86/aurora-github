@@ -141,4 +141,4 @@ runs:
 
     - name: Print confirmation message
       shell: bash
-      run: echo "✅Rust web assembly source files verified!"
+      run: echo "✅Rust web assembly project verified!"
