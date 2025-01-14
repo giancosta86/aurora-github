@@ -100,4 +100,4 @@ runs:
 
     - name: Print confirmation message
       shell: bash
-      run: echo "✅npm package source files verified!"
+      run: echo "✅npm package project verified!"
