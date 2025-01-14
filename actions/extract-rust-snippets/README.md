@@ -26,7 +26,7 @@ steps:
   }
   ```
 
-- the Markdown file must exist, but it is not required to contain code snippets: in this case, no test file will be generated.
+- the Markdown file must exist unless `optional` is set to **true**, but it is never required to contain code snippets: in this case, no test file will be generated.
 
 ## 💡How it works
 
@@ -51,11 +51,12 @@ where `N` is the position of the snippet within the Markdown content, starting f
 
 ## 📥Inputs
 
-|          Name          |    Type    |                        Description                         |      Default value      |
-| :--------------------: | :--------: | :--------------------------------------------------------: | :---------------------: |
-|    `markdown-file`     | **string** | Relative path of the Markdown file containing the snippets |      **README.md**      |
-| `test-filename-prefix` | **string** |  Relative path prefix for each generated test source file  | **tests/readme_test\_** |
-|  `project-directory`   | **string** |            The directory containing Cargo.toml             |          **.**          |
+|          Name          |    Type     |                        Description                         |      Default value      |
+| :--------------------: | :---------: | :--------------------------------------------------------: | :---------------------: |
+|    `markdown-file`     | **string**  | Relative path of the Markdown file containing the snippets |      **README.md**      |
+|       `optional`       | **boolean** |      Just do nothing if `mardown-file` does not exist      |        **false**        |
+| `test-filename-prefix` | **string**  |  Relative path prefix for each generated test source file  | **tests/readme_test\_** |
+|  `project-directory`   | **string**  |            The directory containing Cargo.toml             |          **.**          |
 
 ## 🌐Further references
 
