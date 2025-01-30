@@ -21,9 +21,13 @@ def detect_branch_version_info() -> BranchVersionInfo:
     head_ref = getenv("GITHUB_HEAD_REF")
     ref = getenv("GITHUB_REF")
 
-    branch = head_ref if head_ref else ref
-    if not branch:
+    retrieved_branch = head_ref if head_ref else ref
+    if not retrieved_branch:
         raise AuroraException("Cannot detect the branch!")
+
+    print(f"🌳Retrieved Git branch name: '{retrieved_branch}'")
+
+    branch = retrieved_branch.replace("refs/heads/", "")
 
     print(f"🌲Current Git branch: '{branch}'")
 
