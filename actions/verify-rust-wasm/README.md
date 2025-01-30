@@ -8,7 +8,7 @@ Verifies the source files of a **Rust** web assembly.
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v9
+  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v10
     with:
       wasm-pack-version: 0.13.1
       npm-scope: your-npm-scope

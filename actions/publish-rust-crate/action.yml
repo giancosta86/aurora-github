@@ -63,7 +63,7 @@ runs:
         fi
 
     - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v9.0.0
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.0.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
@@ -97,7 +97,7 @@ runs:
         prepareDescriptor
 
     - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v9.0.0
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v10.0.0
       with:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}

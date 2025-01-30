@@ -8,7 +8,7 @@ Publishes a directory as the [GitHub Pages](https://pages.github.com/) website f
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/publish-github-pages@v9
+  - uses: giancosta86/aurora-github/actions/publish-github-pages@v10
 ```
 
 **Please, note**: this action is automatically run by:
