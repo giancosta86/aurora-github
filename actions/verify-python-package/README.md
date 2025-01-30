@@ -8,7 +8,7 @@ Verifies the source files of a **Python** package using [PDM](https://pdm-projec
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-python-package@v9
+  - uses: giancosta86/aurora-github/actions/verify-python-package@v10
 ```
 
 ## 💡How it works

@@ -6,7 +6,7 @@ Ensures the validity of the project license file.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-project-license@v9
+  - uses: giancosta86/aurora-github/actions/check-project-license@v10
 ```
 
 **Please, note**: this action is automatically run by:

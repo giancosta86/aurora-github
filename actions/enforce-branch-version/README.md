@@ -6,7 +6,7 @@ Ensures that the version in the artifact descriptor matches the **Git** branch v
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/enforce-branch-version@v9
+  - uses: giancosta86/aurora-github/actions/enforce-branch-version@v10
     with:
       mode: inject
 ```

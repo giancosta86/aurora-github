@@ -6,7 +6,7 @@ Extracts **Rust** code snippets from a **Markdown** file to standalone test file
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/extract-rust-snippets@v9
+  - uses: giancosta86/aurora-github/actions/extract-rust-snippets@v10
 ```
 
 **Please, note**: this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).

@@ -6,7 +6,9 @@ Creates a **Git** tag and a **GitHub** release, from a Git branch named accordin
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/tag-and-release@v9
+  - uses: giancosta86/aurora-github/actions/tag-and-release@v10
+    with:
+      git-strategy: rebase
 ```
 
 ## ☑️Requirements
