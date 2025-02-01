@@ -1,9 +1,9 @@
 name: Tag and release
-description: Creates a Git tag and a GitHub release, from a Git branch - named according to semver - that is deleted during the process.
+description: Merges a pull request, creates a Git tag and publishes a GitHub release, from a Git branch named according to semantic versioning.
 
 inputs:
-  draft-only:
-    description: Only draft the release - do not publish it.
+  draft-release:
+    description: Draft the release - do not publish it.
     default: false
 
   notes-file-processor:
@@ -16,6 +16,9 @@ inputs:
   dry-run:
     description: Run the action without performing commands.
     default: false
+
+  git-strategy:
+    description: How to apply the pull request to the Git repository. Can be `merge`, `rebase` or `squash`.
 
 outputs:
   release-tag:
@@ -32,9 +35,9 @@ runs:
     - name: Validate inputs
       shell: bash
       run: |
-        if [[ -z "${{ inputs.draft-only }}" ]]
+        if [[ -z "${{ inputs.draft-release }}" ]]
         then
-          echo "❌Missing action input: 'draft-only'!" >&2
+          echo "❌Missing action input: 'draft-release'!" >&2
           exit 1
         fi
 
@@ -50,59 +53,31 @@ runs:
           exit 1
         fi
 
+        case "${{ inputs.git-strategy }}" in
+          merge | rebase | squash)
+            ;;
+
+          *)
+            echo "❌Invalid value for input: 'git-strategy': '${{ inputs.git-strategy }}'!" >&2
+            exit 1
+        esac
+
     - name: Display inputs
       shell: bash
       run: |
-        echo "📥draft-only: ${{ inputs.draft-only }}"
-        echo "📥set-major-tag: ${{ inputs.set-major-tag }}"
         echo "📥dry-run: ${{ inputs.dry-run }}"
-
-    - name: Ensure the action is invoked when merging a pull request, except for dry-run
-      shell: bash
-      run: |
-        inPullRequestMerging="$(jq -r .pull_request.merged "$GITHUB_EVENT_PATH")"
-
-        echo "🔎Merging a pull request? $inPullRequestMerging"
-
-        if [[ "$inPullRequestMerging" != "true" && "${{ inputs.dry-run }}" != "true" ]]
-        then
-          echo "❌This action can only be invoked when merging a pull request!" >&2
-          exit 1
-        fi
+        echo "📥draft-release: ${{ inputs.draft-release }}"
+        echo "📥set-major-tag: ${{ inputs.set-major-tag }}"
+        echo "📥notes-file-processor: ${{ inputs.notes-file-processor }}"
+        echo "📥git-strategy: ${{ inputs.git-strategy }}"
 
     - name: Detect branch and version
       id: detect-branch-version
       uses: giancosta86/aurora-github/actions/detect-branch-version@v10.0.0
 
-    - name: Verify branch and version
+    - name: Verify versions
       shell: bash
       run: |
-        branch="${{ steps.detect-branch-version.outputs.branch }}"
-
-        if [[ -n "$branch" ]]
-        then
-          echo "🌲Detected branch: '$branch'"
-        else
-          echo "❌The current Git branch could not be detected!" >&2
-          exit 1
-        fi
-
-        defaultBranch="${{ github.event.repository.default_branch }}"
-
-        if [[ -n "$defaultBranch" ]]
-        then
-          echo "🌲Default repository branch: '$defaultBranch'"
-        else
-          echo "❌The default repository branch could not be detected!" >&2
-          exit 1
-        fi
-
-        if [[ "$branch" == "$defaultBranch" ]]
-        then
-          echo "❌This action cannot be run from the default branch!" >&2
-          exit 1
-        fi
-
         version="${{ steps.detect-branch-version.outputs.version }}"
 
         if [[ -n "$version" ]]
@@ -113,7 +88,7 @@ runs:
           exit 1
         fi
 
-        setMajorTag=${{ inputs.set-major-tag }}
+        setMajorTag="${{ inputs.set-major-tag }}"
 
         if [[ "$setMajorTag" == "true" ]]
         then
@@ -128,20 +103,135 @@ runs:
           fi
         fi
 
-    - name: Delete Git branch
+    - name: Detect if a pull request was the trigger
+      shell: bash
+      run: |
+        echo "🧭GITHUB_REF IS: '$GITHUB_REF'"
+
+        if [[ "$GITHUB_REF" =~ ^refs/pull/ ]]
+        then
+          inPullRequestWorkflow=true
+
+          if [[ "${{ inputs.dry-run }}" != "true" ]]
+          then
+            echo "❌This action can be run from a workflow triggered by a pull-request only when dry-run is enabled"
+            exit 1
+          fi
+        else
+          inPullRequestWorkflow=false
+        fi
+
+        echo "inPullRequestWorkflow=$inPullRequestWorkflow" >> $GITHUB_ENV
+
+    - name: Retrieve pull request information
       shell: bash
       run: |
         branch="${{ steps.detect-branch-version.outputs.branch }}"
 
-        echo "Deleting Git 🌲branch '$branch'..."
+        echo "😺Retrieving Git pull request info for branch: '$branch'..."
+
+        pullRequestJson="$(gh pr view $branch --json title,number,baseRefOid,headRefOid --jq '{title: .title, number: .number, baseSha: .baseRefOid, headSha: .headRefOid}')"
+
+        echo "✅Pull request JSON data retrieved!"
+
+        title=$(echo "$pullRequestJson" | jq -r .title)
+        number=$(echo "$pullRequestJson" | jq -r .number)
+        baseSha=$(echo "$pullRequestJson" | jq -r .baseSha)
+        headSha=$(echo "$pullRequestJson" | jq -r .headSha)
+
+        echo "pullRequestTitle=$title" >> $GITHUB_ENV
+        echo "pullRequestNumber=$number" >> $GITHUB_ENV
+        echo "pullRequestBaseSha=$baseSha" >> $GITHUB_ENV
+        echo "pullRequestHeadSha=$headSha" >> $GITHUB_ENV
+      env:
+        GH_TOKEN: ${{ github.token }}
+
+    - name: Print pull request information
+      shell: bash
+      run: |
+        echo "🧭In pull request workflow? $inPullRequestWorkflow"
+        echo "🔁Pull request title: '$pullRequestTitle'"
+        echo "🔁Pull request number: '$pullRequestNumber'"
+        echo "🔁Pull request base SHA: '$pullRequestBaseSha'"
+        echo "🔁Pull request head SHA: '$pullRequestHeadSha'"
+
+    - name: Fetch Git log
+      shell: bash
+      run: |
+        main() {
+          if [[ "$inPullRequestWorkflow" == "true" ]]
+          then
+            echo "📥Fetching Git log within a pull request workflow..."
+            fetchLogWithinPullRequestWorkflow
+          else
+            echo "📥Fetching Git log not within a pull request workflow..."
+            fetchLogNotWithinPullRequestWorkflow
+          fi
+
+          echo "✅Git log ready!"
+        }
+
+        function fetchLogWithinPullRequestWorkflow() {
+          git fetch origin "$pullRequestBaseSha" "$pullRequestHeadSha"
+        }
+
+        function fetchLogNotWithinPullRequestWorkflow() {
+          fetchGitSha "$pullRequestHeadSha"
+
+          fetchGitSha "$pullRequestBaseSha"
+        }
+
+        function fetchGitSha() {
+          local requiredSha="$1"
+
+          local branch="${{ steps.detect-branch-version.outputs.branch }}"
+          local depthDelta=25
+
+          echo "🧭Ensuring Git SHA '$requiredSha' is available..."
+
+          while ! git cat-file commit "$requiredSha" > /dev/null 2>&1
+          do
+            echo "📥Fetching $depthDelta more commits..."
+            git fetch --deepen="$depthDelta" origin "$branch"
+            depthDelta=$((depthDelta * 2))
+          done
+
+          echo "✅Git SHA '$requiredSha' ready!"
+        }
+
+        main
+
+    - name: Fetch Git tags
+      shell: bash
+      run: |
+        echo "📥Retrieving Git tags..."
+        gitErrorLog="$(mktemp)"
+        if git fetch --tags > /dev/null 2> "$gitErrorLog"
+        then
+          echo "✅Git tags retrieved!"
+        else
+          echo "❌Cannot retrieve the Git tags, because of these errors:" >&2
+          cat "$gitErrorLog" >&2
+          echo "❌❌❌" >&2
+          exit 1
+        fi
+
+    - name: Merge the pull request
+      shell: bash
+      run: |
+        branch="${{ steps.detect-branch-version.outputs.branch }}"
+
+        echo "🔀Now merging the PR for branch '$branch', via the '${{ inputs.git-strategy }}' Git strategy..."
 
         if [[ "${{ inputs.dry-run }}" != "true" ]]
         then
-          git push origin --delete "$branch"
-          echo "🌲Branch deleted!"
+          gitStrategyArg="--${{ inputs.git-strategy }}"
+          gh pr merge "$branch" $gitStrategyArg --delete-branch
         else
-          echo "💭Just simulating branch deletion, in dry-run mode..."
+          echo "💭Just simulating pull request merging, in dry-run mode..."
         fi
+      env:
+        GH_TOKEN: ${{ github.token }}
 
     - name: Create the Git tag
       id: create-git-tag
@@ -170,10 +260,10 @@ runs:
         tag="${{ steps.create-git-tag.outputs.tag }}"
         echo "📌Release tag: '$tag'..."
 
-        baseSha="$(jq -r '.pull_request.base.sha' "$GITHUB_EVENT_PATH")"
+        baseSha="$pullRequestBaseSha"
         echo "🏰Base SHA: '$baseSha'"
 
-        headSha="$(jq -r '.pull_request.head.sha' "$GITHUB_EVENT_PATH")"
+        headSha="$pullRequestHeadSha"
         echo "👤Head SHA: '$headSha'"
 
         function createRelease() {
@@ -186,7 +276,7 @@ runs:
           local releaseTitle="$repoBasename $version"
           echo "🔎Release title: '$releaseTitle'"
 
-          local draftOnly="${{ inputs.draft-only }}"
+          local draftOnly="${{ inputs.draft-release }}"
           echo "🔎Draft only? $draftOnly"
 
           local releaseNotesFile="$(mktemp)"
@@ -253,24 +343,6 @@ runs:
         function writeCommitList() {
           local outputFile="$1"
 
-          echo "📥Retrieving Git logs..."
-          git fetch origin "$baseSha" "$headSha"
-          git rev-parse --verify "$baseSha" > /dev/null
-          git rev-parse --verify "$headSha" > /dev/null
-          echo "✅Git logs retrieved!"
-
-          echo "📥Retrieving Git tags..."
-          local gitErrorLog="$(mktemp)"
-          if git fetch --tags > /dev/null 2> "$gitErrorLog"
-          then
-            echo "✅Git tags retrieved!"
-          else
-            echo "❌Cannot retrieve the Git tags, because of these errors:" >&2
-            cat "$gitErrorLog" >&2
-            echo "❌❌❌" >&2
-            exit 1
-          fi
-
           printGitLogsAsMarkdown "§+-+§" >> "$outputFile"
         }
 
@@ -285,12 +357,6 @@ runs:
 
         function writePullRequestData() {
           local outputFile="$1"
-
-          local pullRequestTitle="$(jq -r '.pull_request.title' "$GITHUB_EVENT_PATH")"
-          echo "🔎Pull request title: '$pullRequestTitle'"
-
-          local pullRequestNumber="$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")"
-          echo "🔎Pull request number: '$pullRequestNumber'"
 
           echo -e "**Pull request**: $pullRequestTitle (#$pullRequestNumber):" >> "$outputFile"
         }

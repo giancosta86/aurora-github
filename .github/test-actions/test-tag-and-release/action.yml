@@ -3,13 +3,17 @@ name: Test tag-and-release
 runs:
   using: composite
   steps:
+    - shell: bash
+      run: echo "🎭Testing the creation of a 'draft' release in dry-run, without notes processor..."
+
     - name: Draft a release
       id: draft-release-without-major
       uses: ./actions/tag-and-release
       with:
         dry-run: true
-        draft-only: true
+        draft-release: true
         set-major-tag: false
+        git-strategy: squash
 
     - name: Verify the major tag is empty when it was not requested
       shell: bash
@@ -25,14 +29,18 @@ runs:
           exit 1
         fi
 
+    - shell: bash
+      run: echo "🎭Testing the creation of a release in dry-run, with notes processor..."
+
     - name: Publish a release
       id: publish-release
       uses: ./actions/tag-and-release
       with:
         dry-run: true
-        draft-only: false
+        draft-release: false
         set-major-tag: true
         notes-file-processor: .github/process-release-notes.sh
+        git-strategy: rebase
 
     - uses: ./actions/detect-branch-version
       id: version-detector
