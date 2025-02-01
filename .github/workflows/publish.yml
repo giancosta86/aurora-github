@@ -1,15 +1,10 @@
-name: Publish actions
+name: Publish
 
 on:
-  pull_request:
-    types: closed
-    branches: main
   workflow_dispatch:
 
 jobs:
   publish:
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true) }}
-
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -18,3 +13,5 @@ jobs:
         with:
           set-major-tag: true
           notes-file-processor: .github/process-release-notes.sh
+          git-strategy: rebase
+          draft-release: true
