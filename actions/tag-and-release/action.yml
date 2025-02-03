@@ -155,6 +155,13 @@ runs:
         echo "🔁Pull request base SHA: '$pullRequestBaseSha'"
         echo "🔁Pull request head SHA: '$pullRequestHeadSha'"
 
+    - name: Reset any Git local change
+      shell: bash
+      run: |
+        echo "⏱️Discarding local changes to the Git repository..."
+        git reset --hard HEAD
+        echo "✅Git repository successfully reset"
+
     - name: Fetch Git log
       shell: bash
       run: |
