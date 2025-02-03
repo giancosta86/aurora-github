@@ -103,7 +103,7 @@ runs:
 
     - name: Setup NodeJS context
       if: ${{ env.strategy == 'nodejs' }}
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v10.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v10.0.1
       with:
         project-directory: ${{ inputs.root-directory }}
 
@@ -129,7 +129,7 @@ runs:
 
     - name: Check Rust versions
       if: ${{ env.strategy == 'rust' && env.checkRustVersions == 'true' }}
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v10.0.0
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v10.0.1
       with:
         project-directory: ${{ inputs.root-directory }}
 
