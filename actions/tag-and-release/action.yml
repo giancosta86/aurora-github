@@ -19,6 +19,7 @@ inputs:
 
   git-strategy:
     description: How to apply the pull request to the Git repository. Can be `merge`, `rebase` or `squash`.
+    default: rebase
 
 outputs:
   release-tag:
