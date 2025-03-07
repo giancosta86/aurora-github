@@ -109,14 +109,14 @@ runs:
 
     - name: Enforce branch version
       if: ${{ env.strategy == 'nodejs' || env.strategy == 'maven' }}
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.0.1
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.1.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.source-directory }}
 
     - name: Setup NodeJS context
       if: ${{ env.strategy == 'nodejs' }}
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v10.0.1
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v10.1.0
       with:
         project-directory: ${{ inputs.source-directory }}
 

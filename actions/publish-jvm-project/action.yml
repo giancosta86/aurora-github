@@ -60,7 +60,7 @@ runs:
         fi
 
     - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.0.1
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.1.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
@@ -84,21 +84,21 @@ runs:
 
     - name: Install Java
       if: ${{ inputs.java-version != '' }}
-      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.0.1
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.1.0
       with:
         candidate: java
         version: ${{ inputs.java-version }}
 
     - name: Install Maven
       if: ${{ env.buildTool == 'mvn' && inputs.tool-version != '' }}
-      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.0.1
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.1.0
       with:
         candidate: maven
         version: ${{ inputs.tool-version }}
 
     - name: Install Gradle
       if: ${{ env.buildTool == 'gradle' && inputs.tool-version != '' }}
-      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.0.1
+      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.1.0
       with:
         candidate: gradle
         version: ${{ inputs.tool-version }}
@@ -170,7 +170,7 @@ runs:
         echo "🐘🐘🐘"
 
     - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v10.0.1
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v10.1.0
       with:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}

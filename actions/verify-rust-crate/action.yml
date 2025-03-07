@@ -64,16 +64,16 @@ runs:
         fi
 
     - name: Check the project license
-      uses: giancosta86/aurora-github/actions/check-project-license@v10.0.1
+      uses: giancosta86/aurora-github/actions/check-project-license@v10.1.0
 
     - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.0.1
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.1.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
     - name: Check Rust versions
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v10.0.1
+      uses: giancosta86/aurora-github/actions/check-rust-versions@v10.1.0
       with:
         project-directory: ${{ inputs.project-directory }}
 
@@ -105,7 +105,7 @@ runs:
         checkStyle
 
     - name: Extract code snippets as tests from README.md
-      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v10.0.1
+      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v10.1.0
       with:
         optional: true
         project-directory: ${{ inputs.project-directory }}
@@ -146,7 +146,7 @@ runs:
         runTests
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v10.0.1
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v10.1.0
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
