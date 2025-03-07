@@ -7,8 +7,6 @@ Merges a pull request, creates a **Git** tag and publishes a **GitHub** release,
 ```yaml
 steps:
   - uses: giancosta86/aurora-github/actions/tag-and-release@v10
-    with:
-      git-strategy: rebase
 ```
 
 It is essential to remember that this action must be called:
@@ -74,7 +72,7 @@ More generally, this action should be _the very last step_ in a manually-trigger
 
 |          Name          |           Type            |                        Description                        | Default value |
 | :--------------------: | :-----------------------: | :-------------------------------------------------------: | :-----------: |
-|     `git-strategy`     | `merge`,`rebase`,`squash` |    How to apply the pull request to the Git repository    |               |
+|     `git-strategy`     | `merge`,`rebase`,`squash` |    How to apply the pull request to the Git repository    |  **rebase**   |
 |    `draft-release`     |        **boolean**        |           Draft the release - do not publish it           |   **false**   |
 | `notes-file-processor` |        **string**         |      Bash script editing the generated release notes      |               |
 |    `set-major-tag`     |        **boolean**        | Create/move the `vX` tag to this commit (X=major version) |   **false**   |
