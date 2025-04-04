@@ -7,6 +7,19 @@ on:
   workflow_dispatch:
 
 jobs:
+  test-setup-elvish-context:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/test-actions/test-setup-elvish-context
+
+  test-setup-elvish-context-in-subsequent-job:
+    runs-on: ubuntu-24.04
+    needs: test-setup-elvish-context
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./actions/setup-elvish-context
+
   test-detect-branch-version:
     runs-on: ubuntu-24.04
     steps:
@@ -258,6 +271,8 @@ jobs:
   verify:
     runs-on: ubuntu-24.04
     needs:
+      - test-setup-elvish-context
+      - test-setup-elvish-context-in-subsequent-job
       - test-detect-branch-version
       - test-check-action-references
       - test-check-project-license
