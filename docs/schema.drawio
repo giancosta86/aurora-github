@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
   <diagram name="Page-1" id="WVEFT4MKlsdd_JEsjKgG">
-    <mxGraphModel dx="1420" dy="801" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="640" math="0" shadow="0">
+    <mxGraphModel dx="1414" dy="810" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="640" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -14,10 +14,10 @@
           <mxGeometry x="1040" y="340" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="5F_uEz6Y_uifgk78bL69-5" value="&lt;font color=&quot;#000000&quot;&gt;enforce-branch-version&lt;/font&gt;" style="rounded=1;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#333300;fontSize=18;fontStyle=1;whiteSpace=wrap;points=[[0,0,0,0,0],[0,0.21,0,0,0],[0,0.41,0,0,0],[0,0.61,0,0,0],[0,0.81,0,0,0],[0,1,0,0,0],[0.25,0,0,0,0],[0.25,1,0,0,0],[0.5,0,0,0,0],[0.5,1,0,0,0],[0.75,0,0,0,0],[0.75,1,0,0,0],[1,0,0,0,0],[1,0.17,0,0,0],[1,0.33,0,0,0],[1,0.5,0,0,0],[1,0.67,0,0,0],[1,0.84,0,0,0],[1,1,0,0,0]];" parent="1" vertex="1">
-          <mxGeometry x="600" y="220" width="200" height="60" as="geometry" />
+          <mxGeometry x="610" y="180" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="5F_uEz6Y_uifgk78bL69-8" value="&lt;font color=&quot;#000000&quot;&gt;tag-and-release&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#333300;fontSize=18;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="760" y="330" width="200" height="60" as="geometry" />
+          <mxGeometry x="800" y="370" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="5F_uEz6Y_uifgk78bL69-10" value="&lt;font&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;verify&lt;/span&gt;&lt;font color=&quot;#000000&quot;&gt;-rust-crate&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;gradientColor=#ea6b66;strokeColor=#660000;fontSize=18;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="440" y="460" width="200" height="60" as="geometry" />
@@ -35,7 +35,7 @@
           <mxGeometry x="60" y="530" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="JbcmaUnZiUW12ubG6OzJ-1" value="&lt;font color=&quot;#000000&quot;&gt;check-action-references&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#333300;fontSize=18;gradientColor=#ffd966;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="790" y="130" width="200" height="60" as="geometry" />
+          <mxGeometry x="800" y="100" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="27VhhjaNEkj5jJPGuZWT-1" value="&lt;font color=&quot;#000000&quot;&gt;publish-rust-wasm&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#330066;gradientColor=#B266FF;fontSize=18;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="280" y="340" width="200" height="60" as="geometry" />
@@ -44,13 +44,13 @@
           <mxGeometry x="710" y="450" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="V_-eHLgGtdioPDiCoV3Y-1" value="&lt;font color=&quot;#000000&quot;&gt;extract-rust-snippets&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;gradientColor=#ea6b66;strokeColor=#660000;fontSize=18;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="510" y="360" width="200" height="60" as="geometry" />
+          <mxGeometry x="530" y="380" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="R0RN9PVhyACfvfY2AZyn-4" value="&lt;font color=&quot;#000000&quot;&gt;parse-npm-scope&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;gradientColor=#7ea6e0;strokeColor=#003366;fontSize=18;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="120" y="250" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="WGftkFezZDzaaBCJNsqa-1" value="&lt;font color=&quot;#000000&quot;&gt;install-system-packages&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#333300;fontSize=18;rotation=0;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="840" y="250" width="200" height="60" as="geometry" />
+          <mxGeometry x="850" y="230" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="-AZoPFNOOsIVRlhCm3I_-4" value="&lt;font color=&quot;#000000&quot;&gt;inject-subpath-exports&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;gradientColor=#7ea6e0;strokeColor=#003366;fontSize=18;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="40" y="150" width="200" height="60" as="geometry" />
@@ -86,10 +86,13 @@
           <mxGeometry x="1020" y="110" width="230" height="60" as="geometry" />
         </mxCell>
         <mxCell id="cB5Ss14V-M_2s97ksXFn-2" value="&lt;font color=&quot;#000000&quot;&gt;verify-python-package&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#003300;fontSize=18;fontStyle=1;gradientColor=#97d077;" parent="1" vertex="1">
-          <mxGeometry x="950" y="20" width="230" height="60" as="geometry" />
+          <mxGeometry x="940" y="20" width="230" height="60" as="geometry" />
         </mxCell>
         <mxCell id="R2uEXTokKTA0yc2U3-Yg-33" value="&lt;font color=&quot;#000000&quot;&gt;check-project-license&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#333300;fontSize=18;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="380" y="260" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8cHJEniHijgH8vVRUPbM-1" value="&lt;font color=&quot;#000000&quot;&gt;setup-elvish-context&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#99FFFF,#FFCCFF);strokeColor=#003366;fontSize=18;fontStyle=1;gradientColor=light-dark(#E6FFCC,#CCFFCC);" vertex="1" parent="1">
+          <mxGeometry x="610" y="280" width="200" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
