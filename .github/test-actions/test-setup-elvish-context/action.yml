@@ -1,0 +1,52 @@
+name: Test setup-elvish-context
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo "🎭Setup just the shell for the first time..."
+
+    - uses: ./actions/setup-elvish-context
+      with:
+        skip-if-existing: false
+
+    - shell: bash
+      run: echo "🎭Setup just the shell a second time..."
+
+    - uses: ./actions/setup-elvish-context
+      with:
+        skip-if-existing: false
+
+    - shell: bash
+      run: echo "🎭Setup the shell with startup packages..."
+
+    - uses: ./actions/setup-elvish-context
+      with:
+        packages: github.com/elves/sample-pkg, github.com/xiaq/edit.elv
+        skip-if-existing: false
+
+    - shell: bash
+      run: echo "🎭Setup the shell with packages a second time..."
+
+    - uses: ./actions/setup-elvish-context
+      with:
+        packages: github.com/elves/sample-pkg, github.com/xiaq/edit.elv
+        skip-if-existing: false
+
+    - shell: bash
+      run: echo "🎭Try enabling the skip-if-existing flag..."
+
+    - uses: ./actions/setup-elvish-context
+      with:
+        packages: github.com/elves/sample-pkg, github.com/xiaq/edit.elv
+        skip-if-existing: true
+
+    - shell: bash
+      run: echo "🎭Run Elvish code to confirm..."
+
+    - shell: elvish {0}
+      run: |
+        var message = '✅Elvish confirms: the shell is ready! 🚀'
+
+        echo $message
+

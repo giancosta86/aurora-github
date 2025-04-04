@@ -1,0 +1,162 @@
+name: Setup an Elvish context
+description: Installs an Elvish version and optional startup packages, caching everything between multiple jobs of the same workflow execution.
+
+inputs:
+  version:
+    description: The requested Elvish version.
+    default: 0.21.0
+
+  packages:
+    description: Startup packages - empty or space/comma-separated - to install via epm.
+    default: ""
+
+  skip-if-existing:
+    description: If the 'elvish' command is available, just do nothing.
+    default: true
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      run: |
+        if [[ -z "${{ inputs.version }}" ]]
+        then
+          echo "❌Missing action input: 'version'!" >&2
+          exit 1
+        fi
+
+        if [[ -z "${{ inputs.skip-if-existing }}" ]]
+        then
+          echo "❌Missing action input: 'skip-if-existing'!" >&2
+          exit 1
+        fi
+
+    - name: Detect if the action should be skipped
+      shell: bash
+      run: |
+        skip=false
+
+        if type elvish
+        then
+          echo "💬Elvish is already installed on the system!"
+
+          if [[ "${{ inputs.skip-if-existing }}" == "true" ]]
+          then
+            echo "🌟Skipping the setup, as requested!"
+            skip=true
+          else
+            echo "📥Still proceeding with the setup, as requested!"
+          fi
+        else
+          echo "💭Elvish shell not found on the system..."
+        fi
+
+        echo "skip=$skip" >> $GITHUB_ENV
+
+    - name: Setup environment variables
+      if: env.skip != 'true'
+      shell: bash
+      run: |
+        elvishCacheKey="${{ github.workflow }}-${{ github.run_number }}-elvish-shell-v${{ inputs.version }}"
+        echo "🔎Elvish cache key: '$elvishCacheKey'"
+
+        echo "elvish-cache-key=$elvishCacheKey" >> $GITHUB_ENV
+
+    - name: Restore cached Elvish binary
+      id: restore-cached-elvish
+      if: env.skip != 'true'
+      uses: actions/cache/restore@v4
+      with:
+        path: /usr/local/bin/elvish
+        key: ${{ env.elvish-cache-key }}
+
+    - name: Confirm cache hit for Elvish
+      if: env.skip != 'true' && steps.restore-cached-elvish.outputs.cache-hit == 'true'
+      shell: elvish {0}
+      run: echo 🚀Elvish ${{ inputs.version }} loaded from cache!
+
+    - name: Install Elvish
+      if: env.skip != 'true' && steps.restore-cached-elvish.outputs.cache-hit != 'true'
+      uses: elves/setup-elvish@v1
+      with:
+        elvish-version: ${{ inputs.version }}
+
+    - name: Confirm installation for Elvish
+      if: env.skip != 'true' && steps.restore-cached-elvish.outputs.cache-hit != 'true'
+      shell: elvish {0}
+      run: echo 🚀Elvish ${{ inputs.version }} installed!
+
+    - name: Cache Elvish binary
+      if: env.skip != 'true' && steps.restore-cached-elvish.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: /usr/local/bin/elvish
+        key: ${{ env.elvish-cache-key }}
+
+    - name: Copy the aurora-github package for Elvish
+      if: env.skip != 'true'
+      shell: elvish {0}
+      run: |
+        use epm
+        use os
+
+        echo "📥Now installing the 🔮aurora-github package for Elvish..."
+        os:mkdir-all $epm:managed-dir
+
+        var aurora-github-package-directory = ${{ github.action_path }}/../../lib
+
+        cp -r $aurora-github-package-directory $epm:managed-dir/aurora-github
+
+        echo "✅aurora-github package installed!"
+
+    - name: Compute package-related environment variables
+      if: env.skip != 'true' && inputs.packages != ''
+      shell: elvish {0}
+      run: |
+        use aurora-github/startup-libs
+
+        startup-libs:setup-env-vars [
+          &workflow=${{ github.workflow }}
+          &run-number=${{ github.run_number }}
+          &packages='${{ inputs.packages }}'
+        ]
+
+    - name: Restore cached startup packages
+      if: env.skip != 'true' && inputs.packages != ''
+      id: restore-cached-packages
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ env.epm-dir }}
+        key: ${{ env.epm-cache-key }}
+
+    - name: Confirm cache hit for Elvish
+      if: env.skip != 'true' && inputs.packages != '' && steps.restore-cached-packages.outputs.cache-hit == 'true'
+      shell: elvish {0}
+      run: echo 🚀Startup packages for Elvish loaded from cache!
+
+    - name: Install startup packages
+      if: env.skip != 'true' && inputs.packages != '' && steps.restore-cached-packages.outputs.cache-hit != 'true'
+      shell: elvish {0}
+      run: |
+        use aurora-github/startup-libs
+        startup-libs:install $E:comma-separated-packages
+
+    - name: Cache Elvish packages
+      if: env.skip != 'true' && inputs.packages != '' && steps.restore-cached-packages.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ env.epm-dir }}
+        key: ${{ env.epm-cache-key }}
+
+    - name: Print startup packages
+      if: env.skip != 'true' && inputs.packages != ''
+      shell: elvish {0}
+      run: |
+        use aurora-github/startup-libs
+        startup-libs:list
+
+    - name: Print confirmation message
+      if: env.skip != 'true'
+      shell: elvish {0}
+      run: echo ✅Elvish context ready!

@@ -10,6 +10,10 @@ In particular, for most actions **it is essential to name branches according to 
 
 The actions can be grouped by technology:
 
+## 🔮Elvish shell
+
+- [setup-elvish-context](actions/setup-elvish-context/README.md)
+
 ## 🦀Rust
 
 - [verify-rust-crate](actions/verify-rust-crate/README.md)
