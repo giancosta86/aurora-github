@@ -29,6 +29,8 @@ steps:
 
    1. The requested **NodeJS** version - or a compatible one, if a range is passed - will be installed via [actions/setup-node](https://github.com/actions/setup-node)
 
+      **PLEASE, NOTE**: if you are using Bash as your development shell, you may want to install the [nvmcd](https://github.com/giancosta86/aurora-bash/tree/main/scripts/nvmcd) command from the [aurora-bash](https://github.com/giancosta86/aurora-bash) project.
+
    1. **pnpm** will be downloaded via [pnpm/action-setup](https://github.com/pnpm/action-setup).
 
       As for the version:
@@ -66,6 +68,8 @@ steps:
 | `project-directory` | **string** | The directory containing `package.json` |     **.**     |
 
 ## 🌐Further references
+
+- [nvmcd](https://github.com/giancosta86/aurora-bash/tree/main/scripts/nvmcd) from [aurora-bash](https://github.com/giancosta86/aurora-bash)
 
 - [verify-npm-package](../verify-npm-package/README.md)
 
