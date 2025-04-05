@@ -47,10 +47,10 @@ runs:
         fi
 
     - name: Check the project license
-      uses: giancosta86/aurora-github/actions/check-project-license@v10.1.1
+      uses: giancosta86/aurora-github/actions/check-project-license@v10.2.0
 
     - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.1.1
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.2.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
@@ -80,7 +80,7 @@ runs:
         echo "✅Project built successfully!"
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v10.1.1
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v10.2.0
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}

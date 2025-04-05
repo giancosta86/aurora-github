@@ -52,7 +52,7 @@ runs:
     - name: Parse npm scope
       id: parse-npm-scope
       if: ${{ inputs.npm-scope != '' }}
-      uses: giancosta86/aurora-github/actions/parse-npm-scope@v10.1.1
+      uses: giancosta86/aurora-github/actions/parse-npm-scope@v10.2.0
       with:
         scope: ${{ inputs.npm-scope }}
 
