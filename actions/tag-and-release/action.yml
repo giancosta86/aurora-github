@@ -396,7 +396,7 @@ runs:
         GH_TOKEN: ${{ github.token }}
 
     - name: Create or move major version tag
-      if: ${{ inputs.set-major-tag == 'true' }}
+      if: inputs.set-major-tag == 'true'
       id: set-major-tag
       shell: bash
       run: |
