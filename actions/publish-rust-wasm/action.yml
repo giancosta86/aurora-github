@@ -93,12 +93,12 @@ runs:
         fi
 
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v10.2.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v10.3.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
 
     - name: Generate the NodeJS package source files
-      uses: giancosta86/aurora-github/actions/generate-wasm-target@v10.2.0
+      uses: giancosta86/aurora-github/actions/generate-wasm-target@v10.3.0
       with:
         target: ${{ inputs.wasm-target }}
         npm-scope: ${{ inputs.npm-scope }}
@@ -124,7 +124,7 @@ runs:
         fi
 
     - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v10.2.0
+      uses: giancosta86/aurora-github/actions/publish-github-pages@v10.3.0
       with:
         optional: true
         source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
@@ -132,7 +132,7 @@ runs:
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
     - name: Publish NodeJS package
-      uses: giancosta86/aurora-github/actions/publish-npm-package@v10.2.0
+      uses: giancosta86/aurora-github/actions/publish-npm-package@v10.3.0
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
