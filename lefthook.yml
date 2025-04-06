@@ -1,5 +1,4 @@
 post-checkout:
-  jobs:
-    - name: Update action references
+  scripts:
+    update-action-references.elv:
       runner: elvish
-      script: update-action-references.elv
