@@ -44,7 +44,7 @@ runs:
         echo "requested-node-version=$requestedNodeVersion" >> $GITHUB_OUTPUT
 
     - name: Install NodeJS
-      if: ${{ steps.detect-toolchain-constraints.outputs.install-toolchain == 'true' }}
+      if: steps.detect-toolchain-constraints.outputs.install-toolchain == 'true'
       uses: actions/setup-node@v4
       with:
         node-version: ${{ steps.detect-toolchain-constraints.outputs.requested-node-version }}
@@ -56,7 +56,7 @@ runs:
         echo "🎡NodeJS version: '$(node --version)'"
 
     - name: Detect the requested pnpm version
-      if: ${{ steps.detect-toolchain-constraints.outputs.install-toolchain == 'true' }}
+      if: steps.detect-toolchain-constraints.outputs.install-toolchain == 'true'
       id: detect-pnpm-version
       shell: bash
       working-directory: ${{ inputs.project-directory }}
@@ -90,7 +90,7 @@ runs:
         echo "requested-pnpm-version=$pnpmVersion" >> $GITHUB_OUTPUT
 
     - name: Install pnpm
-      if: ${{ steps.detect-toolchain-constraints.outputs.install-toolchain == 'true' }}
+      if: steps.detect-toolchain-constraints.outputs.install-toolchain == 'true'
       uses: pnpm/action-setup@v4
       with:
         version: ${{ steps.detect-pnpm-version.outputs.requested-pnpm-version }}

@@ -83,28 +83,28 @@ runs:
         get_jvm_build_tool(inputs).write_to_github_env()
 
     - name: Install Java
-      if: ${{ inputs.java-version != '' }}
+      if: inputs.java-version != ''
       uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.2.0
       with:
         candidate: java
         version: ${{ inputs.java-version }}
 
     - name: Install Maven
-      if: ${{ env.buildTool == 'mvn' && inputs.tool-version != '' }}
+      if: env.buildTool == 'mvn' && inputs.tool-version != ''
       uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.2.0
       with:
         candidate: maven
         version: ${{ inputs.tool-version }}
 
     - name: Install Gradle
-      if: ${{ env.buildTool == 'gradle' && inputs.tool-version != '' }}
+      if: env.buildTool == 'gradle' && inputs.tool-version != ''
       uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.2.0
       with:
         candidate: gradle
         version: ${{ inputs.tool-version }}
 
     - name: Prepare Maven settings
-      if: ${{ env.buildTool == 'mvn' }}
+      if: env.buildTool == 'mvn'
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -151,7 +151,7 @@ runs:
         main
 
     - name: Prepare Gradle settings
-      if: ${{ env.buildTool == 'gradle' }}
+      if: env.buildTool == 'gradle'
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -178,7 +178,7 @@ runs:
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
     - name: Publish via Maven
-      if: ${{ env.buildTool == 'mvn' }}
+      if: env.buildTool == 'mvn'
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |
@@ -209,7 +209,7 @@ runs:
         JVM_AUTH_TOKEN: ${{ inputs.auth-token }}
 
     - name: Publish via Gradle
-      if: ${{ env.buildTool == 'gradle' }}
+      if: env.buildTool == 'gradle'
       shell: bash
       working-directory: ${{ inputs.project-directory }}
       run: |

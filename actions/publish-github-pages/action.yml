@@ -108,20 +108,20 @@ runs:
         main
 
     - name: Enforce branch version
-      if: ${{ env.strategy == 'nodejs' || env.strategy == 'maven' }}
+      if: env.strategy == 'nodejs' || env.strategy == 'maven'
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.2.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.source-directory }}
 
     - name: Setup NodeJS context
-      if: ${{ env.strategy == 'nodejs' }}
+      if: env.strategy == 'nodejs'
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v10.2.0
       with:
         project-directory: ${{ inputs.source-directory }}
 
     - name: Create the website via NodeJS
-      if: ${{ env.strategy == 'nodejs' }}
+      if: env.strategy == 'nodejs'
       shell: bash
       working-directory: ${{ inputs.source-directory }}
       run: |
@@ -134,7 +134,7 @@ runs:
         echo "artifactDirectory=$artifactDirectory" >> $GITHUB_ENV
 
     - name: Create the website via Maven
-      if: ${{ env.strategy == 'maven' }}
+      if: env.strategy == 'maven'
       shell: bash
       working-directory: ${{ inputs.source-directory }}
       run: |
@@ -147,11 +147,11 @@ runs:
         echo "artifactDirectory=$artifactDirectory" >> $GITHUB_ENV
 
     - name: Setup static artifacts
-      if: ${{ env.strategy == 'static-files' }}
+      if: env.strategy == 'static-files'
       shell: bash
       run: echo "artifactDirectory=${{ inputs.source-directory }}" >> $GITHUB_ENV
 
-    - if: ${{ env.strategy != 'exit' }}
+    - if: env.strategy != 'exit'
       shell: bash
       run: |
         main() {
@@ -188,18 +188,18 @@ runs:
         main
 
     - name: Upload website artifacts
-      if: ${{ env.strategy != 'exit' }}
+      if: env.strategy != 'exit'
       uses: actions/upload-pages-artifact@v3
       with:
         path: ${{ env.artifactDirectory }}
 
     - name: Publish website via GitHub Pages
-      if: ${{ env.strategy != 'exit' }}
+      if: env.strategy != 'exit'
       id: publish-pages
       uses: actions/deploy-pages@v4
 
     - name: Print confirmation message
-      if: ${{ env.strategy != 'exit' }}
+      if: env.strategy != 'exit'
       shell: bash
       run: |
         echo "✅Publication to GitHub Pages successful!"

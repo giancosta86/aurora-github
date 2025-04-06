@@ -90,7 +90,7 @@ runs:
         tryToRunNpmBuildScript
 
     - name: Check subpath exports
-      if: ${{ inputs.check-subpath-exports == 'true' }}
+      if: inputs.check-subpath-exports == 'true'
       uses: giancosta86/aurora-github/actions/check-subpath-exports@v10.2.0
       with:
         project-directory: ${{ inputs.project-directory }}
