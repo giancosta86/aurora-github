@@ -19,7 +19,7 @@ steps:
 
    - Otherwise, install the **Elvish** shell, making the `elvish` command available along the system **PATH**
 
-1. If at least one package was specified in the `packages` input (which **MUST** be either empty or a comma/space-separated list):
+1. If at least one package was specified in the `packages` input (which **MUST** be either empty or a comma-separated list):
 
    - If the exact set of packages was already requested by a previous execution of this action during the current workflow, use the cached version
 
@@ -45,11 +45,12 @@ All the above features must follow the protocol described in the documentation f
 
 ## 📥Inputs
 
-|        Name        |                    Type                     |                      Description                      | Default value |
-| :----------------: | :-----------------------------------------: | :---------------------------------------------------: | :-----------: |
-|     `version`      |                 **string**                  |       The Elvish version to download and cache        |  **0.21.0**   |
-|     `packages`     | **string** - empty or space/comma-separated |       Packages to install and cache with Elvish       |               |
-| `skip-if-existing` |                 **boolean**                 | If the `elvish` command is available, just do nothing |   **true**    |
+|        Name        |                 Type                  |                      Description                      | Default value |
+| :----------------: | :-----------------------------------: | :---------------------------------------------------: | :-----------: |
+|     `version`      |              **string**               |       The Elvish version to download and cache        |  **0.21.0**   |
+|     `packages`     | **string** - empty or comma-separated |       Packages to install and cache with Elvish       |               |
+| `skip-if-existing` |              **boolean**              | If the `elvish` command is available, just do nothing |   **true**    |
+|      `quiet`       |              **boolean**              |            Only print warnings and errors             |   **true**    |
 
 ## 🌐Further references
 
