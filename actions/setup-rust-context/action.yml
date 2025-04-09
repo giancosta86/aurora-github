@@ -1,0 +1,48 @@
+name: Setup Rust context
+description: Optionally installs and configures a **Rust** toolchain.
+
+inputs:
+  cargo-colors:
+    description: Enable colors for Cargo
+    default: true
+
+  check-toolchain-file:
+    description: Verify the existence of the toolchain file.
+    default: true
+
+  project-directory:
+    description: The directory containing the toolchain file.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - name: Setup colors for Cargo
+      shell: elvish {0}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        use aurora-github/input
+        use aurora-github/rust/context
+
+        var cargo-colors = (input:require-bool cargo-colors '${{ inputs.cargo-colors }}')
+
+        context:set-cargo-colors $cargo-colors
+
+    - name: Check the toolchain file
+      if: inputs.check-toolchain-file == 'true'
+      shell: elvish {0}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        use aurora-github/rust/context
+
+        context:check-toolchain-file
+
+    - name: Display the current versions
+      shell: elvish {0}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        use aurora-github/rust/context
+
+        context:print-toolchain-versions

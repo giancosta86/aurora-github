@@ -1,4 +1,4 @@
-name: Test check-rust-versions
+name: Test setup-rust-context
 
 runs:
   using: composite
@@ -7,7 +7,7 @@ runs:
       run: echo "🎭Testing on Rust crate..."
 
     - name: Checking Rust versions for Rust crate should work
-      uses: ./actions/check-rust-versions
+      uses: ./actions/setup-rust-context
       with:
         project-directory: tests/rust-crate
 
@@ -15,6 +15,6 @@ runs:
       run: echo "🎭Testing on Rust Wasm..."
 
     - name: Checking Rust versions for Rust web assembly should work
-      uses: ./actions/check-rust-versions
+      uses: ./actions/setup-rust-context
       with:
         project-directory: tests/rust-wasm
