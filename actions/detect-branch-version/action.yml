@@ -21,16 +21,12 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Setup Python context
-      shell: bash
-      run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
 
-    - name: Call the Python implementation
-      id: detect-version
-      shell: python
+    - id: detect-version
+      shell: elvish {0}
       run: |
-        from core.detect_branch_version import detect_branch_version_info
+        use aurora-github/core
+        use aurora-github/branch-version
 
-        detect_branch_version_info().write_to_github_output()
+        core:map-to-output (branch-version:detect)
