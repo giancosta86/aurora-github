@@ -9,19 +9,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup Python context
-      shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
       run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
+        use aurora-github/action-references
 
-        echo "INPUT_ACTIONS_DIRECTORY=${{ inputs.actions-directory }}" >> $GITHUB_ENV
-
-    - name: Call the Python implementation
-      shell: python
-      run: |
-        from core.check_action_references import check_action_references, Inputs
-
-        inputs = Inputs.from_env()
-
-        check_action_references(inputs)
+        action-references:check '${{ inputs.actions-directory }}'
