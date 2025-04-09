@@ -1,8 +1,8 @@
 # check-project-license
 
-Ensures the validity of the project license file.
+Checks the validity of the project license file.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -21,19 +21,23 @@ steps:
 
 - [verify-python-package](../verify-python-package/README.md)
 
-## 💡How it works
+## ☑️ Requirements
+
+- The POSIX `date` command must be available on the system.
+
+## 💡 How it works
 
 1. Check that the `license-file` path actually points to an existing file.
 
 1. Verify that the current year is mentioned within the license file.
 
-## 📥Inputs
+## 📥 Inputs
 
 |      Name      |    Type    |         Description          | Default value |
 | :------------: | :--------: | :--------------------------: | :-----------: |
 | `license-file` | **string** | The path to the license file |  **LICENSE**  |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [verify-npm-package](../verify-npm-package/README.md)
 
