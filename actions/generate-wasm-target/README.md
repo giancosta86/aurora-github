@@ -2,7 +2,7 @@
 
 Generates the source files for a **WebAssembly** target from a **Rust** project.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -15,7 +15,7 @@ steps:
       project-directory: .
 ```
 
-## 💡How it works
+## 💡 How it works
 
 1. Invoke [wasm-pack](https://rustwasm.github.io/wasm-pack/) - with arguments depending on the inputs - to generate a WebAssembly project from the given Rust sources.
 
@@ -25,11 +25,11 @@ steps:
 
 1. If **package.json** was actually generated, display it
 
-## ☑️Requirements
+## ☑️ Requirements
 
 - The `wasm-pack` command must be available in the system - for example, via [install-wasm-pack](../install-wasm-pack/README.md).
 
-## 📥Inputs
+## 📥 Inputs
 
 |        Name         |    Type     |                             Description                              | Default value |
 | :-----------------: | :---------: | :------------------------------------------------------------------: | :-----------: |
@@ -41,7 +41,7 @@ steps:
 | `target-directory`  | **string**  | Directory (relative to `project-directory`) for the generated target |               |
 | `project-directory` | **string**  |                The directory containing `Cargo.toml`                 |     **.**     |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/)
 

@@ -16,7 +16,7 @@ runs:
         project-directory: tests/rust-wasm
 
     - shell: bash
-      run: echo "🎭Now generating a dev project with 'web' target..."
+      run: echo "🎭 Now generating a dev project with 'web' target..."
 
     - name: Set up the expected versions
       shell: bash
@@ -40,13 +40,13 @@ runs:
       working-directory: tests/rust-wasm/pkg-web
       run: |
         packageName="$(jq -r '.name' package.json)"
-        echo "🔎Name field in the generated package.json: '$packageName'"
+        echo "🔎 Name field in the generated package.json: '$packageName'"
 
         if [[ "$packageName" == "@giancosta86/test-wasm" ]]
         then
-          echo "✅The generated package.json has the expected name!"
+          echo "✅ The generated package.json has the expected name!"
         else
-          echo "❌Unexpected value for the 'name' field in package.json!"
+          echo "❌ Unexpected value for the 'name' field in package.json!"
           exit 1
         fi
 
@@ -55,13 +55,13 @@ runs:
       working-directory: tests/rust-wasm/pkg-web
       run: |
         packageVersion="$(jq -r '.version' package.json)"
-        echo "🔎Version field in the generated package.json: '$packageVersion'"
+        echo "🔎 Version field in the generated package.json: '$packageVersion'"
 
         if [[ "$packageVersion" == "${{ steps.version-detector.outputs.version }}" ]]
         then
-          echo "✅The generated package.json has the expected version!"
+          echo "✅ The generated package.json has the expected version!"
         else
-          echo "❌Unexpected value for the 'version' field in package.json!"
+          echo "❌ Unexpected value for the 'version' field in package.json!"
           exit 1
         fi
 
@@ -70,13 +70,13 @@ runs:
       working-directory: tests/rust-wasm/pkg-web
       run: |
         nodeJsVersion="$(jq -r '.engines.node' package.json)"
-        echo "🔎NodeJS version field in the generated package.json: '$nodeJsVersion'"
+        echo "🔎 NodeJS version field in the generated package.json: '$nodeJsVersion'"
 
         if [[ "$nodeJsVersion" == "${{ env.expectedNodeJsVersion }}" ]]
         then
-          echo "✅The generated package.json requires the expected NodeJS version!"
+          echo "✅ The generated package.json requires the expected NodeJS version!"
         else
-          echo "❌Unexpected value for the 'engines / node' field in package.json!"
+          echo "❌ Unexpected value for the 'engines / node' field in package.json!"
           exit 1
         fi
 
@@ -85,18 +85,18 @@ runs:
       working-directory: tests/rust-wasm/pkg-web
       run: |
         pnpmReference="$(jq -r '.packageManager' package.json)"
-        echo "🔎pnpm reference field in the generated package.json: '$pnpmReference'"
+        echo "🔎 pnpm reference field in the generated package.json: '$pnpmReference'"
 
         if [[ "$pnpmReference" == "pnpm@${{ env.expectedPnpmVersion }}" ]]
         then
-          echo "✅The generated package.json references the expected pnpm version!"
+          echo "✅ The generated package.json references the expected pnpm version!"
         else
-          echo "❌Unexpected value for the 'packageManager' field in package.json!"
+          echo "❌ Unexpected value for the 'packageManager' field in package.json!"
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Now generating a release project with 'deno' target..."
+      run: echo "🎭 Now generating a release project with 'deno' target..."
 
     - uses: ./actions/generate-wasm-target
       with:
@@ -111,8 +111,8 @@ runs:
       run: |
         if [[ ! -f "package.json" ]]
         then
-          echo "✅No package.json was generated for Deno, as expected!"
+          echo "✅ No package.json was generated for Deno, as expected!"
         else
-          echo "❌Why was package.json generated for Deno?"
+          echo "❌ Why was package.json generated for Deno?"
           exit 1
         fi
