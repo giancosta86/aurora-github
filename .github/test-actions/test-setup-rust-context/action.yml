@@ -1,0 +1,20 @@
+name: Test setup-rust-context
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo "🎭 Testing on Rust crate..."
+
+    - name: Run for Rust crate project
+      uses: ./actions/setup-rust-context
+      with:
+        project-directory: tests/rust-crate
+
+    - shell: bash
+      run: echo "🎭 Testing on Rust Wasm..."
+
+    - name: Run for Rust web assembly project
+      uses: ./actions/setup-rust-context
+      with:
+        project-directory: tests/rust-wasm

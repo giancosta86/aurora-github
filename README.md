@@ -16,6 +16,8 @@ The actions can be grouped by technology:
 
 ## 🦀Rust
 
+- [setup-rust-context](actions/setup-rust-context/README.md)
+
 - [verify-rust-crate](actions/verify-rust-crate/README.md)
 
 - [publish-rust-crate](actions/publish-rust-crate/README.md)
