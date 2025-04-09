@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: echo "🎭Parsing root scope..."
+      run: echo "🎭 Parsing root scope..."
 
     - name: Parse root scope
       uses: ./actions/parse-npm-scope
@@ -17,17 +17,17 @@ runs:
       run: |
         rootScope="${{ steps.root-detector.outputs.actual-scope }}"
 
-        echo "🔎Root scope parsed by action: '$rootScope'"
+        echo "🔎 Root scope parsed by action: '$rootScope'"
         if [[ -z "$rootScope" ]]
         then
-          echo "✅Root scope detected!"
+          echo "✅ Root scope detected!"
         else
-          echo "❌The parsed root scope must be empty!" >&2
+          echo "❌ The parsed root scope must be empty!" >&2
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Parsing scope without leading @..."
+      run: echo "🎭 Parsing scope without leading @..."
 
     - name: Parse scope without leading '@'
       uses: ./actions/parse-npm-scope
@@ -40,17 +40,17 @@ runs:
       run: |
         actualScope="${{ steps.without-leading-detector.outputs.actual-scope }}"
 
-        echo "🔎Scope parsed by action: '$actualScope'"
+        echo "🔎 Scope parsed by action: '$actualScope'"
         if [[ "$actualScope" == 'giancosta86' ]]
         then
-          echo "✅Scope without '@' detected!"
+          echo "✅ Scope without '@' detected!"
         else
-          echo "❌Incorrect scope detected!" >&2
+          echo "❌ Incorrect scope detected!" >&2
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Parsing scope with leading @..."
+      run: echo "🎭 Parsing scope with leading @..."
 
     - name: Parse scope with leading '@'
       uses: ./actions/parse-npm-scope
@@ -63,11 +63,11 @@ runs:
       run: |
         actualScope="${{ steps.with-leading-detector.outputs.actual-scope }}"
 
-        echo "🔎Scope parsed by action: '$actualScope'"
+        echo "🔎 Scope parsed by action: '$actualScope'"
         if [[ "$actualScope" == 'giancosta86' ]]
         then
-          echo "✅Scope with '@' detected!"
+          echo "✅ Scope with '@' detected!"
         else
-          echo "❌Incorrect scope detected!" >&2
+          echo "❌ Incorrect scope detected!" >&2
           exit 1
         fi
