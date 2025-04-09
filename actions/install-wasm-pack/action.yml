@@ -8,38 +8,15 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
       run: |
-        main() {
-          validateInputs
-          installWasmPack
-          printWasmPackVersion
-        }
+        use aurora-github/core
+        use aurora-github/wasm
 
-        validateInputs() {
-          if [[ -z "${{ inputs.wasm-pack-version }}" ]]
-          then
-            echo "❌Missing action input: 'wasm-pack-version'!" >&2
-            exit 1
-          fi
-        }
+        var version = (
+          core:validate-input "wasm-pack-version" ${{ inputs.wasm-pack-version }}
+        )
 
-        installWasmPack() {
-          local requestedVersion="${{ inputs.wasm-pack-version }}"
-
-          echo "🌐Installing wasm-pack $requestedVersion..."
-
-          npm install -g "wasm-pack@$requestedVersion"
-
-          echo "✅wasm-pack installed!"
-        }
-
-        printWasmPackVersion() {
-          echo "🔎Now ensuring wasm-pack is available..."
-
-          wasm-pack --version
-
-          echo "✅wasm-pack ready!"
-        }
-
-        main
+        wasm:install-wasm-pack $version
