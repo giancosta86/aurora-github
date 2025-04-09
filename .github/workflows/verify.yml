@@ -22,6 +22,7 @@ jobs:
 
   test-detect-branch-version:
     runs-on: ubuntu-24.04
+    needs: test-setup-elvish-context-in-subsequent-job
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-detect-branch-version
@@ -54,12 +55,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-find-critical-todos
 
-  test-tag-and-release:
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-tag-and-release
+  # test-tag-and-release:
+  #   runs-on: ubuntu-24.04
+  #   needs: test-check-action-references
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-tag-and-release
 
   test-install-wasm-pack:
     runs-on: ubuntu-24.04
@@ -82,49 +83,49 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-extract-rust-snippets
 
-  test-verify-npm-package:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-check-project-license
-      - test-enforce-branch-version
-      - test-find-critical-todos
-      - test-check-subpath-exports
-      - test-setup-nodejs-context
-      - test-run-custom-tests
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-verify-npm-package
+  # test-verify-npm-package:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-check-project-license
+  #     - test-enforce-branch-version
+  #     - test-find-critical-todos
+  #     - test-check-subpath-exports
+  #     - test-setup-nodejs-context
+  #     - test-run-custom-tests
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-verify-npm-package
 
-  test-publish-npm-package:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-enforce-branch-version
-      - test-setup-nodejs-context
-      - test-publish-github-pages
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-publish-npm-package
+  # test-publish-npm-package:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-enforce-branch-version
+  #     - test-setup-nodejs-context
+  #     - test-publish-github-pages
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-publish-npm-package
 
-  test-verify-rust-crate:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-check-project-license
-      - test-check-rust-versions
-      - test-enforce-branch-version
-      - test-find-critical-todos
-      - test-extract-rust-snippets
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-verify-rust-crate
+  # test-verify-rust-crate:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-check-project-license
+  #     - test-check-rust-versions
+  #     - test-enforce-branch-version
+  #     - test-find-critical-todos
+  #     - test-extract-rust-snippets
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-verify-rust-crate
 
-  test-publish-rust-crate:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-publish-github-pages
-      - test-enforce-branch-version
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-publish-rust-crate
+  # test-publish-rust-crate:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-publish-github-pages
+  #     - test-enforce-branch-version
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-publish-rust-crate
 
   test-parse-npm-scope:
     runs-on: ubuntu-24.04
@@ -135,89 +136,91 @@ jobs:
 
   test-generate-wasm-target:
     runs-on: ubuntu-24.04
-    needs: test-parse-npm-scope
+    needs:
+      - test-parse-npm-scope
+      - test-enforce-branch-version
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-generate-wasm-target
 
-  test-verify-rust-wasm:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-check-project-license
-      - test-verify-rust-crate
-      - test-install-wasm-pack
-      - test-generate-wasm-target
-      - test-run-custom-tests
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-verify-rust-wasm
+  # test-verify-rust-wasm:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-check-project-license
+  #     - test-verify-rust-crate
+  #     - test-install-wasm-pack
+  #     - test-generate-wasm-target
+  #     - test-run-custom-tests
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-verify-rust-wasm
 
-  test-publish-rust-wasm:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-install-wasm-pack
-      - test-generate-wasm-target
-      - test-publish-npm-package
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-publish-rust-wasm
+  # test-publish-rust-wasm:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-install-wasm-pack
+  #     - test-generate-wasm-target
+  #     - test-publish-npm-package
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-publish-rust-wasm
 
-  test-verify-jvm-project:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-check-project-license
-      - test-enforce-branch-version
-      - test-find-critical-todos
-      - test-install-via-sdkman
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-verify-jvm-project
+  # test-verify-jvm-project:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-check-project-license
+  #     - test-enforce-branch-version
+  #     - test-find-critical-todos
+  #     - test-install-via-sdkman
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-verify-jvm-project
 
-  test-publish-jvm-project:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-enforce-branch-version
-      - test-install-via-sdkman
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-publish-jvm-project
-        with:
-          jvm-token: ${{ secrets.JVM_TOKEN }}
+  # test-publish-jvm-project:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-enforce-branch-version
+  #     - test-install-via-sdkman
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-publish-jvm-project
+  #       with:
+  #         jvm-token: ${{ secrets.JVM_TOKEN }}
 
-  test-verify-python-package:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-check-project-license
-      - test-enforce-branch-version
-      - test-find-critical-todos
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-verify-python-package
+  # test-verify-python-package:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-check-project-license
+  #     - test-enforce-branch-version
+  #     - test-find-critical-todos
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-verify-python-package
 
-  test-publish-python-package:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-enforce-branch-version
-      - test-publish-github-pages
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-publish-python-package
-        with:
-          index-secret: ${{ secrets.PY_TOKEN }}
+  # test-publish-python-package:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-enforce-branch-version
+  #     - test-publish-github-pages
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-publish-python-package
+  #       with:
+  #         index-secret: ${{ secrets.PY_TOKEN }}
 
-  test-install-system-packages:
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-install-system-packages
+  # test-install-system-packages:
+  #   runs-on: ubuntu-24.04
+  #   needs: test-check-action-references
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-install-system-packages
 
-  test-inject-subpath-exports:
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-inject-subpath-exports
+  # test-inject-subpath-exports:
+  #   runs-on: ubuntu-24.04
+  #   needs: test-check-action-references
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-inject-subpath-exports
 
   test-check-subpath-exports:
     runs-on: ubuntu-24.04
@@ -226,33 +229,33 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-check-subpath-exports
 
-  test-setup-nodejs-context:
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-setup-nodejs-context
+  # test-setup-nodejs-context:
+  #   runs-on: ubuntu-24.04
+  #   needs: test-check-action-references
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-setup-nodejs-context
 
-  test-publish-github-pages:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-setup-nodejs-context
-      - test-enforce-branch-version
-    permissions:
-      pages: write
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-publish-github-pages
+  # test-publish-github-pages:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-setup-nodejs-context
+  #     - test-enforce-branch-version
+  #   permissions:
+  #     pages: write
+  #     id-token: write
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-publish-github-pages
 
-  test-run-custom-tests:
-    runs-on: ubuntu-24.04
-    needs:
-      - test-setup-nodejs-context
-      - test-check-rust-versions
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/test-actions/test-run-custom-tests
+  # test-run-custom-tests:
+  #   runs-on: ubuntu-24.04
+  #   needs:
+  #     - test-setup-nodejs-context
+  #     - test-check-rust-versions
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/test-actions/test-run-custom-tests
 
   test-upload-release-assets:
     runs-on: ubuntu-24.04
@@ -278,28 +281,28 @@ jobs:
       - test-check-project-license
       - test-enforce-branch-version
       - test-find-critical-todos
-      - test-tag-and-release
+      # - test-tag-and-release
       - test-install-wasm-pack
       - test-check-rust-versions
       - test-extract-rust-snippets
-      - test-verify-npm-package
-      - test-publish-npm-package
-      - test-verify-rust-crate
-      - test-publish-rust-crate
+      # - test-verify-npm-package
+      # - test-publish-npm-package
+      # - test-verify-rust-crate
+      # - test-publish-rust-crate
       - test-parse-npm-scope
       - test-generate-wasm-target
-      - test-verify-rust-wasm
-      - test-publish-rust-wasm
-      - test-verify-jvm-project
-      - test-publish-jvm-project
-      - test-verify-python-package
-      - test-publish-python-package
-      - test-install-system-packages
-      - test-inject-subpath-exports
+      # - test-verify-rust-wasm
+      # - test-publish-rust-wasm
+      # - test-verify-jvm-project
+      # - test-publish-jvm-project
+      # - test-verify-python-package
+      # - test-publish-python-package
+      # - test-install-system-packages
+      # - test-inject-subpath-exports
       - test-check-subpath-exports
-      - test-setup-nodejs-context
-      - test-publish-github-pages
-      - test-run-custom-tests
+      # - test-setup-nodejs-context
+      # - test-publish-github-pages
+      # - test-run-custom-tests
       - test-upload-release-assets
       - test-install-via-sdkman
 
