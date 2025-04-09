@@ -50,6 +50,7 @@ All the above features must follow the protocol described in the documentation f
 |     `version`      |                 **string**                  |       The Elvish version to download and cache        |  **0.21.0**   |
 |     `packages`     | **string** - empty or space/comma-separated |       Packages to install and cache with Elvish       |               |
 | `skip-if-existing` |                 **boolean**                 | If the `elvish` command is available, just do nothing |   **true**    |
+|      `quiet`       |                 **boolean**                 |            Only print warnings and errors             |   **true**    |
 
 ## 🌐Further references
 
