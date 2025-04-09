@@ -9,33 +9,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        main() {
-          checkToolchainFile
-          printToolVersions
-        }
+        use aurora-github/rust
 
-        checkToolchainFile() {
-          local toolchainFile="rust-toolchain.toml"
-
-          if [[ -f "$toolchainFile" ]]
-          then
-            echo "✅Toolchain file found: $toolchainFile"
-          else
-            echo "❌Missing toolchain file: '$toolchainFile'" >&2
-            exit 1
-          fi
-        }
-
-        printToolVersions() {
-          echo "🦀Rust toolchain versions:"
-          cargo --version
-          rustc --version
-          cargo fmt --version
-          cargo clippy --version
-          echo "🦀🦀🦀"
-        }
-
-        main
+        rust:check-versions
