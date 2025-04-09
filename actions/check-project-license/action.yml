@@ -9,46 +9,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
       run: |
-        licenseFile="${{ inputs.license-file }}"
+        use aurora-github/license-file
 
-        main() {
-          licenseFileMustExist
-
-          licenseMustIncludeCurrentYear
-        }
-
-        licenseFileMustExist() {
-          if [[ -f "$licenseFile" ]]
-          then
-            echo "✅License file found: $licenseFile"
-          else
-            echo "❌Missing license file: '$licenseFile'" >&2
-            exit 1
-          fi
-        }
-
-        licenseMustIncludeCurrentYear() {
-          currentYear="$(date +"%Y")"
-
-          if [[ -z "$currentYear" ]]
-          then
-            echo "❌Cannot detect the current year!" >&2
-            exit 1
-          fi
-
-          echo "🔎Current year: $currentYear"
-
-          echo "🔎Searching the license file for the current year..."
-
-          if grep --color=always "$currentYear" "$licenseFile"
-          then
-            echo "✅Current year found in the license file!"
-          else
-            echo "❌Cannot find the current year in the license file!" >&2
-            exit 1
-          fi
-        }
-
-        main
+        license-file:check '${{ inputs.license-file }}'
