@@ -37,13 +37,13 @@ runs:
         use aurora-github/npm
         use aurora-github/wasm
 
-        $npm-scope-input = '${{ inputs.npm-scope }}'
+        var npm-scope-input = '${{ inputs.npm-scope }}'
 
         var npm-scope = (
-          core:ternary (not-eq $scope-input '') (npm:parse-scope $npm-scope-input) ''
+          core:ternary (not-eq $npm-scope-input '') (npm:parse-scope $npm-scope-input) ''
         )
 
-        wasm:generate-descriptor [
+        wasm:generate-target [
           &target=(core:validate-input target '${{ inputs.target }}')
           &development=(core:validate-input development '${{ inputs.development }}')
           &target-directory=(core:validate-input target-directory '${{ inputs.target-directory }}')
