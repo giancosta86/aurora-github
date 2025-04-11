@@ -11,7 +11,7 @@ fn load-project { |directory|
 
     &descriptor-name=package.json
 
-    &version-retriever=$json:read-version~
+    &version-reader=$json:read-version~
 
     &build-tool=pnpm
 

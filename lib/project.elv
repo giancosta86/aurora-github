@@ -1,12 +1,9 @@
 use ./projects/loaders
 
-fn detect &descriptor-name=$nil { |directory|
+fn detect { |directory &descriptor-name=$nil|
   var project-loader = (loaders:get-for &descriptor-name=$descriptor-name $directory)
 
   $project-loader $directory
 
   fail 'NOT IMPLEMENTED YET!'
 }
-
-fn enforce-branch-version { |inputs| fail 'NOT IMPLEMENTED YET!' }
-

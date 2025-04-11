@@ -12,7 +12,7 @@ fn load-project { |directory descriptor-name|
 
     &descriptor-name=$descriptor-name
 
-    &version-retriever={ |descriptor-path|
+    &version-reader={ |descriptor-path|
       cat $descriptor-path | each { |line|
         var match = core:first-or-nil [(re:find '^version\s*=\s*["''](.*)["'']' $line)]
 

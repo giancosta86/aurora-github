@@ -11,7 +11,7 @@ fn load-project { |directory|
 
     &descriptor-name=pyproject.toml
 
-    &version-retriever=$toml:read-version~
+    &version-reader=$toml:read-version~
 
     &build-tool=pdm
   ]

@@ -11,7 +11,7 @@ fn load-project { |directory|
 
     &descriptor-name=pom.xml
 
-    &version-retriever=$xml:read-version~
+    &version-reader=$xml:read-version~
 
     &build-tool=mvn
   ]

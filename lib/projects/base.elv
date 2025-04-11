@@ -19,12 +19,12 @@ fn load-project { |inputs|
     &descriptor-path=$descriptor-path
 
     &read-version={
-      $inputs[read-version] $descriptor-path
+      $inputs[version-reader] $descriptor-path
     }
 
     &build-tool=$inputs[build-tool]
 
-    &as-string=$inputs[icon]$inputs[technology]($inputs[descriptor-name])
+    &to-string=$inputs[icon]$inputs[technology]($inputs[descriptor-name])
 
     &print-descriptor={
       console:print-block &icon=$inputs[icon] 'Project descriptor' {

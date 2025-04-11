@@ -11,7 +11,7 @@ fn load-project { |directory descriptor-name|
 
     &descriptor-name=$descriptor-name
 
-    &version-retriever={ |descriptor-path| fail 'Cannot retrieve the version of an unknown technology!' }
+    &version-reader={ |descriptor-path| put $nil }
 
     &build-tool=$nil
   ]
