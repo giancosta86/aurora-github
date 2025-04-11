@@ -35,7 +35,7 @@ fn -inject-nodejs-version { |nodejs-version|
     fail 'package.json was not generated for this target - cannot inject the requested NodeJS version!'
   }
 
-  console:inspect &icon=🧬 'Injecting the requested NodeJS version' $nodejs-version
+  console:inspect &emoji=🧬 'Injecting the requested NodeJS version' $nodejs-version
 
   jq '.engines.node = "'$nodejs-version'"' package.json | slurp > package.json
 }
@@ -45,7 +45,7 @@ fn -inject-pnpm-version { |pnpm-version|
     fail 'package.json was not generated for this target - cannot inject the requested pnpm version!'
   }
 
-  console:inspect &icon=🧬 'Injecting the requested pnpm version' $pnpm-version
+  console:inspect &emoji=🧬 'Injecting the requested pnpm version' $pnpm-version
 
   jq '.packageManager = "pnpm@'$pnpm-version'"' package.json | slurp > package.json
 }
@@ -60,7 +60,7 @@ fn -try-to-display-package-json { |target|
 }
 
 fn generate-target { |inputs|
-  console:inspect &icon=📥 "Inputs" (pprint $inputs)
+  console:inspect &emoji=📥 "Inputs" (pprint $inputs)
 
   -generate-target-via-wasm-pack $inputs
 
@@ -76,5 +76,5 @@ fn generate-target { |inputs|
 
   -try-to-display-package-json $inputs[target]
 
-  console:inspect &icon=✅ 'WebAssembly target ready in' $inputs[target-directory]
+  console:inspect &emoji=✅ 'WebAssembly target ready in' $inputs[target-directory]
 }

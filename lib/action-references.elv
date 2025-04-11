@@ -8,7 +8,7 @@ fn check { |actions-directory|
   if (eq full_repo "") {
     fail "Cannot detect the full repository name!"
   }
-  console:inspect &icon=🧭 "Full repository name" $full-repo
+  console:inspect &emoji=🧭 "Full repository name" $full-repo
 
   var reference-to-another-branch-regex = 'uses:\s*'$full-repo'[^@]+@(?!'$branch')'
 

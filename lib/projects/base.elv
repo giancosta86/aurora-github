@@ -12,7 +12,7 @@ fn load-project { |inputs|
 
     &technology=$inputs[technology]
 
-    &icon=$inputs[icon]
+    &emoji=$inputs[emoji]
 
     &descriptor-name=$inputs[descriptor-name]
 
@@ -24,10 +24,10 @@ fn load-project { |inputs|
 
     &build-tool=$inputs[build-tool]
 
-    &to-string=$inputs[icon]$inputs[technology]($inputs[descriptor-name])
+    &to-string=$inputs[emoji]$inputs[technology]($inputs[descriptor-name])
 
     &print-descriptor={
-      console:print-block &icon=$inputs[icon] 'Project descriptor' {
+      console:print-block &emoji=$inputs[emoji] 'Project descriptor' {
         $descriptor-printer $descriptor-path
       }
     }

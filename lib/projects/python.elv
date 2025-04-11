@@ -7,7 +7,7 @@ fn load-project { |directory|
 
     &technology=Python
 
-    &icon=🐍
+    &emoji=🐍
 
     &descriptor-name=pyproject.toml
 

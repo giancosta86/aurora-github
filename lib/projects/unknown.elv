@@ -7,7 +7,7 @@ fn load-project { |directory descriptor-name|
 
     &technology=Unknown
 
-    &icon=🎁
+    &emoji=🎁
 
     &descriptor-name=$descriptor-name
 

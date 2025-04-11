@@ -7,7 +7,7 @@ fn load-project { |directory|
 
     &technology=NodeJS
 
-    &icon=📦
+    &emoji=📦
 
     &descriptor-name=package.json
 

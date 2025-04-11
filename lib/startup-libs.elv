@@ -31,7 +31,7 @@ fn install { |comma-separated-packages|
 }
 
 fn list {
-  console:print-block &icon=📚 'Elvish startup packages' {
+  console:print-block &emoji=📚 'Elvish startup packages' {
     epm:installed | each { |pkg|
       console:print '*' $pkg
     }

@@ -7,7 +7,7 @@ fn load-project { |directory|
 
     &technology=Rust
 
-    &icon=🦀
+    &emoji=🦀
 
     &descriptor-name=Cargo.toml
 

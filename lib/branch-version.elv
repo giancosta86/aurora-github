@@ -17,16 +17,16 @@ fn detect {
     fail "Cannot retrieve the branch!"
   }
 
-  console:inspect &icon=🌳 "Retrieved Git branch name" $retrieved-branch
+  console:inspect &emoji=🌳 "Retrieved Git branch name" $retrieved-branch
 
   var branch = (path:base $retrieved-branch)
-  console:inspect &icon=🌲 "Current Git branch" $branch
+  console:inspect &emoji=🌲 "Current Git branch" $branch
 
   var version = (str:trim-prefix $branch v)
-  console:inspect &icon=🦋 "Detected version" $version
+  console:inspect &emoji=🦋 "Detected version" $version
 
   var escaped-version = (re:quote $version)
-  console:inspect &icon=🧵 "Escaped version" $escaped-version
+  console:inspect &emoji=🧵 "Escaped version" $escaped-version
 
   var major = (
     put $version |
@@ -37,7 +37,7 @@ fn detect {
       str:split + (all) |
       take 1
   )
-  console:inspect &icon=🪩 "Major version" $major
+  console:inspect &emoji=🪩 "Major version" $major
   put [
     &branch=$branch
     &version=$version
@@ -61,7 +61,7 @@ fn detect {
   $project[print-descriptor]
 
   var branch-version = (detect)[version]
-  console:inspect &icon=🌲 'Branch version' $branch-version
+  console:inspect &emoji=🌲 'Branch version' $branch-version
 
   var project-version = ($project[read-version])
   console:inspect 'Project version' $project-version

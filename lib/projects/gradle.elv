@@ -8,7 +8,7 @@ fn load-project { |directory descriptor-name|
 
     &technology=Gradle
 
-    &icon=🐘
+    &emoji=🐘
 
     &descriptor-name=$descriptor-name
 

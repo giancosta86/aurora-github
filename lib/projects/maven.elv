@@ -7,7 +7,7 @@ fn load-project { |directory|
 
     &technology=Maven
 
-    &icon=🪶
+    &emoji=🪶
 
     &descriptor-name=pom.xml
 

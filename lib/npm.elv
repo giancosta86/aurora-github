@@ -11,7 +11,7 @@ fn parse-scope { |declared-scope|
     }
 
     var actual-scope = (str:trim-prefix $declared-scope @)
-    console:inspect &icon=🖌 "Custom npm scope detected" $actual-scope
+    console:inspect &emoji=🖌 "Custom npm scope detected" $actual-scope
     put $actual-scope
   }
 }
