@@ -24,7 +24,7 @@ echo 🌲Branch version: "'"$branch-version"'"
 var major-version = (str:split . $branch-version | take 1)
 echo 💎Major version: "'"$major-version"'"
 
-put actions/**.{yml md} | each { |file-path|
+put actions/**[nomatch-ok].{yml md} | peach { |file-path|
   sed -i -E 's/(giancosta86\/aurora-github\/actions\/[^@]+)@v[0-9]+\.[0-9]+\.[0-9]+/\1@'$branch-version'/' $file-path
   sed -i -E 's/(giancosta86\/aurora-github\/actions\/[^@]+)@v[0-9]+/\1@'$major-version'/' $file-path
 }

@@ -7,6 +7,24 @@ runs:
       shell: bash
       run: echo "expectedVersion=0.13.1" >> $GITHUB_ENV
 
+    - name: The expected version should not be already installed
+      shell: bash
+      run: |
+        if type wasm-pack >/dev/null 2>&1
+        then
+          wasmPackVersion="$(wasm-pack --version | cut -d' ' -f2)"
+
+          echo "🔎Initial wasm-pack version: '$wasmPackVersion'"
+
+          if [[ "$wasmPackVersion" == "$expectedVersion" ]]
+          then
+            echo "❌The expected wasm-pack version ('$expectedVersion') is already installed - this test would be pointless!" >&2
+            exit 1
+          fi
+        else
+          echo "💭wasm-pack is not pre-installed in this environment..."
+        fi
+
     - uses: ./actions/install-wasm-pack
       with:
         wasm-pack-version: ${{ env.expectedVersion }}

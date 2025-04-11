@@ -9,6 +9,7 @@ runs:
     - uses: ./actions/setup-elvish-context
       with:
         skip-if-existing: false
+        quiet: false
 
     - shell: bash
       run: echo "🎭Setup just the shell a second time..."
@@ -16,6 +17,7 @@ runs:
     - uses: ./actions/setup-elvish-context
       with:
         skip-if-existing: false
+        quiet: false
 
     - shell: bash
       run: echo "🎭Setup the shell with startup packages..."
@@ -24,6 +26,7 @@ runs:
       with:
         packages: github.com/elves/sample-pkg, github.com/xiaq/edit.elv
         skip-if-existing: false
+        quiet: false
 
     - shell: bash
       run: echo "🎭Setup the shell with packages a second time..."
@@ -32,6 +35,7 @@ runs:
       with:
         packages: github.com/elves/sample-pkg, github.com/xiaq/edit.elv
         skip-if-existing: false
+        quiet: false
 
     - shell: bash
       run: echo "🎭Try enabling the skip-if-existing flag..."
@@ -40,6 +44,7 @@ runs:
       with:
         packages: github.com/elves/sample-pkg, github.com/xiaq/edit.elv
         skip-if-existing: true
+        quiet: false
 
     - shell: bash
       run: echo "🎭Run Elvish code to confirm..."
@@ -49,4 +54,3 @@ runs:
         var message = '✅Elvish confirms: the shell is ready! 🚀'
 
         echo $message
-
