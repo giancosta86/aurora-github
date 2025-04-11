@@ -15,21 +15,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup Python context
-      shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
       run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
+        use aurora-github/branch-version
 
-        echo "INPUT_MODE=${{ inputs.mode }}" >> $GITHUB_ENV
-        echo "INPUT_ARTIFACT_DESCRIPTOR=${{ inputs.artifact-descriptor }}" >> $GITHUB_ENV
-        echo "INPUT_PROJECT_DIRECTORY=${{ inputs.project-directory }}" >> $GITHUB_ENV
-
-    - name: Call the Python implementation
-      shell: python
-      run: |
-        from core.enforce_branch_version import enforce_branch_version, Inputs
-
-        inputs = Inputs.from_env()
-
-        enforce_branch_version(inputs)
+        branch-version:enforce '${{ inputs.project-directory}}' '${{ inputs.mode }}' &descriptor-name='${{ inputs.artifact-descriptor }}'
