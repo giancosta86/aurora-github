@@ -1,0 +1,75 @@
+name: Runs a project-specific scenario for enforce-branch-version
+
+inputs:
+  description:
+    description: A brief description of the project
+
+  project-directory:
+    description: The project directory
+
+  artifact-descriptor:
+    description: The descriptor file name - relative to the project directory
+
+  expected-version:
+    description: The expected version after injection
+
+  can-infer-descriptor:
+    description: The descriptor can be inferred from the directory
+    default: true
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        header() {
+          local text="$1"
+
+          local line
+          line="$(printf '=%.0s' $(seq 1 "${#text}"))"
+
+          echo -e "$line\n$text\n$line" >&2
+        }
+
+        header "${{ inputs.description }}"
+
+    - shell: bash
+      run: echo "🎭Testing 'inject' mode..."
+
+    - uses: ./actions/enforce-branch-version
+      if: inputs.can-infer-descriptor == 'true'
+      with:
+        mode: inject
+        project-directory: ${{ inputs.project-directory }}
+
+    - uses: ./actions/enforce-branch-version
+      if: inputs.can-infer-descriptor != 'true'
+      with:
+        mode: inject
+        project-directory: ${{ inputs.project-directory }}
+        artifact-descriptor: ${{ inputs.artifact-descriptor }}
+
+    - shell: bash
+      run: |
+        echo '🎭Now checking with grep that the version was actually injected...'
+        grep --color=always -F -Hn '${{ inputs.expected-version }}' ${{ inputs.project-directory }}/${{ inputs.artifact-descriptor }}
+        echo '✅Grep found the expected version!'
+
+    - shell: bash
+      if: inputs.can-infer-descriptor == 'true'
+      run: echo "🎭Testing 'check' mode (with inferred descriptor)..."
+
+    - uses: ./actions/enforce-branch-version
+      if: inputs.can-infer-descriptor == 'true'
+      with:
+        mode: check
+        project-directory: ${{ inputs.project-directory }}
+
+    - shell: bash
+      run: echo "🎭Testing 'check' mode (with declared descriptor)..."
+
+    - uses: ./actions/enforce-branch-version
+      with:
+        mode: check
+        project-directory: ${{ inputs.project-directory }}
+        artifact-descriptor: ${{ inputs.artifact-descriptor }}

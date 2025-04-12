@@ -3,6 +3,9 @@ name: Test enforce-branch-version
 runs:
   using: composite
   steps:
+    - uses: ./actions/detect-branch-version
+      id: version-detector
+
     - shell: bash
       run: echo "🎭Testing 'skip' mode..."
 
@@ -11,132 +14,55 @@ runs:
         mode: skip
         project-directory: tests/rust-crate
 
-    - shell: bash
-      run: echo "🎭Testing 'inject' mode for 📦NodeJS package..."
-
-    - uses: ./actions/enforce-branch-version
+    - uses: ./.github/test-actions/test-enforce-branch-version/scenario
       with:
-        mode: inject
+        description: 📦NodeJS package
         project-directory: tests/npm-package
-
-    - shell: bash
-      run: echo "🎭Testing 'inject' mode for 🦀Rust crate..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: inject
-        project-directory: tests/rust-crate
-
-    - shell: bash
-      run: echo "🎭Testing 'inject' mode for 🦀Rust 🌐WebAssembly..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: inject
-        project-directory: tests/rust-wasm
-
-    - shell: bash
-      run: echo "🎭Testing 'inject' mode for 🪶Maven project..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: inject
-        project-directory: tests/maven-project
-
-    - shell: bash
-      run: echo "🎭Testing 'inject' mode for 🐘Gradle project..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: inject
-        project-directory: tests/gradle-project
-
-    - shell: bash
-      run: echo "🎭Testing 'inject' mode for 🐍Python library..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: inject
-        project-directory: tests/python-lib
-
-    - shell: bash
-      run: echo "🎭Testing 'inject' mode for 🎁unknown tech stack..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: inject
-        artifact-descriptor: some-descriptor.txt
-        project-directory: tests/unknown-tech
-
-    - shell: bash
-      run: echo "🎭Testing 'check' mode for 📦NodeJS package..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: check
-        project-directory: tests/npm-package
-
-    - shell: bash
-      run: echo "🎭Testing 'check' mode for 🦀Rust crate..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: check
-        project-directory: tests/rust-crate
-
-    - shell: bash
-      run: echo "🎭Testing 'check' mode for 🦀Rust 🌐WebAssembly..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: check
-        project-directory: tests/rust-wasm
-
-    - shell: bash
-      run: echo "🎭Testing 'check' mode for 🪶Maven project..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: check
-        project-directory: tests/maven-project
-
-    - shell: bash
-      run: echo "🎭Testing 'check' mode for 🐘Gradle project..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: check
-        project-directory: tests/gradle-project
-
-    - shell: bash
-      run: echo "🎭Testing 'check' mode for 🐍Python library..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: check
-        project-directory: tests/python-lib
-
-    - shell: bash
-      run: echo "🎭Testing 'check' mode for 🎁unknown tech stack..."
-
-    - name: Check version for unknown tech
-      uses: ./actions/enforce-branch-version
-      with:
-        mode: check
-        artifact-descriptor: some-descriptor.txt
-        project-directory: tests/unknown-tech
-
-    - shell: bash
-      run: echo "🎭Now testing the NodeJS package scenario, passing an explicit descriptor..."
-
-    - uses: ./actions/enforce-branch-version
-      with:
-        mode: check
         artifact-descriptor: package.json
-        project-directory: tests/npm-package
+        expected-version: ${{ steps.version-detector.outputs.version }}
 
-    - uses: ./actions/detect-branch-version
-      id: version-detector
+    - uses: ./.github/test-actions/test-enforce-branch-version/scenario
+      with:
+        description: 🦀Rust crate
+        project-directory: tests/rust-crate
+        artifact-descriptor: Cargo.toml
+        expected-version: ${{ steps.version-detector.outputs.version }}
+
+    - uses: ./.github/test-actions/test-enforce-branch-version/scenario
+      with:
+        description: 🦀Rust 🌐WebAssembly
+        project-directory: tests/rust-wasm
+        artifact-descriptor: Cargo.toml
+        expected-version: ${{ steps.version-detector.outputs.version }}
+
+    - uses: ./.github/test-actions/test-enforce-branch-version/scenario
+      with:
+        description: 🪶Maven project
+        project-directory: tests/maven-project
+        artifact-descriptor: pom.xml
+        expected-version: ${{ steps.version-detector.outputs.version }}
+
+    - uses: ./.github/test-actions/test-enforce-branch-version/scenario
+      with:
+        description: 🐘Gradle project
+        project-directory: tests/gradle-project
+        artifact-descriptor: build.gradle.kts
+        expected-version: ${{ steps.version-detector.outputs.version }}
+
+    - uses: ./.github/test-actions/test-enforce-branch-version/scenario
+      with:
+        description: 🐍Python library
+        project-directory: tests/gradle-project
+        artifact-descriptor: build.gradle.kts
+        expected-version: ${{ steps.version-detector.outputs.version }}
+
+    - uses: ./.github/test-actions/test-enforce-branch-version/scenario
+      with:
+        description: 🎁unknown tech stack
+        project-directory: tests/unknown-tech
+        artifact-descriptor: some-descriptor.txt
+        expected-version: ${{ steps.version-detector.outputs.version }}
+        can-infer-descriptor: false
 
     - shell: bash
       run: echo "🎭Verifying that the version has been injected multiple times..."
