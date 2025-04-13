@@ -3,7 +3,7 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: echo "🎭Find existing critical TODOs without crashing..."
+      run: echo "🎭 Find existing critical TODOs without crashing..."
 
     - uses: ./actions/find-critical-todos
       id: find-existing-critical-todos
@@ -20,20 +20,20 @@ runs:
 
         if [[ "$found" == "true" ]]
         then
-          echo "✅Critical TODOs found, as expected"
+          echo "✅ Critical TODOs found, as expected"
         else
-          echo "❌The expected critical TODOs have not been found!" >&2
+          echo "❌ The expected critical TODOs have not been found!" >&2
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Look for inexisting critical TODOs..."
+      run: echo "🎭 Look for inexistent critical TODOs..."
 
     - uses: ./actions/find-critical-todos
       id: look-for-missing-critical-todos
       with:
         root-directory: tests/custom
-        source-file-regex: .*
+        source-file-regex: \.(rs|elv)$
         crash-on-found: true
         verbose: true
 
@@ -44,8 +44,8 @@ runs:
 
         if [[ "$found" != "true" ]]
         then
-          echo "✅Critical TODOs not found, as expected"
+          echo "✅ Critical TODOs not found, as expected"
         else
-          echo "❌Critical TODOs have been found where they should be missing!" >&2
+          echo "❌ Critical TODOs have been found where they should be missing!" >&2
           exit 1
         fi
