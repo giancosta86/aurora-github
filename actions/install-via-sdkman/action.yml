@@ -11,70 +11,18 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
       run: |
-        sdkmanHome="$HOME/.sdkman"
+        use aurora-github/curl
+        use aurora-github/input
+        use aurora-github/jvm/sdkman
 
-        main() {
-          validateInputs
+        var candidate = (input:require candidate '${{ inputs.candidate }}')
 
-          ensureSdkmanInstalled
+        var version = (input:require version '${{ inputs.version }}')
 
-          ensureSdkmanReady
+        curl:output-errors-only
 
-          installCandidateSdk
-        }
-
-        validateInputs() {
-          if [[ -z "${{ inputs.candidate }}" ]]
-          then
-            echo "❌Missing action input: 'candidate'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.version }}" ]]
-          then
-            echo "❌Missing action input: 'version'!" >&2
-            exit 1
-          fi
-        }
-
-        ensureSdkmanInstalled() {
-          if [[ -d "$sdkmanHome" ]]
-          then
-            echo "☑It seems that SDKMAN was previously installed"
-            return 0
-          fi
-
-          echo "📥Installing SDKMAN..."
-
-          curl -s "https://get.sdkman.io" | bash
-
-          echo "✅SDKMAN installed!"
-        }
-
-        ensureSdkmanReady() {
-          if ! type -t sdk
-          then
-            echo '🚀Setting up SDKMAN...'
-
-            source "$sdkmanHome/bin/sdkman-init.sh"
-          fi
-
-          echo "✅SDKMAN ready!"
-        }
-
-        installCandidateSdk() {
-          local candidate="${{ inputs.candidate }}"
-          local version="${{ inputs.version }}"
-
-          echo "📥Installing $candidate($version)..."
-
-          sdk install "$candidate" "$version"
-
-          echo "PATH=$sdkmanHome/candidates/candidate/$version:$PATH" >> $GITHUB_ENV
-
-          echo "✅$candidate($version) installed!"
-        }
-
-        main
+        sdkman:install-sdk $candidate $version
