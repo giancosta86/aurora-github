@@ -29,91 +29,18 @@ outputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - id: main
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        todoText="TODO!"
+        use aurora-github/core
+        use aurora-github/critical-todos
 
-        main() {
-          validateInputs
-          scanDirectoryTree
-        }
-
-        validateInputs() {
-          if [[ -z "${{ inputs.source-file-regex }}" ]]
-          then
-            echo "❌Missing action input: 'source-file-regex'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.crash-on-found }}" ]]
-          then
-            echo "❌Missing action input: 'crash-on-found'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.display-lines }}" ]]
-          then
-            echo "❌Missing action input: 'display-lines'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.verbose }}" ]]
-          then
-            echo "❌Missing action input: 'verbose'!" >&2
-            exit 1
-          fi
-        }
-
-        scanDirectoryTree() {
-          local sourceFileRegex="${{ inputs.source-file-regex }}"
-          echo "📥Source file regex: '$sourceFileRegex'"
-
-          local crashOnFound="${{ inputs.crash-on-found }}"
-          echo "📥Crash on found: $crashOnFound"
-
-          local displayLines="${{ inputs.display-lines }}"
-          echo "📥Display lines: $displayLines"
-
-          local verbose="${{ inputs.verbose }}"
-          echo "📥Verbose: $verbose"
-
-          if [[ "$verbose" == "true" ]]
-          then
-            echo "🔎File list to filter when looking for TODOs:"
-            find -type f -print
-            echo "🔎🔎🔎"
-          fi
-
-          if [[ "$displayLines" == "true" ]]
-          then
-            local quietArg=""
-          else
-            local quietArg="-q"
-          fi
-
-          if find -type f -print0 | grep -zP "$sourceFileRegex" | xargs -0 grep --color=always -Hn $quietArg "$todoText"
-          then
-            local found=true
-          else
-            local found=false
-          fi
-
-          if [[ "$found" == "true" ]]
-          then
-            if  [[ "$crashOnFound" == "true" ]]
-            then
-              echo "❌Critical TODOs found!" >&2
-              exit 1
-            else
-              echo "⚠️Critical TODOs found!"
-            fi
-          else
-            echo "✅No critical TODOs found!"
-          fi
-
-          echo "found=$found" >> $GITHUB_OUTPUT
-        }
-
-        main
+        critical-todos:find [
+          &source-file-regex=(core:require-input source-file-regex '${{ inputs.source-file-regex }}')
+          &crash-on-found=(core:require-input crash-on-found '${{ inputs.crash-on-found }}')
+          &display-lines=(core:require-input display-lines '${{ inputs.display-lines }}')
+          &verbose=(core:require-input verbose '${{ inputs.verbose }}')
+        ]
