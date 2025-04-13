@@ -2,7 +2,7 @@
 
 Installs the requested SDK using [SDKMAN!](https://sdkman.io/)
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -12,7 +12,7 @@ steps:
       version: 23-open
 ```
 
-## 💡How it works
+## 💡 How it works
 
 1. If SDKMAN is not installed, download and install it.
 
@@ -20,7 +20,7 @@ steps:
 
 **Please, note**: all the SDKS are installed to `$HOME/.sdkman/candidates`
 
-## ☑️Requirements
+## ☑️ Requirements
 
 - `candidate` must be an identifier belonging to the [list of SDKs](https://sdkman.io/sdks) supported by SDKMAN.
 
@@ -32,14 +32,14 @@ steps:
 
   where `candidate` is the identifier of the required SDK.
 
-## 📥Inputs
+## 📥 Inputs
 
 |    Name     |    Type    |                 Description                  | Default value |
 | :---------: | :--------: | :------------------------------------------: | :-----------: |
 | `candidate` | **string** | Identifier (in SDKMAN) of the SDK to install |               |
 |  `version`  | **string** |    Identifier (in SDKMAN) of the version     |               |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [SDKMAN!](https://sdkman.io/)
 

@@ -10,36 +10,28 @@ runs:
         echo "expectedGradleVersion=8.2.1" >> $GITHUB_ENV
 
     - shell: bash
-      run: echo "🎭Checking the test environment..."
+      run: echo "🎭 Checking the test environment..."
 
     - name: Ensure the expected Maven version is not installed
       shell: bash
       run: |
-        mavenVersion="$(mvn --version | head -n 1 | cut -d ' ' -f 3)"
-
-        echo "🔎Initial Maven version: '$mavenVersion'"
-
-        if [[ "$mavenVersion" == "$expectedMavenVersion" ]]
+        if mvn --version | grep --color=always "$expectedMavenVersion"
         then
-          echo "❌The installed Maven version coincides with the expected one, making the test meaningless"
+          echo "❌ The installed Maven version coincides with the expected one, making the test meaningless"
           exit 1
         fi
 
     - name: Ensure the expected Gradle version is not installed
       shell: bash
       run: |
-        gradleVersion="$(gradle --version | grep "Gradle" |  head -n 1 | cut -d ' ' -f 2)"
-
-        echo "🔎Initial Gradle version: '$gradleVersion'"
-
-        if [[ "$gradleVersion" == "$expectedGradleVersion" ]]
+        if gradle --version | grep --color=always "$expectedGradleVersion"
         then
-          echo "❌The installed Gradle version coincides with the expected one, making the test meaningless"
+          echo "❌ The installed Gradle version coincides with the expected one, making the test meaningless"
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Installing 🪶Maven..."
+      run: echo "🎭 Installing 🪶 Maven..."
 
     - uses: ./actions/install-via-sdkman
       with:
@@ -49,20 +41,16 @@ runs:
     - name: The expected Maven version should be available
       shell: bash
       run: |
-        mavenVersion="$(mvn --version | head -n 1 | cut -d ' ' -f 3)"
-
-        echo "🔎Detected Maven version: '$mavenVersion'"
-
-        if [[ "$mavenVersion" == "$expectedMavenVersion" ]]
+        if mvn --version | grep --color=always "$expectedMavenVersion"
         then
-          echo "✅The requested Maven version is ready!"
+          echo "✅ The requested Maven version is ready!"
         else
-          echo "❌The expected Maven version ('$expectedMavenVersion') is not installed!" >&2
+          echo "❌ The expected Maven version ('$expectedMavenVersion') is not installed!" >&2
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Installing 🐘Gradle..."
+      run: echo "🎭 Installing 🐘 Gradle..."
 
     - uses: ./actions/install-via-sdkman
       with:
@@ -74,8 +62,8 @@ runs:
       run: |
         if gradle --version | grep --color=always "$expectedGradleVersion"
         then
-          echo "✅The requested Gradle version is ready!"
+          echo "✅ The requested Gradle version is ready!"
         else
-          echo "❌The expected Gradle version ('$expectedGradleVersion') is not installed!" >&2
+          echo "❌ The expected Gradle version ('$expectedGradleVersion') is not installed!" >&2
           exit 1
         fi
