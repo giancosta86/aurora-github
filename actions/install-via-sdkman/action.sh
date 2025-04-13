@@ -17,10 +17,15 @@ validateInputs() {
   fi
 }
 
+configureDownloader() {
+  echo "📢Configuring curl so that it outputs just errors..."
+  echo '--silent --show-error' > "$HOME/.curlrc"
+}
+
 ensureSdkmanInstalled() {
   if [[ -d "$sdkmanHome" ]]
   then
-    echo "☑It seems that SDKMAN was previously installed"
+    echo "🎉It seems that SDKMAN was previously installed!"
     return 0
   fi
 
@@ -62,6 +67,8 @@ installViaSdkman() {
   local version="$2"
 
   validateInputs "$candidate" "$version"
+
+  configureDownloader
 
   ensureSdkmanReady
 
