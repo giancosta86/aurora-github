@@ -19,45 +19,18 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
       working-directory: ${{ inputs.source-directory }}
       run: |
-        main() {
-          validateInputs
-          publishReleaseAssets
-        }
+        use aurora-github/core
+        use aurora-github/release-assets
 
-        validateInputs() {
-          if [[ -z "${{ inputs.release-tag }}" ]]
-          then
-            echo "❌Missing action input: 'release-tag'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.files }}" ]]
-          then
-            echo "❌Missing action input: 'files'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.overwrite }}" ]]
-          then
-            echo "❌Missing action input: 'overwrite'!" >&2
-            exit 1
-          fi
-        }
-
-        publishReleaseAssets() {
-          if [[ "${{ inputs.overwrite }}" == "true" ]]
-          then
-            local clobberArg="--clobber"
-          else
-            local clobberArg=""
-          fi
-
-          gh release upload $clobberArg "${{ inputs.release-tag }}" ${{ inputs.files }}
-        }
-
-        main
+        release-assets:publish [
+          &release-tag=(core:require-input release-tag '${{ inputs.release-tag }}')
+          &files=(core:require-input files '${{ inputs.files }}')
+          &overwrite=(core:require-input overwrite '${{ inputs.overwrite }}')
+        ]
       env:
         GH_TOKEN: ${{ github.token }}
