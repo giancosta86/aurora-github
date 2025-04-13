@@ -1,4 +1,4 @@
-name: Extract Rust code snippets
+name: Extract Rust test snippets
 description: Extracts Rust code snippets from a Markdown file to standalone test files.
 
 inputs:
@@ -7,7 +7,7 @@ inputs:
     default: README.md
 
   optional:
-    description: Just do nothing if `mardown-file` does not exist.
+    description: Just do nothing if `markdown-file` does not exist.
     default: false
 
   test-filename-prefix:
@@ -21,22 +21,18 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup Python context
-      shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.project-directory }}
       run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
+        use aurora-github/ci-cd/input
+        use aurora-github/rust/snippets
 
-        echo "INPUT_MARKDOWN_FILE=${{ inputs.markdown-file }}" >> $GITHUB_ENV
-        echo "INPUT_OPTIONAL=${{ inputs.optional }}" >> $GITHUB_ENV
-        echo "INPUT_TEST_FILENAME_PREFIX=${{ inputs.test-filename-prefix }}" >> $GITHUB_ENV
-        echo "INPUT_PROJECT_DIRECTORY=${{ inputs.project-directory }}" >> $GITHUB_ENV
+        snippets:extract [
+          &markdown-path=(input:file &can-be-missing markdown-file '${{ inputs.markdown-file }}')
 
-    - name: Call the Python implementation
-      shell: python
-      run: |
-        from core.extract_rust_snippets import extract_rust_snippets, Inputs
+          &optional=(input:bool optional '${{ inputs.optional }}')
 
-        inputs = Inputs.from_env()
-
-        extract_rust_snippets(inputs)
+          &test-filename-prefix=(input:string test-filename-prefix '${{ inputs.test-filename-prefix }}')
+        ]

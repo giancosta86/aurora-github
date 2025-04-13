@@ -1,8 +1,8 @@
 # extract-rust-snippets
 
-Extracts **Rust** code snippets from a **Markdown** file to standalone test files.
+Extracts **Rust** test snippets from a **Markdown** file to standalone test files.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -11,26 +11,9 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md).
 
-## ☑️Requirements
+## 💡 How it works
 
-- each code snippet must reside in a ` ```rust` code block and must define a `main()`function returning a type supporting`.unwrap()`, such as `Result<(), Box<dyn Error>`:
-
-  ```rust
-  //Required imports here
-  use std::error::Error;
-
-  fn main() -> Result<(), Box<dyn Error>> {
-    //Code with assertions here
-
-    Ok(())
-  }
-  ```
-
-- the Markdown file must exist unless `optional` is set to **true**, but it is never required to contain code snippets: in this case, no test file will be generated.
-
-## 💡How it works
-
-The action extracts each Rust snippet from the given Markdown file, creating a test file containing:
+The action extracts Rust snippets from the given Markdown file, creating for each a test file containing:
 
 - the snippet itself
 
@@ -49,16 +32,33 @@ Each test file has this relative path:
 
 where `N` is the position of the snippet within the Markdown content, starting from **1**.
 
-## 📥Inputs
+## ☑️ Requirements
+
+- each code snippet must reside in a `rust` triple-back-quoted code block and must define a `main()`function returning a type supporting`.unwrap()`, such as `Result<(), Box<dyn Error>`:
+
+  ```rust
+  //Required imports here
+  use std::error::Error;
+
+  fn main() -> Result<(), Box<dyn Error>> {
+    //Code with assertions here
+
+    Ok(())
+  }
+  ```
+
+- the Markdown file must exist unless `optional` is set to **true**, but it is never required to contain code snippets: in this case, no test file will be generated.
+
+## 📥 Inputs
 
 |          Name          |    Type     |                        Description                         |      Default value      |
 | :--------------------: | :---------: | :--------------------------------------------------------: | :---------------------: |
 |    `markdown-file`     | **string**  | Relative path of the Markdown file containing the snippets |      **README.md**      |
-|       `optional`       | **boolean** |      Just do nothing if `mardown-file` does not exist      |        **false**        |
+|       `optional`       | **boolean** |     Just do nothing if `markdown-file` does not exist      |        **false**        |
 | `test-filename-prefix` | **string**  |  Relative path prefix for each generated test source file  | **tests/readme_test\_** |
 |  `project-directory`   | **string**  |            The directory containing Cargo.toml             |          **.**          |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 
