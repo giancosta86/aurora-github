@@ -7,21 +7,31 @@ runs:
       shell: bash
       run: echo "expectedVersion=0.13.1" >> $GITHUB_ENV
 
+    - name: The expected version should not be already installed
+      shell: bash
+      run: |
+        if type wasm-pack >/dev/null 2>&1
+        then
+          if wasm-pack --version | grep --color=always "$expectedVersion"
+          then
+            echo "❌ The expected wasm-pack version ('$expectedVersion') is already installed - this test would be pointless!" >&2
+            exit 1
+          fi
+        else
+          echo "💭 The requested wasm-pack version is not running in this environment..."
+        fi
+
     - uses: ./actions/install-wasm-pack
       with:
         wasm-pack-version: ${{ env.expectedVersion }}
 
-    - name: The expected wasm-pack version should be available
+    - name: The expected wasm-pack version should now be available
       shell: bash
       run: |
-        wasmPackVersion="$(wasm-pack --version | cut -d' ' -f2)"
-
-        echo "🔎Detected wasm-pack version: '$wasmPackVersion'"
-
-        if [[ "$wasmPackVersion" == "$expectedVersion" ]]
+        if wasm-pack --version | grep --color=always "$expectedVersion"
         then
-          echo "✅The requested wasm-pack version is in use!"
+          echo "✅ The requested wasm-pack version is in use!"
         else
-          echo "❌The expected wasm-pack version ('$expectedVersion') is not installed!" >&2
+          echo "❌ The expected wasm-pack version ('$expectedVersion') is not installed!" >&2
           exit 1
         fi
