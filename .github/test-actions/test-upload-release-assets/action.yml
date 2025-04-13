@@ -45,13 +45,13 @@ runs:
         files: index.html
 
     - shell: bash
-      run: echo "🎭Uploading multiple assets - also using quotes..."
+      run: echo "🎭Uploading multiple assets..."
 
     - uses: ./actions/upload-release-assets
       with:
         release-tag: ${{ env.tag }}
         source-directory: website/nextjs/public
-        files: next.svg 'favicon.png'
+        files: next.svg, favicon.png
 
     - shell: bash
       run: echo "🎭Re-uploading one of the previous assets..."

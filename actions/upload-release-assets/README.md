@@ -21,16 +21,16 @@ This action calls the [gh release upload](https://cli.github.com/manual/gh_relea
 
 - The `release-tag` input must be the tag of an existing release - which could be, for example, the `release-tag` output of the [tag-and-release](../tag-and-release/README.md) action.
 
-- The `files` input must be passed just like a string of relative file paths on the Bash command line.
+- The `files` input must be comma-separated
 
 ## 📥Inputs
 
-|        Name        |    Type     |                   Description                   | Default value |
-| :----------------: | :---------: | :---------------------------------------------: | :-----------: |
-|   `release-tag`    | **string**  |          The tag of the target release          |               |
-|      `files`       | **string**  | The relative paths of the asset files to upload |               |
-|    `overwrite`     | **boolean** |    Overwrite existing assets in the release     |   **true**    |
-| `source-directory` | **string**  |         Directory containing the files          |     **.**     |
+|        Name        |            Type             |                 Description                 | Default value |
+| :----------------: | :-------------------------: | :-----------------------------------------: | :-----------: |
+|   `release-tag`    |         **string**          |        The tag of the target release        |               |
+|      `files`       | **string**, comma-separated | Relative paths of the asset files to upload |               |
+|    `overwrite`     |         **boolean**         |  Overwrite existing assets in the release   |   **true**    |
+| `source-directory` |         **string**          |       Directory containing the files        |     **.**     |
 
 ## 🌐Further references
 
