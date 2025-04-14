@@ -9,89 +9,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        main() {
-          validateInputs
+        use aurora-github/subpath-exports
 
-          inspectRecursively
-
-          echo "✅Export subpaths are OK!"
-        }
-
-        validateInputs() {
-          if [[ ! -f "package.json" ]]
-          then
-            echo "❌The package.json descriptor file does not exist!" >&2
-            exit 1
-          fi
-        }
-
-        inspectRecursively() {
-          local exports="$(jq -r '.exports' package.json)"
-
-          if [[ "$exports" == "null" ]]
-          then
-            echo "💭No exports declared in package.json..."
-            exit 0
-          fi
-
-          echo "🔎 Now inspecting subpath exports..."
-
-          checkJsonValue "exports" "$exports"
-        }
-
-        checkJsonValue() {
-          local positionInJson="$1"
-          local jsonValue="$2"
-
-          if isJsonObject "$jsonValue"
-          then
-            checkJsonObject "$positionInJson" "$jsonValue"
-          else
-            checkFilePattern "$positionInJson" "$jsonValue"
-          fi
-        }
-
-        isJsonObject() {
-          local jsonValue="$1"
-
-          if [[ "$jsonValue" =~ ^\{ ]]
-          then
-            return 0
-          else
-            return 1
-          fi
-        }
-
-        checkJsonObject() {
-          local positionInJson="$1"
-          local jsonObject="$2"
-
-          echo "$jsonObject" | jq -r '. | keys[]' | while IFS= read -r key
-          do
-            local jsonValue="$(echo "$jsonObject" | jq -r '.["'$key'"]')"
-            checkJsonValue "$positionInJson -> $key" "$jsonValue"
-          done
-        }
-
-        checkFilePattern() {
-          local positionInJson="$1"
-          local filePattern="$2"
-
-          echo -n "🔎 $positionInJson -> $filePattern... "
-
-          local matches="$(find . -wholename "$filePattern" | wc -l)"
-
-          if [[ "$matches" == 0 ]]
-          then
-            echo "❌"
-            echo "❌No file matching subpath pattern: '$filePattern'"
-            exit 1
-          else
-            echo "✅"
-          fi
-        }
-
-        main
+        subpath-exports:check
