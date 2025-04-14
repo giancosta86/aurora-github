@@ -3,32 +3,32 @@ name: Test check-subpath-exports
 runs:
   using: composite
   steps:
-    - name: When the "exports" field is missing
-      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+    - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
+        header: Test when the "exports" field is missing...
         jq-operation: del(.exports)
 
-    - name: When the "exports" field is present but empty
-      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+    - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
+        header: Test when the "exports" field is present but empty...
         jq-operation: .exports={}
 
-    - name: When the "exports" field is a string
-      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+    - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
+        header: Test when the "exports" field is a string...
         jq-operation: .exports="./src/beta/index.js"
 
-    - name: When the "exports" field contains a string field
-      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+    - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
+        header: Test when the "exports" field contains a string field...
         jq-operation: |
           .exports={
             "beta": "./src/beta/index.js"
           }
 
-    - name: When the "exports" field contains an object field
-      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+    - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
+        header: Test when the "exports" field contains an object field...
         jq-operation: |
           .exports={
               "beta": {
@@ -37,9 +37,9 @@ runs:
               }
             }
 
-    - name: When the "exports" field contains multiple fields
-      uses: ./.github/test-actions/test-check-subpath-exports/scenario
+    - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
+        header: Test when the "exports" field contains multiple fields...
         jq-operation: |
           .exports={
               "alpha": {
