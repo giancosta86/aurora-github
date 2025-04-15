@@ -1,12 +1,18 @@
 name: Update and check subpath exports in the npm test project
 
 inputs:
+  header:
+    description: Header for this scenario
+
   jq-operation:
     description: The operation altering the package.json descriptor
 
 runs:
   using: composite
   steps:
+    - shell: bash
+      run: echo "🎭${{inputs.header}}"
+
     - name: Run the requested jq operation on package.json
       shell: bash
       working-directory: tests/npm-package

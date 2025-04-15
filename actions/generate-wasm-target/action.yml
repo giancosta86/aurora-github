@@ -27,138 +27,27 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -z "${{ inputs.target }}" ]]
-        then
-          echo "❌Missing action input: 'target'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.development }}" ]]
-        then
-          echo "❌Missing action input: 'development'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.target-directory }}" ]]
-        then
-          echo "❌Missing action input: 'target-directory'!" >&2
-          exit 1
-        fi
-
-    - name: Parse npm scope
-      id: parse-npm-scope
-      if: inputs.npm-scope != ''
-      uses: giancosta86/aurora-github/actions/parse-npm-scope@v10.2.0
-      with:
-        scope: ${{ inputs.npm-scope }}
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
 
     - name: Generate the WebAssembly target
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        target="${{ inputs.target }}"
-        echo "📥Target: '$target'"
+        use aurora-github/core
+        use aurora-github/npm
+        use aurora-github/wasm
 
-        echo "📥Requested npm-scope: '${{ inputs.npm-scope }}'"
-        scope="${{ steps.parse-npm-scope.outputs.actual-scope }}"
-        echo "🔎Actual npm scope: '$scope'"
+        var npm-scope-input = '${{ inputs.npm-scope }}'
 
-        development="${{ inputs.development }}"
-        echo "📥Development? $development"
+        var npm-scope = (
+          core:ternary (core:not-empty $npm-scope-input) (npm:parse-scope $npm-scope-input) ''
+        )
 
-        nodejsVersion="${{ inputs.nodejs-version }}"
-        echo "📥NodeJS version: '$nodejsVersion'"
-
-        pnpmVersion="${{ inputs.pnpm-version }}"
-        echo "📥pnpm version: '$pnpmVersion'"
-
-        echo "📥Project directory: '${{ inputs.project-directory }}'"
-
-        targetDirectory="${{ inputs.target-directory }}"
-        echo "📥Target directory: '$targetDirectory'"
-
-        main() {
-          generateWebAssemblyTarget
-
-          pushd "$targetDirectory"
-
-          if [[ -n "$nodejsVersion" ]]
-          then
-            injectNodeJsVersion
-          fi
-
-          if [[ -n "$pnpmVersion" ]]
-          then
-            injectPnpmVersion
-          fi
-
-          tryToDisplayPackageJson
-
-          popd
-
-          echo "✅WebAssembly target ready in '$targetDirectory'!"
-        }
-
-        generateWebAssemblyTarget() {
-          echo "📦Generating the WebAssembly project files..."
-
-          if [[ "$development" == "true" ]]
-          then
-            local modeArg="--dev"
-          else
-            local modeArg="--release"
-          fi
-
-          if [[ -n "$scope" ]]
-          then
-            local scopeArg="--scope $scope"
-          else
-            local scopeArg=""
-          fi
-
-          wasm-pack build --target "$target" $modeArg $scopeArg --out-dir "$targetDirectory"
-        }
-
-        injectNodeJsVersion() {
-          if [[ ! -f "package.json" ]]
-          then
-            echo "❌package.json was not generated for this target - cannot inject the requested NodeJS version!"
-            exit 1
-          fi
-
-          echo "🧬Injecting the requested NodeJS version ('$nodejsVersion')..."
-
-          local tempDescriptor="$(mktemp)"
-          jq '.engines.node = "'"$nodejsVersion"'"' package.json > "$tempDescriptor"
-          mv "$tempDescriptor" package.json
-        }
-
-        injectPnpmVersion() {
-          if [[ ! -f "package.json" ]]
-          then
-            echo "❌package.json was not generated for this target - cannot inject the requested pnpm version!"
-            exit 1
-          fi
-
-          echo "🧬Injecting the requested pnpm version ('$pnpmVersion')..."
-
-          local tempDescriptor="$(mktemp)"
-          jq '.packageManager = "pnpm@'"$pnpmVersion"'"' package.json > "$tempDescriptor"
-          mv "$tempDescriptor" package.json
-        }
-
-        tryToDisplayPackageJson() {
-          if [[ -f "package.json" ]]
-          then
-            echo "📦Generated package.json descriptor for the '$target' target:"
-            jq -C '.' package.json
-          else
-            echo "💭No package.json descriptor generated for the '$target' target..."
-          fi
-        }
-
-        main
+        wasm:generate-target [
+          &target=(core:require-input target '${{ inputs.target }}')
+          &development=(core:require-input development '${{ inputs.development }}')
+          &target-directory=(core:require-input target-directory '${{ inputs.target-directory }}')
+          &nodejs-version='${{ inputs.nodejs-version }}'
+          &pnpm-version='${{ inputs.pnpm-version }}'
+          &npm-scope=$npm-scope
+        ]

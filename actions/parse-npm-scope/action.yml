@@ -13,20 +13,12 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Setup Python context
-      shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - id: parse-actual-scope
+      shell: elvish {0}
       run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
+        use aurora-github/core
+        use aurora-github/npm
 
-        echo "INPUT_SCOPE=${{ inputs.scope }}" >> $GITHUB_ENV
-
-    - name: Call the Python implementation
-      id: parse-actual-scope
-      shell: python
-      run: |
-        from core.parse_npm_scope import parse_npm_scope, Inputs
-
-        inputs = Inputs.from_env()
-
-        parse_npm_scope(inputs).write_to_github_output()
+        core:write-output actual-scope (npm:parse-scope '${{ inputs.scope }}')
