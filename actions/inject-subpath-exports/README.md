@@ -2,14 +2,14 @@
 
 Appends [subpath exports](https://nodejs.org/api/packages.html#subpath-exports) to **package.json** according to the directory tree.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
   - uses: giancosta86/aurora-github/actions/inject-subpath-exports@v10
 ```
 
-## 💡How it works
+## 💡 How it works
 
 Appends keys to the `exports` field of a `package.json` descriptor - according to the index files in the source directory tree.
 
@@ -45,13 +45,13 @@ The `mode` input can have the following values:
 
 - The keys reference directories under `./dist`, **not** under `./<source-directory>`.
 
-## ☑️Requirements
+## ☑️ Requirements
 
 - The `jq` command (especially version **1.7**) must be available in the operating system.
 
 - The `source-directory` and the root `package.json` descriptor must exist.
 
-## 📥Inputs
+## 📥 Inputs
 
 |        Name         |         Type          |               Description               |  Default value   |
 | :-----------------: | :-------------------: | :-------------------------------------: | :--------------: |
@@ -59,7 +59,7 @@ The `mode` input can have the following values:
 | `source-directory`  |      **string**       |  Relative path to the source directory  |     **src**      |
 | `project-directory` |      **string**       | The directory containing `package.json` |      **.**       |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [subpath exports](https://nodejs.org/api/packages.html#subpath-exports)
 

@@ -21,29 +21,19 @@ runs:
       run: rm -f "$rootIndexFile"
 
     - shell: bash
-      run: echo "🎭Run with prefer-index mode - when the root index file is missing..."
+      run: echo "🎭 Run with prefer-index mode - when the root index file is missing..."
 
     - uses: ./actions/inject-subpath-exports
       with:
         project-directory: tests/npm-package
         mode: prefer-index
 
-    - name: A subpath export should be generated for each subdirectory
-      shell: bash
-      working-directory: tests/npm-package
-      run: |
-        echo "🔎Asserting injected subpath exports from subdirectories only..."
-        grep -q '"./alpha"' package.json
-        grep -q '"./beta"' package.json
-        grep -q '"./omega"' package.json
-
-        [[ "$(jq -r '.exports."./alpha".types' package.json)" == "./dist/alpha/index.d.ts" ]] || exit 1
-
-        [[ "$(jq -r '.exports."./alpha".import' package.json)" == "./dist/alpha/index.js" ]] || exit 1
-
-        ! grep -q '"."' package.json
-        ! grep -q '"./sigma"' package.json
-        echo "✅OK!"
+    - uses: ./.github/test-actions/test-inject-subpath-exports/scenario
+      with:
+        should-have-root: false
+        should-have-subdirectories: true
+        should-have-initial: false
+        working-directory: tests/npm-package
 
     - name: Restore package.json and add a root index file
       shell: bash
@@ -53,31 +43,21 @@ runs:
         touch "$rootIndexFile"
 
     - shell: bash
-      run: echo "🎭Run again with prefer-index mode - now that the root index exists..."
+      run: echo "🎭 Run again with prefer-index mode - now that the root index exists..."
 
     - uses: ./actions/inject-subpath-exports
       with:
         project-directory: tests/npm-package
         mode: prefer-index
 
-    - name: A subpath export should be generated only for the root index
-      shell: bash
-      working-directory: tests/npm-package
-      run: |
-        echo "🔎Asserting injected subpath export for root index only..."
-        ! grep -q '"./alpha"' package.json
-        ! grep -q '"./beta"' package.json
-        ! grep -q '"./omega"' package.json
-        grep -q '"."' package.json
+    - uses: ./.github/test-actions/test-inject-subpath-exports/scenario
+      with:
+        should-have-root: true
+        should-have-subdirectories: false
+        should-have-initial: false
+        working-directory: tests/npm-package
 
-        [[ "$(jq -r '.exports.".".types' package.json)" == "./dist/index.d.ts" ]] || exit 1
-
-        [[ "$(jq -r '.exports.".".import' package.json)" == "./dist/index.js" ]] || exit 1
-
-        ! grep -q '"./sigma"' package.json
-        echo "✅OK!"
-
-    - name: Restore package descriptor with custom export
+    - name: Restore package descriptor and add a custom export
       shell: bash
       working-directory: tests/npm-package
       run: |
@@ -88,22 +68,16 @@ runs:
         mv package.json.temp package.json
 
     - shell: bash
-      run: echo "🎭Run action with 'all' mode..."
+      run: echo "🎭 Run action with 'all' mode..."
 
     - uses: ./actions/inject-subpath-exports
       with:
         project-directory: tests/npm-package
         mode: all
 
-    - name: Subpath exports should be generated for both root index and subdirectories
-      shell: bash
-      working-directory: tests/npm-package
-      run: |
-        echo "🔎Asserting that all exports exist, including the manual ones..."
-        grep -q '"./my-export"' package.json
-        grep -q '"./alpha"' package.json
-        grep -q '"./beta"' package.json
-        grep -q '"./omega"' package.json
-        grep -q '"."' package.json
-        ! grep -q '"./sigma"' package.json
-        echo "✅OK!"
+    - uses: ./.github/test-actions/test-inject-subpath-exports/scenario
+      with:
+        should-have-root: true
+        should-have-subdirectories: true
+        should-have-initial: true
+        working-directory: tests/npm-package

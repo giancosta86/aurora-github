@@ -1,0 +1,98 @@
+name: Verify injected subpath exports
+
+inputs:
+  should-have-root:
+    description: Whether the root index file should have been injected.
+
+  should-have-subdirectories:
+    description: Whether the index files in subdirectories should have been injected.
+
+  should-have-initial:
+    description: Whether the initial exports should be found.
+
+  working-directory:
+    description: The directory containing package.json.
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      if: inputs.should-have-root == 'true'
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "🔎 Asserting exports for root index file..."
+
+        grep -q '"."' package.json || exit 1
+        [[ "$(jq -r '.exports.".".types' package.json)" == "./dist/index.d.ts" ]] || exit 1
+        [[ "$(jq -r '.exports.".".import' package.json)" == "./dist/index.js" ]] || exit 1
+
+        echo "✅ OK!"
+
+    - shell: bash
+      if: inputs.should-have-root != 'true'
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "🔎 Asserting no exports for root index file..."
+
+        ! grep -q '"."' package.json || exit 1
+
+        echo "✅ OK!"
+
+    - shell: bash
+      if: inputs.should-have-subdirectories == 'true'
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "🔎 Asserting exports for subdirectories..."
+
+        [[ "$(jq -r '.exports."./alpha".types' package.json)" == "./dist/alpha/index.d.ts" ]] || exit 1
+        [[ "$(jq -r '.exports."./alpha".import' package.json)" == "./dist/alpha/index.js" ]] || exit 1
+
+        [[ "$(jq -r '.exports."./beta".types' package.json)" == "./dist/beta/index.d.ts" ]] || exit 1
+        [[ "$(jq -r '.exports."./beta".import' package.json)" == "./dist/beta/index.js" ]] || exit 1
+
+        [[ "$(jq -r '.exports."./omega".types' package.json)" == "./dist/omega/index.d.ts" ]] || exit 1
+        [[ "$(jq -r '.exports."./omega".import' package.json)" == "./dist/omega/index.js" ]] || exit 1
+
+        echo "✅ OK!"
+
+    - shell: bash
+      if: inputs.should-have-subdirectories != 'true'
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "🔎 Asserting no exports for subdirectories..."
+
+        ! grep -q '"./alpha"' package.json || exit 1
+        ! grep -q '"./beta"' package.json || exit 1
+        ! grep -q '"./omega"' package.json || exit 1
+
+        echo "✅ OK!"
+
+    - shell: bash
+      if: inputs.should-have-initial == 'true'
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "🔎 Asserting the initial exports are untouched..."
+
+        [[ "$(jq -r '.exports."./my-export".types' package.json)" == "./dist/my-export/index.d.ts" ]] || exit 1
+        [[ "$(jq -r '.exports."./my-export".import' package.json)" == "./dist/my-export/index.js" ]] || exit 1
+
+        echo "✅ OK!"
+
+    - shell: bash
+      if: inputs.should-have-initial != 'true'
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "🔎 Asserting no initial exports have been declared..."
+
+        ! grep -q '"./my-export"' package.json || exit 1
+
+        echo "✅ OK!"
+
+    - shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        echo "🔎 Asserting no exports for second-level subdirectories..."
+
+        ! grep -q '"./sigma"' package.json || exit 1
+
+        echo "✅ OK!"
