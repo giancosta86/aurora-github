@@ -22,6 +22,8 @@ export default function Home() {
           </a>{" "}
           can actually publish websites via GitHub Pages! 🤗🦋
         </p>
+
+        <p>🔮Now using the Elvish shell! 🥳</p>
       </main>
     </div>
   );
