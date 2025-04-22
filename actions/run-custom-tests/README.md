@@ -29,7 +29,7 @@ steps:
 
 1. Detect the test type and act accordingly:
 
-   - If a file named like `script-file` exists in the root directory, run it using `script-shell`; consequently, there is no need to mark the file as _executable_
+   - If `script-file` is declared and exists in the root directory, run it using `script-shell`; consequently, there is no need to mark the file as _executable_
 
    - Otherwise, if a file named **package.json** exists in the root directory:
 
@@ -39,7 +39,7 @@ steps:
 
    - Otherwise, if a file named **Cargo.toml** exists in the root directory:
 
-     1. if the **rust-toolchain.toml** file exists, run [check-rust-versions](../check-rust-versions/README.md) to enforce a specific Rust toolkit
+     1. run [setup-rust-context](../setup-rust-context/README.md), without enforcing the existence of the toolchain file
 
      1. run `cargo test` with the `--all-features` flag
 
@@ -56,15 +56,15 @@ steps:
 |       Name       |    Type     |                  Description                  | Default value |
 | :--------------: | :---------: | :-------------------------------------------: | :-----------: |
 |    `optional`    | **boolean** | Exit with no error if the tests cannot be run |   **false**   |
-|  `script-file`   | **string**  |       Relative path to the script file        | **verify.sh** |
-|  `script-shell`  | **string**  |      The shell used to run `script-file`      |   **bash**    |
+|  `script-file`   | **string**  |       Relative path to the script file        |               |
+|  `script-shell`  | **string**  |      The shell used to run `script-file`      |               |
 | `root-directory` | **string**  |      The directory containing the tests       |               |
 
 ## 🌐Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 
-- [check-rust-versions](../check-rust-versions/README.md)
+- [setup-rust-context](../setup-rust-context/README.md)
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 

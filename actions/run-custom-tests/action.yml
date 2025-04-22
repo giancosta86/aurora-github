@@ -8,11 +8,9 @@ inputs:
 
   script-file:
     description: Relative path to the script file.
-    default: verify.sh
 
   script-shell:
     description: The shell used to run script-file.
-    default: bash
 
   root-directory:
     description: The directory containing the tests.
@@ -20,86 +18,34 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set up strategy
-      shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - name: Detect the test strategy
+      shell: elvish {0}
       run: |
-        main() {
-          validateInputs
-          detectTestStrategy
-        }
+        use aurora-github/input
+        use aurora-github/custom-tests
 
-        validateInputs() {
-          if [[ -z "${{ inputs.optional }}" ]]
-          then
-            echo "❌Missing action input: 'optional'!" >&2
-            exit 1
-          fi
+        var inputs = [
+          &root-directory=(input:require root-directory '${{ inputs.root-directory }}')
+          &script-file=(input:optional '${{ inputs.script-file }}')
+          &optional=(input:require-bool optional '${{ inputs.optional }}')
+        ]
 
-          if [[ -d "${{ inputs.root-directory }}" ]]
-          then
-            cd "${{ inputs.root-directory }}"
-          else
-            if [[ "${{ inputs.optional }}" == "true" ]]
-            then
-              echo "💭Skipping optional tests in missing directory: '${{ inputs.root-directory }}'"
-              echo "strategy=exit" >> $GITHUB_ENV
-              exit 0
-            else
-              echo "❌Cannot run custom tests in missing directory: '${{ inputs.root-directory }}'" >&2
-              exit 1
-            fi
-          fi
-        }
-
-        detectTestStrategy() {
-          echo "🔬Detecting custom test strategy in directory '${{ inputs.root-directory }}'..."
-
-          local scriptFile="${{ inputs.script-file }}"
-
-          if [[ -n "$scriptFile" && -f "$scriptFile" ]]
-          then
-            echo "🐚Custom test script '$scriptFile' found!"
-            local strategy="script"
-
-            if [[ -z "${{ inputs.script-shell }}" ]]
-            then
-              echo "❌Missing action input: 'script-shell'!" >&2
-              exit 1
-            fi
-          elif [[ -f "package.json" ]]
-          then
-            echo "📦package.json file found!"
-            local strategy="nodejs"
-          elif [[ -f "Cargo.toml" ]]
-          then
-            echo "🦀Cargo.toml file found!"
-            local strategy="rust"
-          else
-            if [[ "${{ inputs.optional }}" == "true" ]]
-            then
-              echo "💭No supported strategy detected for the optional custom tests"
-              local strategy="exit"
-            else
-              echo "❌Cannot run custom tests: no supported test strategy could be detected!" >&2
-              exit 1
-            fi
-          fi
-
-          echo "🔎Test strategy: '$strategy'"
-
-          echo "strategy=$strategy" >> $GITHUB_ENV
-        }
-
-        main
+        custom-tests:detect-strategy $inputs
 
     - name: Run script
       if: env.strategy == 'script'
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        echo "🐚Now running the custom script '${{ inputs.script-file }}' using '${{ inputs.script-shell }}'..."
+        use aurora-github/script
+        use aurora-github/input
 
-        "${{ inputs.script-shell }}" "${{ inputs.script-file }}"
+        var script-file = (get-env scriptFile)
+        var script-shell = (input:optional '${{ inputs.script-shell }}')
+
+        script:run &shell=$script-shell $script-file
 
     - name: Setup NodeJS context
       if: env.strategy == 'nodejs'
@@ -109,39 +55,28 @@ runs:
 
     - name: Run the 'verify' script from package.json
       if: env.strategy == 'nodejs'
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        echo "📦Now running the 'verify' script from package.json..."
+        echo 📦Now running the 'verify' script from package.json...
         pnpm verify
 
-    - name: Check for the Rust toolchain file
+    - name: Setup Rust context
       if: env.strategy == 'rust'
-      shell: bash
-      working-directory: ${{ inputs.root-directory }}
-      run: |
-        if [[ -f "rust-toolchain.toml" ]]
-        then
-          echo "checkRustVersions=true" >> $GITHUB_ENV
-        else
-          echo "checkRustVersions=false" >> $GITHUB_ENV
-        fi
-
-    - name: Check Rust versions
-      if: env.strategy == 'rust' && env.checkRustVersions == 'true'
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v10.3.0
+      uses: giancosta86/aurora-github/actions/setup-rust-context@v10.3.0
       with:
+        check-toolchain-file: false
         project-directory: ${{ inputs.root-directory }}
 
-    - name: Run tests via Cargo
+    - name: Run the tests via Cargo
       if: env.strategy == 'rust'
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        echo "🦀Running Rust tests with all the features enabled..."
+        echo 🦀Running Rust tests with all the features enabled...
         cargo test --all-features
 
     - name: Print confirmation message
       if: env.strategy != 'exit'
-      shell: bash
-      run: echo "✅Custom tests in directory '${{ inputs.root-directory }}' run successfully!"
+      shell: elvish {0}
+      run: echo ✅Custom tests in directory "'"${{ inputs.root-directory }}"'" run successfully!
