@@ -47,6 +47,8 @@ steps:
 
       - otherwise, the **latest** version will be installed
 
+1. Set the `FORCE_COLOR` environment variable according to the value of the `pnpm-colors` input.
+
 1. No matter whether the toolchain was installed, retrieve the dependencies - as follows:
 
    - 🧊 if **pnpm-lock.yaml** exists, it is considered _frozen_ via the `--frozen-lockfile` flag
@@ -63,9 +65,10 @@ steps:
 
 ## 📥Inputs
 
-|        Name         |    Type    |               Description               | Default value |
-| :-----------------: | :--------: | :-------------------------------------: | :-----------: |
-| `project-directory` | **string** | The directory containing `package.json` |     **.**     |
+|        Name         |    Type     |               Description               | Default value |
+| :-----------------: | :---------: | :-------------------------------------: | :-----------: |
+|    `pnpm-colors`    | **boolean** |         Enable colors for pnpm          |   **true**    |
+| `project-directory` | **string**  | The directory containing `package.json` |     **.**     |
 
 ## 🌐Further references
 

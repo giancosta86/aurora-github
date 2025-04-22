@@ -2,6 +2,10 @@ name: Setup a NodeJS context
 description: Conditionally installs NodeJS along with pnpm, as well as the dependencies listed in package.json.
 
 inputs:
+  pnpm-colors:
+    description: Enable colors for pnpm
+    default: true
+
   project-directory:
     description: The directory containing package.json.
     default: .
@@ -9,118 +13,87 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - name: Verify package.json
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "💻Setting up NodeJS context in '${{ inputs.project-directory }}'..."
+        use aurora-github/nodejs/context
 
-        if [[ ! -f "package.json" ]]
-        then
-          echo "❌The package.json descriptor is missing!" >&2
-          exit 1
-        fi
+        echo 💻Setting up NodeJS context in "'"${{ inputs.project-directory }}"'"...
+        context:check-preconditions
 
     - name: Detect toolchain constraints
-      id: detect-toolchain-constraints
-      shell: bash
+      id: detect-nodejs-constraints
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        requestedNodeVersion="$(jq -r '.engines.node // ""' package.json)"
+        use aurora-github/output
+        use aurora-github/nodejs/context
 
-        if [[ -n "$requestedNodeVersion" ]]
-        then
-          echo "🔎NodeJS version requested in package.json: '$requestedNodeVersion'"
-          installToolchain=true
-        else
-          echo "💭No requested NodeJS version in package.json..."
-          installToolchain=false
-        fi
-
-        echo "echo 🔎Install NodeJS toolchain? $installToolchain"
-
-        echo "install-toolchain=$installToolchain" >> $GITHUB_OUTPUT
-
-        echo "requested-node-version=$requestedNodeVersion" >> $GITHUB_OUTPUT
+        output:map (context:detect-nodejs-constraints)
 
     - name: Install NodeJS
-      if: steps.detect-toolchain-constraints.outputs.install-toolchain == 'true'
+      if: steps.detect-nodejs-constraints.outputs.install-toolchain == 'true'
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ steps.detect-toolchain-constraints.outputs.requested-node-version }}
+        node-version: ${{ steps.detect-nodejs-constraints.outputs.requested-node-version }}
 
     - name: Print NodeJS version
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "🎡NodeJS version: '$(node --version)'"
+        use aurora-github/console
+
+        console:inspect &emoji=🎡 'NodeJS version' (node --version)
 
     - name: Detect the requested pnpm version
-      if: steps.detect-toolchain-constraints.outputs.install-toolchain == 'true'
-      id: detect-pnpm-version
-      shell: bash
+      if: steps.detect-nodejs-constraints.outputs.install-toolchain == 'true'
+      id: detect-pnpm-constraints
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        packageManagerReference="$(jq -r '.packageManager // ""' package.json)"
+        use aurora-github/output
+        use aurora-github/nodejs/context
 
-        echo "📦Package manager reference: '$packageManagerReference'"
-
-        if [[ -n "$packageManagerReference" ]]
-        then
-          requestedPackageManager="$(echo "$packageManagerReference" | cut -d '@' -f 1)"
-
-          if [[ "$requestedPackageManager" != "pnpm" ]]
-          then
-            echo "❌The package manager must be pnpm!" >&2
-            exit 1
-          fi
-
-          requestedPnpmVersion="$(echo "$packageManagerReference" | cut -d '@' -f 2)"
-
-          echo "🔎Requested pnpm version: '$requestedPnpmVersion'"
-
-          pnpmVersion="$requestedPnpmVersion"
-        else
-          echo "🌟Defaulting to the latest pnpm version!"
-          pnpmVersion="latest"
-        fi
-
-        echo "🔬pnpm version to install: '$pnpmVersion'"
-
-        echo "requested-pnpm-version=$pnpmVersion" >> $GITHUB_OUTPUT
+        output:map (context:detect-pnpm-constraints)
 
     - name: Install pnpm
-      if: steps.detect-toolchain-constraints.outputs.install-toolchain == 'true'
+      if: steps.detect-nodejs-constraints.outputs.install-toolchain == 'true'
       uses: pnpm/action-setup@v4
       with:
-        version: ${{ steps.detect-pnpm-version.outputs.requested-pnpm-version }}
+        version: ${{ steps.detect-pnpm-constraints.outputs.requested-pnpm-version }}
+
+    - name: Setup colors for pnpm
+      shell: elvish {0}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        use aurora-github/input
+        use aurora-github/nodejs/context
+
+        var pnpm-colors = (input:require-bool pnpm-colors '${{ inputs.pnpm-colors }}')
+
+        context:set-pnpm-colors $pnpm-colors
 
     - name: Print pnpm version
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "📦pnpm version: $(pnpm --version)"
+        use aurora-github/console
+
+        console:inspect &emoji=📦 'pnpm version' (pnpm --version)
 
     - name: Install the dependencies
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        lockFile="pnpm-lock.yaml"
+        use aurora-github/nodejs/context
 
-        if [[ -f "$lockFile" ]]
-        then
-          echo "🧊Installing dependencies with frozen lockfile, as '$lockFile' is present..."
-          lockFileArg="--frozen-lockfile"
-        else
-          echo "🌞Installing dependencies without frozen lockfile, as '$lockFile' is missing..."
-          lockFileArg="--no-frozen-lockfile"
-        fi
-
-        pnpm install $lockFileArg
-
-        echo "✅Dependencies installed!"
+        context:install-dependencies
 
     - name: Print confirmation message
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
-      run: echo "✅NodeJS context in '${{ inputs.project-directory }}' ready!"
+      run: |
+        echo ✅NodeJS context in "'"${{ inputs.project-directory }}"'" ready!
