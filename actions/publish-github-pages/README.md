@@ -2,7 +2,7 @@
 
 Publishes a directory as the [GitHub Pages](https://pages.github.com/) website for the current repository.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -23,7 +23,7 @@ steps:
 
 - [publish-rust-wasm](../publish-rust-wasm/README.md).
 
-## 💡How it works
+## 💡 How it works
 
 1. If `source-directory` is set to an empty string (the default) or refers to a missing directory, if `optional` is set to **true** the action will simply exit, otherwise the workflow will fail.
 
@@ -51,7 +51,7 @@ steps:
 
 1. Publish the files to GitHub Pages.
 
-## ☑️Requirements
+## ☑️ Requirements
 
 - The following [permissions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work:
 
@@ -67,7 +67,7 @@ steps:
 
 - Please, refer to [setup-nodejs-context](../setup-nodejs-context/README.md) for details about setting up a NodeJS environment.
 
-## 📥Inputs
+## 📥 Inputs
 
 |           Name           |          Type           |                             Description                             | Default value |
 | :----------------------: | :---------------------: | :-----------------------------------------------------------------: | :-----------: |
@@ -76,13 +76,13 @@ steps:
 | `enforce-branch-version` | `inject`,`check`,`skip` |              How the branch version should be enforced              |  **inject**   |
 |        `dry-run`         |       **boolean**       |             Stop the publication just before uploading              |   **false**   |
 
-## 📤Outputs
+## 📤 Outputs
 
 | Name  |    Type    |           Description            |   Example   |
 | :---: | :--------: | :------------------------------: | :---------: |
 | `url` | **string** | The URL of the published website | _HTTPS url_ |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 

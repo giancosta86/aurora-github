@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: echo "🎭Now publishing static files with dry-run enabled..."
+      run: echo "🎭 Now publishing (in dry-run) static files..."
 
     - name: A static website should be publishable
       uses: ./actions/publish-github-pages
@@ -13,7 +13,7 @@ runs:
         dry-run: true
 
     - shell: bash
-      run: echo "🎭Now publishing a Maven-generated site with dry-run enabled..."
+      run: echo "🎭 Now publishing (in dry-run) a Maven-generated site..."
 
     - name: A Maven-generated website should be publishable
       uses: ./actions/publish-github-pages
@@ -22,7 +22,7 @@ runs:
         dry-run: true
 
     - shell: bash
-      run: echo "🎭Now publishing a NextJS site..."
+      run: echo "🎭 Now publishing a NextJS site..."
 
     - name: A NextJS website should be publishable
       id: publish-nextjs-pages
@@ -37,8 +37,24 @@ runs:
 
         if [[ -n "$websiteUrl" ]]
         then
-          echo "✅Website published and available at: '$websiteUrl'"
+          echo "✅ Website published and available at: '$websiteUrl'"
         else
-          echo "❌Website not available!" >&2
+          echo "❌ Website not available!" >&2
           exit 1
         fi
+
+    - shell: bash
+      run: echo "🎭 Now trying to publish an inexistent source directory..."
+
+    - uses: ./actions/publish-github-pages
+      with:
+        source-directory: INEXISTENT_DIRECTORY
+        optional: true
+
+    - shell: bash
+      run: echo "🎭 Now trying to omit the source directory..."
+
+    - uses: ./actions/publish-github-pages
+      with:
+        source-directory: ""
+        optional: true
