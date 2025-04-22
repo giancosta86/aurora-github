@@ -2,7 +2,7 @@
 
 Installs software using the platform's package manager.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -11,11 +11,7 @@ steps:
       packages: moreutils
 ```
 
-## ☑️Requirements
-
-This action currently supports only the `apt-get` package manager.
-
-## 💡How it works
+## 💡 How it works
 
 1. If `required-command` is specified and can be found by the `type` command, just exit the action.
 
@@ -23,14 +19,18 @@ This action currently supports only the `apt-get` package manager.
 
 1. Install the requested packages.
 
-## 📥Inputs
+## ☑️ Requirements
+
+This action currently supports only the `apt-get` package manager.
+
+## 📥 Inputs
 
 |        Name        |    Type     |                               Description                                | Default value |
 | :----------------: | :---------: | :----------------------------------------------------------------------: | :-----------: |
 | `required-command` | **string**  | When declared, the packages are installed only if the command is missing |               |
-|     `packages`     | **string**  |        The packages to install, separated by any spaces or commas        |               |
+|     `packages`     | **string**  |               The packages to install, separated by commas               |               |
 |  `initial-update`  | **boolean** |          Update the package list before the first installation           |   **true**    |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [aurora-github](../../README.md)

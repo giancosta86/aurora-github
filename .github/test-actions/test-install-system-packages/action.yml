@@ -12,12 +12,12 @@ runs:
       run: |
         if which "$expectedCommand"
         then
-          echo "❌This test must be revised, as the '$expectedCommand' command is already installed."
+          echo "❌ This test must be revised, as the '$expectedCommand' command is already installed."
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Running unconditional installation..."
+      run: echo "🎭 Running unconditional installation..."
 
     - uses: ./actions/install-system-packages
       with:
@@ -26,18 +26,18 @@ runs:
     - name: The expected command should now be available
       shell: bash
       run: |
-        echo "🔎Now looking for the '$expectedCommand' command..."
+        echo "🔎 Now looking for the '$expectedCommand' command..."
 
         if which "$expectedCommand"
         then
-          echo "✅The expected command is now available!"
+          echo "✅ The expected command is now available!"
         else
-          echo "❌The expected command was not installed!" >&2
+          echo "❌ The expected command was not installed!" >&2
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Running conditional installation for existing command..."
+      run: echo "🎭 Running conditional installation for existing command - which should be skipped..."
 
     - uses: ./actions/install-system-packages
       with:
