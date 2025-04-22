@@ -4,6 +4,6 @@ mod tests {
 
     #[test]
     fn generate_file() {
-        fs::write("generated-file.txt", "Rust-generated content").unwrap();
+        fs::write("out.txt", "TEST OK").unwrap();
     }
 }

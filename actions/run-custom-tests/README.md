@@ -1,8 +1,8 @@
 # run-custom-tests
 
-Executes arbitrary tests within a given directory; it runs a **shell** script by default, but can also run _pnpm_ (for **NodeJS**) or _cargo_ (for **Rust**).
+Executes arbitrary tests within a given directory; it runs a shell script by default, but can also run _pnpm_ (for **NodeJS**) or _cargo_ (for **Rust**).
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -11,7 +11,47 @@ steps:
       root-directory: client-tests
 ```
 
-### Remarks
+## 💡 How it works
+
+1. If `root-directory` does not exist:
+
+   1. If `optional` is **true**, exit the action successfully.
+
+   1. Otherwise, crash the workflow.
+
+1. Use `root-directory` as the current directory.
+
+1. Select the first feasible course of action:
+
+   1. If `script-file` is specified **and** can be run by forwarding it to [run-shell-script](../run-shell-script/README.md), invoke the action accordingly, passing the (optional) `script-shell`.
+
+   1. If **verify** (**.elv**, **.sh**, ...) exists in `working-directory` **and** can be run via [run-shell-script](../run-shell-script/README.md), invoke the action accordingly, passing the (optional) `script-shell`.
+
+   1. If one or more files having `.test.elv` extension exist in the root directory, run the tests within them, assuming the test format introduced by [aurora-elvish](https://github.com/giancosta86/aurora-elvish)
+
+   1. If a file named **package.json** exists in the root directory:
+
+      1. Invoke [setup-nodejs-context](../setup-nodejs-context/README.md).
+
+      1. Run the **verify** script in the **scripts** section of **package.json**.
+
+   1. If a file named **Cargo.toml** exists in the root directory:
+
+      1. Invoke [setup-rust-context](../setup-rust-context/README.md), without enforcing the existence of the toolchain file.
+
+      1. Run `cargo test`:
+
+         1. with no features enabled
+
+         1. with all the features enabled
+
+   1. Otherwise:
+
+      1. If `optional` is **true**, exit the action successfully.
+
+      1. Otherwise, crash the workflow.
+
+## 💬 Remarks
 
 - You should **not** call this action for unit tests when using [verify-rust-crate](../verify-rust-crate/README.md) or [verify-npm-package](../verify-npm-package/README.md) - they are automatically run by the workflow itself.
 
@@ -19,57 +59,29 @@ steps:
 
 - This action is already called by [verify-npm-package](../verify-npm-package/README.md) to optionally run the tests in the **tests** directory.
 
-## 💡How it works
+## 📥 Inputs
 
-1. If `root-directory` does not exist:
+|       Name       |    Type     |                 Description                  | Default value |
+| :--------------: | :---------: | :------------------------------------------: | :-----------: |
+|    `optional`    | **boolean** | Exit successfully if the tests cannot be run |   **false**   |
+|  `script-file`   | **string**  |       Relative path to the script file       |               |
+|  `script-shell`  | **string**  |     The shell used to run `script-file`      |               |
+| `root-directory` | **string**  |      The directory containing the tests      |               |
 
-   - if `optional` is **true**, exit the action with no error
+## 🌐 Further references
 
-   - otherwise, crash the workflow
-
-1. Detect the test type and act accordingly:
-
-   - If a file named like `script-file` exists in the root directory, run it using `script-shell`; consequently, there is no need to mark the file as _executable_
-
-   - Otherwise, if a file named **package.json** exists in the root directory:
-
-     1. run [setup-nodejs-context](../setup-nodejs-context/README.md)
-
-     1. run the **verify** script in the **scripts** section of **package.json**
-
-   - Otherwise, if a file named **Cargo.toml** exists in the root directory:
-
-     1. if the **rust-toolchain.toml** file exists, run [check-rust-versions](../check-rust-versions/README.md) to enforce a specific Rust toolkit
-
-     1. run `cargo test` with the `--all-features` flag
-
-   - Otherwise:
-
-     - if `optional` is **true**, exit the action with no error
-
-     - otherwise, crash the workflow
-
-## ☑️Requirements
-
-## 📥Inputs
-
-|       Name       |    Type     |                  Description                  | Default value |
-| :--------------: | :---------: | :-------------------------------------------: | :-----------: |
-|    `optional`    | **boolean** | Exit with no error if the tests cannot be run |   **false**   |
-|  `script-file`   | **string**  |       Relative path to the script file        | **verify.sh** |
-|  `script-shell`  | **string**  |      The shell used to run `script-file`      |   **bash**    |
-| `root-directory` | **string**  |      The directory containing the tests       |               |
-
-## 🌐Further references
+- [run-shell-script](../run-shell-script/README.md)
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 
-- [check-rust-versions](../check-rust-versions/README.md)
+- [setup-rust-context](../setup-rust-context/README.md)
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 
 - [verify-npm-package](../verify-npm-package/README.md)
 
 - [verify-rust-wasm](../verify-rust-wasm/README.md)
+
+- [aurora-elvish](https://github.com/giancosta86/aurora-elvish)
 
 - [aurora-github](../../README.md)

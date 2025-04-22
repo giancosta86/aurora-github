@@ -1,0 +1,34 @@
+name: Run a project-specific scenario for run-custom-tests
+
+inputs:
+  strategy:
+    description: The test strategy.
+
+  script-file:
+    description: The script-file parameter forwarded to the action.
+
+  root-directory:
+    description: The root directory for the tests.
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo "🎭 Testing the '${{ inputs.strategy }}' strategy in directory '${{ inputs.root-directory }}'..."
+
+    - uses: ./actions/run-custom-tests
+      with:
+        script-file: ${{ inputs.script-file }}
+        root-directory: ${{ inputs.root-directory }}
+
+    - name: Ensure the expected output file was actually created by the tests
+      shell: bash
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        if [[ "$(cat out.txt)" == "TEST OK" ]]
+        then
+          echo "✅ The tests for the '${{ inputs.strategy }}' strategy completed perfectly!"
+        else
+          echo "❌ Issues with the '${{ inputs.strategy }}' test strategy!" >&2
+          exit 1
+        fi

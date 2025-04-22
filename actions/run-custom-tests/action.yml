@@ -1,18 +1,16 @@
 name: Run custom tests
-description: Executes arbitrary tests within a given directory; it runs a shell script by default, but can also run pnpm (for NodeJS) or cargo (for Rust).
+description: Executes arbitrary tests within a given directory; it runs a shell script by default, but can also run `pnpm` (for NodeJS) or `cargo` (for Rust).
 
 inputs:
   optional:
-    description: Exit with no error if the tests cannot be run.
+    description: Exit successfully if the tests cannot be run.
     default: false
 
   script-file:
     description: Relative path to the script file.
-    default: verify.sh
 
   script-shell:
     description: The shell used to run script-file.
-    default: bash
 
   root-directory:
     description: The directory containing the tests.
@@ -20,86 +18,43 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set up strategy
-      shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - name: Detect the test strategy
+      shell: elvish {0}
       run: |
-        main() {
-          validateInputs
-          detectTestStrategy
-        }
+        use aurora-github/ci-cd/input
+        use aurora-github/custom-tests
 
-        validateInputs() {
-          if [[ -z "${{ inputs.optional }}" ]]
-          then
-            echo "❌Missing action input: 'optional'!" >&2
-            exit 1
-          fi
+        custom-tests:detect-strategy [
+          &optional=(input:bool optional '${{ inputs.optional }}')
 
-          if [[ -d "${{ inputs.root-directory }}" ]]
-          then
-            cd "${{ inputs.root-directory }}"
-          else
-            if [[ "${{ inputs.optional }}" == "true" ]]
-            then
-              echo "💭Skipping optional tests in missing directory: '${{ inputs.root-directory }}'"
-              echo "strategy=exit" >> $GITHUB_ENV
-              exit 0
-            else
-              echo "❌Cannot run custom tests in missing directory: '${{ inputs.root-directory }}'" >&2
-              exit 1
-            fi
-          fi
-        }
+          &script-file=(input:string &optional script-file '${{ inputs.script-file }}')
 
-        detectTestStrategy() {
-          echo "🔬Detecting custom test strategy in directory '${{ inputs.root-directory }}'..."
+          &root-directory=(input:directory &optional &can-be-missing root-directory '${{ inputs.root-directory }}')
+        ]
 
-          local scriptFile="${{ inputs.script-file }}"
-
-          if [[ -n "$scriptFile" && -f "$scriptFile" ]]
-          then
-            echo "🐚Custom test script '$scriptFile' found!"
-            local strategy="script"
-
-            if [[ -z "${{ inputs.script-shell }}" ]]
-            then
-              echo "❌Missing action input: 'script-shell'!" >&2
-              exit 1
-            fi
-          elif [[ -f "package.json" ]]
-          then
-            echo "📦package.json file found!"
-            local strategy="nodejs"
-          elif [[ -f "Cargo.toml" ]]
-          then
-            echo "🦀Cargo.toml file found!"
-            local strategy="rust"
-          else
-            if [[ "${{ inputs.optional }}" == "true" ]]
-            then
-              echo "💭No supported strategy detected for the optional custom tests"
-              local strategy="exit"
-            else
-              echo "❌Cannot run custom tests: no supported test strategy could be detected!" >&2
-              exit 1
-            fi
-          fi
-
-          echo "🔎Test strategy: '$strategy'"
-
-          echo "strategy=$strategy" >> $GITHUB_ENV
-        }
-
-        main
-
-    - name: Run script
+    - name: Run test script
       if: env.strategy == 'script'
-      shell: bash
+      uses: giancosta86/aurora-github/actions/run-shell-script@v11.0.0
+      with:
+        optional: false
+        script-file: ${{ env.scriptPath }}
+        shell: ${{ inputs.script-shell }}
+        working-directory: ${{ inputs.root-directory }}
+
+    - name: Run test files
+      if: env.strategy == 'test-runner'
+      shell: elvish {0}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        echo "🐚Now running the custom script '${{ inputs.script-file }}' using '${{ inputs.script-shell }}'..."
+        use github.com/giancosta86/aurora-elvish/testing
 
-        "${{ inputs.script-shell }}" "${{ inputs.script-file }}"
+        var failed-tests = (testing:test &output-failures &clear=$false)
+
+        if (> $failed-tests 0) {
+          exit 1
+        }
 
     - name: Setup NodeJS context
       if: env.strategy == 'nodejs'
@@ -109,39 +64,33 @@ runs:
 
     - name: Run the 'verify' script from package.json
       if: env.strategy == 'nodejs'
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        echo "📦Now running the 'verify' script from package.json..."
-        pnpm verify
+        use aurora-github/nodejs/project
 
-    - name: Check for the Rust toolchain file
+        project:verify
+
+    - name: Setup Rust context
       if: env.strategy == 'rust'
-      shell: bash
-      working-directory: ${{ inputs.root-directory }}
-      run: |
-        if [[ -f "rust-toolchain.toml" ]]
-        then
-          echo "checkRustVersions=true" >> $GITHUB_ENV
-        else
-          echo "checkRustVersions=false" >> $GITHUB_ENV
-        fi
-
-    - name: Check Rust versions
-      if: env.strategy == 'rust' && env.checkRustVersions == 'true'
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v10.3.0
+      uses: giancosta86/aurora-github/actions/setup-rust-context@v10.3.0
       with:
+        check-toolchain-file: false
         project-directory: ${{ inputs.root-directory }}
 
-    - name: Run tests via Cargo
+    - name: Run the tests via Cargo
       if: env.strategy == 'rust'
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        echo "🦀Running Rust tests with all the features enabled..."
-        cargo test --all-features
+        use aurora-github/rust/project
+
+        project:run-tests
 
     - name: Print confirmation message
       if: env.strategy != 'exit'
-      shell: bash
-      run: echo "✅Custom tests in directory '${{ inputs.root-directory }}' run successfully!"
+      shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-elvish/console
+
+        console:echo ✅ Custom tests in directory "'"${{ inputs.root-directory }}"'" run successfully!
