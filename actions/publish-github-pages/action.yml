@@ -26,86 +26,18 @@ outputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - name: Set up strategy
-      shell: bash
+      shell: elvish {0}
       run: |
-        strategy="exit"
+        use aurora-github/input
+        use aurora-github/pages
 
-        main() {
-          validateInputs
+        var source-directory = (input:require source-directory '${{ inputs.source-directory }}')
+        var optional = (input:require-bool optional '${{ inputs.optional }}')
 
-          if setupEnvironment
-          then
-            detectSourceStrategy
-          fi
-
-          echo "🔎Website build strategy: '$strategy'"
-          echo "strategy=$strategy" >> $GITHUB_ENV
-        }
-
-        validateInputs() {
-          if [[ -z "${{ inputs.optional }}" ]]
-          then
-            echo "❌Missing action input: 'optional'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-          then
-            echo "❌Missing action input: 'enforce-branch-version'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.dry-run }}" ]]
-          then
-            echo "❌Missing action input: 'dry-run'!" >&2
-            exit 1
-          fi
-        }
-
-        setupEnvironment() {
-          local sourceDirectory="${{ inputs.source-directory }}"
-          local optional="${{ inputs.optional }}"
-
-          if [[ -z "$sourceDirectory" ]]
-          then
-            if [[ "$optional" == "true" ]]
-            then
-              echo "💬Missing action input: 'source-directory' - can't proceed"
-              return 1
-            else
-              echo "❌Missing action input: 'source-directory'!" >&2
-              exit 1
-            fi
-          elif [[ ! -d "$sourceDirectory" ]]
-          then
-            if [[ "$optional" == "true" ]]
-            then
-              echo "💬Missing website directory '$sourceDirectory' - can't proceed"
-              return 1
-            else
-              echo "❌Missing website directory '$sourceDirectory'!" >&2
-              exit 1
-            fi
-          else
-            echo "🌐Website source directory '$sourceDirectory' found!"
-            cd "$sourceDirectory"
-          fi
-        }
-
-        detectSourceStrategy() {
-          if [[ -f "package.json" ]]
-          then
-            strategy=nodejs
-          elif [[ -f "pom.xml" ]]
-          then
-            strategy=maven
-          else
-            strategy="static-files"
-          fi
-        }
-
-        main
+        pages:detect-strategy-from-sources $source-directory $optional
 
     - name: Enforce branch version
       if: env.strategy == 'nodejs' || env.strategy == 'maven'
@@ -122,70 +54,52 @@ runs:
 
     - name: Create the website via NodeJS
       if: env.strategy == 'nodejs'
-      shell: bash
-      working-directory: ${{ inputs.source-directory }}
+      shell: elvish {0}
       run: |
-        echo "📦Now building the website via NodeJS..."
-        pnpm build
-        echo "✅Website ready!"
+        use aurora-github/input
+        use aurora-github/pages
 
-        artifactDirectory=${{ inputs.source-directory }}/dist
-
-        echo "artifactDirectory=$artifactDirectory" >> $GITHUB_ENV
+        pages:build-via-nodejs (input:require source-directory '${{ inputs.source-directory }}')
 
     - name: Create the website via Maven
       if: env.strategy == 'maven'
-      shell: bash
-      working-directory: ${{ inputs.source-directory }}
+      shell: elvish {0}
       run: |
-        echo "🪶Now building the website via Maven..."
-        mvn -q site
-        echo "✅Website ready!"
+        use aurora-github/input
+        use aurora-github/pages
 
-        artifactDirectory=${{ inputs.source-directory }}/target/site
-
-        echo "artifactDirectory=$artifactDirectory" >> $GITHUB_ENV
+        pages:build-via-maven (input:require source-directory '${{ inputs.source-directory }}')
 
     - name: Setup static artifacts
       if: env.strategy == 'static-files'
-      shell: bash
-      run: echo "artifactDirectory=${{ inputs.source-directory }}" >> $GITHUB_ENV
-
-    - if: env.strategy != 'exit'
-      shell: bash
+      shell: elvish {0}
       run: |
-        main() {
-          checkArtifactDirectory
-          skipUploadingOnDryRun
-        }
+        use aurora-github/input
+        use aurora-github/pages
 
-        checkArtifactDirectory() {
-          echo "🔎Website artifact directory: '$artifactDirectory'"
+        pages:set-artifact-directory (input:require source-directory '${{ inputs.source-directory }}')
 
-          if [[ -d "$artifactDirectory" ]]
-          then
-            echo "✅The artifact directory for the 🌐website exists!"
-          else
-            if [[ "${{ inputs.optional }}" == "true" ]]
-            then
-              echo "💬Missing website artifact directory - can't proceed"
-              echo "strategy=exit" >> $GITHUB_ENV
-            else
-              echo "❌Missing website artifact directory!" >&2
-              exit 1
-            fi
-          fi
-        }
+    - name: Check artifacts
+      if: env.strategy != 'exit'
+      shell: elvish {0}
+      run: |
+        use aurora-github/input
+        use aurora-github/pages
 
-        skipUploadingOnDryRun() {
-          if [[ "${{ inputs.dry-run }}" == "true" ]]
-          then
-            echo "💭Skipping publication, as requested by dry-run."
-            echo "strategy=exit" >> $GITHUB_ENV
-          fi
-        }
+        var optional = (input:require-bool optional '${{ inputs.optional }}')
 
-        main
+        pages:check-artifact-directory (get-env artifactDirectory) $optional
+
+    - name: Skip publication on dry-run
+      if: env.strategy != 'exit'
+      shell: elvish {0}
+      run: |
+        use aurora-github/input
+        use aurora-github/pages
+
+        var dry-run = (input:require-bool dry-run '${{ inputs.dry-run }}')
+
+        pages:skip-publication-on-dry-run $dry-run
 
     - name: Upload website artifacts
       if: env.strategy != 'exit'
@@ -200,7 +114,7 @@ runs:
 
     - name: Print confirmation message
       if: env.strategy != 'exit'
-      shell: bash
+      shell: elvish {0}
       run: |
-        echo "✅Publication to GitHub Pages successful!"
-        echo "🌐Website: ${{ steps.publish-pages.outputs.page_url }}"
+        echo ✅Publication to GitHub Pages successful!
+        echo 🌐Website: ${{ steps.publish-pages.outputs.page_url }}
