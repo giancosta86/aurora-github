@@ -3,54 +3,36 @@ name: Test setup-nodejs-context
 runs:
   using: composite
   steps:
-    - name: Setup environment variables
+    - name: Backup package.json and initialize environment variables
       shell: bash
       working-directory: tests/npm-package
       run: |
-        expectedNodeVersion="$(jq -r '.engines.node' package.json)"
-        echo "🔎Expected NodeJS version: '$expectedNodeVersion'"
+        cp package.json package.json.bak
 
         expectedPnpmVersion="$(jq -r '.packageManager' package.json | sed s/^pnpm@//)"
-        echo "🔎Expected pnpm version: '$expectedPnpmVersion'"
+        echo "🔎 Expected pnpm version: '$expectedPnpmVersion'"
 
-        echo "expectedNodeVersion=$expectedNodeVersion" >> $GITHUB_ENV
         echo "expectedPnpmVersion=$expectedPnpmVersion" >> $GITHUB_ENV
         echo "dependenciesDirectory=node_modules" >> $GITHUB_ENV
 
-    - name: The expected NodeJS version should not be pre-installed
-      shell: bash
-      working-directory: tests/npm-package
-      run: |
-        if type node &> /dev/null
-        then
-          installedNodeVersion="$(node --version | sed s/^v//)"
-          echo "🔎Pre-installed NodeJS version: '$installedNodeVersion'"
-
-          if [[ "$installedNodeVersion" == "$expectedNodeVersion" ]]
-          then
-            echo "❌The expected NodeJS version is pre-installed!" >&2
-            exit 1
-          fi
-        else
-          echo "💭NodeJS not preinstalled..."
-        fi
-
-    - name: The expected pnpm version should not be pre-installed
+    - name: The expected pnpm version should not be running
       shell: bash
       working-directory: tests/npm-package
       run: |
         if type pnpm &> /dev/null
         then
           installedPnpmVersion="$(pnpm --version)"
-          echo "🔎Pre-installed pnpm version: '$installedPnpmVersion'"
+          echo "🔎 Pre-installed pnpm version: '$installedPnpmVersion'"
 
-          if [[ "$installedPnpmVersion" == "$expectedPnpmVersion" ]]
+          if [[ "$installedPnpmVersion" != "$expectedPnpmVersion" ]]
           then
-            echo "❌The expected pnpm version is pre-installed!" >&2
+            echo "✅ The expected pnpm version is not running!"
+          else
+            echo "❌ The expected pnpm version is running! This test would be pointless!" >&2
             exit 1
           fi
         else
-          echo "💭pnpm not preinstalled..."
+          echo "✅ pnpm not installed..."
         fi
 
     - name: Ensure the dependencies are not installed
@@ -58,38 +40,28 @@ runs:
       working-directory: tests/npm-package
       run: rm -rf "$dependenciesDirectory"
 
-    - name: Setup the NodeJS context
-      uses: ./actions/setup-nodejs-context
+    - name: Setup NodeJS from .nvmrc
+      uses: ./.github/test-actions/test-setup-nodejs-context/scenario
       with:
-        project-directory: tests/npm-package
+        version-source: nvmrc
 
-    - name: The expected NodeJS version should be used
-      shell: bash
-      working-directory: tests/npm-package
-      run: |
-        installedNodeVersion="$(node --version | sed s/^v//)"
-        echo "🔎Installed NodeJS version: '$installedNodeVersion'"
+    - name: Setup NodeJS from package.json
+      uses: ./.github/test-actions/test-setup-nodejs-context/scenario
+      with:
+        version-source: package-json
 
-        if [[ "$installedNodeVersion" == "$expectedNodeVersion" ]]
-        then
-          echo "✅The requested NodeJS version is being used!"
-        else
-          echo "❌The requested NodeJS version is not running!" >&2
-          exit 1
-        fi
-
-    - name: The expected pnpm version should be used
+    - name: The expected pnpm version should have been installed
       shell: bash
       working-directory: tests/npm-package
       run: |
         installedPnpmVersion="$(pnpm --version)"
-        echo "🔎Installed pnpm version: '$installedPnpmVersion'"
+        echo "🔎 Installed pnpm version: '$installedPnpmVersion'"
 
         if [[ "$installedPnpmVersion" == "$expectedPnpmVersion" ]]
         then
-          echo "✅The expected pnpm version is being used!"
+          echo "✅ The expected pnpm version is being used!"
         else
-          echo "❌The expected pnpm version is not running!" >&2
+          echo "❌ The expected pnpm version is not running!" >&2
           exit 1
         fi
 
@@ -99,8 +71,8 @@ runs:
       run: |
         if [[ -d "$dependenciesDirectory" ]]
         then
-          echo "✅The dependencies have been installed!"
+          echo "✅ The dependencies have been installed!"
         else
-          echo "❌The dependencies have not been installed!" >&2
+          echo "❌ The dependencies have not been installed!" >&2
           exit 1
         fi

@@ -2,7 +2,7 @@
 
 Conditionally installs **NodeJS** along with **pnpm**, as well as the dependencies listed in **package.json**.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -13,23 +13,27 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md) and [publish-npm-package](../publish-npm-package/README.md).
 
-## 💡How it works
+## 💡 How it works
 
-1. If **package.json** - which must exist - declares the following field:
+1. Determine whether a specific NodeJS toolchain must be installed; this happens in one of the following cases - considered in this order:
 
-   ```json
-   {
-     "engines": {
-       "node": "..."
-     }
-   }
-   ```
+   1. If the **.nvmrc** file exists in the project directory - containing the requested NodeJS version, as expected by `nvm`
 
-   an entire NodeJS toolchain will be set up; in particular:
+   1. If **package.json** declares the following field:
+
+      ```json
+      {
+        "engines": {
+          "node": "..."
+        }
+      }
+      ```
+
+   **PLEASE, NOTE**: if you are using Bash as your development shell, you may want to install the [nvmcd](https://github.com/giancosta86/aurora-bash/tree/main/scripts/nvmcd) command from the [aurora-bash](https://github.com/giancosta86/aurora-bash) project.
+
+1. If the NodeJS toolchain is to be set up:
 
    1. The requested **NodeJS** version - or a compatible one, if a range is passed - will be installed via [actions/setup-node](https://github.com/actions/setup-node)
-
-      **PLEASE, NOTE**: if you are using Bash as your development shell, you may want to install the [nvmcd](https://github.com/giancosta86/aurora-bash/tree/main/scripts/nvmcd) command from the [aurora-bash](https://github.com/giancosta86/aurora-bash) project.
 
    1. **pnpm** will be downloaded via [pnpm/action-setup](https://github.com/pnpm/action-setup).
 
@@ -47,13 +51,15 @@ steps:
 
       - otherwise, the **latest** version will be installed
 
+1. Set the `FORCE_COLOR` environment variable according to the value of the `pnpm-colors` input.
+
 1. No matter whether the toolchain was installed, retrieve the dependencies - as follows:
 
    - 🧊 if **pnpm-lock.yaml** exists, it is considered _frozen_ via the `--frozen-lockfile` flag
 
    - 🌞 otherwise, `--no-frozen-lockfile` is passed explicitly
 
-## ☑️Requirements
+## ☑️ Requirements
 
 - The **package.json** descriptor must exist in `project-directory`.
 
@@ -61,13 +67,14 @@ steps:
 
 - If the **pnpm-lock.yaml** file exists, it must be up-to-date - because it's considered _frozen_.
 
-## 📥Inputs
+## 📥 Inputs
 
-|        Name         |    Type    |               Description               | Default value |
-| :-----------------: | :--------: | :-------------------------------------: | :-----------: |
-| `project-directory` | **string** | The directory containing `package.json` |     **.**     |
+|        Name         |    Type     |               Description               | Default value |
+| :-----------------: | :---------: | :-------------------------------------: | :-----------: |
+|    `pnpm-colors`    | **boolean** |         Enable colors for pnpm          |   **true**    |
+| `project-directory` | **string**  | The directory containing `package.json` |     **.**     |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [nvmcd](https://github.com/giancosta86/aurora-bash/tree/main/scripts/nvmcd) from [aurora-bash](https://github.com/giancosta86/aurora-bash)
 
