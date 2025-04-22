@@ -15,102 +15,17 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
+    - shell: elvish {0}
       run: |
-        main() {
-          validateInputs
+        use aurora-github/input
+        use aurora-github/system-packages
 
-          if ! shouldRunInstaller
-          then
-            exit 0
-          fi
+        var inputs = [
+          &packages=(input:list '${{ inputs.packages }}')
+          &required-command=(input:optional '${{ inputs.required-command }}')
+          &initial-update=(input:require initial-update '${{ inputs.initial-update}}')
+        ]
 
-          if [[ "${{ inputs.initial-update }}" == 'true' ]]
-          then
-            tryToUpdatePackageList
-          fi
-
-          installPackages
-        }
-
-        validateInputs() {
-          if [[ -z "${{ inputs.packages }}" ]]
-          then
-            echo "❌Missing action input: 'packages'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.initial-update }}" ]]
-          then
-            echo "❌Missing action input: 'initial-update'!" >&2
-            exit 1
-          fi
-        }
-
-        shouldRunInstaller() {
-          local requiredCommand="${{inputs.required-command}}"
-
-          if [[ -n "$requiredCommand" ]]
-          then
-            echo "📥Required command: '$requiredCommand'"
-
-            if type "$requiredCommand" > /dev/null 2>&1
-            then
-              echo "✅Required command '$requiredCommand' available - no need to install it!"
-              return 1
-            else
-              echo "💫Required command '$requiredCommand' not available - now installing its packages..."
-            fi
-          else
-            echo "💫No required command passed - the requested packages will be installed unconditionally"
-          fi
-
-          return 0
-        }
-
-        tryToUpdatePackageList() {
-          local flagFile="$HOME/.install-system-packages-updated"
-
-          if [[ -f "$flagFile" ]]
-          then
-            echo "💡The package list has already been updated!"
-            return 0
-          fi
-
-          echo "📥Updating the package list..."
-
-          runQuietly "sudo apt-get update"
-
-          touch "$flagFile"
-        }
-
-        runQuietly() {
-          local commandLine="$1"
-
-          local outputFile="$(mktemp)"
-
-          if ! $commandLine &> "$outputFile"
-          then
-            echo "❌Error while running the command! Log:"
-            cat "$outputFile"
-            echo "❌❌❌"
-
-            exit 1
-          fi
-        }
-
-        installPackages() {
-          local requestedPackages="${{ inputs.packages }}"
-
-          echo "📥Requested packages: $requestedPackages"
-
-          local actualPackages="$(echo "$requestedPackages" | perl -pe 's/[\s,]+/ /g')"
-
-          echo "📦Installing packages..."
-
-          runQuietly "sudo apt-get install -y $actualPackages"
-
-          echo "✅Packages installed!"
-        }
-
-        main
+        system-packages:install $inputs
