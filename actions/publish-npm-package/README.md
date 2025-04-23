@@ -2,7 +2,7 @@
 
 Publishes a **NodeJS** package to an [npm](https://www.npmjs.com/) registry.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -13,15 +13,7 @@ steps:
       npm-token: ${{ secrets.NPM_TOKEN }}
 ```
 
-### Remarks
-
-- This action is designed for _publication_ only - not for _verification_: you should call [verify-npm-package](../verify-npm-package/README.md) for that instead.
-
-- Before the first publication, running with `dry-run` set to **true** during the _verification_ phase is recommended.
-
-- This action is automatically run by [publish-rust-wasm](../publish-rust-wasm/README.md).
-
-## 💡How it works
+## 💡 How it works
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
@@ -35,7 +27,15 @@ steps:
 
 1. Run `pnpm publish`, with the value of `npm-token` injected into the **NPM_TOKEN** environment variable - accessible, for example, from the `.npmrc` configuration file.
 
-## ☑️Requirements
+## 💬 Remarks
+
+- This action is designed for _publication_ only - not for _verification_: you should call [verify-npm-package](../verify-npm-package/README.md) for that instead.
+
+- Before the first publication, running with `dry-run` set to **true** during the _verification_ phase is recommended.
+
+- This action is automatically run by [publish-rust-wasm](../publish-rust-wasm/README.md).
+
+## ☑️ Requirements
 
 - The requirements for [setup-nodejs-context](../setup-nodejs-context/README.md).
 
@@ -45,7 +45,7 @@ steps:
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
-## 📥Inputs
+## 📥 Inputs
 
 |           Name           |          Type           |                    Description                    | Default value |
 | :----------------------: | :---------------------: | :-----------------------------------------------: | :-----------: |
@@ -55,7 +55,7 @@ steps:
 | `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |  **inject**   |
 |   `project-directory`    |       **string**        |      The directory containing `package.json`      |     **.**     |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 
