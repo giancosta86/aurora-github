@@ -6,14 +6,14 @@ inputs:
     description: The wasm-pack version to install.
 
   npm-scope:
-    description: The npm package scope or "<ROOT>".
+    description: The npm package scope or `<ROOT>`.
 
   client-tests-directory:
     description: Relative directory containing the client tests.
     default: client-tests
 
   wasm-target:
-    description: The target of the 'wasm-pack build' command.
+    description: The target of the `wasm-pack build` command.
     default: web
 
   run-clippy-checks:
@@ -30,76 +30,20 @@ inputs:
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    default: '^\.\/((src|tests)\/.+\.rs)|(client-tests\/.+\.(c|m)?(j|t)sx?)$'
+    default: '^((src|tests)\/.+\.rs)|(client-tests\/.+\.(c|m)?(j|t)sx?)$'
 
   enforce-branch-version:
     description: How the branch version should be enforced.
     default: inject
 
   project-directory:
-    description: The directory containing Cargo.toml.
+    description: The directory containing `Cargo.toml`.
     default: .
 
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
-        then
-          echo "❌Missing action input: 'wasm-pack-version'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.npm-scope }}" ]]
-        then
-          echo "❌Missing action input: 'npm-scope'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.client-tests-directory }}" ]]
-        then
-          echo "❌Missing action input: 'client-tests-directory'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.wasm-target }}" ]]
-        then
-          echo "❌Missing action input: 'wasm-target'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.run-clippy-checks }}" ]]
-        then
-          echo "❌Missing action input: 'run-clippy-checks'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.check-rustdoc }}" ]]
-        then
-          echo "❌Missing action input: 'check-rustdoc'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
 
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/actions/install-wasm-pack@v10.3.0
@@ -117,14 +61,14 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Run headless browser tests
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "🌐Running headless browser tests..."
-        wasm-pack test --chrome --headless --release
-        echo "✅Headless browser tests OK!"
+        use aurora-github/rust/wasm-pack
 
-    - name: Generate the NodeJS package source files
+        wasm-pack:run-browser-tests
+
+    - name: Generate the wasm target
       uses: giancosta86/aurora-github/actions/generate-wasm-target@v10.3.0
       with:
         target: ${{ inputs.wasm-target }}
@@ -140,5 +84,8 @@ runs:
         root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
 
     - name: Print confirmation message
-      shell: bash
-      run: echo "✅Rust web assembly project verified!"
+      shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-elvish/console
+
+        console:echo ✅🦀🌐 Rust web assembly project verified!

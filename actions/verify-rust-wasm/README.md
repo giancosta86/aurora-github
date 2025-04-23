@@ -2,7 +2,7 @@
 
 Verifies the source files of a **Rust** web assembly.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -14,7 +14,7 @@ steps:
       npm-scope: your-npm-scope
 ```
 
-## 💡How it works
+## 💡 How it works
 
 1. Invoke the [install-wasm-pack](../install-wasm-pack/README.md) action, passing all the matching inputs, to install the `wasm-pack` command.
 
@@ -26,13 +26,13 @@ steps:
 
 1. If the directory referenced by the `client-tests-directory` input exists, execute the [run-custom-tests](../run-custom-tests/README.md) action on it, with the `optional` flag enabled.
 
-## ☑️Requirements
+## ☑️ Requirements
 
-- `rust-toolchain.toml` must be present in `project-directory` - as described in [check-rust-versions](../check-rust-versions/README.md)
+- `rust-toolchain.toml` must be present in `project-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
 
 - Please, refer to the documentation of [run-custom-tests](../run-custom-tests/README.md) for details about setting up a suitable structure for `client-tests-directory`.
 
-## 📥Inputs
+## 📥 Inputs
 
 |           Name            |          Type           |                    Description                    |       Default value       |
 | :-----------------------: | :---------------------: | :-----------------------------------------------: | :-----------------------: |
@@ -47,7 +47,7 @@ steps:
 | `enforce-branch-version`  | `inject`,`check`,`skip` |     How the branch version should be enforced     |        **inject**         |
 |    `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
 
@@ -57,7 +57,7 @@ steps:
 
 - [parse-npm-scope](../parse-npm-scope/README.md)
 
-- [check-rust-versions](../check-rust-versions/README.md)
+- [setup-rust-context](../setup-rust-context/README.md)
 
 - [install-wasm-pack](../install-wasm-pack/README.md)
 
