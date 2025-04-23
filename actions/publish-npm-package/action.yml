@@ -24,39 +24,28 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - name: Validate inputs
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.dry-run }}" ]]
-        then
-          echo "❌Missing action input: 'dry-run'!" >&2
-          exit 1
-        fi
+        use os
+        use aurora-github/input
 
-        if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.npm-token }}" ]]
-        then
-          echo "❌Missing action input: 'npm-token'!" >&2
-          exit 1
-        fi
+        var dry-run = (input:require-bool dry-run '${{ inputs.dry-run }}')
 
-        if [[ -z "${{ inputs.website-directory }}" ]]
-        then
-          echo "❌Missing action input: 'website-directory'!" >&2
-          exit 1
-        fi
+        if (not $dry-run) {
+          input:require npm-token '${{ inputs.npm-token }}'
+        }
 
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+        input:require website-directory '${{ inputs.website-directory }}'
 
-        if [[ ! -f "package.json" ]]
-        then
-          echo "❌The package.json descriptor file does not exist!!" >&2
-          exit 1
-        fi
+        input:require enforce-branch-version '${{ inputs.enforce-branch-version }}'
+
+        if (not (os:is-regular package.json)) {
+          fail "The package.json descriptor file does not exist!"
+        }
 
     - name: Enforce branch version
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.3.0
@@ -70,12 +59,12 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Try to build the package artifacts
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        source "${{ github.action_path }}/../../core/bash/npmPackage.sh"
+        use aurora-github/nodejs/npm
 
-        tryToRunNpmBuildScript
+        npm:run-optional-script build
 
     - name: Publish the GitHub Pages website
       uses: giancosta86/aurora-github/actions/publish-github-pages@v10.3.0
@@ -86,47 +75,38 @@ runs:
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
     - name: Display the artifact descriptor
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "The content of your 📦package.json just before publication is:"
-        jq -C . package.json
-        echo "📦📦📦"
+        use aurora-github/console
+
+        console:section &emoji=📦 'package.json just before publication' {
+          jq -C . package.json
+        }
 
     - name: Ensure the package manager configuration file exists
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        npmConfigPath=".npmrc"
+        use aurora-github/nodejs/npm
 
-        if [[ ! -f "$npmConfigPath" ]]
-        then
-          echo "🌟It seems you don't have a $npmConfigPath file - generating a default one..."
-
-          echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > "$npmConfigPath"
-
-          echo "🎀Your auto-generated $npmConfigPath configuration file is:"
-          cat "$npmConfigPath"
-          echo "🎀🎀🎀"
-        else
-          echo "🌟You already have a custom $npmConfigPath file - ready to publish!"
-        fi
+        npm:ensure-config
 
     - name: Publish to the registry
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ "${{ inputs.dry-run }}" == "true" ]]
-        then
-          dryRunArg="--dry-run"
-        else
-          dryRunArg=""
-        fi
+        use aurora-github/lang
+        use aurora-github/input
 
-        pnpm publish --no-git-checks --access public $dryRunArg
+        var dry-run = (input:require-bool dry-run '${{ inputs.dry-run }}')
+
+        var dry-run-arg = (lang:ternary $dry-run [--dry-run] [])
+
+        pnpm publish --no-git-checks --access public $@dry-run-arg
       env:
         NPM_TOKEN: ${{ inputs.npm-token }}
 
     - name: Print confirmation message
-      shell: bash
-      run: echo "✅Npm package published successfully!"
+      shell: elvish {0}
+      run: echo ✅📦Npm package publication step successful!
