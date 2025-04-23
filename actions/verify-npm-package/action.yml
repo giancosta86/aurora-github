@@ -1,5 +1,5 @@
 name: Verify npm package
-description: Verifies the source files of a NodeJS package - by running its 'verify' script within the 'scripts' section of 'package.json'.
+description: Verifies the source files of a NodeJS package - by running its `verify` script within the `scripts` section of `package.json`.
 
 inputs:
   crash-on-critical-todos:
@@ -8,56 +8,24 @@ inputs:
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    default: '^\.\/(src|(tests(?!\/node_modules\/)))\/.+\.(c|m)?(j|t)sx?$'
+    default: '^(src|(tests(?!\/node_modules\/)))\/.+\.(c|m)?(j|t)sx?$'
 
   enforce-branch-version:
     description: How the branch version should be enforced.
     default: inject
 
   check-subpath-exports:
-    description: Run check-subpath-exports after the "verify" package script.
+    description: Run check-subpath-exports after the `verify` package script.
     default: true
 
   project-directory:
-    description: The directory containing package.json.
+    description: The directory containing `package.json`.
     default: .
 
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.check-subpath-exports }}" ]]
-        then
-          echo "❌Missing action input: 'check-subpath-exports'!" >&2
-          exit 1
-        fi
-
-        if [[ ! -f "package.json" ]]
-        then
-          echo "❌The package.json descriptor file does not exist!!" >&2
-          exit 1
-        fi
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
 
     - name: Check the project license
       uses: giancosta86/aurora-github/actions/check-project-license@v10.3.0
@@ -74,20 +42,21 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Run the 'verify' script from package.json
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "🔎Now running the 'verify' package.json script..."
-        pnpm verify
-        echo "✅'verify' script successful!"
+        use github.com/giancosta86/aurora-elvish/console
+        use aurora-github/nodejs/project
+
+        project:verify
 
     - name: Try to build the package artifacts
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        source "${{ github.action_path }}/../../core/bash/npmPackage.sh"
+        use aurora-github/nodejs/pnpm
 
-        tryToRunNpmBuildScript
+        pnpm:run-optional-script build
 
     - name: Check subpath exports
       if: inputs.check-subpath-exports == 'true'
@@ -110,5 +79,8 @@ runs:
         root-directory: ${{ inputs.project-directory }}
 
     - name: Print confirmation message
-      shell: bash
-      run: echo "✅npm package project verified!"
+      shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-elvish/console
+
+        console:echo ✅☕ npm package project verified!
