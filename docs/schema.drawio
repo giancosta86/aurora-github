@@ -7,7 +7,7 @@
         <mxCell id="5F_uEz6Y_uifgk78bL69-2" value="&lt;font color=&quot;#000000&quot;&gt;install-wasm-pack&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6D0DE;gradientColor=#B266FF;strokeColor=#330066;fontSize=18;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="10" y="350" width="200" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="5F_uEz6Y_uifgk78bL69-3" value="&lt;font color=&quot;#000000&quot;&gt;check-rust-versions&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;gradientColor=#ea6b66;strokeColor=#660000;fontSize=18;fontStyle=1" parent="1" vertex="1">
+        <mxCell id="5F_uEz6Y_uifgk78bL69-3" value="&lt;font color=&quot;#000000&quot;&gt;setup-rust-context&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;gradientColor=#ea6b66;strokeColor=#660000;fontSize=18;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="300" y="550" width="200" height="60" as="geometry" />
         </mxCell>
         <mxCell id="5F_uEz6Y_uifgk78bL69-4" value="&lt;font color=&quot;#000000&quot;&gt;detect-branch-version&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;gradientColor=#ffd966;strokeColor=#333300;fontSize=18;fontStyle=1" parent="1" vertex="1">
