@@ -20,11 +20,11 @@ The actions can be grouped by technology:
 
 - [publish-rust-crate](actions/publish-rust-crate/README.md)
 
-- [check-rust-versions](actions/check-rust-versions/README.md)
-
 - [extract-rust-snippets](actions/extract-rust-snippets/README.md)
 
 ## 📦NodeJS package
+
+- [setup-nodejs-context](actions/setup-nodejs-context/README.md)
 
 - [verify-npm-package](actions/verify-npm-package/README.md)
 
@@ -33,8 +33,6 @@ The actions can be grouped by technology:
 - [inject-subpath-exports](actions/inject-subpath-exports/README.md)
 
 - [check-subpath-exports](actions/check-subpath-exports/README.md)
-
-- [setup-nodejs-context](actions/setup-nodejs-context/README.md)
 
 - [parse-npm-scope](actions/parse-npm-scope/README.md)
 
