@@ -108,6 +108,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-publish-npm-package
+        with:
+          fake-npm-token: ${{ secrets.FAKE_NPM_TOKEN }}
 
   test-verify-rust-crate:
     runs-on: ubuntu-24.04

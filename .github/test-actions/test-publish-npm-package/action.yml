@@ -1,5 +1,9 @@
 name: Test publish-npm-package
 
+inputs:
+  fake-npm-token:
+    description: The fake NPM token used for publication
+
 runs:
   using: composite
   steps:
@@ -7,3 +11,4 @@ runs:
       with:
         dry-run: true
         project-directory: tests/npm-package
+        npm-token: ${{ inputs.fake-npm-token }}
