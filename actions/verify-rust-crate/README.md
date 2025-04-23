@@ -37,7 +37,7 @@ steps:
 
 ## ☑️Requirements
 
-- `rust-toolchain.toml` must be present in `project-directory` - as described in [check-rust-versions](../check-rust-versions/README.md)
+- `rust-toolchain.toml` must be present in `project-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
 
 ## 📥Inputs
 
@@ -62,6 +62,6 @@ steps:
 
 - [enforce-branch-version](../enforce-branch-version/README.md)
 
-- [check-rust-versions](../check-rust-versions/README.md)
+- [setup-rust-context](../setup-rust-context/README.md)
 
 - [aurora-github](../../README.md)

@@ -29,39 +29,23 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - name: Validate inputs
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.run-clippy-checks }}" ]]
-        then
-          echo "❌Missing action input: 'run-clippy-checks'!" >&2
-          exit 1
-        fi
+        use aurora-github/input
 
-        if [[ -z "${{ inputs.check-rustdoc }}" ]]
-        then
-          echo "❌Missing action input: 'check-rustdoc'!" >&2
-          exit 1
-        fi
+        input:require run-clippy-checks '${{ inputs.run-clippy-checks }}'
 
-        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
-          exit 1
-        fi
+        input:require check-rustdoc '${{ inputs.check-rustdoc }}'
 
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
+        input:require crash-on-critical-todos '${{ inputs.crash-on-critical-todos }}'
 
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+        input:require source-file-regex '${{ inputs.source-file-regex }}'
+
+        input:require enforce-branch-version '${{ inputs.enforce-branch-version }}'
 
     - name: Check the project license
       uses: giancosta86/aurora-github/actions/check-project-license@v10.3.0
@@ -72,37 +56,21 @@ runs:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
-    - name: Check Rust versions
-      uses: giancosta86/aurora-github/actions/check-rust-versions@v10.3.0
+    - name: Setup Rust context
+      uses: giancosta86/aurora-github/actions/setup-rust-context@v10.3.0
       with:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Check style
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        checkStyle() {
-          checkFormat
+        use aurora-github/input
+        use aurora-github/rust/code
 
-          if [[ "${{ inputs.run-clippy-checks }}" == "true" ]]
-          then
-            runClippyChecks
-          fi
-        }
+        var run-clippy-checks = (input:require-bool run-clippy-checks '${{ inputs.run-clippy-checks }}')
 
-        checkFormat() {
-          echo "🎨Checking source code format..."
-          cargo fmt --check
-          echo "✅Source code format OK!"
-        }
-
-        runClippyChecks() {
-          echo "📎Running clippy checks..."
-          cargo clippy --all-targets --all-features -- -D warnings
-          echo "✅Clippy checks OK!"
-        }
-
-        checkStyle
+        code:check-style $run-clippy-checks
 
     - name: Extract code snippets as tests from README.md
       uses: giancosta86/aurora-github/actions/extract-rust-snippets@v10.3.0
@@ -111,39 +79,15 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Run tests
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        runTests() {
-          runVanillaTests
+        use aurora-github/input
+        use aurora-github/rust/code
 
-          runAllFeaturesTests
+        var check-rustdoc = (input:require-bool check-rustdoc '${{ inputs.check-rustdoc }}')
 
-          if [[ "${{ inputs.check-rustdoc }}" == "true" ]]
-          then
-            runDocTests
-          fi
-        }
-
-        runVanillaTests() {
-          echo "🔬Running tests with no features enabled..."
-          cargo test
-          echo "✅Tests with no features OK!"
-        }
-
-        runAllFeaturesTests() {
-          echo "🔬Running tests with all the features enabled..."
-          cargo test --all-features
-          echo "✅Tests with all the features OK!"
-        }
-
-        runDocTests() {
-          echo "📚Running doctests with all the features enabled..."
-          RUSTDOCFLAGS="-D warnings" cargo doc --all-features
-          echo "✅Doctests with all the features OK!"
-        }
-
-        runTests
+        code:run-tests $check-rustdoc
 
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v10.3.0
@@ -154,5 +98,5 @@ runs:
         root-directory: ${{ inputs.project-directory }}
 
     - name: Print confirmation message
-      shell: bash
-      run: echo "✅Rust crate project verified!"
+      shell: elvish {0}
+      run: echo ✅Rust crate project verified!
