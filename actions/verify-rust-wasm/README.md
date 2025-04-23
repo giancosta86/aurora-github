@@ -28,7 +28,7 @@ steps:
 
 ## ☑️Requirements
 
-- `rust-toolchain.toml` must be present in `project-directory` - as described in [check-rust-versions](../check-rust-versions/README.md)
+- `rust-toolchain.toml` must be present in `project-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
 
 - Please, refer to the documentation of [run-custom-tests](../run-custom-tests/README.md) for details about setting up a suitable structure for `client-tests-directory`.
 
@@ -57,7 +57,7 @@ steps:
 
 - [parse-npm-scope](../parse-npm-scope/README.md)
 
-- [check-rust-versions](../check-rust-versions/README.md)
+- [setup-rust-context](../setup-rust-context/README.md)
 
 - [install-wasm-pack](../install-wasm-pack/README.md)
 
