@@ -1,7 +1,7 @@
 {
   "name": "nodejs-test",
   "scripts": {
-    "verify": "echo 'NodeJS-generated content' > generated-file.txt"
+    "verify": "echo 'TEST OK' > out.txt"
   },
   "private": true,
   "engines": {

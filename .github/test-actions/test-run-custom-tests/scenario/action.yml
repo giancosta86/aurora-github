@@ -1,0 +1,30 @@
+name: Runs a project-specific scenario for enforce-branch-version
+
+inputs:
+  strategy:
+    description: The test strategy
+
+  root-directory:
+    description: The root directory for the tests
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo "🎭Testing via the '${{ inputs.strategy }}' strategy..."
+
+    - uses: ./actions/run-custom-tests
+      with:
+        root-directory: ${{ inputs.root-directory }}
+
+    - name: Ensure the expected output file was actually created
+      shell: bash
+      working-directory: ${{ inputs.root-directory }}
+      run: |
+        if [[ "$(cat out.txt)" == "TEST OK" ]]
+        then
+          echo "✅The tests for the '${{ inputs.strategy }}' strategy completed perfectly!"
+        else
+          echo "❌Issues with the '${{ inputs.strategy }}' test strategy!" >&2
+          exit 1
+        fi

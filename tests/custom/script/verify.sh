@@ -1,1 +1,0 @@
-echo "Bash-generated content" > generated-file.txt

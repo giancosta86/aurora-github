@@ -3,75 +3,32 @@ name: Test run-custom-tests
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭Testing the 'script' strategy..."
-
-    - uses: ./actions/run-custom-tests
+    - uses: ./.github/test-actions/test-run-custom-tests/scenario
       with:
-        root-directory: tests/custom/script
+        strategy: bash
+        root-directory: tests/custom/bash
 
-    - name: The Bash script should have run correctly
-      shell: bash
-      working-directory: tests/custom/script
-      run: |
-        generatedContent="$(cat generated-file.txt)"
-
-        if [[ "$generatedContent" == "Bash-generated content" ]]
-        then
-          echo "✅The Bash test script completed perfectly!"
-        else
-          echo "❌Issues with the Bash test script!" >&2
-          exit 1
-        fi
-
-    - shell: bash
-      run: echo "🎭Testing the 'nodejs' strategy..."
-
-    - uses: ./actions/run-custom-tests
+    - uses: ./.github/test-actions/test-run-custom-tests/scenario
       with:
+        strategy: elvish
+        root-directory: tests/custom/elvish
+
+    - uses: ./.github/test-actions/test-run-custom-tests/scenario
+      with:
+        strategy: nodejs
         root-directory: tests/custom/nodejs
 
-    - name: The NodeJS script should have run correctly
-      shell: bash
-      working-directory: tests/custom/nodejs/
-      run: |
-        generatedContent="$(cat generated-file.txt)"
-
-        if [[ "$generatedContent" == "NodeJS-generated content" ]]
-        then
-          echo "✅The NodeJS test script completed perfectly!"
-        else
-          echo "❌Issues with the NodeJS test script!" >&2
-          exit 1
-        fi
-
-    - shell: bash
-      run: echo "🎭Testing the 'rust' strategy..."
-
-    - uses: ./actions/run-custom-tests
+    - uses: ./.github/test-actions/test-run-custom-tests/scenario
       with:
+        strategy: rust
         root-directory: tests/custom/rust
 
-    - name: The Rust tests should have run correctly
-      shell: bash
-      working-directory: tests/custom/rust/
-      run: |
-        generatedContent="$(cat generated-file.txt)"
-
-        if [[ "$generatedContent" == "Rust-generated content" ]]
-        then
-          echo "✅The Rust test script completed perfectly!"
-        else
-          echo "❌Issues with the Rust test script!" >&2
-          exit 1
-        fi
-
     - shell: bash
-      run: echo "🎭Trying to run tests from inexisting directory..."
+      run: echo "🎭Trying to run tests from an inexistent directory..."
 
     - uses: ./actions/run-custom-tests
       with:
-        root-directory: tests/custom/TOTALLY_INEXISTING
+        root-directory: tests/custom/TOTALLY_INEXISTENT
         optional: true
 
     - shell: bash
