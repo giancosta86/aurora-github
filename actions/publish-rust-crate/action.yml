@@ -28,39 +28,25 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - name: Validate inputs
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.dry-run }}" ]]
-        then
-          echo "❌Missing action input: 'dry-run'!" >&2
-          exit 1
-        fi
+        use aurora-github/input
 
-        if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.cargo-token }}" ]]
-        then
-          echo "❌Missing action input: 'cargo-token'!" >&2
-          exit 1
-        fi
+        var dry-run = (input:require-bool dry-run '${{ inputs.dry-run }}')
 
-        if [[ -z "${{ inputs.document-all-features }}" ]]
-        then
-          echo "❌Missing action input: 'document-all-features'!" >&2
-          exit 1
-        fi
+        if (not $dry-run) {
+          input:require cargo-token '${{ inputs.cargo-token }}'
+        }
 
-        if [[ -z "${{ inputs.website-directory }}" ]]
-        then
-          echo "❌Missing action input: 'website-directory'!" >&2
-          exit 1
-        fi
+        input:require document-all-features '${{ inputs.document-all-features }}'
 
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+        input:require website-directory '${{ inputs.website-directory }}'
+
+        input:require enforce-branch-version '${{ inputs.enforce-branch-version }}'
 
     - name: Enforce branch version
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.3.0
@@ -68,33 +54,19 @@ runs:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
-    - shell: bash
+    - name: Setup Rust context
+      uses: giancosta86/aurora-github/actions/setup-rust-context@v10.3.0
+      with:
+        project-directory: ${{ inputs.project-directory }}
+
+    - name: Document all features
+      if: inputs.document-all-features == 'true'
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        prepareDescriptor() {
-          if [[ "${{ inputs.document-all-features }}" == "true" ]]
-          then
-            enableRustdocForAllFeatures
-          fi
+        use aurora-github/rust/code
 
-          displayDescriptor
-        }
-
-        enableRustdocForAllFeatures() {
-          cat << EOF >> Cargo.toml
-
-        [package.metadata.docs.rs]
-        all-features = true
-        EOF
-        }
-
-        displayDescriptor() {
-          echo "The content of your 🦀Cargo.toml just before publication is:"
-          cat Cargo.toml
-          echo "🦀🦀🦀"
-        }
-
-        prepareDescriptor
+        code:document-all-features
 
     - name: Publish the GitHub Pages website
       uses: giancosta86/aurora-github/actions/publish-github-pages@v10.3.0
@@ -104,21 +76,31 @@ runs:
         dry-run: ${{ inputs.dry-run }}
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
-    - name: Publish the crate
-      shell: bash
+    - name: Print project descriptor
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ "${{ inputs.dry-run }}" == "true" ]]
-        then
-          dryRunArg="--dry-run"
-        else
-          dryRunArg=""
-        fi
+        use aurora-github/console
 
-        cargo publish --all-features --allow-dirty $dryRunArg
+        console:section &emoji=🦀 'Cargo.toml just before publication' {
+          cat Cargo.toml
+        }
+
+    - name: Publish the crate
+      shell: elvish {0}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        use aurora-github/input
+        use aurora-github/lang
+
+        var dry-run = (input:require-bool dry-run '${{ inputs.dry-run }}')
+
+        var dry-run-arg = (lang:ternary $dry-run [--dry-run] [])
+
+        cargo publish --all-features --allow-dirty $@dry-run-arg
       env:
         CARGO_REGISTRY_TOKEN: ${{ inputs.cargo-token }}
 
     - name: Print confirmation message
-      shell: bash
-      run: echo "✅The 🦀Rust crate was published successfully!"
+      shell: elvish {0}
+      run: echo ✅🦀Rust crate publication step successful!

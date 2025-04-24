@@ -19,15 +19,21 @@ steps:
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
+1. Run [setup-rust-context](../setup-rust-context/README.md) to setup a Rust toolchain.
+
 1. Prepare the descriptor - for example, enabling documentation for all the features
 
 1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled
+
+1. Display **Cargo.toml** just before publication
 
 1. Run `cargo publish`, with the `--all-features` flag
 
 ## ☑️Requirements
 
 - `cargo-token` is _not_ mandatory when `dry-run` is enabled.
+
+- `rust-toolchain.toml` must be present in `project-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
 
 - The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
 
@@ -49,6 +55,8 @@ steps:
 - [publish-github-pages](../publish-github-pages/README.md)
 
 - [enforce-branch-version](../enforce-branch-version/README.md)
+
+- [setup-rust-context](../setup-rust-context/README.md)
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 
