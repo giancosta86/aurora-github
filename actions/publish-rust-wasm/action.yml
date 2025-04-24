@@ -40,57 +40,32 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - name: Validate inputs
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.dry-run }}" ]]
-        then
-          echo "❌Missing action input: 'dry-run'!" >&2
-          exit 1
-        fi
+        use os
+        use aurora-github/input
 
-        if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.npm-token }}" ]]
-        then
-          echo "❌Missing action input: 'npm-token'!" >&2
-          exit 1
-        fi
+        var dry-run = (input:require-bool dry-run '${{ inputs.dry-run }}')
 
-        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
-        then
-          echo "❌Missing action input: 'wasm-pack-version'!" >&2
-          exit 1
-        fi
+        if (not $dry-run) {
+          input:require npm-token '${{ inputs.npm-token }}'
+        }
 
-        if [[ -z "${{ inputs.npm-scope }}" ]]
-        then
-          echo "❌Missing action input: 'npm-scope'!" >&2
-          exit 1
-        fi
+        input:require wasm-pack-version '${{ inputs.wasm-pack-version }}'
 
-        if [[ -z "${{ inputs.nodejs-version }}" ]]
-        then
-          echo "❌Missing action input: 'nodejs-version'!" >&2
-          exit 1
-        fi
+        input:require npm-scope '${{ inputs.npm-scope }}'
 
-        if [[ -z "${{ inputs.wasm-target }}" ]]
-        then
-          echo "❌Missing action input: 'wasm-target'!" >&2
-          exit 1
-        fi
+        input:require nodejs-version '${{ inputs.nodejs-version }}'
 
-        if [[ -z "${{ inputs.website-directory }}" ]]
-        then
-          echo "❌Missing action input: 'website-directory'!" >&2
-          exit 1
-        fi
+        input:require wasm-target '${{ inputs.wasm-target }}'
 
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+        input:require website-directory '${{ inputs.website-directory }}'
+
+        input:require enforce-branch-version '${{ inputs.enforce-branch-version }}'
 
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/actions/install-wasm-pack@v10.3.0
@@ -109,19 +84,18 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Try to copy .npmrc from the project directory
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -f ".npmrc" ]]
-        then
-          echo "🎉.npmrc configuration file found! Copying it to the package directory..."
+        use os
 
+        if (os:is-regular .npmrc) {
+          echo 🎉Root .npmrc configuration file found! Copying it to the package directory...
           cp .npmrc pkg/
-
-          echo "✅.npmrc file copied!"
-        else
-          echo "💭No .npmrc configuration file found in the project directory..."
-        fi
+          echo ✅.npmrc file copied!
+        } else {
+          echo 💭No .npmrc configuration file found in the project directory...
+        }
 
     - name: Publish the GitHub Pages website
       uses: giancosta86/aurora-github/actions/publish-github-pages@v10.3.0
@@ -138,3 +112,7 @@ runs:
         npm-token: ${{ inputs.npm-token }}
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}/pkg
+
+    - name: Print confirmation message
+      shell: elvish {0}
+      run: echo ✅🦀🌐Rust web assembly publication step successful!
