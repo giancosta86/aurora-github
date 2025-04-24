@@ -3,7 +3,7 @@ description: Publishes a Rust web assembly to an npm registry.
 
 inputs:
   dry-run:
-    description: Run a simulated publication via --dry-run.
+    description: Run a simulated publication via `--dry-run`.
     default: false
 
   npm-token:
@@ -13,16 +13,16 @@ inputs:
     description: The wasm-pack version to install.
 
   npm-scope:
-    description: The npm package scope or "<ROOT>".
+    description: The npm package scope or `<ROOT>`.
 
   nodejs-version:
-    description: The "engines / node" version within package.json.
+    description: The `engines -> node` version within `package.json`.
 
   pnpm-version:
-    description: The "packageManager" reference to pnpm within package.json.
+    description: The `packageManager` reference to pnpm within `package.json`.
 
   wasm-target:
-    description: The target of the 'wasm-pack build' command.
+    description: The target of the `wasm-pack build` command.
     default: web
 
   website-directory:
@@ -34,63 +34,13 @@ inputs:
     default: inject
 
   project-directory:
-    description: The directory containing Cargo.toml.
+    description: The directory containing `Cargo.toml`.
     default: .
 
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -z "${{ inputs.dry-run }}" ]]
-        then
-          echo "❌Missing action input: 'dry-run'!" >&2
-          exit 1
-        fi
-
-        if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.npm-token }}" ]]
-        then
-          echo "❌Missing action input: 'npm-token'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
-        then
-          echo "❌Missing action input: 'wasm-pack-version'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.npm-scope }}" ]]
-        then
-          echo "❌Missing action input: 'npm-scope'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.nodejs-version }}" ]]
-        then
-          echo "❌Missing action input: 'nodejs-version'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.wasm-target }}" ]]
-        then
-          echo "❌Missing action input: 'wasm-target'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.website-directory }}" ]]
-        then
-          echo "❌Missing action input: 'website-directory'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
 
     - name: Install wasm-pack
       uses: giancosta86/aurora-github/actions/install-wasm-pack@v10.3.0
@@ -109,19 +59,12 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Try to copy .npmrc from the project directory
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -f ".npmrc" ]]
-        then
-          echo "🎉.npmrc configuration file found! Copying it to the package directory..."
+        use aurora-github/rust/wasm
 
-          cp .npmrc pkg/
-
-          echo "✅.npmrc file copied!"
-        else
-          echo "💭No .npmrc configuration file found in the project directory..."
-        fi
+        wasm:copy-npmrc-from-project-directory
 
     - name: Publish the GitHub Pages website
       uses: giancosta86/aurora-github/actions/publish-github-pages@v10.3.0
@@ -138,3 +81,10 @@ runs:
         npm-token: ${{ inputs.npm-token }}
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}/pkg
+
+    - name: Print confirmation message
+      shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-elvish/console
+
+        console:echo ✅🦀🌐 Rust web assembly publication action successful!
