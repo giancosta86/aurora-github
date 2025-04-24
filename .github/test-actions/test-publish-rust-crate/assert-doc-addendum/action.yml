@@ -1,0 +1,22 @@
+name: Assert that the documentation addendum appears a given number of times in Cargo.toml
+
+inputs:
+  expected-count:
+    description: How many times the documentation addendum should appear in Cargo.toml.
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      working-directory: tests/rust-crate
+      run: |
+        expectedCount="${{ inputs.expected-count }}"
+        actualCount="$(grep -c '\[package.metadata.docs.rs\]' Cargo.toml || true)"
+
+        if [[ "$actualCount" == $expectedCount ]]
+        then
+          echo "✅ Instances of the documentation addendum: $actualCount - as expected!"
+        else
+          echo "❌ Instances of the documentation addendum: $actualCount. Expected: $expectedCount"
+          exit 1
+        fi

@@ -1,0 +1,54 @@
+name: Runs a scenario for publish-rust-crate
+
+inputs:
+  header:
+    description: The header for this test.
+
+  pre-existing-addendum:
+    description: Whether the documentation addendum should exist before running the action.
+
+  document-all-features:
+    description: Forwarded to the action.
+
+  should-contain-addendum:
+    description: Whether Cargo.toml should contain the documentation addendum.
+
+runs:
+  using: composite
+  steps:
+    - name: Display the header
+      shell: bash
+      run: echo "🎭 ${{ inputs.header }}"
+
+    - name: Restore Cargo.toml
+      shell: bash
+      working-directory: tests/rust-crate
+      run: cp Cargo.toml.bak Cargo.toml
+
+    - name: Manually add the documentation addendum
+      if: inputs.pre-existing-addendum == 'true'
+      shell: bash
+      working-directory: tests/rust-crate
+      run: |
+        echo >> Cargo.toml
+        echo '# Manually added' >> Cargo.toml
+        echo '[package.metadata.docs.rs]' >> Cargo.toml
+        echo 'all-features = true' >> Cargo.toml
+
+    - uses: ./actions/publish-rust-crate
+      with:
+        dry-run: true
+        document-all-features: ${{ inputs.document-all-features }}
+        project-directory: tests/rust-crate
+
+    - name: Verify that Cargo.toml actually includes the documentation addendum
+      uses: ./.github/test-actions/test-publish-rust-crate/assert-doc-addendum
+      if: inputs.should-contain-addendum == 'true'
+      with:
+        expected-count: 1
+
+    - name: Verify that Cargo.toml does not include the documentation addendum
+      uses: ./.github/test-actions/test-publish-rust-crate/assert-doc-addendum
+      if: inputs.should-contain-addendum != 'true'
+      with:
+        expected-count: 0

@@ -3,7 +3,28 @@ name: Test publish-rust-crate
 runs:
   using: composite
   steps:
-    - uses: ./actions/publish-rust-crate
+    - name: Backup Cargo.toml
+      shell: bash
+      working-directory: tests/rust-crate
+      run: cp Cargo.toml Cargo.toml.bak
+
+    - uses: ./.github/test-actions/test-publish-rust-crate/scenario
       with:
-        dry-run: true
-        project-directory: tests/rust-crate
+        header: Testing publication with no initial addendum - and injection disabled
+        pre-existing-addendum: false
+        document-all-features: false
+        should-contain-addendum: false
+
+    - uses: ./.github/test-actions/test-publish-rust-crate/scenario
+      with:
+        header: Testing publication with no initial addendum - and injection enabled
+        pre-existing-addendum: false
+        document-all-features: true
+        should-contain-addendum: true
+
+    - uses: ./.github/test-actions/test-publish-rust-crate/scenario
+      with:
+        header: Testing publication with initial addendum - and injection enabled
+        pre-existing-addendum: true
+        document-all-features: true
+        should-contain-addendum: true

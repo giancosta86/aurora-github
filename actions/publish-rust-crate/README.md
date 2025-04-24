@@ -2,7 +2,7 @@
 
 Publishes a **Rust** crate - by default, to [crates.io](https://crates.io/) - with all of its features enabled.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -15,25 +15,31 @@ steps:
 
 **Please, note**: this action is designed for _publication_ only - not for _verification_: you may want to use [verify-rust-crate](../verify-rust-crate/README.md) for that.
 
-## 💡How it works
+## 💡 How it works
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
-1. Prepare the descriptor - for example, enabling documentation for all the features
+1. Run [setup-rust-context](../setup-rust-context/README.md) to setup a Rust toolchain.
 
-1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled
+1. If the `document-all-features` input is **true**, enable documentation for all the features - but only if the `[package.metadata.docs.rs]` header is not already in the descriptor. For details, please consult [this link](https://docs.rs/about/metadata).
 
-1. Run `cargo publish`, with the `--all-features` flag
+1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled.
 
-## ☑️Requirements
+1. Display **Cargo.toml** just before publication.
+
+1. Run `cargo publish`, with the `--all-features` flag.
+
+## ☑️ Requirements
 
 - `cargo-token` is _not_ mandatory when `dry-run` is enabled.
+
+- `rust-toolchain.toml` must be present in `project-directory` - as described in [setup-rust-context](../setup-rust-context/README.md).
 
 - The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
-## 📥Inputs
+## 📥 Inputs
 
 |           Name           |          Type           |                            Description                            | Default value |
 | :----------------------: | :---------------------: | :---------------------------------------------------------------: | :-----------: |
@@ -44,11 +50,13 @@ steps:
 | `enforce-branch-version` | `inject`,`check`,`skip` |             How the branch version should be enforced             |  **inject**   |
 |   `project-directory`    |       **string**        |               The directory containing `Cargo.toml`               |     **.**     |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [publish-github-pages](../publish-github-pages/README.md)
 
 - [enforce-branch-version](../enforce-branch-version/README.md)
+
+- [setup-rust-context](../setup-rust-context/README.md)
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 
