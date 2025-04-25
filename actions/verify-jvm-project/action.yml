@@ -31,53 +31,34 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - name: Validate inputs
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.quiet-tool }}" ]]
-        then
-          echo "❌Missing action input: 'quiet-tool'!" >&2
-          exit 1
-        fi
+        use aurora-github/input
 
-        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
-          exit 1
-        fi
+        input:require quiet-tool '${{ inputs.quiet-tool }}'
 
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
+        input:require crash-on-critical-todos '${{ inputs.crash-on-critical-todos }}'
 
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+        input:require source-file-regex '${{ inputs.source-file-regex }}'
+
+        input:require enforce-branch-version '${{ inputs.enforce-branch-version }}'
 
     - name: Check the project license
       uses: giancosta86/aurora-github/actions/check-project-license@v10.3.0
 
-    - name: Setup Python context
-      shell: bash
-      run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
-
-        echo "INPUT_PROJECT_DIRECTORY=${{ inputs.project-directory }}" >> $GITHUB_ENV
-
     - name: Detect the build tool
-      shell: python
+      shell: elvish {0}
       run: |
-        from core.jvm import get_jvm_build_tool, Inputs
+        use aurora-github/env
+        use aurora-github/jvm/project
 
-        inputs = Inputs.from_env()
+        var build-tool = (project:detect '${{ inputs.project-directory }}')[build-tool]
 
-        get_jvm_build_tool(inputs).write_to_github_env()
+        env:write buildTool $build-tool
 
     - name: Enforce branch version
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.3.0
@@ -108,39 +89,31 @@ runs:
 
     - name: Run Maven
       if: env.buildTool == 'mvn'
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ "${{ inputs.quiet-tool }}" == "true" ]]
-        then
-          quietToolArg="-q"
-        else
-          quietToolArg=""
-        fi
+        use aurora-github/input
+        use aurora-github/jvm/maven
 
-        echo "🪶Running Maven to verify the project..."
+        var quiet = (input:require-bool quiet-tool '${{ inputs.quiet-tool }}')
 
-        mvn -B $quietToolArg verify
+        echo 🪶Running Maven to verify the project...
 
-        echo "✅Verification successful!"
+        maven:run &quiet=$quiet verify
 
     - name: Run Gradle
       if: env.buildTool == 'gradle'
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ "${{ inputs.quiet-tool }}" == "true" ]]
-        then
-          quietToolArg="-q"
-        else
-          quietToolArg=""
-        fi
+        use aurora-github/input
+        use aurora-github/jvm/gradle
 
-        echo "🐘Running Gradle to verify the project..."
+        var quiet = (input:require-bool quiet-tool '${{ inputs.quiet-tool }}')
 
-        gradle --no-daemon --no-scan $quietToolArg build
+        echo 🐘Running Gradle to verify the project...
 
-        echo "✅Verification successful!"
+        gradle:run &quiet=$quiet build
 
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v10.3.0
@@ -151,5 +124,5 @@ runs:
         root-directory: ${{ inputs.project-directory }}
 
     - name: Print confirmation message
-      shell: bash
-      run: echo "✅JVM project verified!"
+      shell: elvish {0}
+      run: echo ✅JVM project verified!
