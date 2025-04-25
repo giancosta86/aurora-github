@@ -24,27 +24,19 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - name: Validate inputs
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
-          exit 1
-        fi
+        use aurora-github/input
 
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
+        input:require crash-on-critical-todos '${{ inputs.crash-on-critical-todos }}'
 
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+        input:require source-file-regex '${{ inputs.source-file-regex }}'
+
+        input:require enforce-branch-version '${{ inputs.enforce-branch-version }}'
 
     - name: Check the project license
       uses: giancosta86/aurora-github/actions/check-project-license@v10.3.0
@@ -56,28 +48,31 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Ensure pdm
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        source "${{ github.action_path }}/../../core/bash/pdm.sh"
+        use aurora-github/input
+        use aurora-github/python/pdm
 
-        ensurePdm
+        var pdm-version = (input:optional '${{ inputs.pdm-version }}')
+
+        pdm:ensure-version &version=$pdm-version
 
     - name: Verify the project
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "🔬Verifying the project..."
+        echo 🔬Verifying the project...
         pdm run verify
-        echo "✅Project verified!"
+        echo ✅Project verified!
 
     - name: Build the project
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        echo "📦Building the project..."
+        echo 📦Building the project...
         pdm build
-        echo "✅Project built successfully!"
+        echo ✅Project built successfully!
 
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v10.3.0
@@ -88,5 +83,5 @@ runs:
         root-directory: ${{ inputs.project-directory }}
 
     - name: Print confirmation message
-      shell: bash
-      run: echo "✅Python project verified!"
+      shell: elvish {0}
+      run: echo ✅Python project verified!
