@@ -2,7 +2,7 @@
 
 Verifies the source files of a **Python** package using [PDM](https://pdm-project.org).
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -11,7 +11,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/verify-python-package@v10
 ```
 
-## 💡How it works
+## 💡 How it works
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
 
@@ -25,13 +25,13 @@ steps:
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
-## ☑️Requirements
+## ☑️ Requirements
 
 - `pipx` is mandatory when PDM has to be installed.
 
 - the **verify** script must be declared within **pyproject.toml**.
 
-## 📥Inputs
+## 📥 Inputs
 
 |           Name            |          Type           |                  Description                   |       Default value       |
 | :-----------------------: | :---------------------: | :--------------------------------------------: | :-----------------------: |
@@ -41,7 +41,7 @@ steps:
 | `enforce-branch-version`  | `inject`,`check`,`skip` |   How the branch version should be enforced    |        **inject**         |
 |    `project-directory`    |       **string**        |  The directory containing **pyproject.toml**   |           **.**           |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
 

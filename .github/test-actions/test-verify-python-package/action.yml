@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: echo "🎭Verifying 🐍Python library..."
+      run: echo "🎭 Verifying 🐍 Python library..."
 
     - uses: ./actions/verify-python-package
       with:

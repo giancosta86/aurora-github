@@ -15,4 +15,4 @@ build-backend = "hatchling.build"
 distribution = true
 
 [tool.pdm.scripts]
-verify = "echo '✅Simulating passing tests!'"
+verify = "echo '🐍📃 pyproject.toml `verify` script!'"
