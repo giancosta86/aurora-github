@@ -2,7 +2,7 @@
 
 Publishes a **Python** package using [PDM](https://pdm-project.org).
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -16,7 +16,7 @@ steps:
 
 **Please, note**: this action is designed for _publication_ only - not for _verification_: you may want to use [verify-python-package](../verify-python-package/README.md) for that.
 
-## 💡How it works
+## 💡 How it works
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
@@ -26,7 +26,7 @@ steps:
 
 1. Run `pdm publish`, passing the `index-` inputs as environment variables; if `dry-run` is enabled, just perform a `pdm build`, skipping actual deployment.
 
-## ☑️Requirements
+## ☑️ Requirements
 
 - `pipx` is mandatory when PDM has to be installed.
 
@@ -34,7 +34,7 @@ steps:
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
-## 📥Inputs
+## 📥 Inputs
 
 |           Name           |          Type           |                    Description                    | Default value |
 | :----------------------: | :---------------------: | :-----------------------------------------------: | :-----------: |
@@ -47,7 +47,7 @@ steps:
 | `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |  **inject**   |
 |   `project-directory`    |       **string**        |     The directory containing `pyproject.toml`     |     **.**     |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [publish-github-pages](../publish-github-pages/README.md)
 

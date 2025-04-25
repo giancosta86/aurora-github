@@ -2,7 +2,7 @@ name: Test publish-python-package
 
 inputs:
   index-secret:
-    description: The password/token for publishing to the index
+    description: The password/token for publishing to the index.
 
 runs:
   using: composite
