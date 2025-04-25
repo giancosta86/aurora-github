@@ -18,7 +18,7 @@ inputs:
 
   source-file-regex:
     description: PCRE pattern describing the source files.
-    default: '^\.\/src\/.+\.(java|kt|scala|groovy)$'
+    default: '^src\/.+\.(java|kt|scala|groovy)$'
 
   enforce-branch-version:
     description: How the branch version should be enforced.
@@ -31,53 +31,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -z "${{ inputs.quiet-tool }}" ]]
-        then
-          echo "❌Missing action input: 'quiet-tool'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
 
     - name: Check the project license
       uses: giancosta86/aurora-github/actions/check-project-license@v10.3.0
-
-    - name: Setup Python context
-      shell: bash
-      run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
-
-        echo "INPUT_PROJECT_DIRECTORY=${{ inputs.project-directory }}" >> $GITHUB_ENV
-
-    - name: Detect the build tool
-      shell: python
-      run: |
-        from core.jvm import get_jvm_build_tool, Inputs
-
-        inputs = Inputs.from_env()
-
-        get_jvm_build_tool(inputs).write_to_github_env()
 
     - name: Enforce branch version
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.3.0
@@ -85,62 +42,29 @@ runs:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
-    - name: Install Java
-      if: inputs.java-version != ''
-      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.3.0
-      with:
-        candidate: java
-        version: ${{ inputs.java-version }}
-
-    - name: Install Maven
-      if: env.buildTool == 'mvn' && inputs.tool-version != ''
-      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.3.0
-      with:
-        candidate: maven
-        version: ${{ inputs.tool-version }}
-
-    - name: Install Gradle
-      if: env.buildTool == 'gradle' && inputs.tool-version != ''
-      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.3.0
-      with:
-        candidate: gradle
-        version: ${{ inputs.tool-version }}
-
-    - name: Run Maven
-      if: env.buildTool == 'mvn'
-      shell: bash
+    - name: Setup JVM context
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ "${{ inputs.quiet-tool }}" == "true" ]]
-        then
-          quietToolArg="-q"
-        else
-          quietToolArg=""
-        fi
+        use aurora-github/ci-cd/input
+        use aurora-github/ci-cd/env
+        use aurora-github/jvm/context
 
-        echo "🪶Running Maven to verify the project..."
+        env:map (context:setup ^
+          &java-version=(input:string &optional java-version '${{ inputs.java-version }}') ^
+          &tool-version=(input:string &optional tool-version '${{ inputs.tool-version }}') ^
+        )
 
-        mvn -B $quietToolArg verify
-
-        echo "✅Verification successful!"
-
-    - name: Run Gradle
-      if: env.buildTool == 'gradle'
-      shell: bash
+    - name: Verify project
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ "${{ inputs.quiet-tool }}" == "true" ]]
-        then
-          quietToolArg="-q"
-        else
-          quietToolArg=""
-        fi
+        use aurora-github/ci-cd/input
+        use aurora-github/jvm/project/verification
 
-        echo "🐘Running Gradle to verify the project..."
+        var quiet-tool = (input:bool quiet-tool '${{ inputs.quiet-tool }}')
 
-        gradle --no-daemon --no-scan $quietToolArg build
-
-        echo "✅Verification successful!"
+        verification:verify &quiet-tool=$quiet-tool (get-env buildTool)
 
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v10.3.0
@@ -151,5 +75,8 @@ runs:
         root-directory: ${{ inputs.project-directory }}
 
     - name: Print confirmation message
-      shell: bash
-      run: echo "✅JVM project verified!"
+      shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-elvish/console
+
+        console:echo ✅☕ JVM project verified!

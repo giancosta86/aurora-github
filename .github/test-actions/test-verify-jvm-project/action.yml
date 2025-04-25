@@ -4,23 +4,24 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: echo "🎭Displaying JVM versions..."
+      run: echo "🎭 Displaying JVM versions..."
 
     - shell: bash
       run: |
-        echo "☕Java version: $(java --version | head -n 1)"
+        echo "☕ Java version: $(java --version | head -n 1)"
 
-        echo "🪶Maven version: $(mvn --version | head -n 1)"
+        echo "🪶 Maven version: $(mvn --version | head -n 1)"
 
-        echo "🐘Gradle version: $(gradle --version | grep -P '^Gradle \d+\.\d+(\.\d+)?$' | head -n 1 | cut -d ' ' -f 2)"
+        echo "🐘 Gradle version: $(gradle --version | grep -P '^Gradle \d+\.\d+(\.\d+)?$' | head -n 1 | cut -d ' ' -f 2)"
 
     - uses: ./actions/detect-branch-version
       id: version-detector
 
     - shell: bash
-      run: echo "🎭Build and verify the Maven project..."
+      run: echo "🎭 Build and verify the Maven project..."
 
-    - uses: ./actions/verify-jvm-project
+    - name: Build and verify the Maven project
+      uses: ./actions/verify-jvm-project
       with:
         project-directory: tests/maven-project
 
@@ -32,18 +33,18 @@ runs:
 
         programOutput="$(java -jar target/maven-project-$version.jar)"
 
-        echo "🔎Maven program output: '$programOutput'"
+        echo "🔎 Maven program output: '$programOutput'"
 
         if [[ "$programOutput" == "Hello, world - from Kotlin and Maven! 🥳" ]]
         then
-          echo "🪶Maven project verified and run successfully!"
+          echo "🪶 Maven project verified and run successfully!"
         else
-          echo "❌Unexpected program output!" >&2
+          echo "❌ Unexpected program output!" >&2
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Build and verify the Gradle project..."
+      run: echo "🎭 Build and verify the Gradle project..."
 
     - name: Build and verify the Gradle project
       uses: ./actions/verify-jvm-project
@@ -58,12 +59,12 @@ runs:
 
         programOutput="$(java -jar build/libs/gradle-project-$version.jar)"
 
-        echo "🔎Gradle program output: '$programOutput'"
+        echo "🔎 Gradle program output: '$programOutput'"
 
         if [[ "$programOutput" == "Hello, world - from Kotlin and Gradle! 🥳" ]]
         then
-          echo "🐘Gradle project verified and run successfully!"
+          echo "🐘 Gradle project verified and run successfully!"
         else
-          echo "❌Unexpected program output!" >&2
+          echo "❌ Unexpected program output!" >&2
           exit 1
         fi

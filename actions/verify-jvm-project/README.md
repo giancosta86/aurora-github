@@ -2,7 +2,7 @@
 
 Verifies the source files of a project for the **Java Virtual Machine** - using **Maven** or **Gradle**.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -11,7 +11,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/verify-jvm-project@v10
 ```
 
-## 💡How it works
+## 💡 How it works
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
 
@@ -37,11 +37,11 @@ steps:
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
-## ☑️Requirements
+## ☑️ Requirements
 
 - The `mvn` or `gradle` command must be available, depending on the descriptor within the project directory - which also implies that a suitable **Java** environment is installed; by passing `java-version` and `tool-version`, you can enforce specific required versions instead of the default ones provided by the selected GitHub Actions runner.
 
-## 📥Inputs
+## 📥 Inputs
 
 |           Name            |          Type           |                   Description                   |       Default value       |
 | :-----------------------: | :---------------------: | :---------------------------------------------: | :-----------------------: |
@@ -53,7 +53,7 @@ steps:
 | `enforce-branch-version`  | `inject`,`check`,`skip` |    How the branch version should be enforced    |        **inject**         |
 |    `project-directory`    |       **string**        | The directory containing the project descriptor |           **.**           |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
 
