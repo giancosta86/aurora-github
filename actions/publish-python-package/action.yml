@@ -33,27 +33,23 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+
     - name: Validate inputs
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ -z "${{ inputs.dry-run }}" ]]
-        then
-          echo "❌Missing action input: 'dry-run'!" >&2
-          exit 1
-        fi
+        use aurora-github/input
 
-        if [[ -z "${{ inputs.website-directory }}" ]]
-        then
-          echo "❌Missing action input: 'website-directory'!" >&2
-          exit 1
-        fi
+        var dry-run = (input:require-bool dry-run '${{ inputs.dry-run }}')
 
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
+        if $dry-run {
+          input:require index-url '${{ inputs.index-url }}'
+        }
+
+        input:require website-directory '${{ inputs.website-directory }}'
+
+        input:require enforce-branch-version '${{ inputs.enforce-branch-version }}'
 
     - name: Enforce branch version
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.3.0
@@ -62,12 +58,15 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Ensure pdm
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        source "${{ github.action_path }}/../../core/bash/pdm.sh"
+        use aurora-github/input
+        use aurora-github/python/pdm
 
-        ensurePdm
+        var pdm-version = (input:optional '${{ inputs.pdm-version }}')
+
+        pdm:ensure-version &version=$pdm-version
 
     - name: Publish the GitHub Pages website
       uses: giancosta86/aurora-github/actions/publish-github-pages@v10.3.0
@@ -78,22 +77,25 @@ runs:
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
     - name: Publish the package
-      shell: bash
+      shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        if [[ "${{ inputs.dry-run }}" == "true" ]]
-        then
-          echo "💭dry-run is enabled: just building the 🐍Python project..."
+        use aurora-github/input
+
+        var dry-run = (input:require-bool dry-run '${{ inputs.dry-run }}')
+
+        if $dry-run {
+          echo 💭dry-run is enabled: just building the 🐍Python project...
           pdm build
-        else
+        } else {
           echo "📤Publishing the 🐍Python project..."
-          pdm publish $dryRunArg
-        fi
+          pdm publish
+        }
       env:
         PDM_PUBLISH_REPO: ${{ inputs.index-url }}
         PDM_PUBLISH_USERNAME: ${{ inputs.index-user }}
         PDM_PUBLISH_PASSWORD: ${{ inputs.index-secret }}
 
     - name: Print confirmation message
-      shell: bash
-      run: echo "✅The 🐍Python project was published successfully!"
+      shell: elvish {0}
+      run: echo ✅🐍Python publication step successful!
