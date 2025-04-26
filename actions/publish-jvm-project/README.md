@@ -2,7 +2,7 @@
 
 Publishes a project for the **Java Virtual Machine** - using **Maven** or **Gradle**.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -14,7 +14,7 @@ steps:
       auth-token: ${{ secrets.SERVER_TOKEN }}
 ```
 
-## 💡How it works
+## 💡 How it works
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
@@ -52,7 +52,7 @@ steps:
 
      - **JVM_AUTH_TOKEN** - with the value of `auth-token`
 
-## ☑️Requirements
+## ☑️ Requirements
 
 - The `mvn` or `gradle` command must be available, depending on the descriptor within the project directory - which also implies that a suitable **Java** environment is installed; by passing `java-version` and `tool-version`, you can enforce specific required versions instead of the default ones provided by the selected GitHub Actions runner.
 
@@ -99,7 +99,7 @@ steps:
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
-## 📥Inputs
+## 📥 Inputs
 
 |           Name           |          Type           |                    Description                    | Default value |
 | :----------------------: | :---------------------: | :-----------------------------------------------: | :-----------: |
@@ -113,7 +113,7 @@ steps:
 | `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |  **inject**   |
 |   `project-directory`    |       **string**        |  The directory containing the project descriptor  |     **.**     |
 
-## 🌐Further references
+## 🌐 Further references
 
 - [publish-github-pages](../publish-github-pages/README.md)
 
