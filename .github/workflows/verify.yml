@@ -12,13 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-setup-elvish-context
+        with:
+          skip-if-existing: false
 
   test-setup-elvish-context-in-subsequent-job:
     runs-on: ubuntu-24.04
     needs: test-setup-elvish-context
     steps:
       - uses: actions/checkout@v4
-      - uses: ./actions/setup-elvish-context
+      - uses: ./.github/test-actions/test-setup-elvish-context
+        with:
+          skip-if-existing: true
 
   test-detect-branch-version:
     runs-on: ubuntu-24.04
