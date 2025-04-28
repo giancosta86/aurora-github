@@ -1,36 +1,50 @@
 use epm
 use str
-use ./core
+use ./console
+use ./env
+use ./seq
+use ./sha
+use ./trace
 
 fn setup-env-vars { |inputs|
-  echo 🔎EPM managed directory: "'"$epm:managed-dir"'"
+  console:inspect-inputs $inputs
 
-  var comma-separated-packages = (core:string-list-to-csv $inputs[packages])
-  echo 🔎Comma-separated packages: "'"$comma-separated-packages"'"
+  var workflow = $inputs[workflow]
+  var run-number = $inputs[run-number]
+  var packages = $inputs[packages]
 
-  var packages-sha = (core:to-sha $comma-separated-packages)
-  echo 🔎Packages SHA: $packages-sha
+  var csv-packages = (seq:to-csv $packages)
+  trace:inspect 'Comma-separated packages' $csv-packages
 
-  var epm-cache-key = $inputs[workflow]-$inputs[run-number]-$packages-sha
-  echo 🔎Epm cache key: "'"$epm-cache-key"'"
+  var packages-sha = (sha:compute256 $csv-packages)
+  trace:inspect 'Packages SHA' $packages-sha
 
-  core:write-env epm-dir $epm:managed-dir
-  core:write-env comma-separated-packages $comma-separated-packages
-  core:write-env epm-cache-key $epm-cache-key
+  var epm-cache-key = $workflow'-'$run-number'-'$packages-sha
+  trace:inspect 'EPM cache key' $epm-cache-key
+
+  trace:inspect 'EPM managed directory' $epm:managed-dir
+
+  env:map [
+    &csv-packages=$csv-packages
+    &epm-cache-key=$epm-cache-key
+    &epm-managed-dir=$epm:managed-dir
+  ]
 }
 
-fn install { |comma-separated-packages|
-  str:split , $comma-separated-packages | each { |pkg|
-    epm:install $pkg
+fn install { |packages|
+  console:inspect &emoji=📚 'Packages to install' $packages
+
+  for package $packages {
+    epm:install $package
   }
 
   echo 🚀Startup packages for Elvish installed!
 }
 
 fn list {
-  echo 📚Elvish startup packages:
-  epm:installed | each { |pkg|
-    echo '*' $pkg
+  console:section &emoji=📚 'Elvish startup packages' {
+    epm:installed | each { |pkg|
+      echo '*' $pkg
+    }
   }
-  echo 📚📚📚
 }
