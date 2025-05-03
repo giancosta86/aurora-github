@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
     - shell: bash
-      run: echo "🎭Testing the creation of a 'draft' release in dry-run, without notes processor..."
+      run: echo "🎭 Testing the creation of a 'draft' release in dry-run, without notes processor..."
 
     - name: Draft a release
       id: draft-release-without-major
@@ -19,18 +19,18 @@ runs:
       shell: bash
       run: |
         majorTag="${{ steps.draft-release-without-major.outputs.major-tag }}"
-        echo "🔎Major tag: '$majorTag'"
+        echo "🔎 Major tag: '$majorTag'"
 
         if [[ -z "$majorTag" ]]
         then
-          echo "✅The major tag is empty, as expected, because it was not requested!"
+          echo "✅ The major tag is empty, as expected, because it was not requested!"
         else
-          echo "❌The major tag should be empty when not requested!" >&2
+          echo "❌ The major tag should be empty when not requested!" >&2
           exit 1
         fi
 
     - shell: bash
-      run: echo "🎭Testing the creation of a release in dry-run, with notes processor..."
+      run: echo "🎭 Testing the creation of a release in dry-run, with notes processor..."
 
     - name: Publish a release
       id: publish-release
@@ -39,7 +39,7 @@ runs:
         dry-run: true
         draft-release: false
         set-major-tag: true
-        notes-file-processor: .github/process-release-notes.sh
+        notes-file-processor: .github/process-release-notes
         git-strategy: rebase
 
     - uses: ./actions/detect-branch-version
@@ -49,32 +49,32 @@ runs:
       shell: bash
       run: |
         branchVersion="${{ steps.version-detector.outputs.version }}"
-        echo "🔎Branch version: '$branchVersion'"
+        echo "🔎 Branch version: '$branchVersion'"
 
         releaseTag="${{ steps.publish-release.outputs.release-tag }}"
-        echo "🔎Release tag: '$releaseTag'"
+        echo "🔎 Release tag: '$releaseTag'"
 
         if [[ "$releaseTag" == "v$branchVersion" ]]
         then
-          echo "✅The release tag derives from the current branch version!"
+          echo "✅ The release tag derives from the current branch version!"
         else
-          echo "❌The release tag does not derive from the current branch version!" >&2
+          echo "❌ The release tag does not derive from the current branch version!" >&2
           exit 1
         fi
 
-    - name: Verify the major tag is correct when it was requested
+    - name: Verify the major tag is correct, as it was requested
       shell: bash
       run: |
         majorVersion="${{ steps.version-detector.outputs.major }}"
-        echo "🔎Major version: '$majorVersion'"
+        echo "🔎 Major version: '$majorVersion'"
 
         majorTag="${{ steps.publish-release.outputs.major-tag }}"
-        echo "🔎Major tag: '$majorTag'"
+        echo "🔎 Major tag: '$majorTag'"
 
         if [[ "$majorTag" == "v$majorVersion" ]]
         then
-          echo "✅The major tag derives from the current major version!"
+          echo "✅ The major tag derives from the current major version!"
         else
-          echo "❌The major tag does not derive from the current major version!" >&2
+          echo "❌ The major tag does not derive from the current major version!" >&2
           exit 1
         fi

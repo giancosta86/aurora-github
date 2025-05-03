@@ -2,7 +2,7 @@
 
 Merges a pull request, creates a **Git** tag and publishes a **GitHub** release, from a Git branch named according to [semantic versioning](https://semver.org/).
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -24,7 +24,21 @@ The only exception is when `dry-run` is set to **true**.
 
 More generally, this action should be _the very last step_ in a manually-triggered workflow performing _artifact publication_ - so that the pull request gets closed and the related resources released once all the other steps are successful.
 
-## ☑️Requirements
+## 💡 How it works
+
+1. If the pull request associated with the current branch is open (as it should), merge it - using the selected `git-strategy` for merging/rebasing the code and deleting the branch
+
+1. Create a new tag - for example, `vX.Y.Z` - containing the semantic version inferred from the branch name.
+
+1. Generate the release notes - based on the Git commit list
+
+1. If `notes-file-processor` is not an empty string, it will be interpreted as the `script-file` input of [run-shell-script](../run-shell-script/README.md)
+
+1. Create or draft a GitHub release.
+
+1. Optionally, _create or move_ the tag of the major version related to the current version - for example, `vX`.
+
+## ☑️ Requirements
 
 - Unless the `dry-run` input is set to **true**, this action can only be called:
 
@@ -48,44 +62,28 @@ More generally, this action should be _the very last step_ in a manually-trigger
 
 - The requirements discussed for [detect-branch-version](../detect-branch-version/README.md) also apply.
 
-## 💡How it works
+## 📥 Inputs
 
-1. If the pull request associated with the current branch is open (as it should), merge it - using the selected `git-strategy` for merging/rebasing the code and deleting the branch
+|          Name          |            Type             |                        Description                        | Default value |
+| :--------------------: | :-------------------------: | :-------------------------------------------------------: | :-----------: |
+|     `git-strategy`     |  `merge`,`rebase`,`squash`  |    How to apply the pull request to the Git repository    |  **squash**   |
+|    `draft-release`     | `true`, `false`, `on-major` |           Draft the release - do not publish it           | **on-major**  |
+| `notes-file-processor` |         **string**          |     Shell script editing the generated release notes      |               |
+|    `set-major-tag`     |         **boolean**         | Create/move the `vX` tag to this commit (X=major version) |   **false**   |
+|       `dry-run`        |         **boolean**         |        Run the action without performing commands         |   **false**   |
 
-1. Create a new tag - for example, `vX.Y.Z` - containing the semantic version inferred from the branch name.
+- The `draft-release` input, when set to **on-major**, will become **true** only if the semantic version detected from the current branch has the form `X.0.0` - otherwise, it will fallback to **false**.
 
-1. Generate the release notes - based on the Git commit list
-
-1. If `notes-file-processor` is not an empty string, it will be interpreted as the filename - relative to `project-directory` - of a **Bash** script that:
-
-   - must take in input (via `$1`) the path of the temporary file containing the generated release notes
-
-   - can arbitrarily alter the content of such file - and even call other interpreters
-
-   - does not need the `#!` prelude, nor the _executable flag_
-
-1. Create or draft a GitHub release.
-
-1. Optionally, _create or move_ the tag of the major version related to the current version - for example, `vX`.
-
-## 📥Inputs
-
-|          Name          |           Type            |                        Description                        | Default value |
-| :--------------------: | :-----------------------: | :-------------------------------------------------------: | :-----------: |
-|     `git-strategy`     | `merge`,`rebase`,`squash` |    How to apply the pull request to the Git repository    |  **rebase**   |
-|    `draft-release`     |        **boolean**        |           Draft the release - do not publish it           |   **false**   |
-| `notes-file-processor` |        **string**         |      Bash script editing the generated release notes      |               |
-|    `set-major-tag`     |        **boolean**        | Create/move the `vX` tag to this commit (X=major version) |   **false**   |
-|       `dry-run`        |        **boolean**        |        Run the action without performing commands         |   **false**   |
-
-## 📤Outputs
+## 📤 Outputs
 
 |     Name      |    Type    |               Description                |  Example   |
 | :-----------: | :--------: | :--------------------------------------: | :--------: |
 | `release-tag` | **string** | The Git tag associated with the release  | **v7.4.9** |
 |  `major-tag`  | **string** | The Git tag of the major version, if set |   **v7**   |
 
-## 🌐Further references
+## 🌐 Further references
+
+- [run-shell-script](../run-shell-script/README.md)
 
 - [semver](https://semver.org/)
 
