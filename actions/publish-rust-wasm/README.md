@@ -6,8 +6,6 @@ Publishes a **Rust** web assembly to an [npm](https://www.npmjs.com/) registry.
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
   - uses: giancosta86/aurora-github/actions/publish-rust-wasm@v11
     with:
       npm-token: ${{ secrets.NPM_TOKEN }}

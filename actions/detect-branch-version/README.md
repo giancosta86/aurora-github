@@ -8,15 +8,6 @@ Extracts the version from the name of the current **Git** branch, returning a va
 steps:
   - id: detector
     uses: giancosta86/aurora-github/actions/detect-branch-version@v11
-
-  - run: |
-      branch="${{ steps.detector.outputs.branch }}"
-      version="${{ steps.detector.outputs.version }}"
-      escapedVersion="${{ steps.detector.outputs.escaped-version }}"
-      major="${{ steps.detector.outputs.major }}"
-
-      echo "🔎Detected version '$version' (escaped: '${escapedVersion}') from branch '$branch'"
-      echo "🔎Major component: '${major}'"
 ```
 
 ## ☑️ Requirements

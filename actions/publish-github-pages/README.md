@@ -6,8 +6,6 @@ Publishes a directory as the [GitHub Pages](https://pages.github.com/) website f
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
   - uses: giancosta86/aurora-github/actions/publish-github-pages@v11
 ```
 

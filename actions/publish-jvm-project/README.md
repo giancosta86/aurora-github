@@ -6,8 +6,6 @@ Publishes a project for the **Java Virtual Machine** - using **Maven** or **Grad
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
   - uses: giancosta86/aurora-github/actions/publish-jvm-project@v11
     with:
       auth-user: userOnTheServer

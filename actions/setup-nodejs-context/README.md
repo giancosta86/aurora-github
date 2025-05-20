@@ -6,8 +6,6 @@ Conditionally installs **NodeJS** along with **pnpm**, as well as the dependenci
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
   - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11
 ```
 

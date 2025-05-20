@@ -6,8 +6,6 @@ Publishes a **Python** package using [PDM](https://pdm-project.org).
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
   - uses: giancosta86/aurora-github/actions/publish-python-package@v11
     with:
       index-user: __token__

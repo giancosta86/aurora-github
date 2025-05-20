@@ -8,8 +8,6 @@ It is worth noting this action can support any technology - as long as you compl
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
   - uses: giancosta86/aurora-github/actions/verify-npm-package@v11
 ```
 

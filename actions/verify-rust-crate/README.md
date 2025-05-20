@@ -6,8 +6,6 @@ Verifies the source files of a **Rust** crate.
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
   - uses: giancosta86/aurora-github/actions/verify-rust-crate@v11
 ```
 

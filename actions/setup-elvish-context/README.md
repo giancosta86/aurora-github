@@ -6,8 +6,6 @@ Installs the **Elvish** shell, caching it between multiple jobs of the same work
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
   - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11
 ```
 

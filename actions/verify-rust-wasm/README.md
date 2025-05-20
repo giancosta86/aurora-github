@@ -6,8 +6,6 @@ Verifies the source files of a **Rust** web assembly.
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
   - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v11
     with:
       wasm-pack-version: 0.13.1
