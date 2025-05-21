@@ -1,0 +1,3 @@
+var arg-count = (count $args)
+
+echo (* $arg-count 400) > result.txt

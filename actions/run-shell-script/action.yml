@@ -1,0 +1,43 @@
+name: Run shell script
+description: Runs a shell script, supporting different shells.
+
+inputs:
+  optional:
+    description: Exit successfully if the script cannot be run.
+    default: false
+
+  script-file:
+    description: Relative path - in the working directory - to the script file.
+
+  shell:
+    description: The shell used to run the script.
+
+  args:
+    description: Comma-separated list of arguments passed to the script.
+
+  working-directory:
+    description: The working directory.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+
+    - name: Run the script
+      shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-elvish/script
+        use aurora-github/ci-cd/input
+
+        var optional = (input:bool optional '${{ inputs.optional }}')
+
+        var script-file = (input:string script-file '${{ inputs.script-file }}')
+
+        var shell = (input:string &optional shell '${{ inputs.shell }}')
+
+        var args = (input:list '${{ inputs.args }}')
+
+        var working-directory = (input:directory &optional &can-be-missing working-directory  '${{ inputs.working-directory }}')
+
+        script:run &working-directory=$working-directory &optional=$optional &shell=$shell $script-file $@args

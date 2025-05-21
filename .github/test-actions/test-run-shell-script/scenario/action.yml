@@ -1,0 +1,78 @@
+name: Runs a project-specific scenario for run-shell-script
+
+inputs:
+  script-base:
+    description: The extension-less name of the script file.
+
+  script-extension:
+    description: |
+      The explicit extension of the script file (starting with .).
+
+      The script must count its arguments, multiply them by a given factor
+      and finally write the resulting number to 'result.txt' in this directory.
+
+  shell:
+    description: The explicit shell used to run the script.
+
+  multiplier:
+    description: The factor by which the script multiplies the number of arguments.
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo "🎭 Testing script '${{ inputs.script-base }}' with no extension and no shell..."
+
+    - uses: ./actions/run-shell-script
+      with:
+        script-file: ${{ inputs.script-base }}
+        working-directory: ${{ github.action_path }}/..
+
+    - uses: ./.github/test-actions/test-run-shell-script/expect-result
+      with:
+        arg-count: 0
+        multiplier: ${{ inputs.multiplier }}
+
+    - shell: bash
+      run: echo "🎭 Testing script '${{ inputs.script-base }}' with no extension and explicit shell ('${{ inputs.shell }}')..."
+
+    - uses: ./actions/run-shell-script
+      with:
+        script-file: ${{ inputs.script-base }}
+        shell: ${{ inputs.shell }}
+        args: alpha
+        working-directory: ${{ github.action_path }}/..
+
+    - uses: ./.github/test-actions/test-run-shell-script/expect-result
+      with:
+        arg-count: 1
+        multiplier: ${{ inputs.multiplier }}
+
+    - shell: bash
+      run: echo "🎭 Testing script '${{ inputs.script-base }}' with explicit extension ('${{ inputs.script-extension }}') and no shell..."
+
+    - uses: ./actions/run-shell-script
+      with:
+        script-file: ${{ inputs.script-base }}${{ inputs.script-extension }}
+        args: alpha, beta
+        working-directory: ${{ github.action_path }}/..
+
+    - uses: ./.github/test-actions/test-run-shell-script/expect-result
+      with:
+        arg-count: 2
+        multiplier: ${{ inputs.multiplier }}
+
+    - shell: bash
+      run: echo "🎭 Testing script '${{ inputs.script-base }}' with explicit extension ('${{ inputs.script-extension }}') and explicit shell ('${{ inputs.shell }}')..."
+
+    - uses: ./actions/run-shell-script
+      with:
+        script-file: ${{ inputs.script-base }}${{ inputs.script-extension }}
+        shell: ${{ inputs.shell }}
+        args: alpha, beta, gamma
+        working-directory: ${{ github.action_path }}/..
+
+    - uses: ./.github/test-actions/test-run-shell-script/expect-result
+      with:
+        arg-count: 3
+        multiplier: ${{ inputs.multiplier }}
