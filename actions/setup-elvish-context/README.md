@@ -1,8 +1,8 @@
 # setup-elvish-context
 
-Installs an **Elvish** version and optional startup packages, caching everything between multiple jobs of the same workflow execution.
+Installs the **Elvish** shell, caching it between multiple jobs of the same workflow execution.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
@@ -11,7 +11,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10
 ```
 
-## 💡How it works
+## 💡 How it works
 
 1. If the `elvish` command is already available in the system and the `skip-if-existing` input is set to **true** (the default), the action will do just nothing
 
@@ -19,39 +19,31 @@ steps:
 
    - Otherwise, install the **Elvish** shell, making the `elvish` command available along the system **PATH**
 
-1. If at least one package was specified in the `packages` input (which **MUST** be either empty or a comma/space-separated list):
+## 💬 Remarks
 
-   - If the exact set of packages was already requested by a previous execution of this action during the current workflow, use the cached version
+- The cache spans over the lifetime of a specific **workflow execution** - so every new workflow run will not see the previously cached entries.
 
-   - Otherwise, install them via `epm:install`, then cache the entire `$epm:managed-dir` directory
+- The following packages will also be available:
 
-### Notes
+  - `aurora-github` - contained in the [core](../../core/) directory - however, such library is to be considered **unstable** even between patch versions, so it should be used in custom script steps _only_ when your workflow references this action from a _specific release_ of aurora-github.
 
-1. The cache spans over the lifetime of a specific **workflow execution** - so every new workflow run will not see the previously cached entries.
+  - [aurora-elvish](https://github.com/giancosta86/aurora-elvish) - at branch **v1**
 
-1. The `aurora-github` package - contained in the [lib](../../lib/) directory - will also be available to any Elvish shell retrieved via this action; however, such library is to be considered **unstable** even between patch versions, so it should be used in custom script steps _only_ when your workflow references this action from a _specific release_ of aurora-github.
+- You need this action only to run your custom Elvish scripts - because it is automatically called by almost every action in aurora-github.
 
-## ☑️Requirements
+## ☑️ Requirements
 
-The requested Elvish version **must** include an `epm` module having a `$managed-dir` variable.
+The requested Elvish version **must** include an `epm` module having a `$managed-dir` variable - for example, Elvish v0.21.
 
-Also, if the `packages` input is non-empty, `epm` must provide the following functions:
+## 📥 Inputs
 
-- `install`
+|        Name        |    Type     |                      Description                      | Default value |
+| :----------------: | :---------: | :---------------------------------------------------: | :-----------: |
+|     `version`      | **string**  |       The Elvish version to download and cache        |  **0.21.0**   |
+| `skip-if-existing` | **boolean** | If the `elvish` command is available, just do nothing |   **true**    |
+|      `quiet`       | **boolean** |            Only print warnings and errors             |   **true**    |
 
-- `installed`
-
-All the above features must follow the protocol described in the documentation for Elvish v0.21.
-
-## 📥Inputs
-
-|        Name        |                    Type                     |                      Description                      | Default value |
-| :----------------: | :-----------------------------------------: | :---------------------------------------------------: | :-----------: |
-|     `version`      |                 **string**                  |       The Elvish version to download and cache        |  **0.21.0**   |
-|     `packages`     | **string** - empty or space/comma-separated |       Packages to install and cache with Elvish       |               |
-| `skip-if-existing` |                 **boolean**                 | If the `elvish` command is available, just do nothing |   **true**    |
-
-## 🌐Further references
+## 🌐 Further references
 
 - [Elvish](https://elv.sh/)
 
