@@ -6,7 +6,7 @@ Prevents cross-branch `uses:` directives between **GitHub** actions residing bel
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-action-references@v10
+  - uses: giancosta86/aurora-github/actions/check-action-references@v11
 ```
 
 ## 💡 How it works

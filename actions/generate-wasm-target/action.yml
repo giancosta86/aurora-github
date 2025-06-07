@@ -27,7 +27,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
     - name: Generate the WebAssembly target
       shell: elvish {0}

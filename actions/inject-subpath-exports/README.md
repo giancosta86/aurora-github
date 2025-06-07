@@ -6,7 +6,7 @@ Appends [subpath exports](https://nodejs.org/api/packages.html#subpath-exports) 
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/inject-subpath-exports@v10
+  - uses: giancosta86/aurora-github/actions/inject-subpath-exports@v11
 ```
 
 ## 💡 How it works

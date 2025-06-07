@@ -29,19 +29,19 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
     - name: Check the project license
-      uses: giancosta86/aurora-github/actions/check-project-license@v10.3.0
+      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
 
     - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.3.0
+      uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
         project-directory: ${{ inputs.project-directory }}
 
     - name: Setup Rust context
-      uses: giancosta86/aurora-github/actions/setup-rust-context@v10.3.0
+      uses: giancosta86/aurora-github/actions/setup-rust-context@v11.0.0
       with:
         project-directory: ${{ inputs.project-directory }}
 
@@ -59,7 +59,7 @@ runs:
         project:check-style &run-clippy-checks=$run-clippy-checks &check-rustdoc=$check-rustdoc
 
     - name: Extract code snippets as tests from README.md
-      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v10.3.0
+      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v11.0.0
       with:
         optional: true
         project-directory: ${{ inputs.project-directory }}
@@ -73,7 +73,7 @@ runs:
         project:run-tests
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v10.3.0
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
       with:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}

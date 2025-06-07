@@ -6,7 +6,7 @@ Merges a pull request, creates a **Git** tag and publishes a **GitHub** release,
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/tag-and-release@v10
+  - uses: giancosta86/aurora-github/actions/tag-and-release@v11
 ```
 
 It is essential to remember that this action must be called:

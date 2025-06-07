@@ -43,15 +43,15 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.3.0
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
     - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v10.3.0
+      uses: giancosta86/aurora-github/actions/install-wasm-pack@v11.0.0
       with:
         wasm-pack-version: ${{ inputs.wasm-pack-version }}
 
     - name: Verify Rust source files
-      uses: giancosta86/aurora-github/actions/verify-rust-crate@v10.3.0
+      uses: giancosta86/aurora-github/actions/verify-rust-crate@v11.0.0
       with:
         run-clippy-checks: ${{ inputs.run-clippy-checks }}
         check-rustdoc: ${{ inputs.check-rustdoc }}
@@ -69,7 +69,7 @@ runs:
         wasm-pack:run-browser-tests
 
     - name: Generate the wasm target
-      uses: giancosta86/aurora-github/actions/generate-wasm-target@v10.3.0
+      uses: giancosta86/aurora-github/actions/generate-wasm-target@v11.0.0
       with:
         target: ${{ inputs.wasm-target }}
         npm-scope: ${{ inputs.npm-scope }}
@@ -78,7 +78,7 @@ runs:
         project-directory: ${{ inputs.project-directory }}
 
     - name: Run client tests
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v10.3.0
+      uses: giancosta86/aurora-github/actions/run-custom-tests@v11.0.0
       with:
         optional: true
         root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}

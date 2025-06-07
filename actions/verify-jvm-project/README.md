@@ -8,7 +8,7 @@ Verifies the source files of a project for the **Java Virtual Machine** - using 
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/verify-jvm-project@v10
+  - uses: giancosta86/aurora-github/actions/verify-jvm-project@v11
 ```
 
 ## 💡 How it works

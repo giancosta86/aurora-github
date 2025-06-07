@@ -6,7 +6,7 @@ Installs the requested SDK using [SDKMAN!](https://sdkman.io/)
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/install-sdkman-candidate@v10
+  - uses: giancosta86/aurora-github/actions/install-sdkman-candidate@v11
     with:
       candidate: java
       version: 23-open

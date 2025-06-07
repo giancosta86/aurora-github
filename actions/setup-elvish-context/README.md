@@ -8,7 +8,7 @@ Installs the **Elvish** shell, caching it between multiple jobs of the same work
 steps:
   - uses: actions/checkout@v4
 
-  - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10
+  - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11
 ```
 
 ## 💡 How it works
