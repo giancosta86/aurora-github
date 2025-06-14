@@ -13,5 +13,3 @@ jobs:
         with:
           set-major-tag: true
           notes-file-processor: .github/process-release-notes.sh
-          git-strategy: rebase
-          draft-release: true
