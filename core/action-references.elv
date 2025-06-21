@@ -9,7 +9,7 @@ fn check {
   var regex = (action-references:get-regex-for-references-to-other-branches $branch)
 
   var grep-result = ?(
-    grep --color=always --perl-regexp $regex **/*.yml > &2
+    grep --color=always --perl-regexp $regex **.yml > &2
   )
 
   if $grep-result {

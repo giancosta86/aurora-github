@@ -2,6 +2,7 @@ use os
 use str
 use github.com/giancosta86/aurora-elvish/console
 use github.com/giancosta86/aurora-elvish/lang
+use github.com/giancosta86/aurora-elvish/nvm/node-version
 use github.com/giancosta86/aurora-elvish/seq
 use ../ci-cd/env
 
@@ -13,39 +14,8 @@ fn check-preconditions {
   }
 }
 
-fn -detect-node-version-from-package-json {
-  var requested-node-version = (jq -r '.engines.node // ""' package.json)
-
-  if (seq:is-non-empty $requested-node-version) {
-    console:inspect 'NodeJS version requested in package.json' $requested-node-version
-    put $requested-node-version
-  } else {
-    console:echo 💭 No 'engines/node' field in package.json...
-    put $nil
-  }
-}
-
-fn -detect-node-version-from-nvmrc {
-  if (os:is-regular .nvmrc) {
-    var requested-node-version = (slurp < .nvmrc | str:trim-space (all))
-
-    console:inspect 'Requested version in the .nvmrc file' $requested-node-version
-
-    lang:ternary (seq:is-non-empty $requested-node-version) $requested-node-version $nil
-  } else {
-    console:echo 💭 No .nvmrc file...
-    put $nil
-  }
-}
-
 fn detect-nodejs-constraints {
-  var requested-node-version = (
-    coalesce (
-      -detect-node-version-from-nvmrc
-    ) (
-      -detect-node-version-from-package-json
-    )
-  )
+  var requested-node-version = (node-version:detect-in-pwd)
 
   var install-toolchain
 

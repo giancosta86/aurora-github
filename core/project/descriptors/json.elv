@@ -1,4 +1,4 @@
-use github.com/giancosta86/aurora-elvish/highlighting
+use ../../highlighting
 
 fn read-version { |descriptor-path|
   put (from-json < $descriptor-path)[version]

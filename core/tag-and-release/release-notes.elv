@@ -1,4 +1,3 @@
-use file
 use re
 use str
 use github.com/giancosta86/aurora-elvish/console
@@ -58,7 +57,7 @@ fn -write-changelog-footer { |pull-request tag|
 fn generate { |inputs|
   console:inspect-inputs $inputs
 
-  var output-file = $inputs[output-file]
+  var output-path = $inputs[output-path]
   var tag = $inputs[tag]
   var pull-request = $inputs[pull-request]
 
@@ -70,11 +69,9 @@ fn generate { |inputs|
     -write-pull-request-data $pull-request
 
     -write-changelog-footer $pull-request $tag
-  } >> $output-file
-
-  file:close $output-file
+  } >> $output-path
 
   console:section &emoji=📝 'Generated release notes' {
-    cat $output-file[name]
+    cat $output-path
   }
 }

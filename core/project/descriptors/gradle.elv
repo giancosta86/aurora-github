@@ -1,6 +1,6 @@
 use path
-use github.com/giancosta86/aurora-elvish/highlighting
 use github.com/giancosta86/aurora-elvish/lang
+use ../../highlighting
 use ./toml
 
 var read-version~ = $toml:read-version~

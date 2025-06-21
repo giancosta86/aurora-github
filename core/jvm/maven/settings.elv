@@ -2,8 +2,9 @@ use os
 use path
 use str
 use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/highlighting
+use github.com/giancosta86/aurora-elvish/fs
 use github.com/giancosta86/aurora-elvish/resources
+use ../../highlighting
 
 var -resources = (resources:for-script (src))
 
@@ -16,7 +17,7 @@ fn -copy-default-settings {
 
   var default-settings-path = ($-resources[get-path] $-user-settings-filename)
 
-  cp $default-settings-path $-user-settings-path
+  fs:copy $default-settings-path $-user-settings-path
 
   console:section &emoji=🪶 'Content of the per-user Maven settings file' {
     cat $-user-settings-path | highlighting:highlight xml
@@ -46,7 +47,7 @@ fn prepare-for-publication {
   if (os:is-regular $-user-settings-filename) {
     console:echo 📃 Maven settings file found in the current directory! Now copying it...
 
-    cp $-user-settings-filename $-user-settings-path
+    fs:copy $-user-settings-filename $-user-settings-path
   } else {
     -copy-default-settings
 

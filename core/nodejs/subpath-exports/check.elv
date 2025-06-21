@@ -3,11 +3,11 @@ use github.com/giancosta86/aurora-elvish/console
 use github.com/giancosta86/aurora-elvish/lang
 use github.com/giancosta86/aurora-elvish/map
 
-var -recursive-check-json-value
+var -check-json-value~
 
 fn -check-json-object { |path-in-json json-object|
   keys $json-object | order | each { |key|
-    $-recursive-check-json-value $path-in-json'->'$key $json-object[$key]
+    -check-json-value $path-in-json'->'$key $json-object[$key]
   }
 }
 
@@ -24,15 +24,13 @@ fn -check-file-pattern { |path-in-json file-pattern|
   }
 }
 
-fn -check-json-value { |path-in-json json-value|
+set -check-json-value~ = { |path-in-json json-value|
   var checker = (
     lang:ternary (==s (kind-of $json-value) map) $-check-json-object~ $-check-file-pattern~
   )
 
   $checker $path-in-json $json-value
 }
-
-set -recursive-check-json-value = $-check-json-value~
 
 fn check {
   if (not (os:is-regular package.json)) {

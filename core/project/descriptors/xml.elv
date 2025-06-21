@@ -1,6 +1,6 @@
 use str
-use github.com/giancosta86/aurora-elvish/highlighting
 use github.com/giancosta86/aurora-elvish/resources
+use ../../highlighting
 
 var -resources = (resources:for-script (src))
 

@@ -1,8 +1,8 @@
-use os
 use path
 use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/script
+use github.com/giancosta86/aurora-elvish/fs
 use ../ci-cd/repository
+use ../script
 use ./release-notes
 
 fn -get-release-title { |version|
@@ -27,13 +27,13 @@ fn create { |inputs|
   var release-title = (-get-release-title $version)
   console:inspect &emoji=🔎 'Release title' $release-title
 
-  var release-notes-file = (os:temp-file)
+  var release-notes-path = (fs:temp-file-path)
   defer {
-    os:remove $release-notes-file[name]
+    fs:rimraf release-notes-path
   }
 
   release-notes:generate [
-    &output-file=$release-notes-file
+    &output-path=$release-notes-path
     &tag=$tag
     &pull-request=$pull-request
   ]
@@ -41,10 +41,10 @@ fn create { |inputs|
   if $notes-file-processor {
     console:inspect &emoji=🖋 'Release notes file processor' $notes-file-processor
 
-    script:run $notes-file-processor $release-notes-file[name]
+    script:run $notes-file-processor $release-notes-path
 
     console:section &emoji=🎀 'Processed release notes' {
-      cat $release-notes-file[name]
+      cat $release-notes-path
     }
   } else {
     console:echo 💭 No release notes file processor...
@@ -54,7 +54,7 @@ fn create { |inputs|
     console:inspect &emoji=📝 'Drafting release' $release-title
 
     if (not $dry-run) {
-      gh release create $tag --title $release-title --latest --notes-file $release-notes-file[name] --draft
+      gh release create $tag --title $release-title --latest --notes-file $release-notes-path --draft
 
       console:echo 📝 Release drafted!
     } else {
@@ -64,7 +64,7 @@ fn create { |inputs|
     console:inspect &emoji=🌟 'Publishing release' $release-title
 
     if (not $dry-run) {
-      gh release create $tag --title $release-title --latest --notes-file $release-notes-file[name]
+      gh release create $tag --title $release-title --latest --notes-file $release-notes-path
 
       console:echo 🌟 Release published!
     } else {

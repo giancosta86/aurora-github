@@ -1,8 +1,8 @@
 use os
 use str
 use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/highlighting
 use github.com/giancosta86/aurora-elvish/map
+use ../highlighting
 
 fn parse-scope { |declared-scope|
   if (==s $declared-scope '<ROOT>') {

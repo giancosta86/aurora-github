@@ -1,8 +1,9 @@
 use os
-use ./ci-cd/env
 use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/script
 use github.com/giancosta86/aurora-elvish/testing
+use ./ci-cd/env
+use ./script
+
 
 fn -set-strategy { |strategy|
   console:inspect &emoji=💡 'Current test strategy' $strategy
@@ -88,19 +89,5 @@ fn detect-strategy { |inputs|
     -enforce-exit-strategy
   } else {
     fail 'Cannot run mandatory custom tests: no supported test strategy could be detected!'
-  }
-}
-
-fn execute-test-runner {
-  var testing-result = (testing:run)
-
-  if $testing-result[is-ok] {
-    console:echo ✅ All the $testing-result[total-tests] tests are OK!
-  } else {
-    console:block &emoji=❌ $testing-result[total-failed]' tests failed' {
-      pprint $testing-result
-    }
-
-    exit 1
   }
 }

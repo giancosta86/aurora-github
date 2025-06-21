@@ -1,5 +1,5 @@
 use re
-use github.com/giancosta86/aurora-elvish/highlighting
+use ../../highlighting
 
 fn read-version { |descriptor-path|
   cat $descriptor-path | from-lines | each { |line|
