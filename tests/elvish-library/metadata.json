@@ -1,0 +1,9 @@
+{
+  "description": "My description",
+
+  "maintainers": ["Gianluca Costa <gianluca@gianlucacosta.info>"],
+
+  "homepage": "https://github.com/giancosta86/aurora-elvish",
+
+  "dependencies": []
+}

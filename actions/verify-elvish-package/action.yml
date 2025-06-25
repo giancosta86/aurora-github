@@ -1,0 +1,50 @@
+name: Verify Elvish library
+description: Verifies the source files of an Elvish library.
+
+inputs:
+  crash-on-critical-todos:
+    description: Crash the workflow if critical TODOs are found.
+    default: true
+
+  source-file-regex:
+    description: PCRE pattern describing the source files.
+    default: '\.elv$'
+
+  project-directory:
+    description: The directory containing `metadata.json`.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+
+    - name: Check the project license
+      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
+
+    - name: Check the metadata
+      shell: elvish {0}
+      working-directory: ${{ inputs.project-directory }}
+      run: |
+        use aurora-github/elvish-library
+
+        elvish-library:check-metadata
+
+    - uses: giancosta86/aurora-github/actions/run-custom-tests@v11.0.0
+      with:
+        root-directory: ${{ inputs.project-directory }}
+
+    - name: Check for critical TODOs
+      uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
+      with:
+        source-file-regex: ${{ inputs.source-file-regex }}
+        crash-on-found: ${{ inputs.crash-on-critical-todos }}
+        display-lines: true
+        root-directory: ${{ inputs.project-directory }}
+
+    - name: Print confirmation message
+      shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-elvish/console
+
+        console:echo ✅🔮 Elvish library verified!
