@@ -27,8 +27,8 @@ runs:
     - name: Run the script
       shell: elvish {0}
       run: |
-        use github.com/giancosta86/aurora-elvish/script
         use aurora-github/ci-cd/input
+        use aurora-github/script
 
         var optional = (input:bool optional '${{ inputs.optional }}')
 
