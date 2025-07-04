@@ -50,7 +50,7 @@ runs:
       run: |
         use github.com/giancosta86/aurora-elvish/testing
 
-        var failed-tests = (testing:test &output-failures &clear=$false)
+        var failed-tests = (testing:test)[stats][total-failed]
 
         if (> $failed-tests 0) {
           exit 1
