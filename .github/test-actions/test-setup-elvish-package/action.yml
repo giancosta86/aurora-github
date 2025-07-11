@@ -1,0 +1,32 @@
+name: Test setup-elvish-package
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo "🎭 Test by installing Velvet from the main branch ..."
+
+    - uses: ./actions/setup-elvish-package
+      with:
+        package: github.com/giancosta86/velvet
+        quiet: false
+
+    - shell: elvish {0}
+      run: |
+        use epm
+
+        var package-path = (epm:metadata 'github.com/giancosta86/velvet')[dst]
+
+        echo elvish-package-path=$package-path >> (get-env GITHUB_ENV)
+
+    - shell: bash
+      working-directory: ${{ env.elvish-package-path }}
+      run: |
+        gitRef="$(git describe --tags --always --dirty --broken)"
+
+        if [[ "$gitRef" == 'main' ]]
+        then
+          echo "✅The package is on the main branch, as expected!"
+        else
+          echo "Current Git reference instead of main: '$gitRef'"
+        fi

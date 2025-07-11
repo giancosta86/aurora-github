@@ -1,0 +1,113 @@
+name: Setup Elvish package
+description: Ensures a package for the Elvish shell is installed, possibly at a specific Git reference.
+
+inputs:
+  package:
+    description: The name of the library, passed to epm:install.
+
+  git-ref:
+    description: The optional Git reference (branch, tag, ...) to checkout.
+
+  quiet:
+    description: Displays more detailed messages.
+    default: true
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: elvish {0}
+      run: |
+        if (== 0 (count '${{ inputs.package }}')) {
+          fail 'Missing input: package'
+        }
+
+        if (== 0 (count '${{ inputs.quiet }}')) {
+          fail 'Missing input: quiet'
+        }
+
+        if (not (has-value [true false] '${{ inputs.quiet }}')) {
+          fail 'Invalid boolean input for ''quiet'': '''${{ inputs.quiet }}"'"
+        }
+
+    - name: Set environment variables
+      shell: elvish {0}
+      run: |
+        use epm
+        use os
+
+        var package-cache-key = '${{ github.workflow }}-${{ github.run_number }}-elvish-package-${{ inputs.package }}'
+
+        var package-path = (epm:metadata '${{ inputs.package }}')[dst]
+
+        var package-installed = (
+          if (os:is-dir $package-path) {
+            put 'true'
+          } else {
+            put 'false'
+          }
+        )
+
+        echo elvish-package-cache-key=$package-cache-key >> (get-env GITHUB_ENV)
+
+        echo elvish-package-path=$package-path >> (get-env GITHUB_ENV)
+
+        echo elvish-package-installed=$package-installed >> (get-env GITHUB_ENV)
+
+    - name: Declare the package is already installed
+      if: env.elvish-package-installed == 'true' && inputs.quiet != 'true'
+      shell: elvish {0}
+      run: echo 🌟📚Elvish package '${{ inputs.package }}' is already installed!
+
+    - name: Restore cached package
+      if: env.elvish-package-installed != 'true'
+      id: restore-cached-package
+      uses: actions/cache/restore@v4
+      with:
+        key: ${{ env.elvish-package-cache-key }}
+        path: ${{ env.elvish-package-path }}
+
+    - name: Confirm cache hit for Elvish package
+      if: env.elvish-package-installed != 'true' && steps.restore-cached-package.outputs.cache-hit == 'true' && inputs.quiet != 'true'
+      shell: elvish {0}
+      run: echo 📤📚 Elvish package '${{ inputs.package }}' restored from cache! > &2
+
+    - name: Install package via epm
+      if: env.elvish-package-installed != 'true' && steps.restore-cached-package.outputs.cache-hit != 'true'
+      shell: elvish {0}
+      run: |
+        use epm
+
+        epm:install '${{ inputs.package }}'
+
+    - name: Cache Elvish package
+      if: env.elvish-package-installed != 'true' && steps.restore-cached-package.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ env.elvish-package-path }}
+        key: ${{ env.elvish-package-cache-key }}
+
+    - name: Ensure the requested Git reference
+      if: inputs.git-ref != ''
+      shell: elvish {0}
+      run: |
+        var quiet = (==s '${{ inputs.quiet }}' true)
+
+        if (not $quiet) {
+          echo 🧭Switching Elvish package '${{ inputs.package }}' to Git reference: '${{ inputs.git-ref }}'
+        }
+
+        cd (get-env elvish-package-path)
+
+        git clean -df
+
+        git checkout '${{ inputs.git-ref }}'
+
+        if (not $quiet) {
+          echo ✅ Switched to Git reference '${{ inputs.git-ref }}'
+        }
+
+    - name: Display final confirmation message
+      if: inputs.quiet != 'true'
+      shell: elvish {0}
+      run: echo 🚀📚 Elvish package '${{ inputs.package }}' ready! > &2
