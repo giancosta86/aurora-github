@@ -12,6 +12,8 @@ runs:
 
         echo elvish-package-path=$package-path >> (get-env GITHUB_ENV)
 
+        echo expectedTag=v1 >> (get-env GITHUB_ENV)
+
     - shell: bash
       run: echo "🎭 Install the Velvet package from the main branch..."
 
@@ -34,23 +36,23 @@ runs:
         fi
 
     - shell: bash
-      run: echo "🎭 Setup the Velvet package to use tag v1..."
+      run: echo "🎭 Setup the Velvet package to use tag $expectedTag..."
 
     - uses: ./actions/setup-elvish-package
       with:
         package: github.com/giancosta86/velvet
-        git-ref: v1
+        git-ref: ${{ env.expectedTag }}
         quiet: false
 
     - shell: bash
       working-directory: ${{ env.elvish-package-path }}
       run: |
-        gitBranch="$(git branch --show-current)"
+        gitTag="$(git describe --tags --always)"
 
-        if [[ "$gitBranch" == 'v1' ]]
+        if [[ "$gitTag" == '$expectedTag' ]]
         then
-          echo "✅The package is on the v1 tag, as expected!"
+          echo "✅The package is on the $expectedTag tag, as expected!"
         else
-          echo "❌Current Git branch instead of v1: '$gitBranch'"
+          echo "❌Current Git tag instead of $expectedTag: '$gitTag'"
           exit 1
         fi
