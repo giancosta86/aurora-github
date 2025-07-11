@@ -22,12 +22,12 @@ runs:
     - shell: bash
       working-directory: ${{ env.elvish-package-path }}
       run: |
-        gitRef="$(git describe --tags --always --dirty --broken)"
+        gitBranch="$(git branch --show-current)"
 
-        if [[ "$gitRef" == 'main' ]]
+        if [[ "$gitBranch" == 'main' ]]
         then
           echo "✅The package is on the main branch, as expected!"
         else
-          echo "❌Current Git reference instead of main: '$gitRef'"
+          echo "❌Current Git branch instead of main: '$gitBranch'"
           exit 1
         fi
