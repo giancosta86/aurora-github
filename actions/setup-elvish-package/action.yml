@@ -91,6 +91,8 @@ runs:
       if: inputs.git-ref != ''
       shell: elvish {0}
       run: |
+        use os
+
         var quiet = (==s '${{ inputs.quiet }}' true)
 
         if (not $quiet) {
@@ -99,9 +101,11 @@ runs:
 
         cd (get-env elvish-package-path)
 
-        git clean -df
+        {
+          git clean -df
 
-        git checkout '${{ inputs.git-ref }}'
+          git checkout '${{ inputs.git-ref }}'
+        } > $os:dev-null 2> $os:dev-null
 
         if (not $quiet) {
           echo ✅ Switched to Git reference '${{ inputs.git-ref }}'
