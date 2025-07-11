@@ -49,7 +49,7 @@ runs:
       run: |
         gitTag="$(git describe --tags --always)"
 
-        if [[ "$gitTag" == '$expectedTag' ]]
+        if [[ "$gitTag" == "$expectedTag" ]]
         then
           echo "✅The package is on the $expectedTag tag, as expected!"
         else
