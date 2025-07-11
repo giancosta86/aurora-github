@@ -57,7 +57,7 @@ runs:
     - name: Declare the package is already installed
       if: env.elvish-package-installed == 'true' && inputs.quiet != 'true'
       shell: elvish {0}
-      run: echo 🌟📚Elvish package '${{ inputs.package }}' is already installed!
+      run: echo 🌟📚Elvish package '${{ inputs.package }}' is already installed! > &2
 
     - name: Restore cached package
       if: env.elvish-package-installed != 'true'
