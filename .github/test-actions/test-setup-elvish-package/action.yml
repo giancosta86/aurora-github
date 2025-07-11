@@ -3,21 +3,22 @@ name: Test setup-elvish-package
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭 Test by installing Velvet from the main branch ..."
-
-    - uses: ./actions/setup-elvish-package
-      with:
-        package: github.com/giancosta86/velvet
-        quiet: false
-
-    - shell: elvish {0}
+    - name: Setup the environment variables for the test
+      shell: elvish {0}
       run: |
         use epm
 
         var package-path = (epm:metadata 'github.com/giancosta86/velvet')[dst]
 
         echo elvish-package-path=$package-path >> (get-env GITHUB_ENV)
+
+    - shell: bash
+      run: echo "🎭 Install the Velvet package from the main branch..."
+
+    - uses: ./actions/setup-elvish-package
+      with:
+        package: github.com/giancosta86/velvet
+        quiet: false
 
     - shell: bash
       working-directory: ${{ env.elvish-package-path }}
@@ -29,5 +30,27 @@ runs:
           echo "✅The package is on the main branch, as expected!"
         else
           echo "❌Current Git branch instead of main: '$gitBranch'"
+          exit 1
+        fi
+
+    - shell: bash
+      run: echo "🎭 Setup the Velvet package to use tag v1..."
+
+    - uses: ./actions/setup-elvish-package
+      with:
+        package: github.com/giancosta86/velvet
+        git-ref: v1
+        quiet: false
+
+    - shell: bash
+      working-directory: ${{ env.elvish-package-path }}
+      run: |
+        gitBranch="$(git branch --show-current)"
+
+        if [[ "$gitBranch" == 'v1' ]]
+        then
+          echo "✅The package is on the v1 tag, as expected!"
+        else
+          echo "❌Current Git branch instead of v1: '$gitBranch'"
           exit 1
         fi
