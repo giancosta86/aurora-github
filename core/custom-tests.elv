@@ -1,6 +1,6 @@
 use os
 use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/testing
+use github.com/giancosta86/velvet/main velvet
 use ./ci-cd/env
 use ./script
 
@@ -66,9 +66,9 @@ fn detect-strategy { |inputs|
     }
   }
 
-  if (testing:has-tests) {
+  if (velvet:has-test-scripts) {
     console:echo 📋 aurora-elvish .test.elv files found!
-    -set-strategy test-runner
+    -set-strategy velvet
     return
   }
 
