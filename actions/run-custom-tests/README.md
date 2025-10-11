@@ -27,7 +27,7 @@ steps:
 
    1. If **verify** (**.elv**, **.sh**, ...) exists in `working-directory` **and** can be run via [run-shell-script](../run-shell-script/README.md), invoke the action accordingly, passing the (optional) `script-shell`.
 
-   1. If one or more files having `.test.elv` extension exist in the root directory, run the tests within them, assuming the test format introduced by [aurora-elvish](https://github.com/giancosta86/aurora-elvish)
+   1. If one or more files having `.test.elv` extension exist within the root directory tree, run them using [velvet](https://github.com/giancosta86/velvet)
 
    1. If a file named **package.json** exists in the root directory:
 
@@ -69,6 +69,8 @@ steps:
 | `root-directory` | **string**  |      The directory containing the tests      |               |
 
 ## 🌐 Further references
+
+- [velvet](https://github.com/giancosta86/velvet)
 
 - [run-shell-script](../run-shell-script/README.md)
 

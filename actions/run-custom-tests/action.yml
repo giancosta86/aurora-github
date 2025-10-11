@@ -43,14 +43,14 @@ runs:
         shell: ${{ inputs.script-shell }}
         working-directory: ${{ inputs.root-directory }}
 
-    - name: Run test files
-      if: env.strategy == 'test-runner'
+    - name: Run tests via Velvet
+      if: env.strategy == 'velvet'
       shell: elvish {0}
       working-directory: ${{ inputs.root-directory }}
       run: |
-        use github.com/giancosta86/aurora-elvish/testing
+        use github.com/giancosta86/velvet/main velvet
 
-        var failed-tests = (testing:test)[stats][total-failed]
+        var failed-tests = (velvet:velvet)[stats][failed]
 
         if (> $failed-tests 0) {
           exit 1
