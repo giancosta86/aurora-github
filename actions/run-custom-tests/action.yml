@@ -50,11 +50,7 @@ runs:
       run: |
         use github.com/giancosta86/velvet/main velvet
 
-        var failed-tests = (velvet:velvet)[stats][failed]
-
-        if (> $failed-tests 0) {
-          exit 1
-        }
+        velvet:velvet &must-pass
 
     - name: Setup NodeJS context
       if: env.strategy == 'nodejs'
