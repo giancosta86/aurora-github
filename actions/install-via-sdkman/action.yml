@@ -23,6 +23,7 @@ runs:
 
         var version = (input:string version '${{ inputs.version }}')
 
-        curl:disable-non-error-output
+        console:echo 📢 Configuring curl so that it outputs errors only...
+        curl:display-errors-only
 
         sdkman:install-sdk $candidate $version
