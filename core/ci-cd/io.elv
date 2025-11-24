@@ -22,7 +22,7 @@ fn write { |target-channel key value|
 
 fn map { |target-channel source-map|
   map:entries $source-map |
-    seq:each-spread { |key value|
+    seq:spread { |key value|
       var value-kind = (kind-of $value)
 
       if (has-value $-supported-value-kinds $value-kind) {
