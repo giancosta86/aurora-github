@@ -47,7 +47,7 @@ fn -extract-snippets-to-files { |markdown-path test-filename-prefix|
 
     echo $updated-snippet > $snippet-path
 
-    set generated-test-paths = [$@generated-test-paths $snippet-path]
+    set generated-test-paths = (conj $generated-test-paths $snippet-path)
   }
 
   if (seq:is-non-empty $generated-test-paths) {
