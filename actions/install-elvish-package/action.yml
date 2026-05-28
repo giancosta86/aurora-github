@@ -18,11 +18,11 @@ runs:
     - name: Validate inputs
       shell: elvish {0}
       run: |
-        if (== 0 (count '${{ inputs.package }}')) {
+        if (eq '${{ inputs.package }}' '') {
           fail 'Missing input: package'
         }
 
-        if (== 0 (count '${{ inputs.quiet }}')) {
+        if (eq '${{ inputs.quiet }}' '') {
           fail 'Missing input: quiet'
         }
 
@@ -80,20 +80,13 @@ runs:
 
         epm:install '${{ inputs.package }}'
 
-    - name: Cache Elvish package
-      if: env.elvish-package-installed != 'true' && steps.restore-cached-package.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
-      with:
-        path: ${{ env.elvish-package-path }}
-        key: ${{ env.elvish-package-cache-key }}
-
     - name: Ensure the requested Git reference
-      if: inputs.git-ref != ''
+      if: env.elvish-package-installed != 'true' && steps.restore-cached-package.outputs.cache-hit != 'true' && inputs.git-ref != ''
       shell: elvish {0}
       run: |
         use os
 
-        var quiet = (==s '${{ inputs.quiet }}' true)
+        var quiet = (eq '${{ inputs.quiet }}' true)
 
         if (not $quiet) {
           echo 🧭Switching Elvish package '${{ inputs.package }}' to Git reference: '${{ inputs.git-ref }}'
@@ -110,6 +103,13 @@ runs:
         if (not $quiet) {
           echo ✅ Switched to Git reference '${{ inputs.git-ref }}'
         }
+
+    - name: Cache Elvish package
+      if: env.elvish-package-installed != 'true' && steps.restore-cached-package.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ env.elvish-package-path }}
+        key: ${{ env.elvish-package-cache-key }}
 
     - name: Display final confirmation message
       if: inputs.quiet != 'true'

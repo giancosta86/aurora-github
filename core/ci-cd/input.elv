@@ -76,10 +76,8 @@ fn file { |&optional=$false &can-be-missing=$false name value|
   -file-system-input &optional=$optional &can-be-missing=$can-be-missing file $name $value $os:is-regular~
 }
 
-fn list { |source|
-  put [(
-    str:split , $source |
-      each $str:trim-space~ |
-      keep-if $seq:is-non-empty~
-  )]
+fn comma-separated { |source|
+  str:split , $source |
+    each $str:trim-space~ |
+    keep-if $seq:is-non-empty~
 }
