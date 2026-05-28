@@ -62,7 +62,7 @@ runs:
     - name: Restore cached package
       if: env.elvish-package-installed != 'true'
       id: restore-cached-package
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         key: ${{ env.elvish-package-cache-key }}
         path: ${{ env.elvish-package-path }}
@@ -106,7 +106,7 @@ runs:
 
     - name: Cache Elvish package
       if: env.elvish-package-installed != 'true' && steps.restore-cached-package.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       with:
         path: ${{ env.elvish-package-path }}
         key: ${{ env.elvish-package-cache-key }}
