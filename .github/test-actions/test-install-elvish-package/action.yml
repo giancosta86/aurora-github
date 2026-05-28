@@ -16,9 +16,9 @@ runs:
 
         var package-path = (epm:metadata 'github.com/giancosta86/velvet')[dst]
 
-        echo elvish-package-path=$package-path >> (getenv GITHUB_ENV)
+        echo elvish-package-path=$package-path >> (get-env GITHUB_ENV)
 
-        echo expectedTag=v3 >> (getenv GITHUB_ENV)
+        echo expectedTag=v3 >> (get-env GITHUB_ENV)
 
     - shell: elvish {0}
       run: echo 🎭 Install the Velvet package from the main branch...
