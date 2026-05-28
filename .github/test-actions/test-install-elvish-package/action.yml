@@ -1,8 +1,14 @@
 name: Test install-elvish-package
+description: Tests for install-elvish-package
 
 runs:
   using: composite
   steps:
+    - name: Install Elvish
+      shell: bash
+      run: |
+        curl -so - https://dl.elv.sh/linux-amd64/elvish-v0.21.0.tar.gz | tar -xzvC /usr/local/bin
+
     - name: Setup the environment variables for the test
       shell: elvish {0}
       run: |
@@ -10,49 +16,45 @@ runs:
 
         var package-path = (epm:metadata 'github.com/giancosta86/velvet')[dst]
 
-        echo elvish-package-path=$package-path >> (get-env GITHUB_ENV)
+        echo elvish-package-path=$package-path >> ${{ env.GITHUB_ENV }}
 
-        echo expectedTag=v1 >> (get-env GITHUB_ENV)
+        echo expectedTag=v3 >> ${{ env.GITHUB_ENV }}
 
-    - shell: bash
-      run: echo "🎭 Install the Velvet package from the main branch..."
-
-    - uses: ./actions/install-elvish-package
-      with:
-        package: github.com/giancosta86/velvet
-        quiet: false
-
-    - shell: bash
-      working-directory: ${{ env.elvish-package-path }}
-      run: |
-        gitBranch="$(git branch --show-current)"
-
-        if [[ "$gitBranch" == 'main' ]]
-        then
-          echo "✅The package is on the main branch, as expected!"
-        else
-          echo "❌Current Git branch instead of main: '$gitBranch'"
-          exit 1
-        fi
-
-    - shell: bash
-      run: echo "🎭 Setup the Velvet package to use tag $expectedTag..."
+    - shell: elvish {0}
+      run: echo 🎭 Install the Velvet package from the main branch...
 
     - uses: ./actions/install-elvish-package
       with:
         package: github.com/giancosta86/velvet
-        git-ref: ${{ env.expectedTag }}
-        quiet: false
 
-    - shell: bash
+    - shell: elvish {0}
       working-directory: ${{ env.elvish-package-path }}
       run: |
-        gitTag="$(git describe --tags --always)"
+        var git-branch = (git branch --show-current)
 
-        if [[ "$gitTag" == "$expectedTag" ]]
-        then
-          echo "✅The package is on the $expectedTag tag, as expected!"
-        else
-          echo "❌Current Git tag instead of $expectedTag: '$gitTag'"
-          exit 1
-        fi
+        if (eq $git-branch main) {
+          echo ✅ The package is on the main branch, as expected!
+        } else {
+          fail 'Current Git branch instead of main: '$git-branch
+        }
+
+    - shell: elvish {0}
+      run: echo 🎭 Setup the Velvet package to use tag ${{ env.expectedTag }}...
+
+    - uses: ./actions/install-elvish-package
+      with:
+        package: github.com/giancosta86/velvet@${{ env.expectedTag }}
+        quiet: false
+
+    - shell: elvish {0}
+      working-directory: ${{ env.elvish-package-path }}
+      run: |
+        var git-tag = (git describe --tags --always)
+
+        var expected-tag = '${{ env.expectedTag }}'
+
+        if (eq $git-tag $expected-tag) {
+          echo ✅The package is on the $expected-tag tag, as expected!
+        } else {
+          fail 'Current Git tag instead of '$expected-tag': '$git-tag
+        }

@@ -8,41 +8,41 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-setup-elvish-context:
-    if: false
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: ./.github/test-actions/test-setup-elvish-context
-        with:
-          skip-if-existing: false
-
-  test-setup-elvish-context-in-subsequent-job:
-    if: false
-    runs-on: ubuntu-24.04
-    needs: test-setup-elvish-context
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: ./.github/test-actions/test-setup-elvish-context
-        with:
-          skip-if-existing: true
-
-      - uses: ./.github/test-actions/test-setup-elvish-context
-        with:
-          skip-if-existing: true
-
   test-install-elvish-package:
     if: ${{ always() }}
     runs-on: ubuntu-24.04
-    needs: test-setup-elvish-context-in-subsequent-job
     steps:
       - uses: actions/checkout@v4
 
       - uses: ./actions/setup-elvish-context
 
       - uses: ./.github/test-actions/test-install-elvish-package
+
+  # test-setup-elvish-context:
+  #   if: false
+  #   runs-on: ubuntu-24.04
+  #   needs: test-install-elvish-package
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - uses: ./.github/test-actions/test-setup-elvish-context
+  #       with:
+  #         skip-if-existing: false
+
+  # test-setup-elvish-context-in-subsequent-job:
+  #   if: false
+  #   runs-on: ubuntu-24.04
+  #   needs: test-setup-elvish-context
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - uses: ./.github/test-actions/test-setup-elvish-context
+  #       with:
+  #         skip-if-existing: true
+
+  #     - uses: ./.github/test-actions/test-setup-elvish-context
+  #       with:
+  #         skip-if-existing: true
 
   # test-detect-branch-version:
   #   if: false
@@ -355,9 +355,9 @@ jobs:
     if: ${{ always() }}
     runs-on: ubuntu-24.04
     needs:
-      - test-setup-elvish-context
-      - test-setup-elvish-context-in-subsequent-job
       - test-install-elvish-package
+      # - test-setup-elvish-context
+      # - test-setup-elvish-context-in-subsequent-job
       # - test-detect-branch-version
       # - test-check-action-references
       # - test-check-project-license
