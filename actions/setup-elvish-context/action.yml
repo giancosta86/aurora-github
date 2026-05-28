@@ -44,7 +44,7 @@ runs:
     - name: Restore cached Elvish binary
       id: restore-cached-elvish
       if: env.skip-binary != 'true'
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         key: ${{ env.elvish-cache-key }}
         path: ${{ env.elvish-command-path }}
@@ -67,7 +67,7 @@ runs:
 
     - name: Cache Elvish binary
       if: env.skip-binary != 'true' && steps.restore-cached-elvish.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       with:
         path: ${{ env.elvish-command-path }}
         key: ${{ env.elvish-cache-key }}
@@ -95,8 +95,8 @@ runs:
       run: |
         echo 🔮 Now booting aurora-github for Elvish!
 
-    - name: Setup aurora-elvish
-      uses: giancosta86/aurora-github/actions/setup-elvish-package@v11.0.0
+    - name: Install Ethereal
+      uses: giancosta86/aurora-github/actions/install-elvish-package@v11.0.0
       with:
         package: github.com/giancosta86/aurora-elvish
         git-ref: v1
