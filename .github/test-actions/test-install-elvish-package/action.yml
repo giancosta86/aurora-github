@@ -16,9 +16,9 @@ runs:
 
         var package-path = (epm:metadata 'github.com/giancosta86/velvet')[dst]
 
-        echo elvish-package-path=$package-path >> (get-env GITHUB_ENV)
+        echo package-path=$package-path >> (get-env GITHUB_ENV)
 
-        echo expectedTag=v3 >> (get-env GITHUB_ENV)
+        echo expected-tag=v3 >> (get-env GITHUB_ENV)
 
     - shell: elvish {0}
       run: echo 🎭 Install the Velvet package from the main branch...
@@ -28,7 +28,7 @@ runs:
         package: github.com/giancosta86/velvet
 
     - shell: elvish {0}
-      working-directory: ${{ env.elvish-package-path }}
+      working-directory: ${{ env.package-path }}
       run: |
         var git-branch = (git branch --show-current)
 
@@ -39,19 +39,19 @@ runs:
         }
 
     - shell: elvish {0}
-      run: echo 🎭 Setup the Velvet package to use tag ${{ env.expectedTag }}...
+      run: echo 🎭 Setup the Velvet package to use tag ${{ env.expected-tag }}...
 
     - uses: ./actions/install-elvish-package
       with:
-        package: github.com/giancosta86/velvet@${{ env.expectedTag }}
+        package: github.com/giancosta86/velvet@${{ env.expected-tag }}
         quiet: false
 
     - shell: elvish {0}
-      working-directory: ${{ env.elvish-package-path }}
+      working-directory: ${{ env.package-path }}/${{ env.expected-tag }}
       run: |
         var git-tag = (git describe --tags --always)
 
-        var expected-tag = '${{ env.expectedTag }}'
+        var expected-tag = '${{ env.expected-tag }}'
 
         if (eq $git-tag $expected-tag) {
           echo ✅The package is on the $expected-tag tag, as expected!
