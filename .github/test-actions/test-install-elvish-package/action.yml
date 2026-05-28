@@ -18,7 +18,7 @@ runs:
 
         echo package-path=$package-path >> (get-env GITHUB_ENV)
 
-        echo expected-tag=v3 >> (get-env GITHUB_ENV)
+        echo expected-tag=v3.6.0 >> (get-env GITHUB_ENV)
 
     - shell: elvish {0}
       run: echo 🎭 Install the Velvet package from the main branch...
