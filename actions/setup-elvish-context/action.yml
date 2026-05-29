@@ -99,8 +99,6 @@ runs:
       uses: giancosta86/aurora-github/actions/install-elvish-package@v11.0.0
       with:
         package: github.com/giancosta86/aurora-elvish
-        git-ref: v1
-        quiet: ${{ inputs.quiet }}
 
     - name: Print final confirmation message
       if: inputs.quiet != 'true'

@@ -1,0 +1,32 @@
+name: Install Elvish packages
+description: Installs packages for the Elvish shell, supporting the extended format introduced by epm-plus.
+
+inputs:
+  packages:
+    description: The space-separated `<name>[@<version>]` packages to install.
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: elvish {0}
+      run: |
+        if (eq '${{ inputs.packages }}' '') {
+          fail 'Missing input: packages'
+        }
+
+    - name: Install epm-plus
+      shell: elvish {0}
+      run: |
+        use epm
+        epm:install github.com/giancosta86/epm-plus
+
+    - name: Install packages via epm-plus
+      shell: elvish {0}
+      run: |
+        use epm
+        use github.com/giancosta86/epm-plus/epm-plus
+
+        epm-plus:patch-epm
+
+        epm:install '${{ inputs.packages }}'

@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-install-elvish-package:
+  test-install-elvish-packages:
     if: ${{ always() }}
     runs-on: ubuntu-24.04
     steps:
@@ -16,7 +16,7 @@ jobs:
 
       - uses: ./actions/setup-elvish-context
 
-      - uses: ./.github/test-actions/test-install-elvish-package
+      - uses: ./.github/test-actions/test-install-elvish-packages
 
   # test-setup-elvish-context:
   #   if: false
@@ -355,7 +355,7 @@ jobs:
     if: ${{ always() }}
     runs-on: ubuntu-24.04
     needs:
-      - test-install-elvish-package
+      - test-install-elvish-packages
       # - test-setup-elvish-context
       # - test-setup-elvish-context-in-subsequent-job
       # - test-detect-branch-version

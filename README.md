@@ -14,7 +14,7 @@ The actions can be grouped by technology:
 
 - [setup-elvish-context](actions/setup-elvish-context/README.md)
 
-- [install-elvish-package](actions/install-elvish-package/README.md)
+- [install-elvish-packages](actions/install-elvish-packages/README.md)
 
 - [verify-elvish-package](actions/verify-elvish-package/README.md)
 

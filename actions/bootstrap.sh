@@ -66,14 +66,17 @@ shouldInstallCommand() {
     fi
   fi
 
-  trace "💭The '$command' command is not available - now installing it..."
+  trace "💭 The '$command' command is not available - now installing it..."
   return 0
 }
-
 
 installElvish() {
   local version="${1:-0.21.0}"
   local architecture="${2:-linux-amd64}"
 
+  echo "📥 Installing Elvish $version for $architecture..."
+
   curl -so - https://dl.elv.sh/${architecture}/elvish-v${version}.tar.gz | tar -xzvC /usr/local/bin
+
+  echo "🚀 Elvish installed!"
 }

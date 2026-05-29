@@ -1,5 +1,5 @@
-name: Test install-elvish-package
-description: Tests for install-elvish-package
+name: Test install-elvish-packages
+description: Tests for install-elvish-packages
 
 runs:
   using: composite
@@ -23,11 +23,11 @@ runs:
         echo expected-tag=v3.6.0 >> (get-env GITHUB_ENV)
 
     - shell: elvish {0}
-      run: echo 🎭 Install the Velvet package from the main branch...
+      run: echo 🎭 Installing the Velvet package from the main branch...
 
-    - uses: ./actions/install-elvish-package
+    - uses: ./actions/install-elvish-packages
       with:
-        package: github.com/giancosta86/velvet
+        packages: github.com/giancosta86/velvet
 
     - shell: elvish {0}
       working-directory: ${{ env.package-path }}
@@ -43,10 +43,9 @@ runs:
     - shell: elvish {0}
       run: echo 🎭 Setup the Velvet package to use tag ${{ env.expected-tag }}...
 
-    - uses: ./actions/install-elvish-package
+    - uses: ./actions/install-elvish-packages
       with:
-        package: github.com/giancosta86/velvet@${{ env.expected-tag }}
-        quiet: false
+        packages: github.com/giancosta86/velvet@${{ env.expected-tag }}
 
     - shell: elvish {0}
       working-directory: ${{ env.package-path }}/${{ env.expected-tag }}
