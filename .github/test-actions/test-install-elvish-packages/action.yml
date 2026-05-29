@@ -41,7 +41,7 @@ runs:
         }
 
     - shell: elvish {0}
-      run: echo 🎭 Setup the Velvet package to use tag ${{ env.expected-tag }}...
+      run: echo 🎭 Installing Velvet at tag ${{ env.expected-tag }}...
 
     - uses: ./actions/install-elvish-packages
       with:
