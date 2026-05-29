@@ -14,8 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./actions/setup-elvish-context
-
       - uses: ./.github/test-actions/test-install-elvish-packages
 
   # test-setup-elvish-context:

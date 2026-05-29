@@ -98,7 +98,7 @@ runs:
     - name: Install Ethereal
       uses: giancosta86/aurora-github/actions/install-elvish-packages@v11.0.0
       with:
-        package: github.com/giancosta86/aurora-elvish
+        packages: github.com/giancosta86/aurora-elvish
 
     - name: Print final confirmation message
       if: inputs.quiet != 'true'
