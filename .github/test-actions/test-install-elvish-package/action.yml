@@ -7,7 +7,9 @@ runs:
     - name: Install Elvish
       shell: bash
       run: |
-        curl -so - https://dl.elv.sh/linux-amd64/elvish-v0.21.0.tar.gz | tar -xzvC /usr/local/bin
+        source "${{ github.action_path }}/../../../actions/bootstrap.sh"
+
+        installElvish
 
     - name: Setup the environment variables for the test
       shell: elvish {0}

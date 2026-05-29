@@ -20,7 +20,7 @@ runs:
     - name: Initialize the action
       shell: bash
       run: |
-        source "${{ github.action_path }}/bootstrap.sh"
+        source "${{ github.action_path }}/../bootstrap.sh"
 
         requireInput version '${{ inputs.version }}'
         requireInput skip-if-existing '${{ inputs.skip-if-existing }}'
