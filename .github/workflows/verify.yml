@@ -21,7 +21,7 @@ jobs:
   # test-setup-elvish-context:
   #   if: false
   #   runs-on: ubuntu-24.04
-  #   needs: test-install-elvish-package
+  #   needs: test-install-elvish-packages
   #   steps:
   #     - uses: actions/checkout@v4
 
@@ -47,7 +47,7 @@ jobs:
   # test-detect-branch-version:
   #   if: false
   #   runs-on: ubuntu-24.04
-  #   needs: test-install-elvish-package
+  #   needs: test-install-elvish-packages
   #   steps:
   #     - uses: actions/checkout@v4
   #     - uses: ./.github/test-actions/test-detect-branch-version

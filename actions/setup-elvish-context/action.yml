@@ -96,7 +96,7 @@ runs:
         echo 🔮 Now booting aurora-github for Elvish!
 
     - name: Install Ethereal
-      uses: giancosta86/aurora-github/actions/install-elvish-package@v11.0.0
+      uses: giancosta86/aurora-github/actions/install-elvish-packages@v11.0.0
       with:
         package: github.com/giancosta86/aurora-elvish
 
