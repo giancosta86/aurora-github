@@ -4,7 +4,7 @@ description: Runs inline code via the Velvet test system.
 inputs:
   working-directory:
     description: The $pwd for the test code.
-    default: .
+    default: /tmp
 
   velvet-version:
     description: The version of Velvet to use.
