@@ -12,7 +12,7 @@ runs:
 
     - uses: ./actions/run-velvet-code
       with:
-        working-directory: .
+        working-directory: /usr
         code: |
           >> 'Basic test' {
             echo Hello, world!
