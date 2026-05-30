@@ -82,3 +82,14 @@ runs:
           }
 
         echo ✅ Multiple packages installed successfully!
+
+    - shell: elvish {0}
+      run: echo 🎭 Trying to re-install multiple packages...
+
+    - uses: ./actions/install-elvish-packages
+      with:
+        packages: github.com/giancosta86/primrose github.com/giancosta86/astral-bridge
+
+    - shell: elvish {0}
+      run: |
+        echo ✅ Re-installation attempt performed!

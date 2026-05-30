@@ -31,4 +31,8 @@ runs:
         epm-plus:patch-epm
 
         str:fields '${{ inputs.packages }}' |
-          epm:install (all)
+          each { |package|
+            if (not (epm:is-installed $package)) {
+              epm:install $package
+            }
+          }
