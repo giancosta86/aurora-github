@@ -1,5 +1,5 @@
-name: Setup an Elvish context
-description: Installs the Elvish shell and a set of core libraries.
+name: Run Velvet code
+description: Runs inline code via the Velvet test system.
 
 inputs:
   working-directory:
@@ -11,7 +11,7 @@ inputs:
     default: v4
 
   code:
-    description: The test code, as if it where.
+    description: The test code, as if it were the content of a .test.elv script.
 
 runs:
   using: composite
