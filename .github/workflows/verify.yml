@@ -24,10 +24,14 @@ jobs:
 
       - uses: ./.github/test-actions/test-setup-elvish-context
 
+  test-elvish-platform:
+    runs-on: ubuntu-24.04
+    needs: test-setup-elvish-context
+
   test-detect-branch-version:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-install-elvish-packages
+    needs: test-elvish-platform
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/test-actions/test-detect-branch-version
@@ -337,6 +341,7 @@ jobs:
     needs:
       - test-install-elvish-packages
       - test-setup-elvish-context
+      - test-elvish-platform
       - test-detect-branch-version
       - test-check-action-references
       - test-check-project-license
