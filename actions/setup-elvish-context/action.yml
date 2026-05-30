@@ -1,18 +1,14 @@
 name: Setup an Elvish context
-description: Installs the Elvish shell, caching it between multiple jobs of the same workflow execution.
+description: Installs the Elvish shell and a set of core libraries.
 
 inputs:
   version:
-    description: The requested Elvish version.
+    description: The Elvish version to install.
     default: 0.21.0
 
-  skip-if-existing:
-    description: If the `elvish` command is available, just do nothing.
-    default: true
-
-  quiet:
-    description: Only print warnings and errors.
-    default: true
+  ethereal-version:
+    description: The Ethereal version to install - or empty string to skip.
+    default: v1
 
 runs:
   using: composite
@@ -22,55 +18,18 @@ runs:
       run: |
         source "${{ github.action_path }}/../bootstrap.sh"
 
-        requireInput version '${{ inputs.version }}'
-        requireInput skip-if-existing '${{ inputs.skip-if-existing }}'
-        requireInput quiet '${{ inputs.quiet }}'
-
-        tracingEnabled="$(not '${{ inputs.quiet }}')"
-        setTracing $tracingEnabled
-
-        if shouldInstallCommand elvish '${{ inputs.skip-if-existing }}'
+        if commandExists elvish
         then
-          elvishCacheKey="${{ github.workflow }}-${{ github.run_number }}-elvish-shell-v${{ inputs.version }}"
-          trace "🔎Elvish cache key: '$elvishCacheKey'"
-
-          writeEnv elvish-cache-key "$elvishCacheKey"
-          writeEnv elvish-command-path /usr/local/bin/elvish
-          writeEnv skip-binary false
+          writeEnv skip-install true
         else
-          writeEnv skip-binary true
+          writeEnv skip-install false
         fi
 
-    - name: Restore cached Elvish binary
-      id: restore-cached-elvish
-      if: env.skip-binary != 'true'
-      uses: actions/cache/restore@v5
-      with:
-        key: ${{ env.elvish-cache-key }}
-        path: ${{ env.elvish-command-path }}
-
-    - name: Confirm cache hit for Elvish binary
-      if: env.skip-binary != 'true' && inputs.quiet != 'true' && steps.restore-cached-elvish.outputs.cache-hit == 'true'
-      shell: elvish {0}
-      run: echo 🚀 Elvish ${{ inputs.version }} loaded from cache! > &2
-
     - name: Install Elvish
-      if: env.skip-binary != 'true' && steps.restore-cached-elvish.outputs.cache-hit != 'true'
-      uses: elves/setup-elvish@v1
-      with:
-        elvish-version: ${{ inputs.version }}
-
-    - name: Confirm installation for Elvish
-      if: env.skip-binary != 'true' && inputs.quiet != 'true' && steps.restore-cached-elvish.outputs.cache-hit != 'true'
-      shell: elvish {0}
-      run: echo 🚀 Elvish ${{ inputs.version }} installed! > &2
-
-    - name: Cache Elvish binary
-      if: env.skip-binary != 'true' && steps.restore-cached-elvish.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v5
-      with:
-        path: ${{ env.elvish-command-path }}
-        key: ${{ env.elvish-cache-key }}
+      if: env.skip-install != 'true'
+      shell: bash
+      run: |
+        installElvish '${{ inputs.version }}'
 
     - name: Link the aurora-github core as an Elvish package
       shell: elvish {0}
@@ -79,29 +38,22 @@ runs:
         use os
         use path
 
-        os:mkdir-all $epm:managed-dir
-
-        var aurora-github-core-directory = (path:join '${{ github.action_path }}' .. .. core)
-
-        var link-path = (path:join $epm:managed-dir aurora-github)
+        var link-path = (
+          path:join $epm:managed-dir github.com giancosta86 aurora-github
+        )
 
         if (not (os:exists $link-path)) {
+          os:mkdir-all $epm:managed-dir
+
+          var aurora-github-core-directory = (
+            path:join '${{ github.action_path }}' .. .. core
+          )
+
           os:symlink $aurora-github-core-directory $link-path
         }
 
-    - name: Print core confirmation message
-      if: inputs.quiet != 'true'
-      shell: elvish {0}
-      run: |
-        echo 🔮 Now booting aurora-github for Elvish!
-
     - name: Install Ethereal
+      if: inputs.ethereal-version != ''
       uses: giancosta86/aurora-github/actions/install-elvish-packages@v11.0.0
       with:
-        packages: github.com/giancosta86/aurora-elvish
-
-    - name: Print final confirmation message
-      if: inputs.quiet != 'true'
-      shell: elvish {0}
-      run: |
-        echo ✅ Elvish context ready!
+        packages: github.com/giancosta86/ethereal@${{ inputs.ethereal-version }}

@@ -1,22 +1,13 @@
 name: Test setup-elvish-context
-
-inputs:
-  skip-if-existing:
-    description: Forwarded to the action.
+description: Tests for setup-elvish-context
 
 runs:
   using: composite
   steps:
     - shell: bash
-      run: echo "🎭 Setup the Elvish shell..."
+      run: echo "🎭 Setting up the Elvish shell..."
 
     - uses: ./actions/setup-elvish-context
-      with:
-        skip-if-existing: ${{ inputs.skip-if-existing }}
-        quiet: false
-
-    - shell: bash
-      run: echo "🎭 Run Elvish code to confirm..."
 
     - shell: elvish {0}
       run: |
