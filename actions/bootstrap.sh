@@ -14,7 +14,7 @@ installElvish() {
 
   echo "📥 Installing Elvish $version for $architecture..."
 
-  curl -so - https://dl.elv.sh/${architecture}/elvish-v${version}.tar.gz | tar -xzvC /usr/local/bin
+  curl -so - https://dl.elv.sh/${architecture}/elvish-v${version}.tar.gz | tar -xzC /usr/local/bin
 
   echo "🚀 Elvish ready!"
 }
