@@ -36,7 +36,6 @@ runs:
           &velvet-version=(
             input:string velvet-version '${{ inputs.velvet-version }}'
           )
-          &code=(
-            input:string code '${{ inputs.code }}'
-          )
         ]
+      env:
+        velvet-code: ${{ inputs.code }}
