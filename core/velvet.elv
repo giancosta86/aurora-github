@@ -12,12 +12,13 @@ fn run-code { |settings|
 
   fs:with-temp-file { |test-script-path|
     {
-      printf "set pwd = ''%s''\n" $working-directory
+      str:replace "'" "''" $working-directory |
+        echo "cd '"(all)"'"
 
       echo
 
       echo $code
-    } >  $test-script-path
+    } > $test-script-path
 
     velvet-module:velvet &flawless $test-script-path
   }
