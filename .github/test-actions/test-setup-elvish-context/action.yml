@@ -17,7 +17,7 @@ runs:
 
     - shell: elvish {0}
       run: |
-        echo 🎭 Trying to access the aurora-github library...
+        echo 🎭 Trying to access the aurora-github core library...
 
         use github.com/giancosta86/aurora-github/math-test
 
@@ -31,6 +31,10 @@ runs:
       run: |
         echo 🎭 Trying to access the ethereal library...
 
+        if (not epm:is-installed github.com/giancosta86/ethereal) {
+          fail 'Ethereal should be installed!'
+        }
+
         use github.com/giancosta86/ethereal/v1/lang
 
         if (== (lang:ternary $false 90 98) 98) {
@@ -40,6 +44,14 @@ runs:
         }
 
     - shell: elvish {0}
+      run: |
+        use epm
+
+        echo 🗑 Uninstalling ethereal...
+
+        epm:uninstall github.com/giancosta86/ethereal
+
+    - shell: elvish {0}
       run: echo 🎭 Setting up an Elvish context without Ethereal...
 
     - uses: ./actions/setup-elvish-context
@@ -47,4 +59,11 @@ runs:
         ethereal-version: ""
 
     - shell: elvish {0}
-      run: echo ✅ All tests OK!
+      run: |
+        use epm
+
+        if (epm:is-installed github.com/giancosta86/ethereal) {
+          fail 'Ethereal should not be installed!'
+        } else {
+          echo ✅ Elvish context ready, without Ethereal!
+        }
