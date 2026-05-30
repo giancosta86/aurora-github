@@ -8,31 +8,28 @@ runs:
       uses: ./actions/setup-elvish-context
 
     - shell: elvish {0}
-      run: echo 🎭 Running a basic test suite
+      run: echo 🎭 Running a basic test suite...
 
     - uses: ./actions/run-velvet-code
       with:
-        working-directory: /usr
         code: |
           >> 'Basic test' {
             echo Hello, world!
 
             + 90 8 |
               should-be 98
-
-            put $pwd |
-              should-be DODO
           }
 
-    # - shell: elvish {0}
-    #   run: echo 🎭 Testing a custom working-directory
+    - shell: elvish {0}
+      run: echo 🎭 Testing a custom working-directory...
 
-    # - uses: ./actions/run-velvet-code
-    #   with:
-    #     code: |
-    #       >> 'Basic test' {
-    #         echo Hello, world!
-
-    #         + 90 8 |
-    #           should-be 98
-    #       }
+    - uses: ./actions/run-velvet-code
+      with:
+        working-directory: /usr/local
+        code: |
+          >> 'The current working directory' {
+            >> 'should be the requested one' {
+              put $pwd |
+                should-be /usr/local
+            }
+          }
