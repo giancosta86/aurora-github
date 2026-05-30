@@ -27,6 +27,8 @@ jobs:
   test-elvish-platform:
     runs-on: ubuntu-24.04
     needs: test-setup-elvish-context
+    steps:
+      - uses: actions/checkout@v4
 
   test-detect-branch-version:
     if: false
