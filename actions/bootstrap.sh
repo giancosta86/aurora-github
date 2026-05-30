@@ -16,5 +16,5 @@ installElvish() {
 
   curl -so - https://dl.elv.sh/${architecture}/elvish-v${version}.tar.gz | tar -xzvC /usr/local/bin
 
-  echo "🚀 Elvish installed!"
+  echo "🚀 Elvish ready!"
 }

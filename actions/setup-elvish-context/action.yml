@@ -18,10 +18,8 @@ runs:
       run: |
         source "${{ github.action_path }}/../bootstrap.sh"
 
-        if commandExists elvish
+        if ! commandExists elvish
         then
-          echo "🌟 Elvish already installed!"
-        else
           installElvish '${{ inputs.version }}'
         fi
 
