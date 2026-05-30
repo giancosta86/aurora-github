@@ -6,8 +6,7 @@ fn run-code { |settings|
   var code = $settings[code]
 
   var velvet-module: = (
-    printf 'github.com/giancosta86/velvet/%s/velvet' |
-      use-mod (all)
+    use-mod 'github.com/giancosta86/velvet/'$velvet-version'/velvet'
   )
 
   fs:with-temp-file { |test-script-path|
