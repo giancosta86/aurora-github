@@ -1,3 +1,3 @@
-fn test-add { |x y|
+fn binary-add { |x y|
   + x y
 }

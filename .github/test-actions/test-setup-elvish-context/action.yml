@@ -21,7 +21,7 @@ runs:
 
         use github.com/giancosta86/aurora-github/math-test
 
-        if (== (math-test:add 90 2) 92) {
+        if (== (math-test:binary-add 90 2) 92) {
           echo ✅ aurora-github library accessible!
         } else {
          fail 'Error while accessing the library!'
