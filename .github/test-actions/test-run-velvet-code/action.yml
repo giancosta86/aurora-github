@@ -7,6 +7,10 @@ runs:
     - name: Setup Elvish context
       uses: ./actions/setup-elvish-context
 
-    - shell: elvish {0}
-      run: |
-        fail 'IMPLEMENT THIS!'
+    - uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'Basic test' {
+            echo Hello, world!
+            fail-test
+          }

@@ -1,39 +1,41 @@
 use os
 use path
 use str
-use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/seq
+
+use github.com/giancosta86/ethereal/v1/seq
 
 fn string { |&optional=$false name value|
-  var trimmed-value = (str:trim-space $value)
+  var trimmed-value = (
+    str:trim-space $value |
+      seq:empty-to-default
+  )
 
-  if (seq:is-empty $trimmed-value) {
-    if $optional {
-      put $nil
-      return
-    } else {
-      fail 'Missing input: '''$name'''!'
-    }
+  if (
+    and (eq $trimmed-value $nil) (not $optional)
+  ) {
+    fail 'Missing input: '''$name'''!'
   }
 
   put $trimmed-value
 }
 
-fn -parse-string { |&optional=$false name value parser|
-  var source-string = (string &optional=$optional $name $value)
-  if (not $source-string) {
-    put $nil
-    return
-  }
+fn -parse-value { |&optional=$false name value parser|
+  var source-string = (
+    string &optional=$optional $name $value
+  )
 
-  $parser $source-string
+  if $source-string {
+    $parser $source-string
+  } else {
+    put $nil
+  }
 }
 
 fn bool { |&optional=$false name value|
-  -parse-string &optional=$optional $name $value { |source-string|
-    if (==s $source-string true) {
+  -parse-value &optional=$optional $name $value { |source-string|
+    if (eq $source-string true) {
       put $true
-    } elif (==s $source-string false) {
+    } elif (eq $source-string false) {
       put $false
     } else {
       fail 'Invalid boolean value for the '''$name''' input: '''$source-string'''!'
@@ -53,16 +55,15 @@ fn enum { |&optional=$false name value admissible-list|
 
 fn -file-system-input { |&optional=$false &can-be-missing=$false type-description name value path-checker|
   -parse-string &optional=$optional $name $value { |source-string|
-    var clean-path = (path:clean $source-string)
+    var abs-path = (path:abs $source-string)
 
-    if ($path-checker $clean-path) {
-      put $clean-path
+    if ($path-checker $abs-path) {
+      put $abs-path
     } else {
       if $can-be-missing {
-        console:inspect &emoji=💭 'Missing '$type-description' for input '''$name''' at path' $clean-path
         put $nil
       } else {
-        fail 'Inexistent '$type-description' for input '''$name''' at path: '''$clean-path'''!'
+        fail 'Inexistent '$type-description' for input '''$name''' at path: '''$abs-path'''!'
       }
     }
   }

@@ -26,16 +26,17 @@ runs:
     - name: Create and run the test script
       shell: elvish {0}
       run: |
-        use path
-        use github.com/giancosta86/ethereal/v1/fs
-        use github.com/giancosta86/velvet/${{ inputs.velvet-version }}/velvet
+        use github.com/giancosta86/aurora-github/ci-cd/input
+        use github.com/giancosta86/aurora-github/velvet
 
-        var pwd-for-script = (path:abs '${{ inputs.working-directory }}')
-
-        fs:with-temp-file { |test-script-path|
-          echo 'set pwd = '''$pwd-for-path''' > $test-script-path
-
-          echo $code >> $test-script-path
-
-          velvet:velvet &flawless $test-script-path
-        }
+        velvet:run-code [
+          &working-directory=(
+            input:string working-directory '${{ inputs.working-directory }}'
+          )
+          &velvet-version=(
+            input:string velvet-version '${{ inputs.velvet-version }}'
+          )
+          &code=(
+            input:string code '${{ inputs.code }}'
+          )
+        ]
