@@ -31,6 +31,8 @@ runs:
       run: |
         echo 🎭 Trying to access the ethereal library...
 
+        use epm
+
         if (not (epm:is-installed github.com/giancosta86/ethereal)) {
           fail 'Ethereal should be installed!'
         }
