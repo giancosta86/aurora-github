@@ -16,6 +16,8 @@ runs:
     - name: Install Elvish
       shell: bash
       run: |
+        source "${{ github.action_path }}/../bootstrap.sh"
+
         if commandExists elvish
         then
           installElvish '${{ inputs.version }}'
