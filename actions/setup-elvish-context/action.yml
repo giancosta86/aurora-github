@@ -13,23 +13,15 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Initialize the action
+    - name: Install Elvish
       shell: bash
       run: |
-        source "${{ github.action_path }}/../bootstrap.sh"
-
         if commandExists elvish
         then
-          writeEnv skip-install true
+          installElvish '${{ inputs.version }}'
         else
-          writeEnv skip-install false
+          echo "🌟 Elvish already installed!"
         fi
-
-    - name: Install Elvish
-      if: env.skip-install != 'true'
-      shell: bash
-      run: |
-        installElvish '${{ inputs.version }}'
 
     - name: Link the aurora-github core as an Elvish package
       shell: elvish {0}
