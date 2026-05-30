@@ -7,6 +7,9 @@ runs:
     - name: Setup Elvish context
       uses: ./actions/setup-elvish-context
 
+    - shell: elvish {0}
+      run: echo 🎭 Running a basic test suite
+
     - uses: ./actions/run-velvet-code
       with:
         code: |
@@ -15,4 +18,20 @@ runs:
 
             + 90 8 |
               should-be 98
+
+            put $pwd |
+              should-be DODO
           }
+
+    # - shell: elvish {0}
+    #   run: echo 🎭 Testing a custom working-directory
+
+    # - uses: ./actions/run-velvet-code
+    #   with:
+    #     code: |
+    #       >> 'Basic test' {
+    #         echo Hello, world!
+
+    #         + 90 8 |
+    #           should-be 98
+    #       }
