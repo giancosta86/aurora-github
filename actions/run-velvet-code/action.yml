@@ -1,0 +1,41 @@
+name: Setup an Elvish context
+description: Installs the Elvish shell and a set of core libraries.
+
+inputs:
+  working-directory:
+    description: The $pwd for the test code.
+    default: .
+
+  velvet-version:
+    description: The version of Velvet to use.
+    default: v4
+
+  code:
+    description: The test code, as if it where.
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+
+    - name: Install Velvet
+      uses: giancosta86/aurora-github/actions/install-elvish-packages@v11.0.0
+      with:
+        packages: github.com/giancosta86/velvet@${{ inputs.velvet-version }}
+
+    - name: Create and run the test script
+      shell: elvish {0}
+      run: |
+        use path
+        use github.com/giancosta86/ethereal/v1/fs
+        use github.com/giancosta86/velvet/${{ inputs.velvet-version }}/velvet
+
+        var pwd-for-script = (path:abs '${{ inputs.working-directory }}')
+
+        fs:with-temp-file { |test-script-path|
+          echo 'set pwd = '''$pwd-for-path''' > $test-script-path
+
+          echo $code >> $test-script-path
+
+          velvet:velvet &flawless $test-script-path
+        }
