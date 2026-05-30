@@ -20,9 +20,9 @@ runs:
 
         if commandExists elvish
         then
-          installElvish '${{ inputs.version }}'
-        else
           echo "🌟 Elvish already installed!"
+        else
+          installElvish '${{ inputs.version }}'
         fi
 
     - name: Link the aurora-github core as an Elvish package
