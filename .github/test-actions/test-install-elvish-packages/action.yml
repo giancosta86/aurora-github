@@ -59,3 +59,26 @@ runs:
         } else {
           fail 'Current Git tag instead of '$expected-tag': '$git-tag
         }
+
+    - shell: elvish {0}
+      run: echo 🎭 Installing multiple packages...
+
+    - uses: ./actions/install-elvish-packages
+      with:
+        packages: github.com/giancosta86/primrose github.com/giancosta86/astral-bridge
+
+    - shell: elvish {0}
+      run: |
+        use epm
+
+        all [
+          primrose
+          astral-bridge
+        ] |
+          each { |package-name|
+            if (not (epm:is-installed github.com/giancosta86/$package-name)) {
+              fail $package-name' not installed!'
+            }
+          }
+
+        echo ✅ Multiple packages installed successfully!
