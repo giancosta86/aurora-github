@@ -37,7 +37,8 @@ runs:
         )
 
         if (not (os:exists $link-path)) {
-          os:mkdir-all $epm:managed-dir
+          path:dir $link-path |
+            os:mkdir-all (all)
 
           var aurora-github-core-directory = (
             path:join '${{ github.action_path }}' .. .. core
