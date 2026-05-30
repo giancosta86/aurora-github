@@ -1,5 +1,5 @@
 name: Test install-elvish-packages
-description: Tests for install-elvish-packages
+description: Tests for install-elvish-packages.
 
 runs:
   using: composite

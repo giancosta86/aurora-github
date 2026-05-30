@@ -1,5 +1,5 @@
 name: Test setup-elvish-context
-description: Tests for setup-elvish-context
+description: Tests for setup-elvish-context.
 
 runs:
   using: composite

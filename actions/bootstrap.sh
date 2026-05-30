@@ -2,13 +2,6 @@ set -e
 set -u
 set -o pipefail
 
-writeEnv() {
-  local name="$1"
-  local value="$2"
-
-  echo "$name=$value" >> $GITHUB_ENV
-}
-
 commandExists() {
   local command="$1"
 
