@@ -46,6 +46,14 @@ runs:
         }
 
     - shell: elvish {0}
+      run: echo 🎭 Setting up an Elvish context with default Ethereal - again...
+
+    - uses: ./actions/setup-elvish-context
+
+    - shell: elvish {0}
+      run: echo ✅ Default Elvish context set up again!
+
+    - shell: elvish {0}
       run: |
         use epm
 
