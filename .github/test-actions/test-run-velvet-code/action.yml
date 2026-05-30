@@ -12,5 +12,7 @@ runs:
         code: |
           >> "Basic test" {
             echo Hello, world!
-            fail-test
+
+            + 90 8 |
+              should-be 98
           }
