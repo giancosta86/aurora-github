@@ -1,0 +1,12 @@
+name: Test run-velvet-code
+description: Tests for run-velvet-code.
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Elvish context
+      uses: ./actions/setup-elvish-context
+
+    - shell: elvish {0}
+      run: |
+        fail 'IMPLEMENT THIS!'
