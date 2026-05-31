@@ -43,7 +43,7 @@ fn bool { |&optional=$false name value|
 }
 
 fn enum { |&optional=$false name value admissible-list|
-  -parse-string &optional=$optional $name $value { |source-string|
+  -parse-value &optional=$optional $name $value { |source-string|
     if (not (has-value $admissible-list $source-string)) {
       fail 'Invalid enum value for the '''$name''' input: '''$source-string'''!'
     }
@@ -53,7 +53,7 @@ fn enum { |&optional=$false name value admissible-list|
 }
 
 fn -file-system-input { |&optional=$false &can-be-missing=$false type-description name value path-checker|
-  -parse-string &optional=$optional $name $value { |source-string|
+  -parse-value &optional=$optional $name $value { |source-string|
     var abs-path = (path:abs $source-string)
 
     if ($path-checker $abs-path) {

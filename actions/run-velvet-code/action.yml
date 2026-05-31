@@ -29,7 +29,6 @@ runs:
         use github.com/giancosta86/aurora-github/ci-cd/input
         use github.com/giancosta86/aurora-github/velvet
 
-
         velvet:run-code [
           &working-directory=(
             input:directory working-directory '${{ inputs.working-directory }}'
