@@ -4,7 +4,7 @@ description: Runs inline code via the Velvet test system.
 inputs:
   working-directory:
     description: The $pwd for the test code.
-    default: /tmp
+    default: .
 
   velvet-version:
     description: The version of Velvet to use.
@@ -28,6 +28,8 @@ runs:
       run: |
         use github.com/giancosta86/aurora-github/ci-cd/input
         use github.com/giancosta86/aurora-github/velvet
+
+        echo 🐞🐞 Before invoking Velvet, the pwd is: $pwd
 
         velvet:run-code [
           &working-directory=(

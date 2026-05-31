@@ -28,7 +28,7 @@ runs:
           >> 'The current directory' {
             >> 'should be the default one' {
               put $pwd |
-                should-end-with aurora-github
+                should-have-suffix aurora-github
             }
           }
 
