@@ -4,7 +4,7 @@ _Elegant CI/CD for GitHub Actions_
 
 ![Logo](logo.jpg)
 
-**aurora-github** is a gallery of **GitHub actions** - based on the superlative [Elvish](https://elv.sh/) shell - designed to create _elegant_ and _minimalist_ **workflows** for a variety of technologies, while focusing on best practices such as _default branch protection_, _pull requests_ and _convention-over-configuration_.
+**aurora-github** is a gallery of _Linux-based_ **GitHub actions** - relying on the superlative [Elvish](https://elv.sh/) shell - designed to create _elegant_ and _minimalist_ **workflows** for a variety of technologies, while focusing on best practices such as _default branch protection_, _pull requests_ and _convention-over-configuration_.
 
 For most of the actions, **it is essential to name branches according to semantic versioning** - like `v4.2.7`: this ensures a smooth workflow while remaining largely compatible with other flow architectures - for example, multiple _feature branches_ can stem from a given _version branch_.
 
@@ -15,6 +15,8 @@ The actions can be grouped by technology:
 - [setup-elvish-context](actions/setup-elvish-context/README.md)
 
 - [install-elvish-packages](actions/install-elvish-packages/README.md)
+
+- [run-velvet-code](actions/run-velvet-code/README.md)
 
 - [verify-elvish-package](actions/verify-elvish-package/README.md)
 

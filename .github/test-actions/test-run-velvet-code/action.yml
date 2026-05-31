@@ -10,11 +10,6 @@ runs:
     - shell: elvish {0}
       run: echo 🎭 Running a basic test suite...
 
-    - shell: elvish {0}
-      working-directory: .
-      run: |
-        echo 🐞 The pwd here is: $pwd
-
     - uses: ./actions/run-velvet-code
       with:
         code: |

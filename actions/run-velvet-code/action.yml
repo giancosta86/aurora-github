@@ -1,5 +1,5 @@
 name: Run Velvet code
-description: Runs inline code via the Velvet test system.
+description: Runs inline test code with Velvet.
 
 inputs:
   working-directory:
@@ -7,7 +7,7 @@ inputs:
     default: .
 
   velvet-version:
-    description: The version of Velvet to use.
+    description: The Velvet version to use.
     default: v4
 
   code:
