@@ -1,5 +1,5 @@
 name: Run Velvet code
-description: Runs inline test code with Velvet.
+description: Runs inline tests in the Elvish shell with Velvet.
 
 inputs:
   working-directory:
@@ -11,7 +11,7 @@ inputs:
     default: v4
 
   code:
-    description: The test code, as if it were the content of a .test.elv script.
+    description: The test code - the content of a .test.elv script.
 
 runs:
   using: composite
