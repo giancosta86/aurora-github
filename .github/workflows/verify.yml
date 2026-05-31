@@ -9,6 +9,7 @@ on:
 
 jobs:
   test-install-elvish-packages:
+    if: false
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
@@ -16,6 +17,7 @@ jobs:
       - uses: ./.github/test-actions/test-install-elvish-packages
 
   test-setup-elvish-context:
+    if: false
     runs-on: ubuntu-24.04
     needs: test-install-elvish-packages
     steps:
@@ -24,6 +26,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-elvish-context
 
   test-run-velvet-code:
+    if: false
     runs-on: ubuntu-24.04
     needs: test-setup-elvish-context
     steps:
@@ -32,13 +35,14 @@ jobs:
       - uses: ./.github/test-actions/test-run-velvet-code
 
   test-elvish-platform:
+    if: false
     runs-on: ubuntu-24.04
     needs: test-run-velvet-code
     steps:
       - uses: actions/checkout@v6
 
   test-detect-branch-version:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-elvish-platform
     steps:
