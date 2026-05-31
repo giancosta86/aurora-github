@@ -25,6 +25,13 @@ runs:
               should-be 98
           }
 
+          >> 'The current directory' {
+            >> 'should be the default one' {
+              put $pwd |
+                should-end-with aurora-github
+            }
+          }
+
     - shell: elvish {0}
       run: echo 🎭 Testing a custom working-directory...
 
