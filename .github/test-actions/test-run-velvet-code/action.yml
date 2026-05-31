@@ -11,6 +11,7 @@ runs:
       run: echo 🎭 Running a basic test suite...
 
     - shell: elvish {0}
+      working-directory: .
       run: |
         echo 🐞 The pwd here is: $pwd
 
