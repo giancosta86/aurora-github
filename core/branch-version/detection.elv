@@ -1,7 +1,7 @@
 use re
 use str
-use github.com/giancosta86/ethereal/semver
-use github.com/giancosta86/ethereal/seq
+use github.com/giancosta86/ethereal/v1/semver
+use github.com/giancosta86/ethereal/v1/seq
 use ../ci-cd/git-refs
 
 fn detect {
