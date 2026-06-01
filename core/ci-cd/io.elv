@@ -1,5 +1,5 @@
-use github.com/giancosta86/ethereal/lang
-use github.com/giancosta86/ethereal/map
+use github.com/giancosta86/ethereal/v1/lang
+use github.com/giancosta86/ethereal/v1/map
 
 var -constant-mappings = [
   &$nil=''
