@@ -1,9 +1,9 @@
-use ./io
+use ./out-shared
 
 fn write { |key value|
-  io:write (get-env GITHUB_ENV) $key $value
+  out-shared:write (get-env GITHUB_ENV) $key $value
 }
 
 fn map { |source-map|
-  io:map (get-env GITHUB_ENV) $source-map
+  out-shared:map (get-env GITHUB_ENV) $source-map
 }
