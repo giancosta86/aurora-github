@@ -14,7 +14,7 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.actions-directory }}
       run: |
-        use github:com/giancosta86/aurora-github/action-references
+        use github.com/giancosta86/aurora-github/action-references
 
         action-references:check
 
