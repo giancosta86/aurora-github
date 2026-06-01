@@ -1,4 +1,5 @@
 name: Test detect-branch-version
+description: Tests for detect-branch-version.
 
 runs:
   using: composite
@@ -6,61 +7,27 @@ runs:
     - uses: ./actions/detect-branch-version
       id: detector
 
-    - name: Branch should not be empty
-      shell: bash
-      run: |
-        branch="${{ steps.detector.outputs.branch }}"
+    - uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'Action outputs' {
+            >> 'branch' {
+              put '${{ steps.detector.outputs.branch }}' |
+                should-not-be-empty
+            }
 
-        if [[ -n "$branch" ]]
-        then
-          echo "✅ Branch retrieved from action: '$branch'"
-        else
-          echo "❌ The branch could not be detected!" >&2
-          exit 1
-        fi
+            >> 'version' {
+              put '${{ steps.detector.outputs.version }}' |
+                should-not-be-empty
+            }
 
-    - name: Version should not be empty
-      shell: bash
-      run: |
-        version="${{ steps.detector.outputs.version }}"
+            >> 'escaped version' {
+              put '${{ steps.detector.outputs.escaped-version }}' |
+                should-contain \.
+            }
 
-        if [[ -n "$version" ]]
-        then
-          echo "✅ Version retrieved from action: '$version'"
-        else
-          echo "❌ The version could not be detected!" >&2
-          exit 1
-        fi
-
-    - name: Escaped version should include escaped dots
-      shell: bash
-      run: |
-        escapedVersion="${{ steps.detector.outputs.escaped-version }}"
-
-        echo "🔎 Escaped version retrieved from action: '$escapedVersion'"
-
-        if echo "$escapedVersion"  | grep -Pq "\\\."
-        then
-          echo "✅ The escaped version contains '\.', as expected!"
-        else
-          echo "❌ The escaped version should include '\.'!" >&2
-          exit 1
-        fi
-
-    - name: Major component should not be empty
-      shell: bash
-      run: |
-        major="${{ steps.detector.outputs.major }}"
-
-        if [[ -n "$major" ]]
-        then
-          echo "✅ Major version component: '$major'"
-        else
-          echo "❌ The major component could not be detected!" >&2
-          exit 1
-        fi
-
-    - name: Display completion message
-      shell: bash
-      run: |
-        echo '✅ All tests successful!'
+            >> 'major component' {
+              put '${{ steps.detector.outputs.major }}' |
+                should-not-be-empty
+            }
+          }

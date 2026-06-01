@@ -11,7 +11,7 @@ outputs:
     value: ${{ steps.detect-version.outputs.version }}
 
   escaped-version:
-    description: The escaped version - for example, with `\.` in lieu of `.` - suitable for regular expressions.
+    description: The escaped version - for example, with `\.` in lieu of `.` - for regular expressions.
     value: ${{ steps.detect-version.outputs.escaped-version }}
 
   major:
@@ -26,7 +26,17 @@ runs:
     - id: detect-version
       shell: elvish {0}
       run: |
-        use aurora-github/branch-version/detection
-        use aurora-github/ci-cd/output
+        use github.com/giancosta86/aurora-github/branch-version/detection
+        use github.com/giancosta86/aurora-github/ci-cd/output
 
         output:map (detection:detect)
+
+    - shell: elvish {0}
+      run: |
+        echo 🌲 Current Git branch: '${{ steps.detect-version.outputs.branch }}'
+
+        echo 🦋 Detected version: '${{ steps.detect-version.outputs.version }}'
+
+        echo 🧵 Escaped version: '${{ steps.detect-version.outputs.escaped-version }}'
+
+        echo 🪩 Major version: '${{ steps.detect-version.outputs.major }}'
