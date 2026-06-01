@@ -19,6 +19,11 @@ fn write { |target-channel key value|
 
 fn map { |target-channel source-map|
   map:iterate $source-map { |key value|
+    echo Key is: $key
+
+    echo Value is:
+    pprint $value
+
     write $target-channel $key $value
   }
 }
