@@ -18,7 +18,7 @@ fn write { |target-channel key value|
 }
 
 fn map { |target-channel source-map|
-  map:iterate { |key value|
+  map:iterate $source-map { |key value|
     write $target-channel $key $value
   }
 }
