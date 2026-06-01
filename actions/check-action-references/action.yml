@@ -14,7 +14,6 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.actions-directory }}
       run: |
-        use aurora-github/action-references
-        use aurora-github/ci-cd/input
+        use github:com/giancosta86/aurora-github/action-references
 
         action-references:check

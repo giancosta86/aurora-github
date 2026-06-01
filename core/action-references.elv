@@ -1,10 +1,9 @@
-use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/map
-use ./branch-version/detection
+use github.com/giancosta86/ethereal/v1/map
+use ./branch-version
 use ./ci-cd/action-references
 
 fn check {
-  var branch = (detection:detect)[branch]
+  var branch = (branch-version:detect)[branch]
 
   var regex = (action-references:get-regex-for-references-to-other-branches $branch)
 

@@ -1,6 +1,6 @@
 use github.com/giancosta86/aurora-elvish/console
 use github.com/giancosta86/aurora-elvish/semver
-use ./branch-version/detection
+use ./branch-version
 use ./ci-cd/pull-request
 use ./git
 use ./tag-and-release/git-log
@@ -33,7 +33,7 @@ fn run-action { |inputs|
 
   preconditions:check $dry-run
 
-  var version-info = (detection:detect)
+  var version-info = (branch-version:detect)
   var version = $version-info[version]
   var branch = $version-info[branch]
   var major = $version-info[major]

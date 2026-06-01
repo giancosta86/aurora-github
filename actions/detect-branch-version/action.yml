@@ -26,10 +26,10 @@ runs:
     - id: detect-version
       shell: elvish {0}
       run: |
-        use github.com/giancosta86/aurora-github/branch-version/detection
+        use github.com/giancosta86/aurora-github/branch-version
         use github.com/giancosta86/aurora-github/ci-cd/output
 
-        output:map (detection:detect)
+        output:map (branch-version:detect)
 
     - shell: elvish {0}
       run: |

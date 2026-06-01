@@ -3,12 +3,11 @@ use github.com/giancosta86/aurora-elvish/console
 use github.com/giancosta86/aurora-elvish/edit
 use github.com/giancosta86/aurora-elvish/map
 use ../project
-use ./detection
 
 fn -inject { |project|
   console:echo 🧬 Injecting branch version into project: ($project[to-string])
 
-  var branch-version = (detection:detect)[version]
+  var branch-version = (detect)[version]
 
   edit:file $project[descriptor-path] { |text|
     str:replace '0.0.0' $branch-version $text
@@ -24,7 +23,7 @@ fn -check { |project|
 
   $project[print-descriptor]
 
-  var branch-version = (detection:detect)[version]
+  var branch-version = (detect)[version]
   console:inspect &emoji=🌲 'Branch version' $branch-version
 
   var project-version = ($project[read-version])
