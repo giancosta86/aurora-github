@@ -1,4 +1,4 @@
-use github.com/giancosta86/ethereal/v1/map
+use github.com/giancosta86/ethereal/v1/seq
 use ./branch-version
 use ./ci-cd/action-references
 
@@ -16,7 +16,7 @@ fn check {
   }
 
   var grep-exit-status = (
-    map:drill-down $grep-outcome reason exit-status
+    seq:drill-down $grep-outcome reason exit-status
   )
 
   if (not-eq $grep-exit-status 1) {
