@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v6
 
   test-detect-branch-version:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-elvish-platform
     steps:
