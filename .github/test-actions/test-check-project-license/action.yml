@@ -1,10 +1,8 @@
 name: Test check-project-license
+description: Tests for check-project-license.
 
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭 Checking project license..."
-
     - name: Check project license
       uses: ./actions/check-project-license
