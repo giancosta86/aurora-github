@@ -1,4 +1,4 @@
-use github.com/giancosta86/aurora-elvish/seq
+use github.com/giancosta86/ethereal/v1/seq
 
 fn get-actual {
   var head-ref = (get-env GITHUB_HEAD_REF)
