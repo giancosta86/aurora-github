@@ -17,3 +17,5 @@ runs:
         use github:com/giancosta86/aurora-github/action-references
 
         action-references:check
+
+        echo ✅ No cross-branch action references detected!

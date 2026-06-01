@@ -7,17 +7,19 @@ fn check {
 
   var regex = (action-references:get-regex-for-references-to-other-branches $branch)
 
-  var grep-result = ?(
+  var grep-outcome = ?(
     grep --color=always --perl-regexp $regex **.yml > &2
   )
 
-  if $grep-result {
+  if $grep-outcome {
     fail "There are references to actions within '"$pwd"' residing in other branches!"
-  } else {
-    if (==s (map:drill-down &default='' $grep-result reason exit-status) 1) {
-      console:echo ✅ No cross-branch action references detected!
-    } else {
-      fail $grep-result
-    }
+  }
+
+  var grep-exit-status = (
+    map:drill-down $grep-outcome reason exit-status
+  )
+
+  if (not-eq $grep-exit-status 1) {
+    fail $grep-outcome
   }
 }

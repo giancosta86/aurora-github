@@ -51,7 +51,7 @@ fn -write-changelog-footer { |pull-request tag|
   console:inspect &emoji=🧭 'Base reference' $base-reference
   console:inspect &emoji=📌 'Release tag' $tag
 
-  echo '**Full changelog**: '(repository:get-changelog $base-reference $tag)
+  echo '**Full changelog**: '(repository:get-changelog-url $base-reference $tag)
 }
 
 fn generate { |inputs|
