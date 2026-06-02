@@ -1,7 +1,7 @@
 use str
 use github.com/giancosta86/ethereal/v1/edit
-use github.com/giancosta86/ethereal/v1/env
 use github.com/giancosta86/ethereal/v1/lang
+use ../env
 use ../project
 use ./detection
 
