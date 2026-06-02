@@ -1,5 +1,4 @@
 use path
-use github.com/giancosta86/aurora-elvish/console
 use github.com/giancosta86/aurora-elvish/map
 use ./descriptors/plain-text
 
@@ -28,9 +27,9 @@ fn load-project { |inputs|
     &read-version={ $descriptor-namespace[read-version~] $descriptor-path }
 
     &print-descriptor={
-       console:section &emoji=$emoji 'Project descriptor ('$descriptor-name')' {
-         $descriptor-namespace[print-content~] $descriptor-path
-       }
+      echo $emoji 'Project descriptor ('$descriptor-name')'
+      $descriptor-namespace[print-content~] $descriptor-path
+      echo (repeat 3 $emoji)
     }
 
     &to-string={ put $emoji' '$technology' ('$descriptor-name')' }

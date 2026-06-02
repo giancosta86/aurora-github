@@ -1,5 +1,4 @@
 use os
-use github.com/giancosta86/aurora-elvish/console
 use github.com/giancosta86/aurora-elvish/lang
 use github.com/giancosta86/aurora-elvish/map
 
@@ -36,17 +35,17 @@ var -loader-retrievers = [
 ]
 
 fn -from-descriptor-name { |descriptor-name|
-  console:inspect 'Requested descriptor' $descriptor-name
+  echo 🔎 Requested descriptor: $descriptor-name
 
   var requested-retriever = (map:get-value $-loader-retrievers $descriptor-name)
 
   if $requested-retriever {
-    console:inspect &emoji=📤 'Fetching the requested loader for' $descriptor-name
+    echo 📤 Fetching the requested loader for: $descriptor-name
 
     var loader = ($requested-retriever)
     put $loader
   } else {
-    console:echo 🎁 Unknown technology found!
+    echo 🎁 Unknown technology found!
 
     use ./unknown
     put { unknown:load-project $descriptor-name }
@@ -54,11 +53,11 @@ fn -from-descriptor-name { |descriptor-name|
 }
 
 fn -infer-from-files {
-  console:echo 🔎 Now looking for a supported descriptor...
+  echo 🔎 Now looking for a supported descriptor...
 
   keys $-loader-retrievers | each { |current-descriptor-name|
     if (os:is-regular $current-descriptor-name) {
-      console:inspect &emoji=🌟 'Descriptor found' $current-descriptor-name
+      echo 🌟 Descriptor found: $current-descriptor-name
 
       var loader = ($-loader-retrievers[$current-descriptor-name])
       put $loader
