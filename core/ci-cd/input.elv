@@ -52,30 +52,6 @@ fn enum { |&optional=$false name value admissible-list|
   }
 }
 
-fn -file-system-input { |&optional=$false &can-be-missing=$false type-description name value path-checker|
-  -parse-value &optional=$optional $name $value { |source-string|
-    var abs-path = (path:abs $source-string)
-
-    if ($path-checker $abs-path) {
-      put $abs-path
-    } else {
-      if $can-be-missing {
-        put $nil
-      } else {
-        fail 'Inexistent '$type-description' for input '''$name''' at path: '''$abs-path'''!'
-      }
-    }
-  }
-}
-
-fn directory { |&optional=$false &can-be-missing=$false name value|
-  -file-system-input &optional=$optional &can-be-missing=$can-be-missing directory $name $value $os:is-dir~
-}
-
-fn file { |&optional=$false &can-be-missing=$false name value|
-  -file-system-input &optional=$optional &can-be-missing=$can-be-missing file $name $value $os:is-regular~
-}
-
 fn comma-separated { |source|
   str:split , $source |
     each $str:trim-space~ |
