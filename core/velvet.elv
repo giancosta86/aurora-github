@@ -3,7 +3,7 @@ use str
 use github.com/giancosta86/ethereal/v1/fs
 use ./ci-cd/env
 
-fn run-code { |settings|
+fn run-code {
   var velvet-version = (
     env:get-value velvet-version
   )
