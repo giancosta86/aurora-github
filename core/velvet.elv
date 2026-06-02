@@ -4,12 +4,11 @@ use github.com/giancosta86/ethereal/v1/fs
 use ./ci-cd/env
 
 fn run-code {
-  var velvet-version = (
-    env:get-value velvet-version
-  )
-
   var working-directory = (
     env:directory working-directory
+  )
+  var velvet-version = (
+    env:get-value velvet-version
   )
   var code = (
     env:escape-single-quotes code
@@ -27,6 +26,10 @@ fn run-code {
 
       echo $code
     } > $test-script-path
+
+    echo 🐞
+    echo $code
+    echo 🐞🐞🐞
 
     velvet-module:velvet &flawless $test-script-path
   }

@@ -30,6 +30,6 @@ runs:
 
         velvet:run-code
       env:
-        velvet-version: ${{ inputs.velvet-version }}
         working-directory: ${{ inputs.working-directory }}
+        velvet-version: ${{ inputs.velvet-version }}
         code: ${{ inputs.code }}
