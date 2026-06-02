@@ -6,5 +6,3 @@ runs:
   steps:
     - name: Check project license
       uses: ./actions/check-project-license
-      with:
-        license-file: DODO
