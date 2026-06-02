@@ -1,6 +1,7 @@
 use os
 use path
 use str
+use github:com/giancosta86/ethereal/v1/lang
 use ./out-shared
 
 fn write { |key value|
@@ -24,25 +25,22 @@ fn get-value { |&optional=$false key|
 }
 
 fn -file-system-input { |&optional=$false &can-be-missing=$false type-description key path-checker|
-  var value = (get-value &optional=$optional $key)
+  get-value &optional=$optional $key |
+    lang:map { |value|
+      var abs-path = (
+        path:abs $value
+      )
 
-  if $value {
-    var abs-path = (
-      path:abs $value
-    )
-
-    if ($path-checker $abs-path) {
-      put $abs-path
-    } else {
-      if $can-be-missing {
-        put $nil
+      if ($path-checker $abs-path) {
+        put $abs-path
       } else {
-        fail 'Inexistent '$type-description' for env key '''$key''' at path: '''$abs-path'''!'
+        if $can-be-missing {
+          put $nil
+        } else {
+          fail 'Inexistent '$type-description' for env key '''$key''' at path: '''$abs-path'''!'
+        }
       }
     }
-  } else {
-    put $nil
-  }
 }
 
 fn directory { |&optional=$false &can-be-missing=$false name|
