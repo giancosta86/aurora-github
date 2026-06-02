@@ -52,13 +52,3 @@ fn directory { |&optional=$false &can-be-missing=$false name|
 fn file { |&optional=$false &can-be-missing=$false name|
   -file-system-input &optional=$optional &can-be-missing=$can-be-missing file $name $os:is-regular~
 }
-
-fn escape-single-quotes { |&optional=$false key|
-  var value = (get-value &optional=$optional $key)
-
-  if $value {
-    str:replace "'" "''" $value
-  } else {
-    put $nil
-  }
-}

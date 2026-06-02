@@ -11,7 +11,7 @@ fn run-code {
     env:get-value velvet-version
   )
   var code = (
-    env:escape-single-quotes code
+    get-env code
   )
 
   var velvet-module: = (
@@ -20,7 +20,8 @@ fn run-code {
 
   fs:with-temp-file { |test-script-path|
     {
-      echo "cd '"$working-directory"'"
+      str:replace "'" "''" $working-directory |
+        echo "cd '"(all)"'"
 
       echo
 
