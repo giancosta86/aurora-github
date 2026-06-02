@@ -13,9 +13,8 @@ runs:
 
     - shell: elvish {0}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/license-file
+        use github.com/giancosta86/aurora-github/license-file
 
-        var license-file = (input:file license-file '${{ inputs.license-file }}')
-
-        license-file:check $license-file
+        license-file:check
+      env:
+        license-file: ${{ inputs.license-file }}
