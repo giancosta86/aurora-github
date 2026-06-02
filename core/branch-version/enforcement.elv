@@ -1,12 +1,14 @@
 use str
 use github.com/giancosta86/ethereal/v1/edit
+use github.com/giancosta86/ethereal/v1/env
 use github.com/giancosta86/ethereal/v1/lang
 use ../project
+use ./detection
 
 fn -inject { |project|
   echo 🧬 Injecting branch version into project: ($project[to-string])
 
-  var branch-version = (detect)[version]
+  var branch-version = (detection:detect)[version]
 
   edit:file $project[descriptor-path] { |text|
     str:replace '0.0.0' $branch-version $text
@@ -22,7 +24,7 @@ fn -check { |project|
 
   $project[print-descriptor]
 
-  var branch-version = (detect)[version]
+  var branch-version = (detection:detect)[version]
   echo 🌲 Branch version: $branch-version
 
   var project-version = ($project[read-version])
@@ -30,7 +32,7 @@ fn -check { |project|
   if $project-version {
     echo 🏷 Project version: $project-version
 
-    if (==s $project-version $branch-version) {
+    if (eq $project-version $branch-version) {
       echo ✅ The project version matches the branch version!
     } else {
       fail 'The project version and the branch version do not match!'
@@ -59,10 +61,14 @@ var -strategies = [
   }
 ]
 
-fn enforce { |&descriptor-name=$nil mode|
+fn enforce { |mode|
   var strategy = (lang:get-value $-strategies $mode &default={
     fail "Invalid mode: '"$mode"'"
   })
+
+  var descriptor-name = (
+    env:file &optional artifact-descriptor
+  )
 
   var project = (project:detect &descriptor-name=$descriptor-name)
 

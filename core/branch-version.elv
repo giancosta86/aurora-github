@@ -1,6 +1,6 @@
 use ./branch-version/detection
-#use ./branch-version/enforcement
+use ./branch-version/enforcement
 
 var detect~ = $detection:detect~
 
-#var enforce~ = $enforcement:enforce~
+var enforce~ = $enforcement:enforce~
