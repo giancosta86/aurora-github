@@ -1,5 +1,5 @@
 use str
-use github.com/giancosta86/aurora-elvish/resources
+use github.com/giancosta86/ethereal/v1/resources
 use ../../highlighting
 
 var -resources = (resources:for-script (src))

@@ -1,5 +1,4 @@
 use path
-use github.com/giancosta86/aurora-elvish/map
 use ./descriptors/plain-text
 
 fn load-project { |inputs|

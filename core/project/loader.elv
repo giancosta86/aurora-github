@@ -1,6 +1,5 @@
 use os
-use github.com/giancosta86/aurora-elvish/lang
-use github.com/giancosta86/aurora-elvish/map
+use github.com/giancosta86/ethereal/v1/lang
 
 var -loader-retrievers = [
   &package.json={
@@ -37,7 +36,7 @@ var -loader-retrievers = [
 fn -from-descriptor-name { |descriptor-name|
   echo 🔎 Requested descriptor: $descriptor-name
 
-  var requested-retriever = (map:get-value $-loader-retrievers $descriptor-name)
+  var requested-retriever = (lang:get-value $-loader-retrievers $descriptor-name)
 
   if $requested-retriever {
     echo 📤 Fetching the requested loader for: $descriptor-name
@@ -70,7 +69,9 @@ fn -infer-from-files {
 }
 
 fn load { |&descriptor-name=$nil|
-  var loader-retriever = (lang:ternary $descriptor-name { -from-descriptor-name $descriptor-name } { -infer-from-files })
+  var loader-retriever = (
+    lang:ternary $descriptor-name { -from-descriptor-name $descriptor-name } { -infer-from-files }
+  )
 
   var loader = ($loader-retriever)
 
