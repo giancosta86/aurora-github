@@ -1,7 +1,7 @@
 use os
 use path
 use str
-use github:com/giancosta86/ethereal/v1/lang
+use github.com/giancosta86/ethereal/v1/lang
 use ./out-shared
 
 fn write { |key value|
