@@ -28,10 +28,6 @@ fn run-code {
       echo $code
     } > $test-script-path
 
-    echo 🐞
-    echo $code
-    echo 🐞🐞🐞
-
     velvet-module:velvet &flawless $test-script-path
   }
 }
