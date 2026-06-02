@@ -2,7 +2,7 @@ use re
 use str
 use github.com/giancosta86/ethereal/v1/semver
 use github.com/giancosta86/ethereal/v1/seq
-use ./ci-cd/git-refs
+use ../ci-cd/git-refs
 
 fn detect {
   var actual-ref = (git-refs:get-actual)
