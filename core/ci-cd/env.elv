@@ -1,5 +1,6 @@
 use os
 use path
+use str
 use ./out-shared
 
 fn write { |key value|
