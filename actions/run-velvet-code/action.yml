@@ -30,12 +30,10 @@ runs:
         use github.com/giancosta86/aurora-github/velvet
 
         velvet:run-code [
-          &working-directory=(
-            input:directory working-directory '${{ inputs.working-directory }}'
-          )
           &velvet-version=(
             input:string velvet-version '${{ inputs.velvet-version }}'
           )
         ]
       env:
+        working-directory: ${{ inputs.working-directory }}
         velvet-code: ${{ inputs.code }}

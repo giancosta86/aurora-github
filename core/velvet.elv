@@ -3,8 +3,8 @@ use github.com/giancosta86/ethereal/v1/fs
 
 fn run-code { |settings|
   var velvet-version = $settings[velvet-version]
-  var working-directory = $settings[working-directory]
 
+  var working-directory = (get-env working-directory)
   var code = (get-env velvet-code)
 
   var velvet-module: = (
