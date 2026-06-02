@@ -1,10 +1,14 @@
+use path
 use str
 use github.com/giancosta86/ethereal/v1/fs
 
 fn run-code { |settings|
   var velvet-version = $settings[velvet-version]
 
-  var working-directory = (get-env working-directory)
+  var working-directory = (
+    get-env working-directory |
+      path:abs (all)
+  )
   var code = (get-env velvet-code)
 
   var velvet-module: = (
