@@ -1,15 +1,19 @@
 use path
 use str
 use github.com/giancosta86/ethereal/v1/fs
+use ./ci-cd/env
 
 fn run-code { |settings|
-  var velvet-version = $settings[velvet-version]
+  var velvet-version = (
+    env:get-value velvet-version
+  )
 
   var working-directory = (
-    get-env working-directory |
-      path:abs (all)
+    env:directory working-directory
   )
-  var code = (get-env velvet-code)
+  var code = (
+    env:escape-single-quotes code
+  )
 
   var velvet-module: = (
     use-mod 'github.com/giancosta86/velvet/'$velvet-version'/velvet'
@@ -17,8 +21,7 @@ fn run-code { |settings|
 
   fs:with-temp-file { |test-script-path|
     {
-      str:replace "'" "''" $working-directory |
-        echo "cd '"(all)"'"
+      echo "cd '"$working-directory"'"
 
       echo
 

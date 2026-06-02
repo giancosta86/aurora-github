@@ -1,5 +1,3 @@
-use os
-use path
 use str
 use github.com/giancosta86/ethereal/v1/seq
 

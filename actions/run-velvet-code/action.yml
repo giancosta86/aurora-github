@@ -26,14 +26,10 @@ runs:
     - name: Create and run the test script
       shell: elvish {0}
       run: |
-        use github.com/giancosta86/aurora-github/ci-cd/input
         use github.com/giancosta86/aurora-github/velvet
 
-        velvet:run-code [
-          &velvet-version=(
-            input:string velvet-version '${{ inputs.velvet-version }}'
-          )
-        ]
+        velvet:run-code
       env:
+        velvet-version: ${{ inputs.velvet-version }}
         working-directory: ${{ inputs.working-directory }}
-        velvet-code: ${{ inputs.code }}
+        code: ${{ inputs.code }}
