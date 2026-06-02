@@ -1,4 +1,5 @@
 use github.com/giancosta86/ethereal/v1/seq
+use ./ci-cd/env
 
 fn -check-current-year-included { |license-file|
   var current-year = (date +%Y)
@@ -19,7 +20,7 @@ fn -check-current-year-included { |license-file|
 }
 
 fn check {
-  var license-file = (get-env license-file)
+  var license-file = (env:file license-file)
 
   -check-current-year-included $license-file
 }
