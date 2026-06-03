@@ -66,9 +66,7 @@ fn enforce { |mode|
     fail "Invalid mode: '"$mode"'"
   })
 
-  var descriptor-name = (
-    env:file &optional artifact-descriptor
-  )
+  var descriptor-name = (get-env artifact-descriptor)
 
   var project = (project:detect &descriptor-name=$descriptor-name)
 
