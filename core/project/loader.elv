@@ -1,5 +1,6 @@
 use os
 use github.com/giancosta86/ethereal/v1/lang
+use ./std-err
 
 var -loader-retrievers = [
   &package.json={
@@ -34,17 +35,17 @@ var -loader-retrievers = [
 ]
 
 fn -from-descriptor-name { |descriptor-name|
-  echo 🔎 Requested descriptor: $descriptor-name
+  std-err:inspect 'Requested descriptor' $descriptor-name
 
   var requested-retriever = (lang:get-value $-loader-retrievers $descriptor-name)
 
   if $requested-retriever {
-    echo 📤 Fetching the requested loader for: $descriptor-name
+    std-err:inspect &emoji=📤 'Fetching the requested loader for' $descriptor-name
 
     var loader = ($requested-retriever)
     put $loader
   } else {
-    echo 🎁 Unknown technology found!
+    std-err:echo 🎁 Unknown technology found!
 
     use ./unknown
     put { unknown:load-project $descriptor-name }
@@ -52,11 +53,11 @@ fn -from-descriptor-name { |descriptor-name|
 }
 
 fn -infer-from-files {
-  echo 🔎 Now looking for a supported descriptor...
+  std-err:echo 🔎 Now looking for a supported descriptor...
 
   keys $-loader-retrievers | each { |current-descriptor-name|
     if (os:is-regular $current-descriptor-name) {
-      echo 🌟 Descriptor found: $current-descriptor-name
+      std-err:inspect &emoji=🌟 'Descriptor found' $current-descriptor-name
 
       var loader = ($-loader-retrievers[$current-descriptor-name])
       put $loader
