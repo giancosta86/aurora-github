@@ -1,6 +1,6 @@
 use os
 use github.com/giancosta86/ethereal/v1/lang
-use ./std-err
+use ../std-err
 
 var -loader-retrievers = [
   &package.json={
