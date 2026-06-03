@@ -3,10 +3,11 @@ use github.com/giancosta86/ethereal/v1/edit
 use github.com/giancosta86/ethereal/v1/lang
 use ../ci-cd/env
 use ../project
+use ../std-err
 use ./detection
 
 fn -inject { |project|
-  echo 🧬 Injecting branch version into project: ($project[to-string])
+  std-err:inspect &emoji=🧬 'Injecting branch version into project' ($project[to-string])
 
   var branch-version = (detection:detect)[version]
 
@@ -14,37 +15,39 @@ fn -inject { |project|
     str:replace '0.0.0' $branch-version $text
   }
 
-  echo ✅ Version injected!
+  std-err:echo ✅ Version injected!
 
   $project[print-descriptor]
 }
 
 fn -check { |project|
-  echo 🔎 Checking branch version for project: ($project[to-string])
+  std-err:inspect 'Checking branch version for project' ($project[to-string])
 
   $project[print-descriptor]
 
   var branch-version = (detection:detect)[version]
-  echo 🌲 Branch version: $branch-version
+  std-err:inspect &emoji=🌲 'Branch version' $branch-version
 
   var project-version = ($project[read-version])
 
   if $project-version {
-    echo 🏷 Project version: $project-version
+    std-err:inspect &emoji=🏷 'Project version' $project-version
 
     if (eq $project-version $branch-version) {
-      echo ✅ The project version matches the branch version!
+      std-err:echo ✅ The project version matches the branch version!
     } else {
       fail 'The project version and the branch version do not match!'
     }
   } else {
-    echo 💭 The project version cannot be detected...
-    echo 🔎 Ensuring the branch version is mentioned in the descriptor...
+    std-err:capture {
+      echo 💭 The project version cannot be detected...
+      echo 🔎 Ensuring the branch version is mentioned in the descriptor...
+    }
 
     var descriptor-content = (slurp < $project[descriptor-path])
 
     if (str:contains $descriptor-content $branch-version) {
-      echo ✅ Branch version found in the descriptor!
+      std-err:echo ✅ Branch version found in the descriptor!
     } else {
       fail 'The branch version cannot be found in the artifact descriptor!'
     }
@@ -57,7 +60,7 @@ var -strategies = [
   &check=$-check~
 
   &skip={ |_|
-    echo 💭 Skipping branch version enforcement, as requested...
+    std-err:echo 💭 Skipping branch version enforcement, as requested...
   }
 ]
 

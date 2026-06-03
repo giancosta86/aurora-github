@@ -1,4 +1,5 @@
 use path
+use ../std-err
 use ./descriptors/plain-text
 
 fn load-project { |inputs|
@@ -26,9 +27,9 @@ fn load-project { |inputs|
     &read-version={ $descriptor-namespace[read-version~] $descriptor-path }
 
     &print-descriptor={
-      echo $emoji 'Project descriptor ('$descriptor-name')'
-      $descriptor-namespace[print-content~] $descriptor-path
-      echo (repeat 3 $emoji)
+      std-err:section $emoji 'Project descriptor' {
+        $descriptor-namespace[print-content~] $descriptor-path
+      }
     }
 
     &to-string={ put $emoji' '$technology' ('$descriptor-name')' }
