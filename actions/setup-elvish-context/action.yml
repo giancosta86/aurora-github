@@ -24,26 +24,10 @@ runs:
         fi
 
     - name: Link the aurora-github core as an Elvish package
-      shell: elvish {0}
+      shell: bash
+      working-directory: ${{ github.action_path }}/../../core/actions
       run: |
-        use epm
-        use os
-        use path
-
-        var link-path = (
-          path:join $epm:managed-dir github.com giancosta86 aurora-github
-        )
-
-        if (not (os:exists $link-path)) {
-          path:dir $link-path |
-            os:mkdir-all (all)
-
-          var aurora-github-core-directory = (
-            path:join '${{ github.action_path }}' .. .. core
-          )
-
-          os:symlink $aurora-github-core-directory $link-path
-        }
+        elvish -c 'use ./setup-elvish-context; setup-elvish-context:link-aurora-github-core'
 
     - name: Install Ethereal
       if: inputs.ethereal-version != ''

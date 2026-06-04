@@ -16,7 +16,6 @@ jobs:
       - uses: ./.github/test-actions/test-install-elvish-packages
 
   test-setup-elvish-context:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-install-elvish-packages
     steps:
