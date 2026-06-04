@@ -12,6 +12,7 @@ runs:
       shell: elvish {0}
       run: |
         ls
+        echo 🐞 $pwd
         use ./install-elvish-packages
         install-elvish-packages:main
       env:
