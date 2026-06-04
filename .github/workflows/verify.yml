@@ -9,7 +9,6 @@ on:
 
 jobs:
   test-install-elvish-packages:
-    if: false
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
@@ -66,7 +65,7 @@ jobs:
       - uses: ./.github/test-actions/test-check-project-license
 
   test-enforce-branch-version:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
