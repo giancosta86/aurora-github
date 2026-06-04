@@ -1,7 +1,7 @@
 use epm
 use str
 
-fn main() {
+fn main {
   var packages = ({
     if (has-env packages) {
       get-env packages
