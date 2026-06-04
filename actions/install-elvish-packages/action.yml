@@ -10,6 +10,6 @@ runs:
   steps:
     - shell: bash
       run: |
-        elvish ${{ github.action_path }}/../core/actions/install-elvish-packages.elv
+        elvish ${{ github.action_path }}/../../core/actions/install-elvish-packages.elv
       env:
         packages: ${{ inputs.packages }}
