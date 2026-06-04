@@ -17,10 +17,9 @@ fn main {
   use github.com/giancosta86/epm-plus/epm-plus
   epm-plus:patch-epm
 
-  str:fields $packages |
-    each { |package|
-      if (not (epm:is-installed $package)) {
-        epm:install $package
-      }
+  str:fields $packages | each { |package|
+    if (not (epm:is-installed $package)) {
+      epm:install $package
     }
+  }
 }
