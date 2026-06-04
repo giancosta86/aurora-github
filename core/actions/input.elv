@@ -47,15 +47,15 @@ fn enum { |&optional=$false name admissible-list|
 }
 
 fn tokenized { |&optional=$false &separator=, name|
-  -parse &optional=$optional { |value|
+  -parse &optional=$optional $name { |value|
     str:split $separator $value |
       each $str:trim-space~ |
       keep-if $seq:is-non-empty~
   }
 }
 
-fn -file-system-input { |&optional=$false &can-be-missing=$false type-description key path-checker|
-  -parse &optional=$optional { |value|
+fn -file-system-input { |&optional=$false &can-be-missing=$false type-description name path-checker|
+  -parse &optional=$optional $name { |value|
     var abs-path = (
       path:abs $value
     )
@@ -66,7 +66,7 @@ fn -file-system-input { |&optional=$false &can-be-missing=$false type-descriptio
       if $can-be-missing {
         put $nil
       } else {
-        fail 'Inexistent '$type-description' for env key '''$key''' at path: '''$abs-path'''!'
+        fail 'Inexistent '$type-description' for input '''$name''' at path: '''$abs-path'''!'
       }
     }
   }
