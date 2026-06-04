@@ -1,9 +1,12 @@
+use github.com/giancosta86/ethereal/v1/lang
 use ./out-shared
 
 fn write { |key value|
   out-shared:write (get-env GITHUB_ENV) $key $value
 }
 
-fn map { |source-map|
+fn map { |@arguments|
+  var source-map = (lang:get-single-input $arguments)
+
   out-shared:map (get-env GITHUB_ENV) $source-map
 }

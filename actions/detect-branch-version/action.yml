@@ -26,17 +26,5 @@ runs:
     - id: detect-version
       shell: elvish {0}
       run: |
-        use github.com/giancosta86/aurora-github/branch-version
-        use github.com/giancosta86/aurora-github/ci-cd/output
-
-        output:map (branch-version:detect)
-
-    - shell: elvish {0}
-      run: |
-        echo 🌲 Current Git branch: '${{ steps.detect-version.outputs.branch }}'
-
-        echo 🦋 Detected version: '${{ steps.detect-version.outputs.version }}'
-
-        echo 🧵 Escaped version: '${{ steps.detect-version.outputs.escaped-version }}'
-
-        echo 🪩 Major version: '${{ steps.detect-version.outputs.major }}'
+        use github.com/giancosta86/aurora-github/actions/detect-branch-version
+        detect-branch-version:main
