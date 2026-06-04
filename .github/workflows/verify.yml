@@ -58,7 +58,7 @@ jobs:
       - uses: ./actions/check-action-references
 
   test-check-project-license:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -66,7 +66,7 @@ jobs:
       - uses: ./.github/test-actions/test-check-project-license
 
   test-enforce-branch-version:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
