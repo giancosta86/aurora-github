@@ -8,8 +8,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
+    - working-directory: ${{ github.action_path }}/../../core/actions
+      shell: elvish {0}
       run: |
-        elvish ${{ github.action_path }}/../../core/actions/install-elvish-packages.elv
+        use ./install-elvish-packages.elv
+
+        install-elvish-packages:main
       env:
         packages: ${{ inputs.packages }}
