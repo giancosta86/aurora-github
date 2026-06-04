@@ -13,8 +13,7 @@ runs:
 
     - shell: elvish {0}
       run: |
-        use github.com/giancosta86/aurora-github/license-file
-
-        license-file:check
+        use github.com/giancosta86/aurora-github/actions/check-project-license
+        check-project-license:main
       env:
         license-file: ${{ inputs.license-file }}
