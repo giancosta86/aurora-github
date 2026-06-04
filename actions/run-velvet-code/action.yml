@@ -26,9 +26,8 @@ runs:
     - name: Create and run the test script
       shell: elvish {0}
       run: |
-        use github.com/giancosta86/aurora-github/velvet
-
-        velvet:run-code
+        use github.com/giancosta86/aurora-github/actions/run-velvet-code
+        run-velvet-code:main
       env:
         working-directory: ${{ inputs.working-directory }}
         velvet-version: ${{ inputs.velvet-version }}

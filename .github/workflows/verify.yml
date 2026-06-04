@@ -24,7 +24,6 @@ jobs:
       - uses: ./.github/test-actions/test-setup-elvish-context
 
   test-run-velvet-code:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-setup-elvish-context
     steps:
