@@ -12,6 +12,5 @@ fn main {
 
   echo 🪩 Major version: $result[major]
 
-  put $result |
-    output:map
+  output:map $result
 }
