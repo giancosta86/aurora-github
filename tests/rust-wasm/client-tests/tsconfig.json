@@ -3,9 +3,9 @@
 
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "node16",
 
-    "moduleResolution": "Node",
+    "moduleResolution": "node16",
 
     "rootDir": "src",
 
