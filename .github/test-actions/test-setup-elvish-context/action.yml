@@ -57,7 +57,7 @@ runs:
       run: |
         use epm
 
-        echo 🗑 Uninstalling ethereal...
+        echo 🗑 Uninstalling Ethereal...
 
         epm:uninstall github.com/giancosta86/ethereal
 
