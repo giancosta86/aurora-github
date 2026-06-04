@@ -64,12 +64,10 @@ var -strategies = [
   }
 ]
 
-fn enforce { |mode|
+fn enforce { |&descriptor-name=$nil mode|
   var strategy = (lang:get-value $-strategies $mode &default={
     fail "Invalid mode: '"$mode"'"
   })
-
-  var descriptor-name = (get-env artifact-descriptor)
 
   var project = (project:detect &descriptor-name=$descriptor-name)
 

@@ -20,13 +20,8 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        use github.com/giancosta86/aurora-github/branch-version
-        use github.com/giancosta86/aurora-github/ci-cd/input
-
-        var mode = (
-          input:enum mode '${{ inputs.mode }}' [inject check skip]
-        )
-
-        branch-version:enforce $mode
+        use github.com/giancosta86/aurora-github/actions/enforce-branch-version
+        enforce-branch-version:main
       env:
+        mode: ${{ inputs.mode }}
         artifact-descriptor: ${{ inputs.artifact-descriptor }}
