@@ -11,8 +11,7 @@ runs:
     - working-directory: ${{ github.action_path }}/../../core/actions
       shell: elvish {0}
       run: |
-        use ./install-elvish-packages.elv
-
+        use ./install-elvish-packages
         install-elvish-packages:main
       env:
         packages: ${{ inputs.packages }}
