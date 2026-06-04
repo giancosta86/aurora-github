@@ -14,8 +14,5 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.actions-directory }}
       run: |
-        use github.com/giancosta86/aurora-github/action-references
-
-        action-references:check
-
-        echo ✅ No cross-branch action references detected!
+        use github.com/giancosta86/aurora-github/actions/check-action-references
+        check-action-references:main

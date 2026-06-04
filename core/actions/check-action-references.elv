@@ -1,8 +1,8 @@
 use github.com/giancosta86/ethereal/v1/seq
-use ./branch-version
-use ./ci-cd/action-references
+use ../branch-version
+use ../ci-cd/action-references
 
-fn check {
+fn main {
   var branch = (branch-version:detect)[branch]
 
   var regex = (action-references:get-regex-for-references-to-other-branches $branch)
