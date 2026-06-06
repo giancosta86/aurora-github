@@ -21,9 +21,9 @@ runs:
       with:
         code: |
           >> 'Testing replacement' {
-            slurp < A |
+            to-lines < A |
               should-be '*a*lph*a*'
 
-            slurp < B |
+            to-lines < B |
               should-be 'b*e*t*a*'
           }
