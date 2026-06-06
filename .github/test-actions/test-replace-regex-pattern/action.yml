@@ -13,7 +13,7 @@ runs:
 
     - uses: ./actions/replace-regex-pattern
       with:
-        file: A, B
+        files: A, B
         regex: "([ae])"
         replacement: "*$1*"
 
