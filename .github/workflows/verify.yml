@@ -65,13 +65,13 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-check-project-license
 
-  test-enforce-branch-version:
+  test-replace-regex-pattern:
     if: always()
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
       - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-enforce-branch-version
+      - uses: ./.github/test-actions/test-replace-regex-pattern
 
   test-find-critical-todos:
     if: false
@@ -174,7 +174,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
       - test-find-critical-todos
     steps:
       - uses: actions/checkout@v6
@@ -186,7 +186,7 @@ jobs:
     needs:
       - test-check-project-license
       - test-setup-rust-context
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
       - test-find-critical-todos
       - test-extract-rust-snippets
     steps:
@@ -198,7 +198,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-parse-npm-scope
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-generate-wasm-target
@@ -208,7 +208,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-setup-nodejs-context
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
     permissions:
       pages: write
       id-token: write
@@ -240,7 +240,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
       - test-find-critical-todos
       - test-install-via-sdkman
     steps:
@@ -253,7 +253,7 @@ jobs:
     needs:
       - test-setup-rust-context
       - test-publish-github-pages
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
       - test-verify-rust-crate
     steps:
       - uses: actions/checkout@v6
@@ -263,7 +263,7 @@ jobs:
     if: false
     runs-on: ubuntu-24.04
     needs:
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
       - test-publish-github-pages
       - test-verify-python-package
     steps:
@@ -277,7 +277,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
       - test-find-critical-todos
       - test-check-subpath-exports
       - test-setup-nodejs-context
@@ -303,7 +303,7 @@ jobs:
     if: false
     runs-on: ubuntu-24.04
     needs:
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
       - test-install-via-sdkman
       - test-verify-jvm-project
       - test-publish-github-pages
@@ -317,7 +317,7 @@ jobs:
     if: false
     runs-on: ubuntu-24.04
     needs:
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
       - test-setup-nodejs-context
       - test-publish-github-pages
       - test-verify-npm-package
@@ -359,7 +359,7 @@ jobs:
       - test-detect-branch-version
       - test-check-action-references
       - test-check-project-license
-      - test-enforce-branch-version
+      - test-replace-regex-pattern
       - test-find-critical-todos
       - test-install-wasm-pack
       - test-setup-rust-context

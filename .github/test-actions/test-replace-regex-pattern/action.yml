@@ -1,0 +1,29 @@
+name: Test replace-regex-pattern
+description: Tests for replace-regex-pattern.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/setup-elvish-context
+
+    - shell: elvish {0}
+      run: |
+        echo 'alpha' > A
+        echo 'beta' > B
+
+    - uses: ./actions/replace-regex-pattern
+      with:
+        file: A, B
+        regex: "([ae])"
+        replacement: "*$1*"
+
+    - uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'Testing replacement' {
+            slurp < A |
+              should-be '*a*lph*a*'
+
+            slurp < B |
+              should-be 'b*e*t*a*'
+          }

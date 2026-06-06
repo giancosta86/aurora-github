@@ -1,0 +1,28 @@
+name: Replace regex pattern
+description: Replaces the given regex with the given replacement in all the requested files.
+
+inputs:
+  files:
+    description: Comma-separated file wildcards.
+    default: "**"
+
+  regex:
+    description: The regular expression pattern.
+
+  replacement:
+    description: The replacement string - supporting $X groups.
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+
+    - shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/replace-regex-pattern
+
+        replace-regex-pattern:main
+      env:
+        files: ${{ inputs.files }}
+        regex: ${{ inputs.regex }}
+        replacement: ${{ inputs.replacement }}
