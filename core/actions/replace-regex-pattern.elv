@@ -1,8 +1,8 @@
 use os
 use re
 use str
-use github.com/giancosta86/elvish/v1/edit
-use github.com/giancosta86/elvish/v1/string
+use github.com/giancosta86/ethereal/v1/edit
+use github.com/giancosta86/ethereal/v1/string
 use ./input
 
 fn main {
