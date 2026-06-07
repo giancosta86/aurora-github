@@ -14,7 +14,7 @@ steps:
 
 ## 💡 How it works
 
-1. Invoke the [install-wasm-pack](../install-wasm-pack/README.md) action, passing all the matching inputs, to install the `wasm-pack` command.
+1. Install the `wasm-pack` command.
 
 1. Invoke the [verify-rust-crate](../verify-rust-crate/README.md) action, passing all the matching inputs, to perform code analysis over the Rust source code.
 
@@ -56,8 +56,6 @@ steps:
 - [parse-npm-scope](../parse-npm-scope/README.md)
 
 - [setup-rust-context](../setup-rust-context/README.md)
-
-- [install-wasm-pack](../install-wasm-pack/README.md)
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 

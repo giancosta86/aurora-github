@@ -17,7 +17,7 @@ steps:
 
 ## 💡 How it works
 
-1. Invoke the [install-wasm-pack](../install-wasm-pack/README.md) action, passing all the matching inputs, to install the `wasm-pack` command.
+1. Install the `wasm-pack` command.
 
 1. Invoke [generate-wasm-target](../generate-wasm-target/README.md) to generate the NodeJS package source files in the **pkg** subdirectory.
 

@@ -27,7 +27,7 @@ steps:
 
 ## ☑️ Requirements
 
-- The `wasm-pack` command must be available in the system - for example, via [install-wasm-pack](../install-wasm-pack/README.md).
+- The `wasm-pack` command must be available in the system.
 
 ## 📥 Inputs
 
@@ -44,8 +44,6 @@ steps:
 ## 🌐 Further references
 
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/)
-
-- [install-wasm-pack](../install-wasm-pack/README.md)
 
 - [parse-npm-scope](../parse-npm-scope/README.md)
 

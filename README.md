@@ -50,8 +50,6 @@ The actions can be grouped by technology:
 
 - [publish-rust-wasm](actions/publish-rust-wasm/README.md)
 
-- [install-wasm-pack](actions/install-wasm-pack/README.md)
-
 - [generate-wasm-target](actions/generate-wasm-target/README.md)
 
 ## ☕ Java Virtual Machine ecosystem
