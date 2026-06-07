@@ -68,8 +68,6 @@ The actions can be grouped by technology:
 
 - [publish-github-pages](actions/publish-github-pages/README.md)
 
-- [run-custom-tests](actions/run-custom-tests/README.md)
-
 - [check-project-license](actions/check-project-license/README.md)
 
 - [check-required-jobs](actions/check-required-jobs/README.md)

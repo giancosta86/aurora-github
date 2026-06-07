@@ -34,7 +34,7 @@ steps:
 
 ## 💬 Remarks
 
-This action is especially useful to perform tests _on the fly_ within the CI/CD pipeline - for example, when _testing custom GitHub Actions_; otherwise, you can simply _commit your test scripts_ into the project repository, then use [run-custom-tests](../run-custom-tests/README.md) to execute them.
+This action is especially useful to perform tests _on the fly_ within the CI/CD pipeline - for example, when _testing custom GitHub Actions_.
 
 ## ☑️ Requirements
 

@@ -15,7 +15,7 @@ steps:
 
 1. Ensure that the library _metadata_ are declared.
 
-1. Execute [run-custom-tests](../run-custom-tests/README.md).
+1. Execute the tests.
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
 
@@ -34,8 +34,6 @@ steps:
 ## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
-
-- [run-custom-tests](../run-custom-tests/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

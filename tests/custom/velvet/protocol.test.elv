@@ -1,4 +1,4 @@
-describe 'The testing protocol required by test-run-custom-tests' {
+describe 'The testing protocol' {
   it 'should be satisfied' {
     echo 'TEST OK' > out.txt
   }
