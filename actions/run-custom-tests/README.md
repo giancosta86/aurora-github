@@ -14,7 +14,6 @@ steps:
 ## 💡 How it works
 
 1. If `root-directory` does not exist:
-
    1. If `optional` is **true**, exit the action successfully.
 
    1. Otherwise, crash the workflow.
@@ -22,31 +21,26 @@ steps:
 1. Use `root-directory` as the current directory.
 
 1. Select the first feasible course of action:
+   1. If `script-file` is specified, run it with a dedicated shell.
 
-   1. If `script-file` is specified **and** can be run by forwarding it to [run-shell-script](../run-shell-script/README.md), invoke the action accordingly, passing the (optional) `script-shell`.
-
-   1. If **verify** (**.elv**, **.sh**, ...) exists in `working-directory` **and** can be run via [run-shell-script](../run-shell-script/README.md), invoke the action accordingly, passing the (optional) `script-shell`.
+   1. If **verify** (**.elv**, **.sh**, ...) exists in `working-directory`, invoke it with its required shell.
 
    1. If one or more files having `.test.elv` extension exist within the root directory tree, run them using [velvet](https://github.com/giancosta86/velvet)
 
    1. If a file named **package.json** exists in the root directory:
-
       1. Invoke [setup-nodejs-context](../setup-nodejs-context/README.md).
 
       1. Run the **verify** script in the **scripts** section of **package.json**.
 
    1. If a file named **Cargo.toml** exists in the root directory:
-
       1. Invoke [setup-rust-context](../setup-rust-context/README.md), without enforcing the existence of the toolchain file.
 
       1. Run `cargo test`:
-
          1. with no features enabled
 
          1. with all the features enabled
 
    1. Otherwise:
-
       1. If `optional` is **true**, exit the action successfully.
 
       1. Otherwise, crash the workflow.
@@ -71,8 +65,6 @@ steps:
 ## 🌐 Further references
 
 - [velvet](https://github.com/giancosta86/velvet)
-
-- [run-shell-script](../run-shell-script/README.md)
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 

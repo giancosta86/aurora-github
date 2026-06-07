@@ -86,8 +86,6 @@ The actions can be grouped by technology:
 
 - [replace-regex-pattern](actions/replace-regex-pattern/README.md)
 
-- [run-shell-script](actions/run-shell-script/README.md)
-
 - [find-critical-todos](actions/find-critical-todos/README.md)
 
 - [install-system-packages](actions/install-system-packages/README.md)
