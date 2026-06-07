@@ -18,7 +18,7 @@ fn main {
   epm-plus:patch-epm
 
   str:split , $packages |
-    each str:trim-space~ |
+    each $str:trim-space~ |
     each { |package|
       if (not (epm:is-installed $package)) {
         epm:install $package
