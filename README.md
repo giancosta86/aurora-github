@@ -48,8 +48,6 @@ The actions can be grouped by technology:
 
 - [publish-rust-wasm](actions/publish-rust-wasm/README.md)
 
-- [generate-wasm-target](actions/generate-wasm-target/README.md)
-
 ## ☕ Java Virtual Machine ecosystem
 
 - [verify-jvm-project](actions/verify-jvm-project/README.md)

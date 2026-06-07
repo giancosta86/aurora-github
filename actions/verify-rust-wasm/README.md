@@ -20,7 +20,7 @@ steps:
 
 1. Run `wasm-pack test` to run headless browser tests on Chrome.
 
-1. Invoke [generate-wasm-target](../generate-wasm-target/README.md) to generate the NodeJS package source files in the **pkg** subdirectory.
+1. Generate the NodeJS package source files in the **pkg** subdirectory.
 
 1. If the directory referenced by the `client-tests-directory` input exists, execute the [run-custom-tests](../run-custom-tests/README.md) action on it, with the `optional` flag enabled.
 
@@ -48,8 +48,6 @@ steps:
 ## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
-
-- [generate-wasm-target](../generate-wasm-target/README.md)
 
 - [run-custom-tests](../run-custom-tests/README.md)
 
