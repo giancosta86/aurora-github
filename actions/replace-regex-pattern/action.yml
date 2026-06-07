@@ -20,7 +20,6 @@ runs:
     - shell: elvish {0}
       run: |
         use github.com/giancosta86/aurora-github/actions/replace-regex-pattern
-
         replace-regex-pattern:main
       env:
         files: ${{ inputs.files }}
