@@ -23,7 +23,7 @@ steps:
 
 1. Perform lint checks via `cargo clippy`, enabling all features and targets. All warnings are considered errors. This step can be skipped.
 
-1. Extract each code snippet from `README.md` - if the file exists - as a standalone test file in the `tests` directory, via [extract-rust-snippets](../extract-rust-snippets/README.md).
+1. Extract each code snippet from `README.md` - if the file exists - as a standalone test file in the `tests` directory.
 
 1. Run `cargo test` with all the project features _disabled_.
 
@@ -51,8 +51,6 @@ steps:
 ## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
-
-- [extract-rust-snippets](../extract-rust-snippets/README.md)
 
 - [verify-rust-wasm](../verify-rust-wasm/README.md)
 

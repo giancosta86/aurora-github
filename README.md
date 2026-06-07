@@ -28,8 +28,6 @@ The actions can be grouped by technology:
 
 - [publish-rust-crate](actions/publish-rust-crate/README.md)
 
-- [extract-rust-snippets](actions/extract-rust-snippets/README.md)
-
 ## 📦 NodeJS
 
 - [setup-nodejs-context](actions/setup-nodejs-context/README.md)
