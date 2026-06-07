@@ -53,8 +53,6 @@ steps:
 
 - [run-custom-tests](../run-custom-tests/README.md)
 
-- [parse-npm-scope](../parse-npm-scope/README.md)
-
 - [setup-rust-context](../setup-rust-context/README.md)
 
 - [verify-rust-crate](../verify-rust-crate/README.md)

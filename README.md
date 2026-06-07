@@ -42,8 +42,6 @@ The actions can be grouped by technology:
 
 - [check-subpath-exports](actions/check-subpath-exports/README.md)
 
-- [parse-npm-scope](actions/parse-npm-scope/README.md)
-
 ## 🦀🌐 Rust wasm-pack
 
 - [verify-rust-wasm](actions/verify-rust-wasm/README.md)

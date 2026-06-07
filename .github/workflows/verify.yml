@@ -97,14 +97,6 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-extract-rust-snippets
 
-  test-parse-npm-scope:
-    if: false
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-parse-npm-scope
-
   test-install-system-packages:
     if: false
     runs-on: ubuntu-24.04
@@ -189,7 +181,6 @@ jobs:
     if: false
     runs-on: ubuntu-24.04
     needs:
-      - test-parse-npm-scope
       - test-replace-regex-pattern
     steps:
       - uses: actions/checkout@v6
@@ -353,7 +344,6 @@ jobs:
       - test-find-critical-todos
       - test-setup-rust-context
       - test-extract-rust-snippets
-      - test-parse-npm-scope
       - test-install-system-packages
       - test-inject-subpath-exports
       - test-check-subpath-exports

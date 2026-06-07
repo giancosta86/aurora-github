@@ -62,8 +62,6 @@ steps:
 
 - [publish-github-pages](../publish-github-pages/README.md)
 
-- [parse-npm-scope](../parse-npm-scope/README.md)
-
 - [verify-rust-wasm](../verify-rust-wasm/README.md)
 
 - [enforce-branch-version](../enforce-branch-version/README.md)

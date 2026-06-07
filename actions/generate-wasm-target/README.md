@@ -45,6 +45,4 @@ steps:
 
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/)
 
-- [parse-npm-scope](../parse-npm-scope/README.md)
-
 - [aurora-github](../../README.md)
