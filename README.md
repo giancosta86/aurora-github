@@ -84,13 +84,13 @@ The actions can be grouped by technology:
 
 - [detect-branch-version](actions/detect-branch-version/README.md)
 
-- [enforce-branch-version](actions/enforce-branch-version/README.md)
-
 - [tag-and-release](actions/tag-and-release/README.md)
 
 - [upload-release-assets](actions/upload-release-assets/README.md)
 
 ## 🖥 Operating-system utilities
+
+- [replace-regex-pattern](actions/replace-regex-pattern/README.md)
 
 - [run-shell-script](actions/run-shell-script/README.md)
 
