@@ -3,7 +3,7 @@ description: Replaces the given regex with the given replacement in all the requ
 
 inputs:
   files:
-    description: Comma-separated file wildcards.
+    description: Comma-separated file patterns.
     default: "**"
 
   regex:
