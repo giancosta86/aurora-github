@@ -8,7 +8,7 @@ Installs packages for the **Elvish** shell, supporting the extended format intro
 steps:
   - uses: giancosta86/aurora-github/actions/install-elvish-packages@v11
     with:
-      packages: github.com/giancosta86/primrose@v1 github.com/giancosta86/astral-bridge@v1
+      packages: github.com/giancosta86/primrose@v1, github.com/giancosta86/astral-bridge@v1
 ```
 
 ## 💡 How it works
@@ -27,7 +27,7 @@ This action requires the `elvish` shell to be installed.
 
 |    Name    |    Type    |                           Description                            | Default value |
 | :--------: | :--------: | :--------------------------------------------------------------: | :-----------: |
-| `packages` | **string** | The **space-separated** `<name>[@<version>]` packages to install |               |
+| `packages` | **string** | The **comma-separated** `<name>[@<version>]` packages to install |               |
 
 ## 🌐 Further references
 

@@ -3,7 +3,7 @@ description: Installs packages for the Elvish shell, supporting the extended for
 
 inputs:
   packages:
-    description: The space-separated `<name>[@<version>]` packages to install.
+    description: The comma-separated `<name>[@<version>]` packages to install.
 
 runs:
   using: composite
