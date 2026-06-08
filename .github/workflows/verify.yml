@@ -90,7 +90,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-rust-context
 
   test-install-system-packages:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:

@@ -1,42 +1,45 @@
 name: Test install-system-packages
+description: Tests for install-system-packages.
 
 runs:
   using: composite
   steps:
-    - name: Setup environment variables
-      shell: bash
-      run: echo "expectedCommand=sponge" >> $GITHUB_ENV
-
-    - name: Ensure the command is not installed at first
+    - name: Install Elvish
       shell: bash
       run: |
-        if which "$expectedCommand"
-        then
-          echo "❌ This test must be revised, as the '$expectedCommand' command is already installed."
-          exit 1
-        fi
+        source "${{ github.action_path }}/../../../actions/bootstrap.sh"
+        installElvish
 
-    - shell: bash
-      run: echo "🎭 Running unconditional installation..."
+    - name: Setup environment variables
+      shell: elvish {0}
+      run: echo "expected-command=sponge" >> (get-env GITHUB_ENV)
 
-    - uses: ./actions/install-system-packages
+    - uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'The expected command' {
+            >> 'should not pre-exist' {
+              put ?(which (get-env expected-command)) |
+                should-not-be $ok
+            }
+          }
+
+    - name: Running unconditional installation
+      uses: ./actions/install-system-packages
       with:
         packages: jq, moreutils
 
-    - name: The expected command should now be available
-      shell: bash
-      run: |
-        echo "🔎 Now looking for the '$expectedCommand' command..."
+    - uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'The expected command' {
+            >> 'should now be available' {
+              put ?(which (get-env expected-command)) |
+                should-be $ok
+            }
+          }
 
-        if which "$expectedCommand"
-        then
-          echo "✅ The expected command is now available!"
-        else
-          echo "❌ The expected command was not installed!" >&2
-          exit 1
-        fi
-
-    - shell: bash
+    - shell: elvish {0}
       run: echo "🎭 Running conditional installation for existing command - which should be skipped..."
 
     - uses: ./actions/install-system-packages

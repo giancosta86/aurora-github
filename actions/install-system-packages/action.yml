@@ -19,13 +19,9 @@ runs:
 
     - shell: elvish {0}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/system-packages
-
-        system-packages:install [
-          &packages=(input:list '${{ inputs.packages }}')
-
-          &required-command=(input:string &optional required-command '${{ inputs.required-command }}')
-
-          &initial-update=(input:bool initial-update '${{ inputs.initial-update}}')
-        ]
+        use github.com/giancosta86/aurora-github/actions/install-system-packages
+        install-system-packages:main
+      env:
+        required-command: ${{ inputs.required-command }}
+        packages: ${{ inputs.packages }}
+        initial-update: ${{ inputs.initial-update }}

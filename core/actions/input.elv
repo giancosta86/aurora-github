@@ -46,12 +46,13 @@ fn enum { |&optional=$false name admissible-list|
   }
 }
 
-fn tokenized { |&optional=$false &separator=, name|
-  -parse &optional=$optional $name { |value|
+fn list { |&separator=, name|
+  -parse &optional $name { |value|
     str:split $separator $value |
       each $str:trim-space~ |
       keep-if $seq:is-non-empty~
-  }
+  } |
+    coalesce (all) []
 }
 
 fn -file-system-input { |&optional=$false &can-be-missing=$false type-description name path-checker|

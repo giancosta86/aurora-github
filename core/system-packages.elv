@@ -1,20 +1,29 @@
 use os
-use github.com/giancosta86/aurora-elvish/command
-use github.com/giancosta86/aurora-elvish/console
+use github.com/giancosta86/ethereal/v1/command
+use ./std-err
+
+fn -silence-unless-error { |block|
+  var capture-result = (command:capture $block)
+
+  if (not-eq $capture-result[exception] $nil) {
+    all $capture-result[data] |
+      each $echo~ >&2
+  }
+}
 
 fn -should-run-installer { |required-command|
   if $required-command {
-    console:inspect &emoji=📥 'Required command' $required-command
+    std-err:inspect &emoji=📥 'Required command' $required-command
 
     if (command:exists-in-bash $required-command) {
-      console:echo ✅ Required command available - no need to install it!
+      std-err:echo ✅ Required command available - no need to install it!
       put $false
       return
     } else {
-      console:echo 💬 Required command not available - now installing its packages...
+      std-err:echo 💬 Required command not available - now installing its packages...
     }
   } else {
-    console:echo 💫 No required command passed - the requested packages will be installed unconditionally...
+    std-err:echo 💫 No required command passed - the requested packages will be installed unconditionally...
   }
 
   put $true
@@ -24,13 +33,13 @@ fn -run-initial-update {
   var flag-file = ~/.install-system-packages-updated
 
   if (os:is-regular $flag-file) {
-    console:echo 💡 The package list has already been updated!
+    std-err:echo 💡 The package list has already been updated!
     return
   }
 
-  console:echo 📥 Updating the package list...
+  std-err:echo 📥 Updating the package list...
 
-  command:silence-until-error {
+  -silence-unless-error {
     sudo apt-get update
   }
 
@@ -38,18 +47,16 @@ fn -run-initial-update {
 }
 
 fn -run-installer { |requested-packages|
-  console:echo 📦 Installing packages...
+  std-err:echo 📦 Installing packages...
 
-  command:silence-until-error {
+  -silence-unless-error {
     sudo apt-get install -y $@requested-packages
   }
 
-  console:echo ✅ Packages installed!
+  std-err:echo ✅ Packages installed!
 }
 
 fn install { |inputs|
-  console:inspect-inputs $inputs
-
   var packages = $inputs[packages]
   var required-command = $inputs[required-command]
   var initial-update = $inputs[initial-update]
