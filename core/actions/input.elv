@@ -5,9 +5,13 @@ use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/ethereal/v1/seq
 
 fn string { |&optional=$false name|
-  if (has-env $name) {
+  var value = (
     get-env $name |
       str:trim-space (all)
+  )
+
+  if (seq:is-non-empty $value) {
+    put $value
   } else {
     if $optional {
       put $nil
