@@ -12,7 +12,10 @@ runs:
 
     - name: Setup environment variables
       shell: elvish {0}
-      run: echo "expected-command=sponge" >> (get-env GITHUB_ENV)
+      run: |
+        use github.com/giancosta86/aurora-github/ci-cd/env
+
+        env:write expected-command sponge
 
     - uses: ./actions/run-velvet-code
       with:
