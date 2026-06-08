@@ -4,11 +4,7 @@ description: Tests for install-system-packages.
 runs:
   using: composite
   steps:
-    - name: Install Elvish
-      shell: bash
-      run: |
-        source "${{ github.action_path }}/../../../actions/bootstrap.sh"
-        installElvish
+    - uses: ./actions/setup-elvish-context
 
     - name: Setup environment variables
       shell: elvish {0}
