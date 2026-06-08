@@ -51,12 +51,17 @@ fn enum { |&optional=$false name admissible-list|
 }
 
 fn list { |&separator=, name|
-  -parse &optional $name { |value|
-    str:split $separator $value |
-      each $str:trim-space~ |
-      keep-if $seq:is-non-empty~
-  } |
-    coalesce (all) []
+  var value = (string &optional $name)
+
+  if $value {
+    put [(
+      str:split $separator $value |
+        each $str:trim-space~ |
+        keep-if $seq:is-non-empty~
+    )]
+  } else {
+    put []
+  }
 }
 
 fn -file-system-input { |&optional=$false &can-be-missing=$false type-description name path-checker|
