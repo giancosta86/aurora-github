@@ -21,7 +21,11 @@ fn section { |emoji description block|
 
 fn inspect { |&emoji=🔎 description value|
   capture {
-    builtin:echo $emoji $description':'
-    pprint $value
+    if (eq (kind-of $value) string) {
+      builtin:echo $emoji $description': '$value
+    } else {
+      builtin:echo $emoji $description':'
+      pprint $value
+    }
   }
 }
