@@ -16,9 +16,11 @@ runs:
     - uses: ./actions/run-velvet-code
       with:
         code: |
+          use os
+
           >> 'The expected command' {
             >> 'should not pre-exist' {
-              put ?(which (get-env expected-command)) |
+              put ?(which (get-env expected-command) > $os:dev-null 2>&1) |
                 should-not-be $ok
             }
           }
@@ -33,7 +35,9 @@ runs:
         code: |
           >> 'The expected command' {
             >> 'should now be available' {
-              put ?(which (get-env expected-command)) |
+              use os
+
+              put ?(which (get-env expected-command) > $os:dev-null 2>&1) |
                 should-be $ok
             }
           }
