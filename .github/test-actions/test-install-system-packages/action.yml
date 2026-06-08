@@ -13,15 +13,19 @@ runs:
 
         env:write expected-command sponge
 
+    - shell: elvish {0}
+      run: echo "🎭 Checking preconditions..."
+
     - uses: ./actions/run-velvet-code
       with:
         code: |
-          use os
+          use github.com/giancosta86/ethereal/v1/command
 
           >> 'The expected command' {
             >> 'should not pre-exist' {
-              put ?(which (get-env expected-command) > $os:dev-null 2>&1) |
-                should-not-be $ok
+              get-env expected-command |
+                command:exists-in-bash |
+                should-be $false
             }
           }
 
@@ -35,12 +39,13 @@ runs:
     - uses: ./actions/run-velvet-code
       with:
         code: |
+          use github.com/giancosta86/ethereal/v1/command
+
           >> 'The expected command' {
             >> 'should now be available' {
-              use os
-
-              put ?(which (get-env expected-command) > $os:dev-null 2>&1) |
-                should-be $ok
+              get-env expected-command |
+                command:exists-in-bash |
+                should-be $true
             }
           }
 
