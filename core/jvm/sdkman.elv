@@ -26,7 +26,9 @@ fn install-sdk { |candidate version|
 
   std-err:echo 📥 Installing $candidate'('$version')...'
 
-  bash -c "source '"$-sdkman-script"'; sdk install '"$candidate"' '"$version"'"
+  command:silence-unless-error {
+    bash -c "source '"$-sdkman-script"'; sdk install '"$candidate"' '"$version"'"
+  }
 
   var sdk-bin = $-sdkman-home/candidates/$candidate/$version/bin
 
