@@ -1,4 +1,5 @@
 use os
+use github.com/giancosta86/ethereal/v1/command
 use ../ci-cd/env
 use ../std-err
 
@@ -13,7 +14,9 @@ fn -ensure-installed {
 
   std-err:echo 📥 Installing SDKMAN...
 
-  curl -s 'https://get.sdkman.io' | bash
+  command:silence-unless-error {
+    curl -s 'https://get.sdkman.io' | bash
+  }
 
   std-err:echo ✅ SDKMAN installed!
 }
