@@ -15,15 +15,8 @@ runs:
 
     - shell: elvish {0}
       run: |
-        use github.com/giancosta86/aurora-elvish/curl
-        use aurora-github/ci-cd/input
-        use aurora-github/jvm/sdkman
-
-        var candidate = (input:string candidate '${{ inputs.candidate }}')
-
-        var version = (input:string version '${{ inputs.version }}')
-
-        console:echo 📢 Configuring curl so that it outputs errors only...
-        curl:display-errors-only
-
-        sdkman:install-sdk $candidate $version
+        use github.com/giancosta86/aurora-github/actions/install-via-sdk-man
+        install-via-sdk-man:main
+      env:
+        candidate: ${{ inputs.candidate }}
+        version: ${{ inputs.version }}
