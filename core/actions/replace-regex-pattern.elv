@@ -15,7 +15,7 @@ fn main {
 
   var replacement = (
     input:string &optional replacement |
-      coalesce ''
+      coalesce (all) ''
   )
 
   str:split , $files | each { |file-wildcard|
