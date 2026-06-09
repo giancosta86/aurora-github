@@ -4,51 +4,45 @@ description: Tests for install-via-sdk-man.
 runs:
   using: composite
   steps:
-    - name: Setup environment variables
-      shell: bash
-      run: |
-        echo "expectedMavenVersion=3.8.7" >> $GITHUB_ENV
-        echo "expectedGradleVersion=8.2.1" >> $GITHUB_ENV
+    - uses: ./actions/setup-elvish-context
 
-    - shell: bash
+    - name: Setup environment variables
+      shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-github/ci-cd/env
+        env:map [
+          &expected-maven-version=3.8.7
+          &expected-gradle-version=8.2.1
+        ]
+
+    - shell: elvish {0}
       run: echo "🎭 Checking the test environment..."
 
-    - name: Ensure the expected Maven version is not installed
-      shell: bash
-      run: |
-        if mvn --version | grep --color=always "$expectedMavenVersion"
-        then
-          echo "❌ The installed Maven version coincides with the expected one, making the test meaningless"
-          exit 1
-        fi
+    - name: Ensuring preconditions
+      uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'The expected Maven version' {
+            >> 'should not be installed' {
+              mvn --version |
+                should-not-contain (get-env expected-maven-version)
+            }
+          }
 
-    - name: Ensure the expected Gradle version is not installed
-      shell: bash
-      run: |
-        if gradle --version | grep --color=always "$expectedGradleVersion"
-        then
-          echo "❌ The installed Gradle version coincides with the expected one, making the test meaningless"
-          exit 1
-        fi
+          >> 'The expected Gradle version' {
+            >> 'should not be installed' {
+              gradle --version |
+                should-not-contain (get-env expected-gradle-version)
+            }
+          }
 
-    - shell: bash
+    - shell: elvish {0}
       run: echo "🎭 Installing 🪶 Maven..."
 
     - uses: ./actions/install-via-sdkman
       with:
         candidate: maven
-        version: ${{ env.expectedMavenVersion }}
-
-    - name: The expected Maven version should be available
-      shell: bash
-      run: |
-        if mvn --version | grep --color=always "$expectedMavenVersion"
-        then
-          echo "✅ The requested Maven version is ready!"
-        else
-          echo "❌ The expected Maven version ('$expectedMavenVersion') is not installed!" >&2
-          exit 1
-        fi
+        version: ${{ env.expected-maven-version }}
 
     - shell: bash
       run: echo "🎭 Installing 🐘 Gradle..."
@@ -56,15 +50,22 @@ runs:
     - uses: ./actions/install-via-sdkman
       with:
         candidate: gradle
-        version: ${{ env.expectedGradleVersion }}
+        version: ${{ env.expected-gradle-version }}
 
-    - name: The expected Gradle version should be available
-      shell: bash
-      run: |
-        if gradle --version | grep --color=always "$expectedGradleVersion"
-        then
-          echo "✅ The requested Gradle version is ready!"
-        else
-          echo "❌ The expected Gradle version ('$expectedGradleVersion') is not installed!" >&2
-          exit 1
-        fi
+    - name: Testing the results
+      uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'The expected Maven version' {
+            >> 'should be installed' {
+              mvn --version |
+                should-contain (get-env expected-maven-version)
+            }
+          }
+
+          >> 'The expected Gradle version' {
+            >> 'should be installed' {
+              gradle --version |
+                should-contain (get-env expected-gradle-version)
+            }
+          }
