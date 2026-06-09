@@ -40,7 +40,7 @@ runs:
       working-directory: tests/npm-package
       run: |
         cp package.json.original package.json
-        touch "$rootIndexFile"
+        fs:touch "$rootIndexFile"
 
     - shell: bash
       run: echo "🎭 Run again with prefer-index mode - now that the root index exists..."

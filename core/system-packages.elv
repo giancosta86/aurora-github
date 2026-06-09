@@ -1,5 +1,6 @@
 use os
 use github.com/giancosta86/ethereal/v1/command
+use github.com/giancosta86/ethereal/v1/fs
 use ./std-err
 
 fn -should-run-installer { |required-command|
@@ -33,7 +34,7 @@ fn -run-initial-update {
     sudo apt-get update
   }
 
-  touch $flag-file
+  fs:touch $flag-file
 }
 
 fn -run-installer { |requested-packages|
