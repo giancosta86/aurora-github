@@ -13,7 +13,10 @@ fn main {
 
   var regex = (input:string regex)
 
-  var replacement = (input:string replacement)
+  var replacement = (
+    input:string &optional replacement |
+      coalesce ''
+  )
 
   str:split , $files | each { |file-wildcard|
     eval 'put '$file-wildcard | each { |path|
