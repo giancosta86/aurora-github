@@ -2,15 +2,6 @@ use os
 use github.com/giancosta86/ethereal/v1/command
 use ./std-err
 
-fn -silence-unless-error { |block|
-  var capture-result = (command:capture $block)
-
-  if (not-eq $capture-result[exception] $nil) {
-    all $capture-result[data] |
-      each $echo~ >&2
-  }
-}
-
 fn -should-run-installer { |required-command|
   if $required-command {
     std-err:inspect &emoji=📥 'Required command' $required-command
@@ -18,15 +9,14 @@ fn -should-run-installer { |required-command|
     if (command:exists-in-bash $required-command) {
       std-err:echo ✅ Required command available - no need to install it!
       put $false
-      return
     } else {
       std-err:echo 💬 Required command not available - now installing its packages...
+      put $true
     }
   } else {
     std-err:echo 💫 No required command passed - the requested packages will be installed unconditionally...
+    put $true
   }
-
-  put $true
 }
 
 fn -run-initial-update {
@@ -39,7 +29,7 @@ fn -run-initial-update {
 
   std-err:echo 📥 Updating the package list...
 
-  -silence-unless-error {
+  command:silence-unless-error {
     sudo apt-get update
   }
 
@@ -49,7 +39,7 @@ fn -run-initial-update {
 fn -run-installer { |requested-packages|
   std-err:echo 📦 Installing packages...
 
-  -silence-unless-error {
+  command:silence-unless-error {
     sudo apt-get install -y $@requested-packages
   }
 
