@@ -30,7 +30,7 @@ fn -run-initial-update {
 
   std-err:echo 📥 Updating the package list...
 
-  command:silence-unless-error {
+  command:silence {
     sudo apt-get update
   }
 
@@ -40,7 +40,7 @@ fn -run-initial-update {
 fn -run-installer { |requested-packages|
   std-err:echo 📦 Installing packages...
 
-  command:silence-unless-error {
+  command:silence {
     sudo apt-get install -y $@requested-packages
   }
 

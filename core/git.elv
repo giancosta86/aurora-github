@@ -6,7 +6,7 @@ use github.com/giancosta86/aurora-elvish/lang
 fn hard-reset {
   console:echo ⏱️ Discarding local changes to the Git repository...
 
-  command:silence-until-error {
+  command:silence {
     git reset --hard HEAD
   }
 
@@ -19,7 +19,7 @@ fn fetch-branched-sha { |&depth-delta=25 &delta-factor=1.5 branch required-sha|
   while (not ?(command:silence { git cat-file commit $required-sha })) {
     console:echo 📥 Fetching $depth-delta more commits...
 
-    command:silence-until-error {
+    command:silence {
       git fetch --deepen=$depth-delta origin $branch
     }
 
@@ -32,7 +32,7 @@ fn fetch-branched-sha { |&depth-delta=25 &delta-factor=1.5 branch required-sha|
 fn fetch-tags {
   console:echo 📥 Retrieving Git tags...
 
-  command:silence-until-error {
+  command:silence {
     git fetch --tags
   }
 
@@ -44,7 +44,7 @@ fn create-and-push-tag { |&force=$false tag|
 
   var force-arg = (lang:ternary $force [--force] [])
 
-  command:silence-until-error {
+  command:silence {
     git tag $@force-arg $tag
     git push origin $tag $@force-arg
   }

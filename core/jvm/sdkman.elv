@@ -14,7 +14,7 @@ fn -ensure-installed {
 
   std-err:echo 📥 Installing SDKMAN...
 
-  command:silence-unless-error {
+  command:silence {
     curl -s 'https://get.sdkman.io' | bash
   }
 
@@ -26,7 +26,7 @@ fn install-sdk { |candidate version|
 
   std-err:echo 📥 Installing $candidate'('$version')...'
 
-  command:silence-unless-error {
+  command:silence {
     bash -c "source '"$-sdkman-script"'; sdk install '"$candidate"' '"$version"'"
   }
 
