@@ -15,8 +15,8 @@ runs:
 
     - shell: elvish {0}
       run: |
-        use github.com/giancosta86/aurora-github/actions/install-via-sdk-man
-        install-via-sdk-man:main
+        use github.com/giancosta86/aurora-github/actions/install-via-sdkman
+        install-via-sdkman:main
       env:
         candidate: ${{ inputs.candidate }}
         version: ${{ inputs.version }}
