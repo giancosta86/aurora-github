@@ -1,27 +1,27 @@
 use os
-use github.com/giancosta86/aurora-elvish/console
 use ../ci-cd/env
+use ../std-err
 
 var -sdkman-home = ~/.sdkman
 var -sdkman-script = $-sdkman-home/bin/sdkman-init.sh
 
 fn -ensure-installed {
   if (os:is-dir $-sdkman-home) {
-    console:echo 🎉 It seems that SDKMAN was previously installed!
+    std-err:echo 🎉 It seems that SDKMAN was previously installed!
     return
   }
 
-  console:echo 📥 Installing SDKMAN...
+  std-err:echo 📥 Installing SDKMAN...
 
   curl -s 'https://get.sdkman.io' | bash
 
-  console:echo ✅ SDKMAN installed!
+  std-err:echo ✅ SDKMAN installed!
 }
 
 fn install-sdk { |candidate version|
   -ensure-installed
 
-  console:echo 📥 Installing $candidate'('$version')...'
+  std-err:echo 📥 Installing $candidate'('$version')...'
 
   bash -c "source '"$-sdkman-script"'; sdk install '"$candidate"' '"$version"'"
 
@@ -36,5 +36,5 @@ fn install-sdk { |candidate version|
   set-env PATH $updated-path
   env:write PATH $updated-path
 
-  console:echo ✅ $candidate'('$version')' installed!
+  std-err:echo ✅ $candidate'('$version')' installed!
 }
