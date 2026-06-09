@@ -1,4 +1,5 @@
 name: Test upload-release-assets
+description: Tests for upload-release-assets.
 
 runs:
   using: composite

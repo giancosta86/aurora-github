@@ -24,15 +24,10 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.source-directory }}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/ci-cd/release-assets
-
-        release-assets:publish [
-          &release-tag=(input:string release-tag '${{ inputs.release-tag }}')
-
-          &files=(input:list '${{ inputs.files }}')
-
-          &overwrite=(input:bool overwrite '${{ inputs.overwrite }}')
-        ]
+        use github.com/giancosta86/aurora-github/actions/upload-release-assets
+        upload-release-assets:main
       env:
+        release-tag: ${{ inputs.release-tag }}
+        files: ${{ inputs.files }}
+        overwrite: ${{ inputs.overwrite }}
         GH_TOKEN: ${{ github.token }}
