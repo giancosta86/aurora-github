@@ -1,5 +1,5 @@
-use github.com/giancosta86/aurora-elvish/lang
-use github.com/giancosta86/aurora-elvish/seq
+use github.com/giancosta86/ethereal/v1/lang
+use github.com/giancosta86/ethereal/v1/seq
 
 fn publish { |inputs|
   var release-tag = $inputs[release-tag]
