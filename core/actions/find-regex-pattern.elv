@@ -23,7 +23,7 @@ fn main {
 
   var found = $false
 
-  var quiet-grep-arg = (lang:ternary $quiet '--quiet' '')
+  var quiet-grep-arg = (lang:ternary $quiet ['--quiet'] [])
 
   all $files | each { |file-wildcard|
     var escaped-wildcard = (string:escape-single-quotes $file-wildcard)
