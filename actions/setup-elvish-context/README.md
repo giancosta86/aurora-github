@@ -13,8 +13,6 @@ steps:
 
 1. If the `elvish` command is **not** already available in the system, the requested `version` will be installed.
 
-1. Ensures [epm-plus](https://github.com/giancosta86/epm-plus) is installed - and that `epm` is patched.
-
 1. Ensures that the `github.com/giancosta86/aurora-github` library is a _symlink_ to the `core` directory in the **aurora-github** project.
 
 1. If the `ethereal-version` input is set, such version of [Ethereal](https://github.com/giancosta86/ethereal) will be installed via the [install-elvish-packages](../install-elvish-packages/README.md) action.

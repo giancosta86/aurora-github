@@ -20,17 +20,6 @@ runs:
 
         ensureElvish '${{ inputs.version }}'
 
-    - name: Install epm-plus
-      shell: elvish {0}
-      run: |
-        use epm
-
-        var epm-plus-library = github.com/giancosta86/epm-plus
-
-        if (not (epm:is-installed $epm-plus-library)) {
-          epm:install $epm-plus-library
-        }
-
     - name: Link the aurora-github core as an Elvish package
       shell: elvish {0}
       working-directory: ${{ github.action_path }}/../../core/actions
