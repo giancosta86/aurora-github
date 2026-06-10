@@ -4,11 +4,7 @@ description: Tests for install-elvish-packages.
 runs:
   using: composite
   steps:
-    - name: Install Elvish
-      shell: bash
-      run: |
-        source "${{ github.action_path }}/../../../actions/bootstrap.sh"
-        installElvish
+    - uses: ./actions/setup-elvish-context
 
     - name: Setup the environment variables for the test
       shell: elvish {0}

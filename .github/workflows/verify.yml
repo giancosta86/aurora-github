@@ -8,25 +8,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-install-elvish-packages:
-    if: false
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: ./.github/test-actions/test-install-elvish-packages
-
   test-setup-elvish-context:
-    if: false
     runs-on: ubuntu-24.04
-    needs: test-install-elvish-packages
     steps:
       - uses: actions/checkout@v6
 
       - uses: ./.github/test-actions/test-setup-elvish-context
 
+  test-install-elvish-packages:
+    runs-on: ubuntu-24.04
+    needs: test-setup-elvish-context
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: ./.github/test-actions/test-install-elvish-packages
+
   test-run-velvet-code:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-setup-elvish-context
     steps:
@@ -35,14 +32,12 @@ jobs:
       - uses: ./.github/test-actions/test-run-velvet-code
 
   test-elvish-platform:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-run-velvet-code
     steps:
       - uses: actions/checkout@v6
 
   test-detect-branch-version:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-elvish-platform
     steps:
@@ -50,7 +45,6 @@ jobs:
       - uses: ./.github/test-actions/test-detect-branch-version
 
   test-check-action-references:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-detect-branch-version
     steps:
@@ -58,7 +52,6 @@ jobs:
       - uses: ./actions/check-action-references
 
   test-check-project-license:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -66,7 +59,6 @@ jobs:
       - uses: ./.github/test-actions/test-check-project-license
 
   test-find-regex-pattern:
-    if: always()
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -74,7 +66,6 @@ jobs:
       - uses: ./.github/test-actions/test-find-regex-pattern
 
   test-replace-regex-pattern:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -82,7 +73,6 @@ jobs:
       - uses: ./.github/test-actions/test-replace-regex-pattern
 
   test-install-system-packages:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -90,7 +80,6 @@ jobs:
       - uses: ./.github/test-actions/test-install-system-packages
 
   test-install-via-sdkman:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -98,7 +87,6 @@ jobs:
       - uses: ./.github/test-actions/test-install-via-sdkman
 
   test-upload-release-assets:
-    if: false
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -106,7 +94,6 @@ jobs:
       - uses: ./.github/test-actions/test-upload-release-assets
 
   test-run-elvish-tests:
-    if: always()
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -299,8 +286,8 @@ jobs:
     if: always()
     runs-on: ubuntu-24.04
     needs:
-      - test-install-elvish-packages
       - test-setup-elvish-context
+      - test-install-elvish-packages
       - test-run-velvet-code
       - test-elvish-platform
       - test-detect-branch-version

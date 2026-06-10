@@ -11,6 +11,7 @@ runs:
     - shell: bash
       working-directory: ${{ github.action_path }}/../../core/actions
       run: |
-        elvish -c 'use ./install-elvish-packages; install-elvish-packages:main'
+        use github.com/giancosta86/aurora-github/actions/install-elvish-packages
+        install-elvish-packages:main'
       env:
         packages: ${{ inputs.packages }}
