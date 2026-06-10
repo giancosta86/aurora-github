@@ -13,6 +13,9 @@ runs:
       with:
         working-directory: tests/elvish/script
 
+    - shell: elvish {0}
+      run: echo 🎭 Now checking the custom script output...
+
     - uses: ./actions/run-velvet-code
       with:
         working-directory: tests/elvish/script
@@ -30,6 +33,9 @@ runs:
     - uses: ./actions/run-elvish-tests
       with:
         working-directory: tests/elvish/velvet
+
+    - shell: elvish {0}
+      run: echo 🎭 Now checking the Velvet test output...
 
     - uses: ./actions/run-velvet-code
       with:
