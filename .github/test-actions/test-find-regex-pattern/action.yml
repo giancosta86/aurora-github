@@ -13,7 +13,6 @@ runs:
       id: find-matching-pattern
       with:
         files: tests/unknown-tech/src/*.txt
-        crash-when: found
         regex: TODO
 
     - uses: ./actions/run-velvet-code
@@ -34,6 +33,7 @@ runs:
       with:
         files: tests/unknown-tech/src/*.txt
         regex: SOMETHING-ELSE
+        crash-when: not-found
 
     - uses: ./actions/run-velvet-code
       with:
