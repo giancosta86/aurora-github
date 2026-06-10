@@ -15,7 +15,6 @@ runs:
         working-directory: tests/unknown-tech/src
         files: "*.txt"
         regex: TODO!
-        quiet: true
 
     - uses: ./actions/run-velvet-code
       with:
