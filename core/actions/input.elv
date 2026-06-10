@@ -5,6 +5,10 @@ use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/ethereal/v1/seq
 
 fn string { |&optional=$false name|
+  if (not (has-env $name)) {
+    fail 'The following environment variable was not passed: '$name
+  }
+
   var value = (
     get-env $name |
       str:trim-space (all)
