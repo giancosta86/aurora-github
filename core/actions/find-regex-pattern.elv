@@ -11,7 +11,7 @@ fn main {
   var regex = (input:string regex)
 
   var crash-when = (
-    input:enum &optional crash-enum [found not-found]
+    input:enum &optional crash-when [found not-found]
   )
 
   var quiet = (input:boolean quiet)
