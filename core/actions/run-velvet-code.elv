@@ -1,5 +1,3 @@
-use path
-use str
 use github.com/giancosta86/ethereal/v1/fs
 use github.com/giancosta86/ethereal/v1/string
 use ../velvet
