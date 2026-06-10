@@ -13,7 +13,7 @@ runs:
       id: find-matching-pattern
       with:
         working-directory: tests/unknown-tech/src
-        files: *.txt
+        files: "*.txt"
         regex: TODO!
 
     - uses: ./actions/run-velvet-code

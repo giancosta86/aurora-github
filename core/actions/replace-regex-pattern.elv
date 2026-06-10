@@ -5,7 +5,7 @@ use github.com/giancosta86/ethereal/v1/string
 use ./input
 
 fn main {
-  var files = (input:path-list files)
+  var files = (input:list files)
 
   var regex = (input:string regex)
 

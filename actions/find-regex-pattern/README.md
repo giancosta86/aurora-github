@@ -9,7 +9,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/find-regex-pattern@v11
     with:
       working-directory: tests/some-dir/src
-      files: *.txt
+      files: "*.txt"
       regex: TODO!
 ```
 
