@@ -35,6 +35,8 @@ runs:
       shell: elvish {0}
       working-directory: ${{ github.action_path }}/../../core/actions
       run: |
+        use epm
+
         var action-path = (get-env GITHUB_ACTION_PATH)
 
         var link-path = (
