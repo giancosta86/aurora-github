@@ -14,7 +14,7 @@ fn main {
     input:enum &optional crash-when [found not-found]
   )
 
-  var quiet = (input:boolean quiet)
+  var quiet = (input:bool quiet)
 
   var found = $false
 
