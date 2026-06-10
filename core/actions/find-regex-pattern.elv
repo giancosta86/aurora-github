@@ -2,7 +2,7 @@ use os
 use re
 use str
 use github.com/giancosta86/ethereal/v1/string
-use ./ci-cd/output
+use ../ci-cd/output
 use ./input
 
 fn main {
