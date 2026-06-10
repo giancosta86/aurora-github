@@ -65,6 +65,14 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-check-project-license
 
+  test-find-regex-pattern:
+    if: always()
+    runs-on: ubuntu-24.04
+    needs: test-check-action-references
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-find-regex-pattern
+
   test-replace-regex-pattern:
     if: false
     runs-on: ubuntu-24.04
@@ -72,14 +80,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-replace-regex-pattern
-
-  test-find-critical-todos:
-    if: always()
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-find-critical-todos
 
   test-setup-rust-context:
     if: false
@@ -142,8 +142,8 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
+      - test-find-regex-pattern
       - test-replace-regex-pattern
-      - test-find-critical-todos
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-verify-python-package
@@ -154,8 +154,8 @@ jobs:
     needs:
       - test-check-project-license
       - test-setup-rust-context
+      - test-find-regex-pattern
       - test-replace-regex-pattern
-      - test-find-critical-todos
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-verify-rust-crate
@@ -186,8 +186,8 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
+      - test-find-regex-pattern
       - test-replace-regex-pattern
-      - test-find-critical-todos
       - test-install-via-sdkman
     steps:
       - uses: actions/checkout@v6
@@ -223,8 +223,8 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
+      - test-find-regex-pattern
       - test-replace-regex-pattern
-      - test-find-critical-todos
       - test-check-subpath-exports
       - test-setup-nodejs-context
     steps:
@@ -282,7 +282,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
-      - test-find-critical-todos
+      - test-find-regex-pattern
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-verify-elvish-package
@@ -298,8 +298,8 @@ jobs:
       - test-detect-branch-version
       - test-check-action-references
       - test-check-project-license
+      - test-find-regex-pattern
       - test-replace-regex-pattern
-      - test-find-critical-todos
       - test-setup-rust-context
       - test-install-system-packages
       - test-inject-subpath-exports

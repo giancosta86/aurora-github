@@ -1,0 +1,45 @@
+name: Test find-regex-pattern
+description: Tests for find-regex-pattern.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/setup-elvish-context
+
+    - shell: elvish {0}
+      run: echo 🎭 Find existing critical TODOs without crashing...
+
+    - uses: ./actions/find-regex-pattern
+      id: find-matching-pattern
+      with:
+        files: tests/unknown-tech/src/*.{js|txt}
+        regex: TODO
+
+    - uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'The `found` output' {
+            >> 'should be true' {
+              put '${{ steps.find-matching-pattern.outputs.found }}' |
+                should-be true
+            }
+          }
+
+    - shell: elvish {0}
+      run: echo 🎭 Look for inexistent pattern...
+
+    - uses: ./actions/find-regex-pattern
+      id: look-for-missing-pattern
+      with:
+        files: tests/unknown-tech/src/*.{js|txt}
+        regex: SOMETHING
+
+    - uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'The `found` output' {
+            >> 'should be false' {
+              put '${{ steps.look-for-missing-pattern.outputs.found }}' |
+                should-be false
+            }
+          }
