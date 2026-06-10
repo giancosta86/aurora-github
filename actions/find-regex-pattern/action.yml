@@ -12,6 +12,9 @@ inputs:
   crash-when:
     description: When the action should crash. Can be 'found', 'not-found' or just empty.
 
+  crash-message:
+    description: The message to be shown in lieu of the default ones when the action crashes.
+
   quiet:
     description: Do not show the occurrences.
     default: false
@@ -40,4 +43,5 @@ runs:
         files: ${{ inputs.files }}
         regex: ${{ inputs.regex }}
         crash-when: ${{ inputs.crash-when }}
+        crash-message: ${{ inputs.crash-message }}
         quiet: ${{ inputs.quiet }}

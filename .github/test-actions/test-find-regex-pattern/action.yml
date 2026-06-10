@@ -34,6 +34,7 @@ runs:
         files: tests/unknown-tech/src/*.txt
         regex: SOMETHING-ELSE
         crash-when: not-found
+        crash-message: THIS IS MY CUSTOM MESSAGE!
 
     - uses: ./actions/run-velvet-code
       with:

@@ -15,6 +15,10 @@ fn main {
     input:enum &optional crash-when [found not-found]
   )
 
+  var crash-message = (
+    input:string &optional crash-message
+  )
+
   var quiet = (input:bool quiet)
 
   var found = $false
@@ -36,9 +40,11 @@ fn main {
   }
 
   if (and $found (eq $crash-when found)) {
-    fail 'Matches found!'
+    coalesce $crash-message 'Matches found!' |
+      fail (all)
   } elif (and (not $found) (eq $crash-when not-found)) {
-    fail 'No matches found!'
+    coalesce $crash-message 'No matches found!' |
+      fail (all)
   }
 
   output:write found $found
