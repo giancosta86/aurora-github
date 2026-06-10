@@ -60,6 +60,12 @@ The actions can be grouped by technology:
 
 - [publish-python-package](actions/publish-python-package/README.md)
 
+## 🔎 Regular expressions
+
+- [find-regex-pattern](actions/find-regex-pattern/README.md)
+
+- [replace-regex-pattern](actions/replace-regex-pattern/README.md)
+
 ## 😺 GitHub
 
 - [check-action-references](actions/check-action-references/README.md)
@@ -79,10 +85,6 @@ The actions can be grouped by technology:
 - [upload-release-assets](actions/upload-release-assets/README.md)
 
 ## 🖥 Operating-system utilities
-
-- [replace-regex-pattern](actions/replace-regex-pattern/README.md)
-
-- [find-critical-todos](actions/find-critical-todos/README.md)
 
 - [install-system-packages](actions/install-system-packages/README.md)
 

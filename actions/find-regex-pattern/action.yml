@@ -1,5 +1,5 @@
 name: Find regex pattern
-description: Find the given regex in all the requested files, optionally crashing.
+description: Finds the given regex in all the requested file patterns, optionally crashing.
 
 inputs:
   files:
@@ -7,20 +7,20 @@ inputs:
     default: "**"
 
   regex:
-    description: The regular expression pattern.
+    description: The Perl regular expression pattern.
 
   crash-when:
     description: When the action should crash. Can be 'found', 'not-found' or just empty.
 
   crash-message:
-    description: The message to be shown in lieu of the default ones when the action crashes.
+    description: The message to show upon crash in lieu of the default ones.
 
   quiet:
-    description: Do not show the occurrences.
+    description: Do not show the matches.
     default: false
 
   working-directory:
-    description: The directory where the action should run.
+    description: The directory where the action must run.
     default: .
 
 outputs:

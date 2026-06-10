@@ -1,6 +1,6 @@
 # replace-regex-pattern
 
-Replaces the _given regex_ with the _given replacement_ in all the requested files.
+Replaces the _given regex_ with the _given replacement_ in all the requested file patterns.
 
 ## 🃏 Example
 
@@ -29,7 +29,7 @@ steps:
 |        Name         |    Type    |                    Description                    | Default value |
 | :-----------------: | :--------: | :-----------------------------------------------: | :-----------: |
 |       `files`       | **string** |          _Comma-separated_ file patterns          |     `**`      |
-|       `regex`       | **string** |          The regular expression pattern           |               |
+|       `regex`       | **string** |     The **Perl** regular expression pattern     |               |
 |    `replacement`    | **string** | The replacement string - supporting `$<X>` groups |               |
 | `working-directory` | **string** |     The directory where the action should run     |      `.`      |
 

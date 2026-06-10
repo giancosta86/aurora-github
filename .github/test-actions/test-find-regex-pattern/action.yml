@@ -12,8 +12,9 @@ runs:
     - uses: ./actions/find-regex-pattern
       id: find-matching-pattern
       with:
-        files: tests/unknown-tech/src/*.txt
-        regex: TODO
+        working-directory: tests/unknown-tech/src
+        files: *.txt
+        regex: TODO!
 
     - uses: ./actions/run-velvet-code
       with:
