@@ -2,6 +2,7 @@ use path
 use str
 use github.com/giancosta86/ethereal/v1/fs
 use github.com/giancosta86/ethereal/v1/string
+use ../velvet
 use ./input
 
 fn main {
@@ -15,10 +16,6 @@ fn main {
     input:string code
   )
 
-  var velvet-module: = (
-    use-mod 'github.com/giancosta86/velvet/'$velvet-version'/velvet'
-  )
-
   fs:with-temp-file { |test-script-path|
     {
       put $working-directory |
@@ -30,6 +27,6 @@ fn main {
       echo $code
     } > $test-script-path
 
-    velvet-module:velvet &flawless $test-script-path
+    velvet:run-flawless $velvet-version $test-script-path
   }
 }

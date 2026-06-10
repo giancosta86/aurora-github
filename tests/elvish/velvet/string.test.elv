@@ -1,5 +1,5 @@
-describe 'Concatenating two strings' {
-  it 'should work' {
+>> 'Concatenating two strings' {
+  >> 'should work' {
     var a = 'A'
     var b = 'B'
 

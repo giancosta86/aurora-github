@@ -2,10 +2,6 @@ name: Run Velvet code
 description: Runs inline tests in the Elvish shell with Velvet.
 
 inputs:
-  working-directory:
-    description: The $pwd for the test code.
-    default: .
-
   velvet-version:
     description: The Velvet version to use.
     default: v4
@@ -13,15 +9,14 @@ inputs:
   code:
     description: The test code - the content of a .test.elv script.
 
+  working-directory:
+    description: The $pwd for the test code.
+    default: .
+
 runs:
   using: composite
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
-
-    - name: Install Velvet
-      uses: giancosta86/aurora-github/actions/install-elvish-packages@v11.0.0
-      with:
-        packages: github.com/giancosta86/velvet@${{ inputs.velvet-version }}
 
     - name: Create and run the test script
       shell: elvish {0}

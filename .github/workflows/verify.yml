@@ -81,14 +81,6 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-replace-regex-pattern
 
-  test-setup-rust-context:
-    if: false
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-setup-rust-context
-
   test-install-system-packages:
     if: false
     runs-on: ubuntu-24.04
@@ -96,6 +88,38 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-install-system-packages
+
+  test-install-via-sdkman:
+    if: false
+    runs-on: ubuntu-24.04
+    needs: test-check-action-references
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-install-via-sdkman
+
+  test-upload-release-assets:
+    if: false
+    runs-on: ubuntu-24.04
+    needs: test-check-action-references
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-upload-release-assets
+
+  test-run-elvish-tests:
+    if: always()
+    runs-on: ubuntu-24.04
+    needs: test-check-action-references
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-run-elvish-tests
+
+  test-setup-rust-context:
+    if: false
+    runs-on: ubuntu-24.04
+    needs: test-check-action-references
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-setup-rust-context
 
   test-inject-subpath-exports:
     if: false
@@ -120,22 +144,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-setup-nodejs-context
-
-  test-upload-release-assets:
-    if: false
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-upload-release-assets
-
-  test-install-via-sdkman:
-    if: false
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-install-via-sdkman
 
   test-verify-python-package:
     if: false
@@ -300,13 +308,13 @@ jobs:
       - test-check-project-license
       - test-find-regex-pattern
       - test-replace-regex-pattern
-      - test-setup-rust-context
       - test-install-system-packages
+      - test-install-via-sdkman
+      - test-upload-release-assets
+      - test-setup-rust-context
       - test-inject-subpath-exports
       - test-check-subpath-exports
       - test-setup-nodejs-context
-      - test-upload-release-assets
-      - test-install-via-sdkman
       - test-verify-python-package
       - test-verify-rust-crate
       - test-publish-github-pages

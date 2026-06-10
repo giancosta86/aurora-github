@@ -1,1 +1,0 @@
-echo 'TEST OK' > out.txt

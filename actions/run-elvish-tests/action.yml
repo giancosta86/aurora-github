@@ -1,0 +1,24 @@
+name: Run Elvish tests
+description: Runs tests via an Elvish script or via Velvet.
+
+inputs:
+  velvet-version:
+    description: The Velvet version to use.
+    default: v4
+
+  working-directory:
+    description: The directory containing the tests.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-elvish-tests
+        run-elvish-tests:main
+      env:
+        velvet-version: ${{ env.velvet-version }}
