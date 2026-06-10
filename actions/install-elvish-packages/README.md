@@ -13,15 +13,9 @@ steps:
 
 ## 💡 How it works
 
-1. Ensures that **epm-plus** is installed, possibly using `epm` to install it.
-
 1. Patches `epm` with **epm-plus**.
 
 1. Install the required packages via the patched `epm:install`.
-
-## ☑️ Requirements
-
-This action requires the `elvish` shell to be installed.
 
 ## 📥 Inputs
 
@@ -31,6 +25,6 @@ This action requires the `elvish` shell to be installed.
 
 ## 🌐 Further references
 
-- [epm-plus](https://github.com/giancosta86/epm-plus)
+- [epm-plus](https://github.com/giancosta86/epm-plus) - _Package versioning for epm in Elvish_
 
 - [aurora-github](../../README.md)

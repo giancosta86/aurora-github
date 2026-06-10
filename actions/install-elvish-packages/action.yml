@@ -8,10 +8,12 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+
+    - shell: elvish {0}
       working-directory: ${{ github.action_path }}/../../core/actions
       run: |
         use github.com/giancosta86/aurora-github/actions/install-elvish-packages
-        install-elvish-packages:main'
+        install-elvish-packages:main
       env:
         packages: ${{ inputs.packages }}
