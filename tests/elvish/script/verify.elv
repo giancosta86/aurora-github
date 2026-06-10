@@ -1,1 +1,1 @@
-echo 'TEST OK' > out.txt
+print 'TEST OK' > out.txt
