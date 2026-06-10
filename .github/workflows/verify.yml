@@ -33,7 +33,9 @@ jobs:
 
   test-elvish-platform:
     runs-on: ubuntu-24.04
-    needs: test-run-velvet-code
+    needs:
+      - test-install-elvish-packages
+      - test-run-velvet-code
     steps:
       - uses: actions/checkout@v6
 

@@ -8,7 +8,7 @@ commandExists() {
   type "$command" > /dev/null 2>&1
 }
 
-setupElvish() {
+ensureElvish() {
   local version="${1:-0.21.0}"
   local architecture="${2:-linux-amd64}"
 
