@@ -1,15 +1,11 @@
 use os
 use re
-use str
 use github.com/giancosta86/ethereal/v1/edit
 use github.com/giancosta86/ethereal/v1/string
 use ./input
 
 fn main {
-  var files = (
-    input:string files |
-      string:escape-single-quotes
-  )
+  var files = (input:path-list files)
 
   var regex = (input:string regex)
 
@@ -18,8 +14,10 @@ fn main {
       coalesce (all) ''
   )
 
-  str:split , $files | each { |file-wildcard|
-    eval 'put '$file-wildcard | each { |path|
+  all $files | each { |file-wildcard|
+    var escaped-wildcard = (string:escape-single-quotes $file-wildcard)
+
+    eval 'put '$escaped-wildcard | each { |path|
       if (os:is-regular $path) {
         edit:file $path { |content|
           re:replace $regex $replacement $content

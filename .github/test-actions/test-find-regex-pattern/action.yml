@@ -7,12 +7,12 @@ runs:
     - uses: ./actions/setup-elvish-context
 
     - shell: elvish {0}
-      run: echo 🎭 Find existing critical TODOs without crashing...
+      run: echo 🎭 Find existing pattern...
 
     - uses: ./actions/find-regex-pattern
       id: find-matching-pattern
       with:
-        files: tests/unknown-tech/src/*.{js|txt}
+        files: tests/unknown-tech/src/*.txt
         regex: TODO
 
     - uses: ./actions/run-velvet-code
@@ -26,13 +26,13 @@ runs:
           }
 
     - shell: elvish {0}
-      run: echo 🎭 Look for inexistent pattern...
+      run: echo 🎭 Look for missing pattern...
 
     - uses: ./actions/find-regex-pattern
       id: look-for-missing-pattern
       with:
-        files: tests/unknown-tech/src/*.{js|txt}
-        regex: SOMETHING
+        files: tests/unknown-tech/src/*.txt
+        regex: SOMETHING-ELSE
 
     - uses: ./actions/run-velvet-code
       with:

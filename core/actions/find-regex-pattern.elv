@@ -6,10 +6,7 @@ use ../ci-cd/output
 use ./input
 
 fn main {
-  var files = (
-    input:string files |
-      string:escape-single-quotes
-  )
+  var files = (input:list files)
 
   var regex = (input:string regex)
 
@@ -23,8 +20,10 @@ fn main {
 
   var quiet-grep-arg = (lang:ternary $quiet '--quiet' '')
 
-  str:split , $files | each { |file-wildcard|
-    var paths = [(eval 'put '$file-wildcard)]
+  all $files | each { |file-wildcard|
+    var escaped-wildcard = (string:escape-single-quotes $file-wildcard)
+
+    var paths = [(eval 'put '$escaped-wildcard)]
 
     var grep-status = ?(
       grep --perl-regexp --color=always --with-filename --line-number $@quiet-grep-arg $regex $@paths >&2

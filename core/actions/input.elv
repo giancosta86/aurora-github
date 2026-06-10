@@ -23,9 +23,7 @@ fn string { |&optional=$false name|
 
 fn -parse { |&optional=$false name parser|
   string &optional=$optional $name |
-    lang:map { |value|
-      $parser $value
-    }
+    lang:map $parser
 }
 
 fn bool { |&optional=$false name|
