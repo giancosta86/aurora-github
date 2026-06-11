@@ -1,5 +1,5 @@
 name: Inject branch version
-description: Injects the branch version in lieu of "0.0.0" in the given file patterns.
+description: Injects the current branch version in lieu of "0.0.0" in the given file patterns.
 
 inputs:
   files:
