@@ -1,6 +1,5 @@
 use ./my-ops
 
-# TODO! This is another test
 >> 'Summing three numbers' {
   >> 'when they are all 0' {
     >> 'should return 0' {
