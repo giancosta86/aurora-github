@@ -1,8 +1,8 @@
 use os
 use re
 use str
-use github.com/giancosta86/aurora-elvish/fs
-use github.com/giancosta86/aurora-elvish/seq
+use github.com/giancosta86/ethereal/v1/fs
+use github.com/giancosta86/ethereal/v1/seq
 use ../../std-err
 
 var -snippet-pattern = '(?s)```rust\s+(.*?)```'
