@@ -2,7 +2,7 @@ use str
 use github.com/giancosta86/ethereal/v1/edit
 use github.com/giancosta86/ethereal/v1/lang
 use ../std-err
-use ../highlighting
+use ../highlight
 use ./input
 
 fn -document-all-features {
@@ -42,8 +42,7 @@ fn main {
   }
 
   std-err:section &emoji=🦀 'Cargo.toml just before publication' {
-    slurp < Cargo.toml |
-      highlighting:highlight toml
+    highlight:file Cargo.toml toml
   }
 
   -publish $dry-run
