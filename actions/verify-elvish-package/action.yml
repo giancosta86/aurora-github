@@ -1,14 +1,14 @@
-name: Verify Elvish library
-description: Verifies the source files of an Elvish library.
+name: Verify Elvish package
+description: Verifies the source files of an Elvish package.
 
 inputs:
-  crash-on-critical-todos:
-    description: Crash the workflow if critical TODOs are found.
-    default: true
+  todo-files:
+    description: File patterns potentially containing critical TODOs.
+    default: "*.elv"
 
-  source-file-regex:
-    description: PCRE pattern describing the source files.
-    default: '\.elv$'
+  velvet-version:
+    description: The Velvet version to use.
+    default: v4
 
   project-directory:
     description: The directory containing `metadata.json`.
@@ -19,32 +19,29 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Check the project license
-      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
+    - uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
+      with:
+        license-file: ${{ inputs.project-directory }}/LICENSE
 
-    - name: Check the metadata
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        use aurora-github/elvish-library
+        use github.com/giancosta86/aurora-github/actions/verify-elvish-package
+        verify-elvish-package:main
 
-        elvish-library:check-metadata
-
-    - uses: giancosta86/aurora-github/actions/run-custom-tests@v11.0.0
+    - uses: giancosta86/aurora-github/actions/run-elvish-tests@v11.0.0
       with:
-        root-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.project-directory }}
+        velvet-version: ${{ inputs.velvet-version }}
 
     - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
+      if: inputs.todo-files != ''
+      uses: giancosta86/aurora-github/actions/find-regex-pattern@v11.0.0
       with:
-        source-file-regex: ${{ inputs.source-file-regex }}
-        crash-on-found: ${{ inputs.crash-on-critical-todos }}
-        display-lines: true
-        root-directory: ${{ inputs.project-directory }}
+        files: ${{ inputs.todo-files }}
+        regex: TODO!
+        crash-when: found
+        working-directory: ${{ inputs.project-directory }}
 
-    - name: Print confirmation message
-      shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅🔮 Elvish library verified!
+    - shell: elvish {0}
+      run: echo ✅🔮 Elvish package verified!

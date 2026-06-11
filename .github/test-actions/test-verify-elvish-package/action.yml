@@ -1,4 +1,5 @@
 name: Test verify-elvish-package
+description: Tests for verify-elvish-package.
 
 runs:
   using: composite

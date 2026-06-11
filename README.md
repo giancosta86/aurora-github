@@ -16,6 +16,8 @@ The actions can be grouped by technology:
 
 - [install-elvish-packages](actions/install-elvish-packages/README.md)
 
+- [run-elvish-tests](actions/run-elvish-tests/README.md)
+
 - [run-velvet-code](actions/run-velvet-code/README.md)
 
 - [verify-elvish-package](actions/verify-elvish-package/README.md)

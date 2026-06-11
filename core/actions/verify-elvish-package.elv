@@ -1,6 +1,5 @@
 use os
-use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/string
+use ../std-err
 
 var -metadata-file = metadata.json
 
@@ -11,7 +10,7 @@ var -required-fields = [
   dependencies
 ]
 
-fn check-metadata {
+fn -check-metadata {
   if (not (os:is-regular $-metadata-file)) {
     fail 'Missing library metadata file: '$-metadata-file
   }
@@ -24,5 +23,5 @@ fn check-metadata {
     }
   }
 
-  console:echo ✅ Library metadata OK!
+  std-err:echo ✅ Library metadata OK!
 }

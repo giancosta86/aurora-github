@@ -9,17 +9,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/check-project-license@v11
 ```
 
-**Please, note**: this action is automatically run by:
-
-- [verify-npm-package](../verify-npm-package/README.md)
-
-- [verify-rust-crate](../verify-rust-crate/README.md)
-
-- [verify-rust-wasm](../verify-rust-wasm/README.md)
-
-- [verify-jvm-project](../verify-jvm-project/README.md)
-
-- [verify-python-package](../verify-python-package/README.md)
+**Please, note**: this action is automatically run by most language-oriented `verify-` actions.
 
 ## ☑️ Requirements
 
@@ -38,15 +28,5 @@ steps:
 | `license-file` | **string** | The path to the license file |  **LICENSE**  |
 
 ## 🌐 Further references
-
-- [verify-npm-package](../verify-npm-package/README.md)
-
-- [verify-rust-crate](../verify-rust-crate/README.md)
-
-- [verify-rust-wasm](../verify-rust-wasm/README.md)
-
-- [verify-jvm-project](../verify-jvm-project/README.md)
-
-- [verify-python-package](../verify-python-package/README.md)
 
 - [aurora-github](../../README.md)

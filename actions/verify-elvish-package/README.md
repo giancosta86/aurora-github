@@ -1,6 +1,6 @@
 # verify-elvish-package
 
-Verifies the source files of an **Elvish** library.
+Verifies the source files of an **Elvish** package.
 
 ## 🃏 Example
 
@@ -13,7 +13,7 @@ steps:
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
 
-1. Ensure that the library _metadata_ are declared.
+1. Ensure that the package _metadata_ are declared.
 
 1. Execute the tests.
 
