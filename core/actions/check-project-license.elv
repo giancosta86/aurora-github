@@ -24,7 +24,7 @@ fn -check-current-year-included { |license-file|
 }
 
 fn main {
-  var license-file = (input:file license-file)
+  var license-file = (input:file &can-be-missing license-file)
 
   if (os:is-regular $license-file) {
     -check-current-year-included $license-file
