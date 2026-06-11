@@ -1,7 +1,7 @@
 use str
 use github.com/giancosta86/ethereal/v1/edit
 use ../std-err
-use ../toml
+use ../highlighting
 use ./input
 
 fn -document-all-features {
@@ -20,7 +20,8 @@ fn -document-all-features {
         'all-features = true'
       ])
 
-      put (str:trim-space $content)"\n\n"$descriptor-addendum
+      str:trim-space $content |
+        put (all)"\n\n"$descriptor-addendum
     }
   }
 }
@@ -40,7 +41,8 @@ fn main {
   }
 
   std-err:section &emoji=🦀 'Cargo.toml just before publication' {
-    toml:print-content Cargo.toml
+    slurp < Cargo.toml |
+      highlighting:highlight toml
   }
 
   -publish $dry-run
