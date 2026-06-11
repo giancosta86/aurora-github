@@ -37,6 +37,7 @@ runs:
         working-directory: ${{ inputs.working-directory }}
 
     - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/verify-rust-crate
         verify-rust-crate:main
