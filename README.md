@@ -66,6 +66,8 @@ The actions can be grouped by technology:
 
 - [find-regex-pattern](actions/find-regex-pattern/README.md)
 
+- [find-critical-todos](actions/find-critical-todos/README.md)
+
 - [replace-regex-pattern](actions/replace-regex-pattern/README.md)
 
 ## 😺 GitHub

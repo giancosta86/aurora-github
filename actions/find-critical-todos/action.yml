@@ -4,7 +4,6 @@ description: Finds the given regex in all the requested file patterns, optionall
 inputs:
   files:
     description: Comma-separated file patterns.
-    default: "**"
 
   working-directory:
     description: The directory where the action must run.
