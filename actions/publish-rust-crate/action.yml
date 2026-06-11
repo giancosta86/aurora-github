@@ -34,7 +34,7 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use giancosta86/aurora-github/actions/publish-rust-crate
+        use github.com/giancosta86/aurora-github/actions/publish-rust-crate
         publish-rust-crate:main
       env:
         dry-run: ${{ inputs.dry-run }}
