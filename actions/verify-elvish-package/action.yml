@@ -10,7 +10,7 @@ inputs:
     description: The Velvet version to use.
     default: v4
 
-  project-directory:
+  working-directory:
     description: The directory containing `metadata.json`.
     default: .
 
@@ -21,23 +21,28 @@ runs:
 
     - uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
       with:
-        license-file: ${{ inputs.project-directory }}/LICENSE
+        license-file: ${{ inputs.working-directory }}/LICENSE
 
     - shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/verify-elvish-package
         verify-elvish-package:main
 
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
+      with:
+        files: metadata.json
+        working-directory: ${{ inputs.working-directory }}
+
     - uses: giancosta86/aurora-github/actions/run-elvish-tests@v11.0.0
       with:
-        working-directory: ${{ inputs.project-directory }}
         velvet-version: ${{ inputs.velvet-version }}
+        working-directory: ${{ inputs.working-directory }}
 
     - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
       with:
         files: ${{ inputs.todo-files }}
-        working-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - shell: elvish {0}
       run: echo ✅🔮 Elvish package verified!
