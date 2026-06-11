@@ -11,6 +11,8 @@ var -required-fields = [
 ]
 
 fn -check-metadata {
+  std-err:echo 🏷️ Checking library metadata...
+
   if (not (os:is-regular $-metadata-file)) {
     fail 'Missing library metadata file: '$-metadata-file
   }
@@ -24,4 +26,8 @@ fn -check-metadata {
   }
 
   std-err:echo ✅ Library metadata OK!
+}
+
+fn main {
+  -check-metadata
 }
