@@ -15,13 +15,11 @@ steps:
 
 ## 💡 How it works
 
-1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+1. Run [inject-branch-version](../inject-branch-version/README.md) on **Cargo.toml**.
 
 1. Run [setup-rust-context](../setup-rust-context/README.md) to setup a Rust toolchain.
 
 1. If the `document-all-features` input is **true**, enable documentation for all the features - but only if the `[package.metadata.docs.rs]` header is not already in the descriptor. For details, please consult [this link](https://docs.rs/about/metadata).
-
-1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled.
 
 1. Display **Cargo.toml** just before publication.
 
@@ -33,26 +31,20 @@ steps:
 
 - `rust-toolchain.toml` must be present in `working-directory` - as described in [setup-rust-context](../setup-rust-context/README.md).
 
-- The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
-
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
 ## 📥 Inputs
 
-|           Name           |          Type           |                            Description                            | Default value |
-| :----------------------: | :---------------------: | :---------------------------------------------------------------: | :-----------: |
-|        `dry-run`         |       **boolean**       |            Run a simulated publication via `--dry-run`            |   **false**   |
-|      `cargo-token`       |       **string**        |          The secret token for publishing to the registry          |               |
-| `document-all-features`  |       **boolean**       | Enable [Rustdoc for all features](https://docs.rs/about/metadata) |   **true**    |
-|   `website-directory`    |       **string**        |         Relative directory containing the project website         |  **website**  |
-| `enforce-branch-version` | `inject`,`check`,`skip` |             How the branch version should be enforced             |  **inject**   |
-|   `working-directory`    |       **string**        |               The directory containing `Cargo.toml`               |     **.**     |
+|          Name           |    Type     |                            Description                            | Default value |
+| :---------------------: | :---------: | :---------------------------------------------------------------: | :-----------: |
+|        `dry-run`        | **boolean** |            Run a simulated publication via `--dry-run`            |   **false**   |
+|      `cargo-token`      | **string**  |          The secret token for publishing to the registry          |               |
+| `document-all-features` | **boolean** | Enable [Rustdoc for all features](https://docs.rs/about/metadata) |   **true**    |
+|   `working-directory`   | **string**  |               The directory containing `Cargo.toml`               |     **.**     |
 
 ## 🌐 Further references
 
-- [publish-github-pages](../publish-github-pages/README.md)
-
-- [enforce-branch-version](../enforce-branch-version/README.md)
+- [inject-branch-version](../inject-branch-version/README.md)
 
 - [setup-rust-context](../setup-rust-context/README.md)
 

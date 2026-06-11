@@ -13,14 +13,6 @@ inputs:
     description: Enable Rustdoc for all features.
     default: true
 
-  website-directory:
-    description: Relative directory containing the project website.
-    default: website
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
-
   working-directory:
     description: The directory containing `Cargo.toml`.
     default: .
@@ -30,61 +22,24 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
+        files: Cargo.toml
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Setup Rust context
-      uses: giancosta86/aurora-github/actions/setup-rust-context@v11.0.0
+    - uses: giancosta86/aurora-github/actions/setup-rust-context@v11.0.0
       with:
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Document all features
-      if: inputs.document-all-features == 'true'
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/rust/project
-
-        project:document-all-features
-
-    - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v11.0.0
-      with:
-        optional: true
-        source-directory: ${{ inputs.working-directory }}/${{ inputs.website-directory }}
-        dry-run: ${{ inputs.dry-run }}
-        enforce-branch-version: ${{ inputs.enforce-branch-version }}
-
-    - name: Display project descriptor
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-        use aurora-github/project/descriptors/toml
-
-        console:section &emoji=🦀 'Cargo.toml just before publication' {
-          toml:print-content Cargo.toml
-        }
-
-    - name: Publish the crate
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/rust/crate
-
-        var dry-run = (input:bool dry-run '${{ inputs.dry-run }}')
-
-        crate:publish $dry-run
+        use giancosta86/aurora-github/actions/publish-rust-crate
+        publish-rust-crate:main
       env:
+        dry-run: ${{ inputs.dry-run }}
+        document-all-features: ${{ inputs.document-all-features }}
         CARGO_REGISTRY_TOKEN: ${{ inputs.cargo-token }}
 
-    - name: Print confirmation message
-      shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅🦀 Rust crate publication action successful!
+    - shell: elvish {0}
+      run: echo ✅🦀 Rust crate publication action successful!

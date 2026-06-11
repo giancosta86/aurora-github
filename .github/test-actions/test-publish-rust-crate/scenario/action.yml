@@ -1,4 +1,5 @@
-name: Runs a scenario for publish-rust-crate
+name: scenario
+description: Runs a scenario for publish-rust-crate.
 
 inputs:
   header:

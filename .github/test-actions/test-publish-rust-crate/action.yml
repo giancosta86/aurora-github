@@ -1,4 +1,5 @@
 name: Test publish-rust-crate
+description: Tests for publish-rust-crate.
 
 runs:
   using: composite

@@ -15,7 +15,7 @@ steps:
 
 1. Ensure that the package _metadata_ are declared.
 
-1. Inject the current branch version into the metadata descriptor.
+1. Run [inject-branch-version](../inject-branch-version/README.md) metadata descriptor.
 
 1. Execute the tests.
 
