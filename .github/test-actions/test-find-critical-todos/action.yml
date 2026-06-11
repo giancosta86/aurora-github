@@ -11,7 +11,7 @@ runs:
 
     - uses: ./actions/find-critical-todos
       with:
-        files: "**.rs"
+        files: "**.txt"
         working-directory: tests/unknown-tech
 
     - shell: elvish {0}
