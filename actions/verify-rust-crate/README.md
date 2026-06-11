@@ -39,12 +39,12 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |    Type     |                     Description                     | Default value |
-| :-----------------: | :---------: | :-------------------------------------------------: | :-----------: |
-| `run-clippy-checks` | **boolean** |              Enable linting via Clippy              |   **true**    |
-|   `check-rustdoc`   | **boolean** |  Build the documentation - with warnings as errors  |   **true**    |
-|    `todo-files`     | **string**  | File patterns potentially containing critical TODOs |   **\*.rs**   |
-| `working-directory` | **string**  |        The directory containing `Cargo.toml`        |     **.**     |
+|        Name         |    Type     |                     Description                     |      Default value      |
+| :-----------------: | :---------: | :-------------------------------------------------: | :---------------------: |
+| `run-clippy-checks` | **boolean** |              Enable linting via Clippy              |        **true**         |
+|   `check-rustdoc`   | **boolean** |  Build the documentation - with warnings as errors  |        **true**         |
+|    `todo-files`     | **string**  | File patterns potentially containing critical TODOs | **\*\*[nomatch-ok].rs** |
+| `working-directory` | **string**  |        The directory containing `Cargo.toml`        |          **.**          |
 
 ## 🌐 Further references
 

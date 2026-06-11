@@ -4,7 +4,7 @@ description: Verifies the source files of an Elvish package.
 inputs:
   todo-files:
     description: File patterns potentially containing critical TODOs.
-    default: "*.elv"
+    default: "**[nomatch-ok].elv"
 
   velvet-version:
     description: The Velvet version to use.

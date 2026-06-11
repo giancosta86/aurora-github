@@ -12,7 +12,7 @@ inputs:
 
   todo-files:
     description: File patterns potentially containing critical TODOs.
-    default: "*.rs"
+    default: "**[nomatch-ok].rs"
 
   working-directory:
     description: The directory containing `Cargo.toml`.
