@@ -8,7 +8,7 @@ runs:
       uses: ./actions/detect-branch-version
 
     - shell: elvish {0}
-      run: 🎭 Now injecting into a NodeJS project...
+      run: echo 🎭 Now injecting into a NodeJS project...
 
     - uses: ./actions/inject-branch-version
       with:
