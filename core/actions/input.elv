@@ -72,14 +72,10 @@ fn -file-system-input { |&optional=$false &can-be-missing=$false type-descriptio
       path:abs $value
     )
 
-    if ($path-checker $abs-path) {
+    if (or $can-be-missing ($path-checker $abs-path)) {
       put $abs-path
     } else {
-      if $can-be-missing {
-        put $nil
-      } else {
-        fail 'Inexistent '$type-description' for input '''$name''' at path: '''$abs-path'''!'
-      }
+      fail 'Inexistent '$type-description' for input '''$name''' at path: '''$abs-path'''!'
     }
   }
 }
