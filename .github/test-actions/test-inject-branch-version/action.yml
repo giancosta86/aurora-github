@@ -1,0 +1,28 @@
+name: Test inject-branch-version
+description: Tests for inject-branch-version.
+
+runs:
+  using: composite
+  steps:
+    - id: detect-branch-version
+      uses: ./actions/detect-branch-version
+
+    - shell: elvish {0}
+      run: 🎭 Now injecting into a NodeJS project...
+
+    - uses: ./actions/inject-branch-version
+      with:
+        files: package.json
+        working-directory: tests/npm-package
+
+    - uses: ./actions/run-velvet-code
+      with:
+        working-directory: tests/npm-package
+        code: |
+          >> 'The branch version' {
+            >> 'should be injected into package.json' {
+              from-json < package.json |
+                put (all)[version] |
+                should-be ${{ steps.detect-branch-version.outputs.version }}
+            }
+          }

@@ -4,30 +4,30 @@ description: Tests for detect-branch-version.
 runs:
   using: composite
   steps:
-    - uses: ./actions/detect-branch-version
-      id: detector
+    - id: detect-branch-version
+      uses: ./actions/detect-branch-version
 
     - uses: ./actions/run-velvet-code
       with:
         code: |
           >> 'Action outputs' {
             >> 'branch' {
-              put '${{ steps.detector.outputs.branch }}' |
+              put '${{ steps.detect-branch-version.outputs.branch }}' |
                 should-not-be-empty
             }
 
             >> 'version' {
-              put '${{ steps.detector.outputs.version }}' |
+              put '${{ steps.detect-branch-version.outputs.version }}' |
                 should-not-be-empty
             }
 
             >> 'escaped version' {
-              put '${{ steps.detector.outputs.escaped-version }}' |
+              put '${{ steps.detect-branch-version.outputs.escaped-version }}' |
                 should-contain \.
             }
 
             >> 'major component' {
-              put '${{ steps.detector.outputs.major }}' |
+              put '${{ steps.detect-branch-version.outputs.major }}' |
                 should-not-be-empty
             }
           }

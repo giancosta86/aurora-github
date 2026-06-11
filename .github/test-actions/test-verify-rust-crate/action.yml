@@ -1,4 +1,5 @@
 name: Test verify-rust-crate
+description: Tests for verify-rust-crate.
 
 runs:
   using: composite
