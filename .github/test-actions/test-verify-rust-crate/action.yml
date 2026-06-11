@@ -6,4 +6,4 @@ runs:
   steps:
     - uses: ./actions/verify-rust-crate
       with:
-        project-directory: tests/rust-crate
+        working-directory: tests/rust-crate
