@@ -1,18 +1,21 @@
 name: Test setup-rust-context
+description: Tests for setup-rust-context.
 
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭 Testing on Rust crate..."
+    - uses: ./actions/setup-elvish-context
+
+    - shell: elvish {0}
+      run: echo 🎭 Testing on Rust crate...
 
     - name: Run for Rust crate project
       uses: ./actions/setup-rust-context
       with:
         project-directory: tests/rust-crate
 
-    - shell: bash
-      run: echo "🎭 Testing on Rust Wasm..."
+    - shell: elvish {0}
+      run: echo 🎭 Testing on Rust Wasm...
 
     - name: Run for Rust web assembly project
       uses: ./actions/setup-rust-context
