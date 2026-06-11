@@ -31,6 +31,8 @@ fn extract { |markdown-path test-filename-prefix|
   slurp < $markdown-path |
     re:find $-snippet-pattern (all) |
     seq:enumerate { |index match|
+      std-err:inspect &emoji=🐿️ 'Match found!' $index
+
       var snippet = (str:trim-space $match[groups][1][text])
 
       var ordinal = (+ $index 1)
