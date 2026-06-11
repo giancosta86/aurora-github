@@ -17,24 +17,25 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Display the header
-      shell: bash
-      run: echo "🎭 ${{ inputs.header }}"
+    - shell: elvish {0}
+      run: echo 🎭 ${{ inputs.header }}
 
-    - name: Restore Cargo.toml
-      shell: bash
+    - name: Restore Cargo.toml from the initial backup
+      shell: elvish {0}
       working-directory: tests/rust-crate
       run: cp Cargo.toml.bak Cargo.toml
 
     - name: Manually add the documentation addendum
       if: inputs.pre-existing-addendum == 'true'
-      shell: bash
+      shell: elvish {0}
       working-directory: tests/rust-crate
       run: |
-        echo >> Cargo.toml
-        echo '# Manually added' >> Cargo.toml
-        echo '[package.metadata.docs.rs]' >> Cargo.toml
-        echo 'all-features = true' >> Cargo.toml
+        {
+          echo
+          echo '# Manually added'
+          echo '[package.metadata.docs.rs]'
+          echo 'all-features = true'
+        } >> Cargo.toml
 
     - uses: ./actions/publish-rust-crate
       with:
@@ -42,14 +43,26 @@ runs:
         document-all-features: ${{ inputs.document-all-features }}
         working-directory: tests/rust-crate
 
-    - name: Verify that Cargo.toml actually includes the documentation addendum
-      uses: ./.github/test-actions/test-publish-rust-crate/assert-doc-addendum
-      if: inputs.should-contain-addendum == 'true'
+    - if: inputs.should-contain-addendum == 'true'
+      uses: ./actions/run-velvet-code
       with:
-        expected-count: 1
+        working-directory: tests/rust-crate
+        code: |
+          >> 'Cargo.toml' {
+            >> 'should contain the document-all addendum' {
+              slurp < Cargo.toml |
+                should-contain package.metadata.docs.rs
+            }
+          }
 
-    - name: Verify that Cargo.toml does not include the documentation addendum
-      uses: ./.github/test-actions/test-publish-rust-crate/assert-doc-addendum
-      if: inputs.should-contain-addendum != 'true'
+    - if: inputs.should-contain-addendum != 'true'
+      uses: ./actions/run-velvet-code
       with:
-        expected-count: 0
+        working-directory: tests/rust-crate
+        code: |
+          >> 'Cargo.toml' {
+            >> 'should not contain the document-all addendum' {
+              slurp < Cargo.toml |
+                should-not-contain package.metadata.docs.rs
+            }
+          }

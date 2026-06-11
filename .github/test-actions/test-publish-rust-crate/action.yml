@@ -4,28 +4,30 @@ description: Tests for publish-rust-crate.
 runs:
   using: composite
   steps:
-    - name: Backup Cargo.toml
-      shell: bash
+    - uses: ./actions/setup-elvish-context
+
+    - name: Perform the initial backup of Cargo.toml
+      shell: elvish {0}
       working-directory: tests/rust-crate
       run: cp Cargo.toml Cargo.toml.bak
 
     - uses: ./.github/test-actions/test-publish-rust-crate/scenario
       with:
-        header: Testing publication with no initial addendum - and injection disabled
+        header: Testing publication with no initial addendum - and creation disabled
         pre-existing-addendum: false
         document-all-features: false
         should-contain-addendum: false
 
     - uses: ./.github/test-actions/test-publish-rust-crate/scenario
       with:
-        header: Testing publication with no initial addendum - and injection enabled
+        header: Testing publication with no initial addendum - and creation enabled
         pre-existing-addendum: false
         document-all-features: true
         should-contain-addendum: true
 
     - uses: ./.github/test-actions/test-publish-rust-crate/scenario
       with:
-        header: Testing publication with initial addendum - and injection enabled
+        header: Testing publication with initial addendum - and creation enabled
         pre-existing-addendum: true
         document-all-features: true
         should-contain-addendum: true
