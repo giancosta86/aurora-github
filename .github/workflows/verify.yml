@@ -159,7 +159,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-rust-context
 
   test-verify-rust-crate:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -171,7 +171,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-rust-crate
 
   test-publish-rust-crate:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs:
       - test-setup-rust-context
