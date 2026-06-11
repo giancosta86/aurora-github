@@ -14,7 +14,7 @@ fn -document-all-features {
 
       put $nil
     } else {
-      std-err 📚 Now adding the documentation addendum to the project descriptor!
+      std-err:echo 📚 Now adding the documentation addendum to the project descriptor!
 
       var descriptor-addendum = (str:join "\n" [
         $docs-header
