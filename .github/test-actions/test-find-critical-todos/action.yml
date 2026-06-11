@@ -12,7 +12,7 @@ runs:
     - uses: ./actions/find-critical-todos
       with:
         files: "**.rs"
-        working-directory: tests/custom
+        working-directory: tests/unknown-tech
 
     - shell: elvish {0}
       run: echo ✅ Tests OK!
