@@ -10,7 +10,7 @@ inputs:
     description: Verify the existence of the toolchain file.
     default: true
 
-  project-directory:
+  working-directory:
     description: The directory containing the toolchain file.
     default: .
 
@@ -20,7 +20,7 @@ runs:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
     - shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/setup-rust-context
         setup-rust-context:main

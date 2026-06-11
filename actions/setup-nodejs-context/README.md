@@ -14,7 +14,6 @@ steps:
 ## 💡 How it works
 
 1. Determine whether a specific NodeJS toolchain must be installed; this happens in one of the following cases - considered in this order:
-
    1. If the **.nvmrc** file exists in the project directory - containing the requested NodeJS version, as expected by `nvm`
 
    1. If **package.json** declares the following field:
@@ -30,13 +29,11 @@ steps:
    **PLEASE, NOTE**: if you are using Bash as your development shell, you may want to install the [nvmcd](https://github.com/giancosta86/aurora-bash/tree/main/scripts/nvmcd) command from the [aurora-bash](https://github.com/giancosta86/aurora-bash) project.
 
 1. If the NodeJS toolchain is to be set up:
-
    1. The requested **NodeJS** version - or a compatible one, if a range is passed - will be installed via [actions/setup-node](https://github.com/actions/setup-node)
 
    1. **pnpm** will be downloaded via [pnpm/action-setup](https://github.com/pnpm/action-setup).
 
       As for the version:
-
       - if **package.json** explicitly provides a `packageManager` reference:
 
         ```json
@@ -52,14 +49,13 @@ steps:
 1. Set the `FORCE_COLOR` environment variable according to the value of the `pnpm-colors` input.
 
 1. No matter whether the toolchain was installed, retrieve the dependencies - as follows:
-
    - 🧊 if **pnpm-lock.yaml** exists, it is considered _frozen_ via the `--frozen-lockfile` flag
 
    - 🌞 otherwise, `--no-frozen-lockfile` is passed explicitly
 
 ## ☑️ Requirements
 
-- The **package.json** descriptor must exist in `project-directory`.
+- The **package.json** descriptor must exist in `working-directory`.
 
 - The `packageManager` field can be missing, but it can't reference another package manager.
 
@@ -70,7 +66,7 @@ steps:
 |        Name         |    Type     |               Description               | Default value |
 | :-----------------: | :---------: | :-------------------------------------: | :-----------: |
 |    `pnpm-colors`    | **boolean** |         Enable colors for pnpm          |   **true**    |
-| `project-directory` | **string**  | The directory containing `package.json` |     **.**     |
+| `working-directory` | **string**  | The directory containing `package.json` |     **.**     |
 
 ## 🌐 Further references
 

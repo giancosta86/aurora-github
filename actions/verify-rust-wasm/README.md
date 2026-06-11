@@ -26,7 +26,7 @@ steps:
 
 ## ☑️ Requirements
 
-- `rust-toolchain.toml` must be present in `project-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
+- `rust-toolchain.toml` must be present in `working-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
 
 ## 📥 Inputs
 
@@ -41,7 +41,7 @@ steps:
 | `crash-on-critical-todos` |       **boolean**       |  Crash the workflow if critical TODOs are found   |         **true**          |
 |    `source-file-regex`    |       **string**        |     PCRE pattern describing the source files      | view [source](action.yml) |
 | `enforce-branch-version`  | `inject`,`check`,`skip` |     How the branch version should be enforced     |        **inject**         |
-|    `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
+|    `working-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
 
 ## 🌐 Further references
 

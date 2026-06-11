@@ -25,4 +25,4 @@ runs:
 
     - uses: ./actions/check-subpath-exports
       with:
-        project-directory: tests/npm-package
+        working-directory: tests/npm-package

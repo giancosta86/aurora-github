@@ -24,7 +24,7 @@ inputs:
     description: How the branch version should be enforced.
     default: inject
 
-  project-directory:
+  working-directory:
     description: The directory containing the project descriptor.
     default: .
 
@@ -40,11 +40,11 @@ runs:
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Setup JVM context
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/ci-cd/input
         use aurora-github/ci-cd/env
@@ -57,7 +57,7 @@ runs:
 
     - name: Verify project
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/ci-cd/input
         use aurora-github/jvm/project/verification
@@ -72,7 +72,7 @@ runs:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
         display-lines: true
-        root-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Print confirmation message
       shell: elvish {0}

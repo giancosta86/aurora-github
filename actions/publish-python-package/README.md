@@ -43,7 +43,7 @@ steps:
 |      `index-secret`      |       **string**        |    Password/token for publishing to the index     |               |
 |   `website-directory`    |       **string**        | Relative directory containing the project website |  **website**  |
 | `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |  **inject**   |
-|   `project-directory`    |       **string**        |     The directory containing `pyproject.toml`     |     **.**     |
+|   `working-directory`    |       **string**        |     The directory containing `pyproject.toml`     |     **.**     |
 
 ## 🌐 Further references
 

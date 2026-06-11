@@ -31,7 +31,7 @@ steps:
 
 - `cargo-token` is _not_ mandatory when `dry-run` is enabled.
 
-- `rust-toolchain.toml` must be present in `project-directory` - as described in [setup-rust-context](../setup-rust-context/README.md).
+- `rust-toolchain.toml` must be present in `working-directory` - as described in [setup-rust-context](../setup-rust-context/README.md).
 
 - The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
 
@@ -46,7 +46,7 @@ steps:
 | `document-all-features`  |       **boolean**       | Enable [Rustdoc for all features](https://docs.rs/about/metadata) |   **true**    |
 |   `website-directory`    |       **string**        |         Relative directory containing the project website         |  **website**  |
 | `enforce-branch-version` | `inject`,`check`,`skip` |             How the branch version should be enforced             |  **inject**   |
-|   `project-directory`    |       **string**        |               The directory containing `Cargo.toml`               |     **.**     |
+|   `working-directory`    |       **string**        |               The directory containing `Cargo.toml`               |     **.**     |
 
 ## 🌐 Further references
 

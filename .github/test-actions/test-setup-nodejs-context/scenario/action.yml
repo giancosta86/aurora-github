@@ -75,7 +75,7 @@ runs:
     - name: Setup NodeJS context
       uses: ./actions/setup-nodejs-context
       with:
-        project-directory: tests/npm-package
+        working-directory: tests/npm-package
 
     - name: The expected NodeJS version should be in use
       shell: bash

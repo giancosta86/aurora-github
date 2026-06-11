@@ -2,7 +2,7 @@ name: Check subpath exports
 description: Verifies that all the subpath exports in package.json actually match existing files.
 
 inputs:
-  project-directory:
+  working-directory:
     description: The directory containing `package.json`.
     default: .
 
@@ -12,7 +12,7 @@ runs:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
     - shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/nodejs/subpath-exports
 

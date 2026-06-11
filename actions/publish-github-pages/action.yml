@@ -45,13 +45,13 @@ runs:
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.source-directory }}
+        working-directory: ${{ inputs.source-directory }}
 
     - name: Setup NodeJS context
       if: env.strategy == 'nodejs'
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
       with:
-        project-directory: ${{ inputs.source-directory }}
+        working-directory: ${{ inputs.source-directory }}
 
     - name: Create the website via NodeJS
       if: env.strategy == 'nodejs'

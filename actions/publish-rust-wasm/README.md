@@ -21,7 +21,7 @@ steps:
 
 1. Generate the NodeJS package source files in the **pkg** subdirectory.
 
-1. If a `.npmrc` configuration file exists in `project-directory`, copy it to **pkg**
+1. If a `.npmrc` configuration file exists in `working-directory`, copy it to **pkg**
 
 1. Call [publish-npm-package](../publish-npm-package/README.md) on the **pkg** directory - passing all the matching inputs - to publish the npm package.
 
@@ -50,7 +50,7 @@ steps:
 |      `wasm-target`       |       **string**        |        The target of the `wasm-pack build` command         |    **web**    |
 |   `website-directory`    |       **string**        |     Relative directory containing the project website      |  **website**  |
 | `enforce-branch-version` | `inject`,`check`,`skip` |         How the branch version should be enforced          |  **inject**   |
-|   `project-directory`    |       **string**        |           The directory containing `Cargo.toml`            |     **.**     |
+|   `working-directory`    |       **string**        |           The directory containing `Cargo.toml`            |     **.**     |
 
 ## 🌐 Further references
 

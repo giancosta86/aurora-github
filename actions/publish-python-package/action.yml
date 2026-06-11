@@ -26,7 +26,7 @@ inputs:
     description: How the branch version should be enforced.
     default: inject
 
-  project-directory:
+  working-directory:
     description: The directory containing `pyproject.toml`.
     default: .
 
@@ -39,11 +39,11 @@ runs:
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Setup Python context
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/ci-cd/input
         use aurora-github/python/context
@@ -56,13 +56,13 @@ runs:
       uses: giancosta86/aurora-github/actions/publish-github-pages@v11.0.0
       with:
         optional: true
-        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        source-directory: ${{ inputs.working-directory }}/${{ inputs.website-directory }}
         dry-run: ${{ inputs.dry-run }}
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
     - name: Publish the package
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/ci-cd/input
         use aurora-github/python/project

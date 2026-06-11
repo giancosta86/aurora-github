@@ -19,7 +19,7 @@ steps:
 
 |        Name         |    Type    |               Description               | Default value |
 | :-----------------: | :--------: | :-------------------------------------: | :-----------: |
-| `project-directory` | **string** | The directory containing `package.json` |     **.**     |
+| `working-directory` | **string** | The directory containing `package.json` |     **.**     |
 
 ## 🌐 Further references
 

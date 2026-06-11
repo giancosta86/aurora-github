@@ -8,4 +8,4 @@ runs:
 
     - uses: ./actions/verify-python-package
       with:
-        project-directory: tests/python-lib
+        working-directory: tests/python-lib

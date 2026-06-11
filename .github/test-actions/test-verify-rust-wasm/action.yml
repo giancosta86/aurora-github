@@ -5,6 +5,6 @@ runs:
   steps:
     - uses: ./actions/verify-rust-wasm
       with:
-        project-directory: tests/rust-wasm
+        working-directory: tests/rust-wasm
         npm-scope: giancosta86
         wasm-pack-version: 0.13.1

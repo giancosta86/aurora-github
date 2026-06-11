@@ -17,4 +17,4 @@ runs:
 
         index-secret: ${{ inputs.index-secret }}
 
-        project-directory: tests/python-lib
+        working-directory: tests/python-lib

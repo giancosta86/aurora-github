@@ -12,7 +12,7 @@ runs:
     - name: Run for Rust crate project
       uses: ./actions/setup-rust-context
       with:
-        project-directory: tests/rust-crate
+        working-directory: tests/rust-crate
 
     - shell: elvish {0}
       run: echo 🎭 Testing on Rust Wasm...
@@ -20,4 +20,4 @@ runs:
     - name: Run for Rust web assembly project
       uses: ./actions/setup-rust-context
       with:
-        project-directory: tests/rust-wasm
+        working-directory: tests/rust-wasm

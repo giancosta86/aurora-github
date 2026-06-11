@@ -13,7 +13,7 @@ runs:
     - uses: ./actions/publish-jvm-project
       with:
         dry-run: true
-        project-directory: tests/maven-project
+        working-directory: tests/maven-project
         auth-user: giancosta86
         auth-token: ${{ inputs.jvm-token }}
 
@@ -23,6 +23,6 @@ runs:
     - uses: ./actions/publish-jvm-project
       with:
         dry-run: true
-        project-directory: tests/gradle-project
+        working-directory: tests/gradle-project
         auth-user: giancosta86
         auth-token: ${{ inputs.jvm-token }}

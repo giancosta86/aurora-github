@@ -18,7 +18,7 @@ inputs:
     description: Run check-subpath-exports after the `verify` package script.
     default: true
 
-  project-directory:
+  working-directory:
     description: The directory containing `package.json`.
     default: .
 
@@ -34,16 +34,16 @@ runs:
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Setup NodeJS context
       uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
       with:
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Run the 'verify' script from package.json
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-elvish/console
         use aurora-github/nodejs/project
@@ -52,7 +52,7 @@ runs:
 
     - name: Try to build the package artifacts
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/nodejs/pnpm
 
@@ -62,13 +62,13 @@ runs:
       if: inputs.check-subpath-exports == 'true'
       uses: giancosta86/aurora-github/actions/check-subpath-exports@v11.0.0
       with:
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Run optional custom tests from the 'tests' directory
       uses: giancosta86/aurora-github/actions/run-custom-tests@v11.0.0
       with:
         optional: true
-        root-directory: ${{ inputs.project-directory }}/tests
+        working-directory: ${{ inputs.working-directory }}/tests
 
     - name: Check for critical TODOs
       uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
@@ -76,7 +76,7 @@ runs:
         source-file-regex: ${{ inputs.source-file-regex }}
         crash-on-found: ${{ inputs.crash-on-critical-todos }}
         display-lines: true
-        root-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Print confirmation message
       shell: elvish {0}

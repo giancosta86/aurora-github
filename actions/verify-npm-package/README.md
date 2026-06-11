@@ -35,7 +35,7 @@ steps:
 
 1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) to verify that the `exports` field in `package.json` actually references existing files.
 
-1. If a **tests** directory exists within `project-directory`, execute the tests.
+1. If a **tests** directory exists within `working-directory`, execute the tests.
 
    💡The rationale for this step is a parallelism with Rust's **tests** directory - dedicated to verify the crate under test from a _client_ perspective; however, in `verify-npm-package` you have even more fine-grained control over the test process: for example, you can automatically launch _a shell script_ to test the system, while still relying on the **tests** directory to host utility modules imported by different tests in the **src** directory tree.
 
@@ -57,7 +57,7 @@ steps:
 |    `source-file-regex`    |       **string**        |        PCRE pattern describing the source files         | view [source](action.yml) |
 | `enforce-branch-version`  | `inject`,`check`,`skip` |        How the branch version should be enforced        |        **inject**         |
 |  `check-subpath-exports`  |       **boolean**       | Run `check-subpath-exports` after the **verify** script |         **true**          |
-|    `project-directory`    |       **string**        |         The directory containing `package.json`         |           **.**           |
+|    `working-directory`    |       **string**        |         The directory containing `package.json`         |           **.**           |
 
 ## 🌐 Further references
 

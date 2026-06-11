@@ -6,4 +6,4 @@ runs:
     - uses: ./actions/publish-npm-package
       with:
         dry-run: true
-        project-directory: tests/npm-package
+        working-directory: tests/npm-package

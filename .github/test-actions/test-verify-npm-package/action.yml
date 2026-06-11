@@ -5,4 +5,4 @@ runs:
   steps:
     - uses: ./actions/verify-npm-package
       with:
-        project-directory: tests/npm-package
+        working-directory: tests/npm-package

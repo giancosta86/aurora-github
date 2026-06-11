@@ -23,11 +23,11 @@ steps:
 
 ## ☑️ Requirements
 
-- The **Cargo.toml** descriptor must exist in `project-directory`.
+- The **Cargo.toml** descriptor must exist in `working-directory`.
 
 - Some version of the `cargo` and `rustup` executables must already be available in the path.
 
-- if the `check-toolchain-file` input is **true**, the [toolchain file](https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file) file must exist within `project-directory`.
+- if the `check-toolchain-file` input is **true**, the [toolchain file](https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file) file must exist within `working-directory`.
 
   It should include at least the required toolchain version, for example:
 
@@ -42,7 +42,7 @@ steps:
 | :--------------------: | :---------: | :-----------------------------------------: | :-----------: |
 |     `cargo-colors`     | **boolean** |           Enable colors for Cargo           |   **true**    |
 | `check-toolchain-file` | **boolean** | Verify the existence of the toolchain file  |   **true**    |
-|  `project-directory`   | **string**  | The directory containing the toolchain file |     **.**     |
+|  `working-directory`   | **string**  | The directory containing the toolchain file |     **.**     |
 
 ## 🌐 Further references
 

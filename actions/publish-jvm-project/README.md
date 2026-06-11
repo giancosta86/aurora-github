@@ -17,7 +17,6 @@ steps:
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
 1. Determine the build tool:
-
    - 🪶**Maven**, if the project descriptor is **pom.xml**
 
    - 🐘**Gradle**, if the project descriptor is **build.gradle** or **build.gradle.kts**
@@ -27,25 +26,20 @@ steps:
 1. If a specific version of the build tool is requested via `tool-version`, install it using SDKMAN
 
 1. If **Maven** is the build tool:
-
-   - if the **settings.xml** file exists in `project-directory`, copy it to **$HOME/.m2**
+   - if the **settings.xml** file exists in `working-directory`, copy it to **$HOME/.m2**
 
    - otherwise, provide a default one connecting the action credentials (`auth-user`, `auth-token`) with a **target-server** server id
 
 1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled
 
 1. Publish, using the build tool:
-
    - for 🪶**Maven**, run `mvn deploy`
-
      - if `dry-run` is enabled, actually publish to the **target/dry-run** subdirectory instead of the target server
 
    - for 🐘**Gradle**, run `gradle publish`
-
      - if `dry-run` is enabled, the `--dry-run` flag is passed
 
    - in any case, the following environment variables will be available during this step only:
-
      - **JVM_AUTH_USER** - with the value of `auth-user`
 
      - **JVM_AUTH_TOKEN** - with the value of `auth-token`
@@ -55,7 +49,6 @@ steps:
 - The `mvn` or `gradle` command must be available, depending on the descriptor within the project directory - which also implies that a suitable **Java** environment is installed; by passing `java-version` and `tool-version`, you can enforce specific required versions instead of the default ones provided by the selected GitHub Actions runner.
 
 - `auth-user` and `auth-token` are never mandatory - because of the flexibility provided by the supported build tools - but they are recommended for the most common scenarios:
-
   - when the build tool is 🪶**Maven**, for deploying a conventional library it is generally essential to declare a server named **target-server** within **pom.xml**, like this:
 
     ```xml
@@ -109,7 +102,7 @@ steps:
 |       `quiet-tool`       |       **boolean**       |         Run the build tool in quiet mode          |   **true**    |
 |   `website-directory`    |       **string**        | Relative directory containing the project website |  **website**  |
 | `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |  **inject**   |
-|   `project-directory`    |       **string**        |  The directory containing the project descriptor  |     **.**     |
+|   `working-directory`    |       **string**        |  The directory containing the project descriptor  |     **.**     |
 
 ## 🌐 Further references
 

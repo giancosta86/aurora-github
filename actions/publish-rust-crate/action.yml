@@ -21,7 +21,7 @@ inputs:
     description: How the branch version should be enforced.
     default: inject
 
-  project-directory:
+  working-directory:
     description: The directory containing `Cargo.toml`.
     default: .
 
@@ -34,17 +34,17 @@ runs:
       uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
       with:
         mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Setup Rust context
       uses: giancosta86/aurora-github/actions/setup-rust-context@v11.0.0
       with:
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Document all features
       if: inputs.document-all-features == 'true'
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/rust/project
 
@@ -54,13 +54,13 @@ runs:
       uses: giancosta86/aurora-github/actions/publish-github-pages@v11.0.0
       with:
         optional: true
-        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        source-directory: ${{ inputs.working-directory }}/${{ inputs.website-directory }}
         dry-run: ${{ inputs.dry-run }}
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
     - name: Display project descriptor
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-elvish/console
         use aurora-github/project/descriptors/toml
@@ -71,7 +71,7 @@ runs:
 
     - name: Publish the crate
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/ci-cd/input
         use aurora-github/rust/crate

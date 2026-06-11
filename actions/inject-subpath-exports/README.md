@@ -18,7 +18,6 @@ Appends keys to the `exports` field of a `package.json` descriptor - according t
 The `mode` input can have the following values:
 
 - `prefer-index`:
-
   - if a **root index file** ( `<source-directory>/index.ts` or `<source-directory>/index.js`) exists, simply add it, with the following subpath:
 
     ```json
@@ -57,7 +56,7 @@ The `mode` input can have the following values:
 | :-----------------: | :-------------------: | :-------------------------------------: | :--------------: |
 |       `mode`        | `prefer-index`, `all` |     Subpath exports generation mode     | **prefer-index** |
 | `source-directory`  |      **string**       |  Relative path to the source directory  |     **src**      |
-| `project-directory` |      **string**       | The directory containing `package.json` |      **.**       |
+| `working-directory` |      **string**       | The directory containing `package.json` |      **.**       |
 
 ## 🌐 Further references
 

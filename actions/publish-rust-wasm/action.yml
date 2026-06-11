@@ -33,7 +33,7 @@ inputs:
     description: How the branch version should be enforced.
     default: inject
 
-  project-directory:
+  working-directory:
     description: The directory containing `Cargo.toml`.
     default: .
 
@@ -56,21 +56,21 @@ runs:
         pnpm-version: ${{ inputs.pnpm-version }}
         development: false
         target-directory: pkg
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Try to copy .npmrc from the project directory
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/rust/wasm
 
-        wasm:copy-npmrc-from-project-directory
+        wasm:copy-npmrc-from-working-directory
 
     - name: Publish the GitHub Pages website
       uses: giancosta86/aurora-github/actions/publish-github-pages@v11.0.0
       with:
         optional: true
-        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
+        source-directory: ${{ inputs.working-directory }}/${{ inputs.website-directory }}
         dry-run: ${{ inputs.dry-run }}
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
@@ -80,7 +80,7 @@ runs:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}/pkg
+        working-directory: ${{ inputs.working-directory }}/pkg
 
     - name: Print confirmation message
       shell: elvish {0}

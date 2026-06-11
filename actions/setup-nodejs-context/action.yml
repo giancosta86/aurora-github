@@ -6,7 +6,7 @@ inputs:
     description: Enable colors for `pnpm`
     default: true
 
-  project-directory:
+  working-directory:
     description: The directory containing `package.json`.
     default: .
 
@@ -17,7 +17,7 @@ runs:
 
     - name: Check preconditions
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/nodejs/context
 
@@ -26,7 +26,7 @@ runs:
     - name: Detect toolchain constraints
       id: detect-nodejs-constraints
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/ci-cd/output
         use aurora-github/nodejs/context
@@ -41,7 +41,7 @@ runs:
 
     - name: Print NodeJS version
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-elvish/console
 
@@ -51,7 +51,7 @@ runs:
       if: steps.detect-nodejs-constraints.outputs.install-toolchain == 'true'
       id: detect-pnpm-constraints
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/ci-cd/output
         use aurora-github/nodejs/context
@@ -66,7 +66,7 @@ runs:
 
     - name: Setup colors for pnpm
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/ci-cd/input
         use aurora-github/nodejs/context
@@ -77,7 +77,7 @@ runs:
 
     - name: Print pnpm version
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-elvish/console
 
@@ -85,7 +85,7 @@ runs:
 
     - name: Install the dependencies
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/nodejs/context
 
@@ -93,8 +93,8 @@ runs:
 
     - name: Print confirmation message
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-elvish/console
 
-        console:echo ✅📦 NodeJS context in "'"${{ inputs.project-directory }}"'" ready!
+        console:echo ✅📦 NodeJS context in "'"${{ inputs.working-directory }}"'" ready!

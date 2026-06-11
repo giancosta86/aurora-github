@@ -39,7 +39,7 @@ runs:
       with:
         dry-run: true
         document-all-features: ${{ inputs.document-all-features }}
-        project-directory: tests/rust-crate
+        working-directory: tests/rust-crate
 
     - name: Verify that Cargo.toml actually includes the documentation addendum
       uses: ./.github/test-actions/test-publish-rust-crate/assert-doc-addendum

@@ -37,7 +37,7 @@ steps:
 | `crash-on-critical-todos` |       **boolean**       | Crash the workflow if critical TODOs are found |         **true**          |
 |    `source-file-regex`    |       **string**        |    PCRE pattern describing the source files    | view [source](action.yml) |
 | `enforce-branch-version`  | `inject`,`check`,`skip` |   How the branch version should be enforced    |        **inject**         |
-|    `project-directory`    |       **string**        |  The directory containing **pyproject.toml**   |           **.**           |
+|    `working-directory`    |       **string**        |  The directory containing **pyproject.toml**   |           **.**           |
 
 ## 🌐 Further references
 

@@ -36,7 +36,7 @@ inputs:
     description: How the branch version should be enforced.
     default: inject
 
-  project-directory:
+  working-directory:
     description: The directory containing `Cargo.toml`.
     default: .
 
@@ -58,11 +58,11 @@ runs:
         crash-on-critical-todos: ${{ inputs.crash-on-critical-todos }}
         source-file-regex: ${{ inputs.source-file-regex }}
         enforce-branch-version: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Run headless browser tests
       shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/rust/wasm-pack
 
@@ -75,13 +75,13 @@ runs:
         npm-scope: ${{ inputs.npm-scope }}
         development: true
         target-directory: pkg
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - name: Run client tests
       uses: giancosta86/aurora-github/actions/run-custom-tests@v11.0.0
       with:
         optional: true
-        root-directory: ${{ inputs.project-directory }}/${{ inputs.client-tests-directory }}
+        working-directory: ${{ inputs.working-directory }}/${{ inputs.client-tests-directory }}
 
     - name: Print confirmation message
       shell: elvish {0}

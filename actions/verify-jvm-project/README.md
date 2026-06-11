@@ -16,7 +16,6 @@ steps:
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
 1. Determine the build tool:
-
    - 🪶**Maven**, if the project descriptor is **pom.xml**
 
    - 🐘**Gradle**, if the project descriptor is **build.gradle** or **build.gradle.kts**
@@ -26,7 +25,6 @@ steps:
 1. If a specific build tool version is declared as `tool-version`, pass it to [install-via-sdkman](../install-via-sdkman/README.md)
 
 1. Run:
-
    - `mvn verify` - always with batched output (`-B`)
 
    - `gradle build`
@@ -49,7 +47,7 @@ steps:
 | `crash-on-critical-todos` |       **boolean**       | Crash the workflow if critical TODOs are found  |         **true**          |
 |    `source-file-regex`    |       **string**        |    PCRE pattern describing the source files     | view [source](action.yml) |
 | `enforce-branch-version`  | `inject`,`check`,`skip` |    How the branch version should be enforced    |        **inject**         |
-|    `project-directory`    |       **string**        | The directory containing the project descriptor |           **.**           |
+|    `working-directory`    |       **string**        | The directory containing the project descriptor |           **.**           |
 
 ## 🌐 Further references
 
