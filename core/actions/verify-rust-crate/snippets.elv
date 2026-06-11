@@ -48,7 +48,7 @@ fn extract { |markdown-path test-filename-prefix|
     }
 
   if (seq:is-non-empty $generated-test-paths) {
-    std-err:section &emoji=🎩 'Process completed! Generated test files' {
+    std-err:section &emoji=✂️ 'Process completed! Generated test files' {
       all $generated-test-paths | each { |test-path|
         std-err:echo 📄 $test-path
       }
