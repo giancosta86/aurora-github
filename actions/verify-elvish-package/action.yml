@@ -34,13 +34,9 @@ runs:
         working-directory: ${{ inputs.project-directory }}
         velvet-version: ${{ inputs.velvet-version }}
 
-    - name: Check for critical TODOs
-      if: inputs.todo-files != ''
-      uses: giancosta86/aurora-github/actions/find-regex-pattern@v11.0.0
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
       with:
         files: ${{ inputs.todo-files }}
-        regex: TODO!
-        crash-when: found
         working-directory: ${{ inputs.project-directory }}
 
     - shell: elvish {0}

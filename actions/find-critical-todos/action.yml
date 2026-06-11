@@ -1,0 +1,29 @@
+name: Find regex pattern
+description: Finds the given regex in all the requested file patterns, optionally crashing.
+
+inputs:
+  files:
+    description: Comma-separated file patterns.
+    default: "**"
+
+  working-directory:
+    description: The directory where the action must run.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - if: inputs.files != ''
+      uses: giancosta86/aurora-github/actions/find-regex-pattern@v11.0.0
+      with:
+        files: ${{ inputs.files }}
+
+        regex: TODO!
+
+        crash-when: found
+
+        crash-message: Critical TODOs found!
+
+        quiet: false
+
+        working-directory: ${{ inputs.working-directory }}
