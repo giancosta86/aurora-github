@@ -84,6 +84,8 @@ The actions can be grouped by technology:
 
 - [detect-branch-version](actions/detect-branch-version/README.md)
 
+- [inject-branch-version](actions/inject-branch-version/README.md)
+
 - [tag-and-release](actions/tag-and-release/README.md)
 
 - [upload-release-assets](actions/upload-release-assets/README.md)

@@ -2,7 +2,7 @@ name: Verify Rust crate
 description: Verifies the source files of a Rust crate.
 
 inputs:
-  run-clippy-checks:
+  run-clippy:
     description: Enable linting via Clippy.
     default: true
 
@@ -10,19 +10,11 @@ inputs:
     description: Build the documentation - with warnings as errors.
     default: true
 
-  crash-on-critical-todos:
-    description: Crash the workflow if critical TODOs are found.
-    default: true
+  todo-files:
+    description: File patterns potentially containing critical TODOs.
+    default: "*.rs"
 
-  source-file-regex:
-    description: PCRE pattern describing the source files.
-    default: '^(src|tests)\/.+\.rs$'
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
-
-  project-directory:
+  working-directory:
     description: The directory containing `Cargo.toml`.
     default: .
 
@@ -31,58 +23,30 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Check the project license
-      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
+    - uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
+      with: ${{ inputs.working-directory }}/LICENSE
 
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}
+        files: Cargo.toml
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Setup Rust context
-      uses: giancosta86/aurora-github/actions/setup-rust-context@v11.0.0
+    - uses: giancosta86/aurora-github/actions/setup-rust-context@v11.0.0
       with:
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Check style
-      shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
+    - shell: elvish {0}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/rust/project
+        use github.com/giancosta86/aurora-github/actions/verify-rust-crate
+        verify-rust-crate:main
+      env:
+        run-clippy: ${{ inputs.run-clippy }}
+        check-rustdoc: ${{ inputs.check-rustdoc }}
 
-        var run-clippy-checks = (input:bool run-clippy-checks '${{ inputs.run-clippy-checks }}')
-
-        var check-rustdoc = (input:bool check-rustdoc '${{ inputs.check-rustdoc }}')
-
-        project:check-style &run-clippy-checks=$run-clippy-checks &check-rustdoc=$check-rustdoc
-
-    - name: Extract code snippets as tests from README.md
-      uses: giancosta86/aurora-github/actions/extract-rust-snippets@v11.0.0
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
       with:
-        optional: true
-        project-directory: ${{ inputs.project-directory }}
+        files: ${{ inputs.todo-files }}
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Run tests
-      shell: elvish {0}
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        use aurora-github/rust/project
-
-        project:run-tests
-
-    - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
-      with:
-        source-file-regex: ${{ inputs.source-file-regex }}
-        crash-on-found: ${{ inputs.crash-on-critical-todos }}
-        display-lines: true
-        root-directory: ${{ inputs.project-directory }}
-
-    - name: Print confirmation message
-      shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅🦀 Rust crate project verified!
+    - shell: elvish {0}
+      run: echo ✅🦀 Rust crate project verified!

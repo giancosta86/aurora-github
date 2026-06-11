@@ -136,6 +136,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
+      - test-inject-branch-version
       - test-find-critical-todos
     steps:
       - uses: actions/checkout@v6
@@ -148,6 +149,18 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-setup-rust-context
+
+  test-verify-rust-crate:
+    if: always()
+    runs-on: ubuntu-24.04
+    needs:
+      - test-check-project-license
+      - test-inject-branch-version
+      - test-setup-rust-context
+      - test-find-critical-todos
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-verify-rust-crate
 
   test-inject-subpath-exports:
     if: false
@@ -183,18 +196,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-verify-python-package
-
-  test-verify-rust-crate:
-    if: false
-    runs-on: ubuntu-24.04
-    needs:
-      - test-check-project-license
-      - test-setup-rust-context
-      - test-find-critical-todos
-      - test-inject-branch-version
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-verify-rust-crate
 
   test-publish-github-pages:
     if: false
@@ -331,12 +332,14 @@ jobs:
       - test-install-system-packages
       - test-install-via-sdkman
       - test-upload-release-assets
+      - test-run-elvish-tests
+      - test-verify-elvish-package
       - test-setup-rust-context
+      - test-verify-rust-crate
       - test-inject-subpath-exports
       - test-check-subpath-exports
       - test-setup-nodejs-context
       - test-verify-python-package
-      - test-verify-rust-crate
       - test-publish-github-pages
       - test-tag-and-release
       - test-verify-jvm-project
@@ -347,7 +350,6 @@ jobs:
       - test-publish-jvm-project
       - test-publish-npm-package
       - test-publish-rust-wasm
-      - test-verify-elvish-package
     steps:
       - uses: actions/checkout@v6
       - uses: ./actions/check-required-jobs

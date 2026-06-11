@@ -15,9 +15,9 @@ steps:
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
 
-1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+1. Run [inject-branch-version](../inject-branch-version/README.md).
 
-1. Display the version info for the main components of the Rust toolchain - verifying the existence of `rust-toolchain.toml`.
+1. Run [setup-rust-context](../setup-rust-context/README.md).
 
 1. Check the style of the Rust source files - via `cargo fmt`.
 
@@ -35,29 +35,27 @@ steps:
 
 ## ☑️ Requirements
 
-- `rust-toolchain.toml` must be present in `project-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
+- `rust-toolchain.toml` must be present in `working-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
 
 ## 📥 Inputs
 
-|           Name            |          Type           |                    Description                    |       Default value       |
-| :-----------------------: | :---------------------: | :-----------------------------------------------: | :-----------------------: |
-|    `run-clippy-checks`    |       **boolean**       |             Enable linting via Clippy             |         **true**          |
-|      `check-rustdoc`      |       **boolean**       | Build the documentation - with warnings as errors |         **true**          |
-| `crash-on-critical-todos` |       **boolean**       |  Crash the workflow if critical TODOs are found   |         **true**          |
-|    `source-file-regex`    |       **string**        |     PCRE pattern describing the source files      | view [source](action.yml) |
-| `enforce-branch-version`  | `inject`,`check`,`skip` |     How the branch version should be enforced     |        **inject**         |
-|    `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
+|        Name         |    Type     |                     Description                     | Default value |
+| :-----------------: | :---------: | :-------------------------------------------------: | :-----------: |
+| `run-clippy-checks` | **boolean** |              Enable linting via Clippy              |   **true**    |
+|   `check-rustdoc`   | **boolean** |  Build the documentation - with warnings as errors  |   **true**    |
+|    `todo-files`     | **string**  | File patterns potentially containing critical TODOs |   **\*.rs**   |
+| `working-directory` | **string**  |        The directory containing `Cargo.toml`        |     **.**     |
 
 ## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
 
-- [verify-rust-wasm](../verify-rust-wasm/README.md)
-
 - [find-critical-todos](../find-critical-todos/README.md)
 
-- [enforce-branch-version](../enforce-branch-version/README.md)
+- [inject-branch-version](../inject-branch-version/README.md)
 
 - [setup-rust-context](../setup-rust-context/README.md)
+
+- [verify-rust-wasm](../verify-rust-wasm/README.md)
 
 - [aurora-github](../../README.md)
