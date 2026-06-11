@@ -1,3 +1,4 @@
+use os
 use github.com/giancosta86/ethereal/v1/seq
 use ../std-err
 use ./input
@@ -25,5 +26,9 @@ fn -check-current-year-included { |license-file|
 fn main {
   var license-file = (input:file license-file)
 
-  -check-current-year-included $license-file
+  if (os:is-regular $license-file) {
+    -check-current-year-included $license-file
+  } else {
+    std-err:echo 💭 License file not found: $license-file
+  }
 }
