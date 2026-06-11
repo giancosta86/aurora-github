@@ -70,7 +70,6 @@ fn set-pnpm-colors { |enabled|
   var key = FORCE_COLOR
   var value = (lang:ternary $enabled 1 0)
 
-  set-env $key $value
   env:write $key $value
 }
 

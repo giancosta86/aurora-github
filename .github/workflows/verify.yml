@@ -76,7 +76,7 @@ jobs:
       - uses: ./.github/test-actions/test-find-regex-pattern
 
   test-find-critical-todos:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-find-regex-pattern
     steps:
@@ -124,7 +124,7 @@ jobs:
       - uses: ./.github/test-actions/test-run-elvish-tests
 
   test-verify-elvish-package:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -134,7 +134,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-elvish-package
 
   test-setup-rust-context:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:

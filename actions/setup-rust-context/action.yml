@@ -22,10 +22,8 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.project-directory }}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/rust/context
-
-        var cargo-colors = (input:bool cargo-colors '${{ inputs.cargo-colors }}')
-        var check-toolchain-file = (input:bool check-toolchain-file '${{ inputs.check-toolchain-file }}')
-
-        context:setup &cargo-colors=$cargo-colors &check-toolchain-file=$check-toolchain-file
+        use github.com/giancosta86/aurora-github/actions/setup-rust-context
+        setup-rust-context:main
+      env:
+        cargo-colors: ${{ inputs.cargo-colors }}
+        check-toolchain-file: ${{ inputs.check-toolchain-file }}

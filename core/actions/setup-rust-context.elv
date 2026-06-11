@@ -1,8 +1,9 @@
 use os
 use ../ci-cd/env
-use github.com/giancosta86/aurora-elvish/command
-use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/lang
+use github.com/giancosta86/ethereal/v1/command
+use github.com/giancosta86/ethereal/v1/lang
+use ../std-err
+use ./input
 
 fn -check-preconditions {
   if (not (os:is-regular Cargo.toml)) {
@@ -19,18 +20,14 @@ fn -check-preconditions {
 }
 
 fn -set-cargo-colors { |enabled|
-  var key = CARGO_TERM_COLOR
-  var value = (lang:ternary $enabled always never)
-
-  set-env $key $value
-  env:write $key $value
+  env:write CARGO_TERM_COLOR (lang:ternary $enabled always never)
 }
 
 fn -check-toolchain-file {
   var toolchain-file = rust-toolchain.toml
 
   if (os:is-regular $toolchain-file) {
-    console:inspect &emoji=✅ 'Toolchain file found' $toolchain-file
+    std-err:inspect &emoji=✅ 'Toolchain file found' $toolchain-file
   } else {
     fail "Missing toolchain file: '"$toolchain-file"'"
   }
@@ -45,7 +42,7 @@ fn -ensure-required-components {
 }
 
 fn -print-component-versions {
-  console:section &emoji=🦀 'Rust component versions' {
+  std-err:section &emoji=🦀 'Rust component versions' {
     cargo --version
     rustc --version
     cargo fmt --version
@@ -53,8 +50,12 @@ fn -print-component-versions {
   }
 }
 
-fn setup { |&cargo-colors=$true &check-toolchain-file=$true|
-  console:echo 🦀💻 Setting up Rust context in "'"$pwd"'"...
+fn main {
+  var cargo-colors = (input:bool cargo-colors)
+
+  var check-toolchain-file = (input:bool check-toolchain-file)
+
+  std-err:echo 🦀💻 Setting up Rust context in "'"$pwd"'"...
 
   -check-preconditions
 
@@ -68,5 +69,5 @@ fn setup { |&cargo-colors=$true &check-toolchain-file=$true|
 
   -print-component-versions
 
-  console:echo ✅🦀 Rust context in "'"$pwd"'" ready!
+  std-err:echo ✅🦀 Rust context in "'"$pwd"'" ready!
 }

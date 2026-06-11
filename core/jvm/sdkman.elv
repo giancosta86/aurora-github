@@ -38,7 +38,6 @@ fn install-sdk { |candidate version|
 
   var updated-path = $sdk-bin':'(get-env PATH)
 
-  set-env PATH $updated-path
   env:write PATH $updated-path
 
   std-err:echo ✅ $candidate'('$version')' installed!

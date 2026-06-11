@@ -9,7 +9,7 @@ fn echo { |@arguments|
   builtin:echo $@arguments >&2
 }
 
-fn section { |emoji description block|
+fn section { |&emoji=📜 description block|
   capture {
     builtin:echo $emoji $description':'
 
