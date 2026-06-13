@@ -2,12 +2,11 @@ name: Setup a NodeJS context
 description: Conditionally installs NodeJS along with `pnpm`, as well as the dependencies listed in package.json.
 
 inputs:
-  pnpm-colors:
-    description: Enable colors for `pnpm`
-    default: true
+  install-arguments:
+    description: Additional arguments to pass to the `install` command.
 
   working-directory:
-    description: The directory containing `package.json`.
+    description: The directory containing package.json.
     default: .
 
 runs:
@@ -15,86 +14,12 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Check preconditions
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/nodejs/context
-
-        context:check-preconditions
-
-    - name: Detect toolchain constraints
-      id: detect-nodejs-constraints
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/ci-cd/output
-        use aurora-github/nodejs/context
-
-        output:map (context:detect-nodejs-constraints)
-
-    - name: Install NodeJS
-      if: steps.detect-nodejs-constraints.outputs.install-toolchain == 'true'
-      uses: actions/setup-node@v4
+    - uses: giancosta86/aurora-github/actions/install-elvish-packages@v11.0.0
       with:
-        node-version: ${{ steps.detect-nodejs-constraints.outputs.requested-node-version }}
+        packages: github.com/giancosta86/astral-bridge@v1
 
-    - name: Print NodeJS version
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:inspect &emoji=🎡 'NodeJS version' (node --version)
-
-    - name: Detect the requested pnpm version
-      if: steps.detect-nodejs-constraints.outputs.install-toolchain == 'true'
-      id: detect-pnpm-constraints
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/ci-cd/output
-        use aurora-github/nodejs/context
-
-        output:map (context:detect-pnpm-constraints)
-
-    - name: Install pnpm
-      if: steps.detect-nodejs-constraints.outputs.install-toolchain == 'true'
-      uses: pnpm/action-setup@v4
-      with:
-        version: ${{ steps.detect-pnpm-constraints.outputs.requested-pnpm-version }}
-
-    - name: Setup colors for pnpm
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/nodejs/context
-
-        var pnpm-colors = (input:bool pnpm-colors '${{ inputs.pnpm-colors }}')
-
-        context:set-pnpm-colors $pnpm-colors
-
-    - name: Print pnpm version
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:inspect &emoji=📦 'pnpm version' (pnpm --version)
-
-    - name: Install the dependencies
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/nodejs/context
-
-        context:install-dependencies
-
-    - name: Print confirmation message
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅📦 NodeJS context in "'"${{ inputs.working-directory }}"'" ready!
+        use github.com/giancosta86/aurora-github/actions/setup-nodejs-context
+        setup-nodejs-context:main
