@@ -10,7 +10,7 @@ fn -check-current-year-included { |license-file|
     fail 'Cannot detect the current year!'
   }
 
-  std-err:capture {
+  std-err:redirect {
     echo 🗓 Current year: $current-year
 
     echo 🔎🗓 Searching the license file for the current year...

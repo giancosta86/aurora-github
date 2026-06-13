@@ -1,6 +1,6 @@
 use builtin
 
-fn capture { |block|
+fn redirect { |block|
   $block |
     only-bytes >&2
 }
@@ -9,8 +9,8 @@ fn echo { |@arguments|
   builtin:echo $@arguments >&2
 }
 
-fn section { |&emoji=📜 description block|
-  capture {
+fn section { |&emoji=🔎 description block|
+  redirect {
     builtin:echo $emoji $description':'
 
     $block
@@ -20,7 +20,7 @@ fn section { |&emoji=📜 description block|
 }
 
 fn inspect { |&emoji=🔎 description value|
-  capture {
+  redirect {
     if (eq (kind-of $value) string) {
       builtin:echo $emoji $description": '"$value"'"
     } else {
