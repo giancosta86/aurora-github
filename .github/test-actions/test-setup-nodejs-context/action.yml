@@ -67,6 +67,8 @@ runs:
       with:
         working-directory: tests/npm-package
         code: |
+          use path
+
           >> 'The expected NodeJS version' {
             >> 'should now be available' {
               node --version |
@@ -78,6 +80,13 @@ runs:
             >> 'should now be available' {
               pnpm --version |
                 should-match-regex '\bv?'(get-env expected-pnpm-version)'\b'
+            }
+          }
+
+          >> 'The project packages' {
+            >> 'should be installed' {
+              path:join node_modules @giancosta86 typed-env package.json |
+                should-be-regular
             }
           }
 

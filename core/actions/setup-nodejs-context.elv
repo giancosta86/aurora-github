@@ -16,7 +16,7 @@ fn -ensure-nvm {
       bash -c $-nvm-setup-command
     }
 
-    std-err:echo 🚀 nvm installed!
+    std-err:echo 🚀 nvm ready!
   } else {
     std-err:echo 🌟 nvm already installed!
   }
@@ -28,9 +28,13 @@ fn -ensure-node {
   if $requested-node-version {
     std-err:inspect &emoji=🏷️ 'Requested NodeJS version' $requested-node-version
 
+    std-err:echo 📥 Installing NodeJS...
+
     command:silence {
       nvm:nvm install $requested-node-version
     }
+
+    std-err:echo 🚀 NodeJS ready!
   } else {
     std-err:echo 💭 No specific NodeJS version requested...
   }
@@ -40,11 +44,29 @@ fn -ensure-node {
   }
 }
 
-fn -ensure-package-manager {
+fn -setup-corepack { |corepack-version|
+  if (corepack-version) {
+    std-err:echo 📥 Now installing corepack@$corepack-version...
+
+    command:silence {
+      npm install --global corepack@$corepack-version
+    }
+
+    std-err:echo 🎉 corepack installed!
+  } else {
+    std-err:echo 💭 Skipping corepack installation...
+  }
+
+  std-err:echo ⚙️ Setting up corepack...
+
   command:silence {
     corepack:setup
   }
 
+  std-err:echo 🚀 corepack ready!
+}
+
+fn -ensure-package-manager {
   std-err:section &emoji=📦 'Package manager version' {
     package-manager:exec --version
   }
@@ -65,9 +87,13 @@ fn -install-packages {
 }
 
 fn main {
+  var corepack-version = (input:string &optional corepack-version)
+
   -ensure-nvm
 
   -ensure-node
+
+  -setup-corepack $corepack-version
 
   -ensure-package-manager
 

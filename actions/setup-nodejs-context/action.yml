@@ -2,6 +2,10 @@ name: Setup a NodeJS context
 description: Conditionally installs NodeJS along with `pnpm`, as well as the dependencies listed in package.json.
 
 inputs:
+  corepack-version:
+    description: The version of corepack to install, <empty> to skip.
+    default: 0.30.0
+
   working-directory:
     description: The directory containing package.json.
     default: .
@@ -20,3 +24,5 @@ runs:
       run: |
         use github.com/giancosta86/aurora-github/actions/setup-nodejs-context
         setup-nodejs-context:main
+      env:
+        corepack-version: ${{ inputs.corepack-version }}
