@@ -30,7 +30,7 @@ fn -ensure-node {
     command:silence {
       nvm:nvm install $requested-node-version
     }
-  } {
+  } else {
     std-err:echo 💭 No specific NodeJS version requested...
   }
 
