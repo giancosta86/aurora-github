@@ -21,3 +21,6 @@ runs:
       uses: ./actions/setup-rust-context
       with:
         working-directory: tests/rust-wasm
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!
