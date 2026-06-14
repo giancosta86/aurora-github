@@ -1,78 +1,75 @@
 name: Test setup-nodejs-context
+description: Tests for setup-nodejs-context.
 
 runs:
   using: composite
   steps:
-    - name: Backup package.json and initialize environment variables
-      shell: bash
-      working-directory: tests/npm-package
+    - shell: elvish {0}
+      run: echo 🎭 Testing NodeJS context setup...
+
+    - name: Initialize environment variables
+      shell: elvish {0}
       run: |
-        cp package.json package.json.bak
+        use str
+        use github.com/giancosta86/aurora-github/ci-cd/env
 
-        expectedPnpmVersion="$(jq -r '.packageManager' package.json | sed s/^pnpm@//)"
-        echo "🔎 Expected pnpm version: '$expectedPnpmVersion'"
+        env:write expected-node-version (
+          from-json < package.json |
+            put (all)[engines][node]
+        )
 
-        echo "expectedPnpmVersion=$expectedPnpmVersion" >> $GITHUB_ENV
-        echo "dependenciesDirectory=node_modules" >> $GITHUB_ENV
+        env:write expected-pnpm-version (
+          from-json < package.json |
+            put (all)[packageManager] |
+            str:split @ (all) |
+            drop 1
+        )
 
-    - name: The expected pnpm version should not be running
-      shell: bash
-      working-directory: tests/npm-package
-      run: |
-        if type pnpm &> /dev/null
-        then
-          installedPnpmVersion="$(pnpm --version)"
-          echo "🔎 Pre-installed pnpm version: '$installedPnpmVersion'"
-
-          if [[ "$installedPnpmVersion" != "$expectedPnpmVersion" ]]
-          then
-            echo "✅ The expected pnpm version is not running!"
-          else
-            echo "❌ The expected pnpm version is running! This test would be pointless!" >&2
-            exit 1
-          fi
-        else
-          echo "✅ pnpm not installed..."
-        fi
-
-    - name: Ensure the dependencies are not installed
-      shell: bash
-      working-directory: tests/npm-package
-      run: rm -rf "$dependenciesDirectory"
-
-    - name: Setup NodeJS from .nvmrc
-      uses: ./.github/test-actions/test-setup-nodejs-context/scenario
+    - name: Testing preconditions
+      uses: ./actions/run-velvet-code
       with:
-        version-source: nvmrc
+        working-directory: tests/npm-package
+        code: |
+          >> 'The expected NodeJS version' {
+            >> 'should not be already installed' {
+              if (has-external node) {
+                node --version |
+                  should-not-match-regex '\bv?'(get-env expected-node-version)'\b'
+              }
+            }
+          }
 
-    - name: Setup NodeJS from package.json
-      uses: ./.github/test-actions/test-setup-nodejs-context/scenario
+          >> 'The expected pnpm version' {
+            >> 'should not be already installed' {
+              if (has-external pnpm) {
+                pnpm --version |
+                  should-not-match-regex '\bv?'(get-env expected-pnpm-version)'\b'
+              }
+            }
+          }
+
+    - uses: ./actions/setup-nodejs-context
       with:
-        version-source: package-json
+        working-directory: tests/npm-package
 
-    - name: The expected pnpm version should have been installed
-      shell: bash
-      working-directory: tests/npm-package
-      run: |
-        installedPnpmVersion="$(pnpm --version)"
-        echo "🔎 Installed pnpm version: '$installedPnpmVersion'"
+    - name: Testing effects
+      uses: ./actions/run-velvet-code
+      with:
+        working-directory: tests/npm-package
+        code: |
+          >> 'The expected NodeJS version' {
+            >> 'should now be available' {
+              node --version |
+                should-match-regex '\bv?'(get-env expected-node-version)'\b'
+            }
+          }
 
-        if [[ "$installedPnpmVersion" == "$expectedPnpmVersion" ]]
-        then
-          echo "✅ The expected pnpm version is being used!"
-        else
-          echo "❌ The expected pnpm version is not running!" >&2
-          exit 1
-        fi
+          >> 'The expected pnpm version' {
+            >> 'should now be available' {
+              pnpm --version |
+                should-match-regex '\bv?'(get-env expected-pnpm-version)'\b'
+            }
+          }
 
-    - name: The dependencies should have been installed
-      shell: bash
-      working-directory: tests/npm-package
-      run: |
-        if [[ -d "$dependenciesDirectory" ]]
-        then
-          echo "✅ The dependencies have been installed!"
-        else
-          echo "❌ The dependencies have not been installed!" >&2
-          exit 1
-        fi
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

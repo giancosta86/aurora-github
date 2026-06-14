@@ -5,12 +5,14 @@ use github.com/giancosta86/astral-bridge/v1/package-manager
 use github.com/giancosta86/astral-bridge/v1/version/requested
 use ../std-err
 
+var -nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
+
 fn -ensure-nvm {
   if (not (command:exists-in-bash nvm)) {
     std-err:echo 📥 Installing nvm...
 
     command:silence {
-      bash -c 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
+      bash -c $-nvm-setup-command
     }
 
     std-err:echo 🚀 nvm installed!
