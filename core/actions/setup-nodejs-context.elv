@@ -40,7 +40,11 @@ fn -ensure-node {
 }
 
 fn -ensure-package-manager {
-  corepack:setup
+  npm install --global corepack
+
+  command:silence {
+    corepack:setup
+  }
 
   std-err:section &emoji=📦 'Package manager version' {
     package-manager:exec --version
