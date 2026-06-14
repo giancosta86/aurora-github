@@ -7,14 +7,16 @@ use github.com/giancosta86/astral-bridge/v1/version/requested
 use ../std-err
 use ./input
 
-var -nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
+var nvm~ = $nvm:nvm~
+
+var nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
 
 fn -ensure-nvm {
   if (not (command:exists-in-bash nvm)) {
     std-err:echo 📥 Installing nvm...
 
     command:silence {
-      bash -c $-nvm-setup-command
+      bash -c $nvm-setup-command
     }
 
     std-err:echo 🚀 nvm ready!
@@ -36,7 +38,7 @@ fn -ensure-node {
     std-err:echo 📥 Installing NodeJS...
 
     command:silence {
-      nvm:nvm install $requested-node-version
+      nvm install $requested-node-version
     }
 
     std-err:echo 🚀 NodeJS ready!
