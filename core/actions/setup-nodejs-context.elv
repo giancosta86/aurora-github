@@ -46,7 +46,7 @@ fn -ensure-node {
 }
 
 fn -setup-corepack { |corepack-version|
-  if (corepack-version) {
+  if $corepack-version {
     std-err:echo 📥 Now installing corepack@$corepack-version...
 
     command:silence {
