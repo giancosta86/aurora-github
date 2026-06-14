@@ -21,6 +21,10 @@ fn -ensure-nvm {
   } else {
     std-err:echo 🌟 nvm already installed!
   }
+
+  std-err:section &emoji=🚢 'nvm version' {
+    nvm --version
+  }
 }
 
 fn -ensure-node {
