@@ -1,3 +1,4 @@
+use github.com/giancosta86/aurora-github/ci-cd/env
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/astral-bridge/v1/corepack
 use github.com/giancosta86/astral-bridge/v1/nvm
@@ -53,6 +54,10 @@ fn -ensure-package-manager {
   }
 }
 
+fn -save-path-updated-by-nvm {
+  env:write PATH (get-env PATH)
+}
+
 fn -install-packages {
   std-err:echo 📥 Installing the project packages...
 
@@ -69,6 +74,8 @@ fn main {
   -ensure-node
 
   -ensure-package-manager
+
+  -save-path-updated-by-nvm
 
   -install-packages
 
