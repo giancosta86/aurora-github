@@ -58,6 +58,10 @@ fn -setup-corepack { |corepack-version|
     std-err:echo 💭 Skipping corepack installation...
   }
 
+  std-err:section &emoji=🔮 'corepack version' {
+    corepack --version
+  }
+
   std-err:echo ⚙️ Setting up corepack...
 
   command:silence {
