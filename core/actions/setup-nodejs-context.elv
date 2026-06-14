@@ -5,6 +5,7 @@ use github.com/giancosta86/astral-bridge/v1/nvm
 use github.com/giancosta86/astral-bridge/v1/package-manager
 use github.com/giancosta86/astral-bridge/v1/version/requested
 use ../std-err
+use ./input
 
 var -nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
 
