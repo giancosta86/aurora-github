@@ -42,10 +42,6 @@ fn -ensure-node {
 
 fn -ensure-package-manager {
   command:silence {
-    npm install --global corepack
-  }
-
-  command:silence {
     corepack:setup
   }
 

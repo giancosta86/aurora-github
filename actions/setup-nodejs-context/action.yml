@@ -2,9 +2,6 @@ name: Setup a NodeJS context
 description: Conditionally installs NodeJS along with `pnpm`, as well as the dependencies listed in package.json.
 
 inputs:
-  install-arguments:
-    description: Additional arguments to pass to the `install` command.
-
   working-directory:
     description: The directory containing package.json.
     default: .
