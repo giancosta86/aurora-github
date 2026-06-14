@@ -11,6 +11,7 @@ runs:
 
     - name: Initialize environment variables
       shell: elvish {0}
+      working-directory: tests/npm-package
       run: |
         use str
         use github.com/giancosta86/aurora-github/ci-cd/env
