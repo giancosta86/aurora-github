@@ -16,17 +16,24 @@ runs:
         use str
         use github.com/giancosta86/aurora-github/ci-cd/env
 
-        env:write expected-node-version (
+        var expected-node-version = (
           from-json < package.json |
             put (all)[engines][node]
         )
+        echo 🎡 Expected NodeJS version: $expected-node-version
 
-        env:write expected-pnpm-version (
+        var expected-pnpm-version = (
           from-json < package.json |
             put (all)[packageManager] |
             str:split @ (all) |
             drop 1
         )
+        echo 📦 Expected pnpm version: $expected-pnpm-version
+
+        env:map [
+          &expected-node-version=$expected-node-version
+          &expected-pnpm-version=$expected-pnpm-version
+        ]
 
     - name: Testing preconditions
       uses: ./actions/run-velvet-code
