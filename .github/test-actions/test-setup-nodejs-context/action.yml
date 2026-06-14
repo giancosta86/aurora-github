@@ -4,6 +4,8 @@ description: Tests for setup-nodejs-context.
 runs:
   using: composite
   steps:
+    - uses: ./actions/setup-elvish-context
+
     - shell: elvish {0}
       run: echo 🎭 Testing NodeJS context setup...
 
