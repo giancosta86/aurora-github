@@ -4,7 +4,7 @@ description: Conditionally installs NodeJS along with `pnpm`, as well as the dep
 inputs:
   corepack-version:
     description: The version of corepack to install, <empty> to skip.
-    default: 0.30.0
+    default: latest
 
   working-directory:
     description: The directory containing package.json.
