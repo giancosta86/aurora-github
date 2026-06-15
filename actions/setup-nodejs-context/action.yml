@@ -1,9 +1,9 @@
 name: Setup a NodeJS context
-description: Conditionally installs NodeJS along with `pnpm`, as well as the dependencies listed in package.json.
+description: Installs and configures a NodeJS environment.
 
 inputs:
   corepack-version:
-    description: The version of corepack to install, <empty> to skip.
+    description: The version of corepack to install, empty to skip.
     default: latest
 
   working-directory:

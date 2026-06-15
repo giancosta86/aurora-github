@@ -11,7 +11,7 @@ var nvm~ = $nvm:nvm~
 
 var nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
 
-fn -ensure-nvm {
+fn ensure-nvm {
   if (not (command:exists-in-bash nvm)) {
     std-err:echo 📥 Installing nvm...
 
@@ -21,7 +21,7 @@ fn -ensure-nvm {
 
     std-err:echo 🚀 nvm ready!
   } else {
-    std-err:echo 🌟 nvm already installed!
+    std-err:echo 🌟 nvm already available!
   }
 
   std-err:section &emoji=🚢 'nvm version' {
@@ -29,21 +29,33 @@ fn -ensure-nvm {
   }
 }
 
-fn -ensure-node {
+fn ensure-node {
   var requested-node-version = (requested:detect-recursively $pwd)
 
   if $requested-node-version {
     std-err:inspect &emoji=🏷️ 'Requested NodeJS version' $requested-node-version
 
+    ensure-nvm
+
     std-err:echo 📥 Installing NodeJS...
 
     command:silence {
       nvm install $requested-node-version
+
+      env:write PATH (get-env PATH)
     }
 
     std-err:echo 🚀 NodeJS ready!
   } else {
     std-err:echo 💭 No specific NodeJS version requested...
+
+    if (not (has-external node)) {
+      ensure-nvm
+
+      nvm install latest
+
+      env:write PATH (get-env PATH)
+    }
   }
 
   std-err:section &emoji=🎡 'NodeJS version' {
@@ -51,7 +63,7 @@ fn -ensure-node {
   }
 }
 
-fn -setup-corepack { |corepack-version|
+fn setup-corepack { |corepack-version|
   if $corepack-version {
     std-err:echo 📥 Now installing corepack@$corepack-version...
 
@@ -64,30 +76,30 @@ fn -setup-corepack { |corepack-version|
     std-err:echo 💭 Skipping corepack installation...
   }
 
-  std-err:section &emoji=🔮 'corepack version' {
-    corepack --version
+  if (has-external corepack) {
+    std-err:section &emoji=🔮 'corepack version' {
+      corepack --version
+    }
+
+    std-err:echo ⚙️ Setting up corepack...
+
+    command:silence {
+      corepack:setup
+    }
+
+    std-err:echo 🚀 corepack ready!
+  } else {
+    std-err:echo 💭 corepack not available
   }
-
-  std-err:echo ⚙️ Setting up corepack...
-
-  command:silence {
-    corepack:setup
-  }
-
-  std-err:echo 🚀 corepack ready!
 }
 
-fn -ensure-package-manager {
+fn ensure-package-manager {
   std-err:section &emoji=📦 'Package manager version' {
     package-manager:exec --version
   }
 }
 
-fn -save-path-updated-by-nvm {
-  env:write PATH (get-env PATH)
-}
-
-fn -install-packages {
+fn install-packages {
   std-err:echo 📥 Installing the project packages...
 
   command:silence {
@@ -100,17 +112,13 @@ fn -install-packages {
 fn main {
   var corepack-version = (input:string &optional corepack-version)
 
-  -ensure-nvm
+  ensure-node
 
-  -ensure-node
+  setup-corepack $corepack-version
 
-  -setup-corepack $corepack-version
+  ensure-package-manager
 
-  -ensure-package-manager
-
-  -save-path-updated-by-nvm
-
-  -install-packages
+  install-packages
 
   std-err:echo ✅📦 NodeJS context in "'"$pwd"'" ready!
 }
