@@ -1,4 +1,5 @@
 name: Test check-subpath-exports
+description: Tests for check-subpath-exports.
 
 runs:
   using: composite

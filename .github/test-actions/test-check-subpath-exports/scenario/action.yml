@@ -1,4 +1,5 @@
-name: Update and check subpath exports in the npm test project
+name: Update and check subpath exports in the npm test project.
+description: Scenario for check-subpath-exports.
 
 inputs:
   header:

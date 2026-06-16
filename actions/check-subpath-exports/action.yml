@@ -14,6 +14,5 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/nodejs/subpath-exports
-
-        subpath-exports:check
+        use github.com/giancosta86/aurora-github/actions/check-subpath-exports
+        check-subpath-exports:main
