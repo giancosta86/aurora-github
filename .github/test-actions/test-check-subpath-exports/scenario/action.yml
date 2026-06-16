@@ -11,17 +11,17 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭 ${{inputs.header}}"
+    - shell: elvish {0}
+      run: echo 🎭 ${{inputs.header}}
 
     - name: Run the requested jq operation on package.json
-      shell: bash
+      shell: elvish {0}
       working-directory: tests/npm-package
       run: |
         jq '${{ inputs.jq-operation }}' package.json > package.json.temp
         mv package.json.temp package.json
 
-        echo "🔎 The 'exports' field is:"
+        echo 🔎 The 'exports' field is:
         jq -C '.exports' package.json
 
     - uses: ./actions/check-subpath-exports
