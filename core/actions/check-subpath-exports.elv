@@ -1,6 +1,5 @@
 use os
 use github.com/giancosta86/ethereal/v1/lang
-use github.com/giancosta86/ethereal/v1/map
 use ../std-err
 
 var check-json-value~
@@ -39,7 +38,7 @@ fn main {
 
   var exports = (
     from-json < package.json |
-      map:get-value (all) exports
+      lang:get-value (all) exports
   )
 
   if (not $exports) {
