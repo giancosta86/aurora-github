@@ -15,7 +15,10 @@ fn check-json-object { |path-in-json json-object|
 fn check-file-pattern { |path-in-json file-pattern|
   print 🔎 $path-in-json'->'$file-pattern...' '
 
-  var matches = (find . -wholename $file-pattern | wc -l)
+  var matches = (
+    find . -wholename $file-pattern |
+      count
+  )
 
   if (== $matches 0) {
     echo ❌
