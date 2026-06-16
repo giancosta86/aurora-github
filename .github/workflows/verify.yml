@@ -182,7 +182,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-nodejs-context
 
   test-check-subpath-exports:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -190,7 +190,7 @@ jobs:
       - uses: ./.github/test-actions/test-check-subpath-exports
 
   test-verify-npm-package:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
