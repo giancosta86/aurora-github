@@ -11,22 +11,22 @@ runs:
 
     - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
-        header: Test when the "exports" field is missing...
+        header: When the "exports" field is missing...
         jq-operation: del(.exports)
 
     - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
-        header: Test when the "exports" field is present but empty...
+        header: When the "exports" field is present but empty...
         jq-operation: .exports={}
 
     - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
-        header: Test when the "exports" field is a string...
+        header: When the "exports" field is a string...
         jq-operation: .exports="./src/beta/index.js"
 
     - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
-        header: Test when the "exports" object contains a string field...
+        header: When the "exports" object contains a string field...
         jq-operation: |
           .exports={
             "beta": "./src/beta/index.js"
@@ -34,7 +34,7 @@ runs:
 
     - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
-        header: Test when the "exports" object contains an object field...
+        header: When the "exports" object contains an object field...
         jq-operation: |
           .exports={
               "beta": {
@@ -45,7 +45,7 @@ runs:
 
     - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
-        header: Test when the "exports" object contains multiple fields...
+        header: When the "exports" object contains multiple fields...
         jq-operation: |
           .exports={
               "alpha": {
@@ -60,6 +60,14 @@ runs:
 
               "omega": "./src/omega/index.js"
             }
+
+    - uses: ./.github/test-actions/test-check-subpath-exports/scenario
+      with:
+        header: When wildcards are used...
+        jq-operation: |
+          .exports={
+            "alpha/*.js": "./src/features/*.js"
+          }
 
     - shell: elvish {0}
       run: echo ✅ All tests OK!

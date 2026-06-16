@@ -18,10 +18,11 @@ fn check-file-pattern { |path-in-json file-pattern|
 
   var files-found = (
     if (str:contains $file-pattern '*') {
-      str:replace '*' '*[nomatch-ok]' $file-pattern |
-        eval 'put '(all) |
-        count |
-        > (all) 0
+      var parent-dir = (
+        str:split '*' $file-pattern |
+        take 1
+      )
+      os:is-dir $parent-dir
     } else {
       os:is-regular $file-pattern
     }
