@@ -4,6 +4,11 @@ description: Tests for check-subpath-exports.
 runs:
   using: composite
   steps:
+    - uses: ./actions/setup-elvish-context
+
+    - shell: elvish {0}
+      run: echo 🎭 Now testing the action in multiple scenarios...
+
     - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:
         header: Test when the "exports" field is missing...
@@ -55,3 +60,6 @@ runs:
 
               "omega": "./src/omega/index.js"
             }
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

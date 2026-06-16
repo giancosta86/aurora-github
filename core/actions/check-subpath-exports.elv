@@ -1,4 +1,5 @@
 use os
+use str
 use github.com/giancosta86/ethereal/v1/lang
 use ../std-err
 
@@ -15,16 +16,22 @@ fn check-json-object { |path-in-json json-object|
 fn check-file-pattern { |path-in-json file-pattern|
   print 🔎 $path-in-json'->'$file-pattern...' '
 
-  var matches = (
-    find . -wholename $file-pattern |
-      count
+  var files-found = (
+    if (str:contains $file-pattern '*') {
+      str:replace '*' '*[nomatch-ok]' $file-pattern |
+        eval 'put '(all) |
+        count |
+        > (all) 0
+    } else {
+      os:is-regular $file-pattern
+    }
   )
 
-  if (== $matches 0) {
+  if $files-found {
+    echo ✅
+  } else {
     echo ❌
     fail 'No file matching subpath pattern: '$file-pattern
-  } else {
-    echo ✅
   }
 }
 

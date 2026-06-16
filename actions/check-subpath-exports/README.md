@@ -11,10 +11,6 @@ steps:
 
 **Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md).
 
-## ☑️ Requirements
-
-- The `jq` command (especially version **1.7**) must be available in the operating system.
-
 ## 📥 Inputs
 
 |        Name         |    Type    |               Description               | Default value |
