@@ -32,7 +32,7 @@ set check-json-value~ = { |path-in-json json-value|
   $checker $path-in-json $json-value
 }
 
-fn check {
+fn main {
   if (not (os:is-regular package.json)) {
     fail 'The package.json descriptor file does not exist!'
   }
