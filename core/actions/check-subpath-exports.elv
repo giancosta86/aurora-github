@@ -5,9 +5,11 @@ use ../std-err
 var check-json-value~
 
 fn check-json-object { |path-in-json json-object|
-  keys $json-object | order | each { |key|
-    check-json-value $path-in-json'->'$key $json-object[$key]
-  }
+  keys $json-object |
+    order |
+    each { |key|
+      check-json-value $path-in-json'->'$key $json-object[$key]
+    }
 }
 
 fn check-file-pattern { |path-in-json file-pattern|
@@ -25,7 +27,8 @@ fn check-file-pattern { |path-in-json file-pattern|
 
 set check-json-value~ = { |path-in-json json-value|
   var checker = (
-    lang:ternary (==s (kind-of $json-value) map) $check-json-object~ $check-file-pattern~
+    ==s (kind-of $json-value) map |
+      lang:ternary (all) $check-json-object~ $check-file-pattern~
   )
 
   $checker $path-in-json $json-value
