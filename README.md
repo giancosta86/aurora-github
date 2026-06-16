@@ -38,8 +38,6 @@ The actions can be grouped by technology:
 
 - [publish-npm-package](actions/publish-npm-package/README.md)
 
-- [inject-subpath-exports](actions/inject-subpath-exports/README.md)
-
 - [check-subpath-exports](actions/check-subpath-exports/README.md)
 
 ## 🦀🌐 Rust wasm-pack

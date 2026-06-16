@@ -189,14 +189,6 @@ jobs:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-check-subpath-exports
 
-  test-inject-subpath-exports:
-    if: false
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-inject-subpath-exports
-
   test-verify-npm-package:
     if: false
     runs-on: ubuntu-24.04
@@ -338,7 +330,6 @@ jobs:
       - test-publish-rust-crate
       - test-setup-nodejs-context
       - test-check-subpath-exports
-      - test-inject-subpath-exports
       - test-verify-npm-package
       - test-publish-npm-package
       - test-verify-python-package
