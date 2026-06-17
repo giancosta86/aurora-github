@@ -40,6 +40,3 @@ runs:
         dry-run: ${{ inputs.dry-run }}
         document-all-features: ${{ inputs.document-all-features }}
         CARGO_REGISTRY_TOKEN: ${{ inputs.cargo-token }}
-
-    - shell: elvish {0}
-      run: echo ✅🦀 Rust crate publication action successful!

@@ -46,4 +46,6 @@ fn main {
   }
 
   -publish $dry-run
+
+  echo ✅🦀 Rust crate publication successful!
 }
