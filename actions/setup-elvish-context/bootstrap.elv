@@ -21,14 +21,6 @@ fn create-link-to-core {
   }
 }
 
-fn print-elvish-version {
-  use github.com/giancosta86/aurora-github/std-err
-
-  std-err:section &emoji=🔮 'Elvish version' {
-    elvish --version
-  }
-}
-
 fn try-to-install-ethereal {
   if (has-env ethereal-version) {
     var ethereal-version = (get-env ethereal-version)
@@ -40,8 +32,6 @@ fn try-to-install-ethereal {
 
 fn main {
   create-link-to-core
-
-  print-elvish-version
 
   try-to-install-ethereal
 }
