@@ -84,7 +84,7 @@ fn setup-corepack { |corepack-version|
     std-err:echo ⚙️ Setting up corepack...
 
     command:silence {
-      corepack:setup
+      corepack:setup &support-npm=$false
     }
 
     std-err:echo 🚀 corepack ready!
