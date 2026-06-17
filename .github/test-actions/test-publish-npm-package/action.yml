@@ -1,4 +1,5 @@
 name: Test publish-npm-package
+description: Tests for publish-npm-package.
 
 runs:
   using: composite

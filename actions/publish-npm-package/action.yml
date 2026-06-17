@@ -9,14 +9,6 @@ inputs:
   npm-token:
     description: The secret token for publishing to the registry.
 
-  website-directory:
-    description: Relative directory containing the project website.
-    default: website
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
-
   working-directory:
     description: The directory containing `package.json`.
     default: .
@@ -26,68 +18,20 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
+        files: package.json
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
+    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
       with:
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Try to build the package artifacts
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/nodejs/pnpm
-
-        pnpm:run-optional-script build
-
-    - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v11.0.0
-      with:
-        optional: true
-        source-directory: ${{ inputs.working-directory }}/${{ inputs.website-directory }}
-        dry-run: ${{ inputs.dry-run }}
-        enforce-branch-version: ${{ inputs.enforce-branch-version }}
-
-    - name: Display the artifact descriptor
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-        use aurora-github/project/descriptors/json
-
-        console:section &emoji=📦 'package.json just before publication' {
-          json:print-content package.json
-        }
-
-    - name: Ensure the package manager configuration file exists
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/nodejs/pnpm
-
-        pnpm:ensure-config
-
-    - name: Publish to the registry
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/nodejs/project
-
-        var dry-run = (input:bool dry-run '${{ inputs.dry-run }}')
-
-        project:publish $dry-run
+        use github.com/giancosta86/aurora-github/actions/publish-npm-package
+        publish-npm-package:main
       env:
+        dry-run: ${{ inputs.dry-run }}
         NPM_TOKEN: ${{ inputs.npm-token }}
-
-    - name: Print confirmation message
-      shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅📦 Npm package publication action successful!

@@ -28,20 +28,3 @@ fn run-optional-script { |script|
     console:echo 💭 Optional "'"$script"'" script not found in package.json...
   }
 }
-
-fn ensure-config {
-  var config-path = .npmrc
-
-  if (os:is-regular $config-path) {
-    console:echo 🌟You already have a custom $config-path file!
-    return
-  }
-
-  console:echo 🧞 It seems you do not have a $config-path file - generating a default one...
-
-  echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > $config-path
-
-  console:section &emoji=🎀 'Your auto-generated '$config-path' configuration file' {
-    cat $config-path | highlighting:highlight ini
-  }
-}
