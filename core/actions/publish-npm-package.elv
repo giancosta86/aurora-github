@@ -25,7 +25,7 @@ fn ensure-npm-config {
 fn publish-to-registry { |dry-run|
   var dry-run-arg = (lang:ternary $dry-run [--dry-run] [])
 
-  npm publish --access public $@dry-run-arg
+  package-manager:exec publish --access public $@dry-run-arg
 }
 
 fn main {
