@@ -13,42 +13,16 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup Elvish
-      shell: bash
+    - shell: bash
+      working-directory: ${{ github.action_path }}
       run: |
-        source "${{ github.action_path }}/bootstrap.sh"
-
+        source "bootstrap.sh"
         ensureElvish '${{ inputs.version }}'
 
-    - name: Link the aurora-github core as an Elvish package
-      shell: elvish {0}
-      working-directory: ${{ github.action_path }}/../../core/actions
+    - shell: elvish {0}
+      working-directory: ${{ github.action_path }}
       run: |
-        use epm
-        use os
-        use path
-
-        var action-path = (get-env GITHUB_ACTION_PATH)
-
-        var link-path = (
-          path:join $epm:managed-dir github.com giancosta86 aurora-github
-        )
-
-        if (not (os:exists $link-path)) {
-          path:dir $link-path |
-            os:mkdir-all (all)
-
-          var aurora-github-core-directory = (
-            path:join $action-path .. .. core
-          )
-
-          os:symlink $aurora-github-core-directory $link-path
-        }
-
-    - name: Install Ethereal
-      if: inputs.ethereal-version != ''
-      shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-github/epm-plus
-
-        epm-plus:install github.com/giancosta86/ethereal@${{ inputs.ethereal-version }}
+        use ./bootstrap
+        boostrap:main
+      env:
+        ethereal-version: ${{ inputs.ethereal-version }}
