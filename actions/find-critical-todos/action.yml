@@ -26,3 +26,11 @@ runs:
         quiet: false
 
         working-directory: ${{ inputs.working-directory }}
+
+    - if: inputs.files != ''
+      shell: elvish {0}
+      run: echo ✅ No critical TODOs found!
+
+    - if: inputs.files == ''
+      shell: elvish {0}
+      run: echo 💭 Critical TODOs check disabled...
