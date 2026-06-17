@@ -1,4 +1,5 @@
 name: Test verify-npm-package
+description: Tests for verify-npm-package.
 
 runs:
   using: composite

@@ -1,8 +1,8 @@
 # verify-npm-package
 
-Verifies the source files of a **NodeJS** package - by running its `verify` script within the `scripts` section of `package.json`.
+Verifies the source files of a **NodeJS** package.
 
-It is worth noting this action can support any technology - as long as you comply with the requirements described below.
+It is worth noting this action can support any related technology - as long as you comply with the requirements described below.
 
 ## 🃏 Example
 
@@ -51,13 +51,11 @@ steps:
 
 ## 📥 Inputs
 
-|           Name            |          Type           |                       Description                       |       Default value       |
-| :-----------------------: | :---------------------: | :-----------------------------------------------------: | :-----------------------: |
-| `crash-on-critical-todos` |       **boolean**       |     Crash the workflow if critical TODOs are found      |         **true**          |
-|    `source-file-regex`    |       **string**        |        PCRE pattern describing the source files         | view [source](action.yml) |
-| `enforce-branch-version`  | `inject`,`check`,`skip` |        How the branch version should be enforced        |        **inject**         |
-|  `check-subpath-exports`  |       **boolean**       | Run `check-subpath-exports` after the **verify** script |         **true**          |
-|    `working-directory`    |       **string**        |         The directory containing `package.json`         |           **.**           |
+|          Name           |    Type     |                       Description                       |            Default value             |
+| :---------------------: | :---------: | :-----------------------------------------------------: | :----------------------------------: |
+|      `todo-files`       | **string**  |   File patterns potentially containing critical TODOs   | **\*\*[nomatch-ok].{js jsx ts tsx}** |
+| `check-subpath-exports` | **boolean** | Run `check-subpath-exports` after the **verify** script |               **true**               |
+|   `working-directory`   | **string**  |         The directory containing `package.json`         |                **.**                 |
 
 ## 🌐 Further references
 
