@@ -19,10 +19,9 @@ runs:
         source "bootstrap.sh"
         ensureElvish '${{ inputs.version }}'
 
-    - shell: elvish {0}
+    - shell: bash
+      working-directory: ${{ github.action_path }}
       run: |
-        cd ${{ github.action_path }}
-        use ./bootstrap
-        boostrap:main
+        elvish bootstrap.elv
       env:
         ethereal-version: ${{ inputs.ethereal-version }}

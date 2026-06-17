@@ -47,3 +47,5 @@ fn main {
 
   try-to-install-ethereal
 }
+
+main
