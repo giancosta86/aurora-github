@@ -30,7 +30,7 @@ fn print-elvish-version {
 }
 
 fn try-to-install-ethereal {
-  use github.com/giancosta86/aurora-github/input
+  use github.com/giancosta86/aurora-github/actions/input
 
   var ethereal-version = (input:string &optional ethereal-version)
 
