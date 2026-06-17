@@ -30,11 +30,9 @@ fn print-elvish-version {
 }
 
 fn try-to-install-ethereal {
-  use github.com/giancosta86/aurora-github/actions/input
+  if (has-env ethereal-version) {
+    var ethereal-version = (get-env ethereal-version)
 
-  var ethereal-version = (input:string &optional ethereal-version)
-
-  if $ethereal-version {
     use github.com/giancosta86/aurora-github/epm-plus
     epm-plus:install 'github.com/giancosta86/ethereal@'$ethereal-version
   }
