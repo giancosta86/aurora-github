@@ -20,8 +20,8 @@ runs:
         ensureElvish '${{ inputs.version }}'
 
     - shell: elvish {0}
-      working-directory: ${{ github.action_path }}
       run: |
+        cd ${{ github.action_path }}
         use ./bootstrap
         boostrap:main
       env:
