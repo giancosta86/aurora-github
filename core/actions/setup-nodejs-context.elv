@@ -125,7 +125,7 @@ fn main {
 
   ensure-package-manager
 
-  if ($install-dependencies) {
+  if $install-dependencies {
     install-dependencies
   } else {
     echo 💭 Skipping installation of the project dependencies...
