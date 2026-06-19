@@ -174,7 +174,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-rust-crate
 
   test-setup-nodejs-context:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
@@ -203,7 +203,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-npm-package
 
   test-publish-npm-package:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-inject-branch-version
@@ -212,6 +212,26 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-publish-npm-package
+
+  test-verify-rust-wasm:
+    if: always()
+    runs-on: ubuntu-24.04
+    needs:
+      - test-check-project-license
+      - test-verify-rust-crate
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-verify-rust-wasm
+
+  test-publish-rust-wasm:
+    if: false
+    runs-on: ubuntu-24.04
+    needs:
+      - test-publish-npm-package
+      - test-verify-rust-wasm
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-publish-rust-wasm
 
   test-verify-python-package:
     if: false
@@ -223,6 +243,43 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-verify-python-package
+
+  test-publish-python-package:
+    if: false
+    runs-on: ubuntu-24.04
+    needs:
+      - test-inject-branch-version
+      - test-verify-python-package
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-publish-python-package
+        with:
+          index-secret: FAKE-SECRET
+
+  test-verify-jvm-project:
+    if: false
+    runs-on: ubuntu-24.04
+    needs:
+      - test-check-project-license
+      - test-find-critical-todos
+      - test-inject-branch-version
+      - test-install-via-sdkman
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-verify-jvm-project
+
+  test-publish-jvm-project:
+    if: false
+    runs-on: ubuntu-24.04
+    needs:
+      - test-inject-branch-version
+      - test-install-via-sdkman
+      - test-verify-jvm-project
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/test-actions/test-publish-jvm-project
+        with:
+          jvm-token: FAKE_TOKEN
 
   test-publish-github-pages:
     if: false
@@ -244,63 +301,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/test-actions/test-tag-and-release
-
-  test-verify-jvm-project:
-    if: false
-    runs-on: ubuntu-24.04
-    needs:
-      - test-check-project-license
-      - test-find-critical-todos
-      - test-inject-branch-version
-      - test-install-via-sdkman
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-verify-jvm-project
-
-  test-publish-python-package:
-    if: false
-    runs-on: ubuntu-24.04
-    needs:
-      - test-inject-branch-version
-      - test-verify-python-package
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-publish-python-package
-        with:
-          index-secret: FAKE-SECRET
-
-  test-verify-rust-wasm:
-    if: false
-    runs-on: ubuntu-24.04
-    needs:
-      - test-check-project-license
-      - test-verify-rust-crate
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-verify-rust-wasm
-
-  test-publish-jvm-project:
-    if: false
-    runs-on: ubuntu-24.04
-    needs:
-      - test-inject-branch-version
-      - test-install-via-sdkman
-      - test-verify-jvm-project
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-publish-jvm-project
-        with:
-          jvm-token: FAKE_TOKEN
-
-  test-publish-rust-wasm:
-    if: false
-    runs-on: ubuntu-24.04
-    needs:
-      - test-publish-npm-package
-      - test-verify-rust-wasm
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/test-actions/test-publish-rust-wasm
 
   verify:
     if: always()
@@ -329,14 +329,14 @@ jobs:
       - test-check-subpath-exports
       - test-verify-npm-package
       - test-publish-npm-package
+      - test-verify-rust-wasm
+      - test-publish-rust-wasm
       - test-verify-python-package
+      - test-publish-python-package
+      - test-verify-jvm-project
+      - test-publish-jvm-project
       - test-publish-github-pages
       - test-tag-and-release
-      - test-verify-jvm-project
-      - test-publish-python-package
-      - test-verify-rust-wasm
-      - test-publish-jvm-project
-      - test-publish-rust-wasm
     steps:
       - uses: actions/checkout@v6
       - uses: ./actions/check-required-jobs

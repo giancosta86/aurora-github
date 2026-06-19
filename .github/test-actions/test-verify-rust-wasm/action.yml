@@ -1,4 +1,5 @@
 name: Test verify-rust-wasm
+description: Tests for verify-rust-wasm.
 
 runs:
   using: composite

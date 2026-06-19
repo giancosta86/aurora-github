@@ -5,18 +5,18 @@ inputs:
   wasm-pack-version:
     description: The wasm-pack version to install.
 
+  wasm-target:
+    description: The target of the `wasm-pack build` command.
+    default: web
+
   npm-scope:
-    description: The npm package scope or `<ROOT>`.
+    description: The npm package scope, or an empty string.
 
   client-tests-directory:
     description: Relative directory containing the client tests.
     default: client-tests
 
-  wasm-target:
-    description: The target of the `wasm-pack build` command.
-    default: web
-
-  run-clippy-checks:
+  run-clippy:
     description: Enable linting via Clippy.
     default: true
 
@@ -24,17 +24,9 @@ inputs:
     description: Build the documentation - with warnings as errors.
     default: false
 
-  crash-on-critical-todos:
-    description: Crash the workflow if critical TODOs are found.
-    default: true
-
-  source-file-regex:
-    description: PCRE pattern describing the source files.
-    default: '^((src|tests)\/.+\.rs)|(client-tests\/.+\.(c|m)?(j|t)sx?)$'
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
+  todo-files:
+    description: File patterns potentially containing critical TODOs.
+    default: "{{src tests}/**[nomatch-ok].rs client-tests/**[nomatch-ok].{'' c m}{j t}s{'' x}}"
 
   working-directory:
     description: The directory containing `Cargo.toml`.
@@ -45,47 +37,58 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v11.0.0
+    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
       with:
-        wasm-pack-version: ${{ inputs.wasm-pack-version }}
-
-    - name: Verify Rust source files
-      uses: giancosta86/aurora-github/actions/verify-rust-crate@v11.0.0
-      with:
-        run-clippy-checks: ${{ inputs.run-clippy-checks }}
-        check-rustdoc: ${{ inputs.check-rustdoc }}
-        crash-on-critical-todos: ${{ inputs.crash-on-critical-todos }}
-        source-file-regex: ${{ inputs.source-file-regex }}
-        enforce-branch-version: ${{ inputs.enforce-branch-version }}
         working-directory: ${{ inputs.working-directory }}
+        install-dependencies: false
 
-    - name: Run headless browser tests
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/rust/wasm-pack
+        use github.com/giancosta86/aurora-github/actions/install-wasm-pack
+        install-wasm-pack:main
+      env:
+        version: ${{ inputs.wasm-pack-version }}
 
-        wasm-pack:run-browser-tests
-
-    - name: Generate the wasm target
-      uses: giancosta86/aurora-github/actions/generate-wasm-target@v11.0.0
+    - uses: giancosta86/aurora-github/actions/verify-rust-crate@v11.0.0
       with:
-        target: ${{ inputs.wasm-target }}
-        npm-scope: ${{ inputs.npm-scope }}
-        development: true
-        target-directory: pkg
+        run-clippy: ${{ inputs.run-clippy }}
+        check-rustdoc: ${{ inputs.check-rustdoc }}
+        todo-files: ${{ inputs.todo-files }}
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Run client tests
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v11.0.0
-      with:
-        optional: true
-        working-directory: ${{ inputs.working-directory }}/${{ inputs.client-tests-directory }}
-
-    - name: Print confirmation message
-      shell: elvish {0}
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        use github.com/giancosta86/aurora-elvish/console
+        echo 🌐 Running headless browser tests...
 
-        console:echo ✅🦀🌐 Rust web assembly project verified!
+        wasm-pack test --chrome --headless --release
+
+        echo ✅ Headless browser tests OK!
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/generate-wasm-target
+        generate-wasm-target:main
+      env:
+        target: ${{ inputs.wasm-target }}
+        target-directory: pkg
+        development: true
+        npm-scope: ${{ inputs.npm-scope }}
+
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
+      with:
+        files: package.json
+        working-directory: ${{ inputs.working-directory }}/pkg
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-wasm-client-tests
+        run-wasm-client-tests:main
+      env:
+        client-tests-directory: ${{ inputs.client-tests-directory }}
+
+    - shell: elvish {0}
+      run: echo ✅🦀🌐 Rust web assembly project verified!
