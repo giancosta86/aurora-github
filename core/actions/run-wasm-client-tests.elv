@@ -3,7 +3,7 @@ use github.com/giancosta86/astral-bridge/package-manager
 use ./input
 
 fn main {
-  var client-tests-directory = (input:string &optional $client-tests-directory)
+  var client-tests-directory = (input:string &optional client-tests-directory)
 
   if $client-tests-directory {
     if (os:is-dir $client-tests-directory) {
