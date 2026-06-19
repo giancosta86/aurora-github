@@ -1,5 +1,16 @@
+use github.com/giancosta86/ethereal/v1/lang
 use ../std-err
 use ./input
+
+fn get-npm-scope-args { |npm-scope|
+  var npm-scope-arg = (
+    str:trim-left $npm-scope @
+  )
+
+  std-err:inspect &emoji=☂ 'NPM scope' $npm-scope-arg
+
+  lang:ternary $npm-scope-arg ['--scope' $npm-scope-arg] []
+}
 
 fn run-wasm-pack { |inputs|
   var target = $inputs[target]
@@ -8,14 +19,10 @@ fn run-wasm-pack { |inputs|
   var npm-scope = $inputs[npm-scope]
 
   var mode-arg = (
-    lang:ternary $development '--dev' '--release'
+    lang:ternary $development --dev --release
   )
 
-  var actual-npm-scope = (pnpm:parse-scope $npm-scope)
-
-  var npm-scope-args = (
-    lang:ternary $actual-npm-scope ['--scope' $actual-npm-scope] []
-  )
+  var npm-scope-args = (get-npm-scope-args $npm-scope)
 
   wasm-pack build --target $target $mode-arg $@npm-scope-args --out-dir $target-directory
 }
