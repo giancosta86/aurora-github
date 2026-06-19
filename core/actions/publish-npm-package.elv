@@ -31,7 +31,7 @@ fn publish-to-registry { |dry-run|
 fn main {
   var dry-run = (input:bool dry-run)
 
-  package-manager:exec build
+  package-manager:exec run build
 
   std-err:section &emoji=📦 'package.json just before publication' {
     highlight:file package.json json
