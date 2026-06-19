@@ -1,3 +1,4 @@
+use os
 use github.com/giancosta86/aurora-github/ci-cd/env
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/astral-bridge/v1/corepack
@@ -84,7 +85,7 @@ fn setup-corepack { |corepack-version|
     std-err:echo ⚙️ Setting up corepack...
 
     command:silence {
-      corepack:setup &support-npm=$false
+      corepack:setup
     }
 
     std-err:echo 🚀 corepack ready!
@@ -104,18 +105,19 @@ fn ensure-package-manager {
   }
 }
 
-fn install-packages {
-  std-err:echo 📥 Installing the project packages...
+fn install-dependencies {
+  std-err:echo 📥 Installing the project dependencies...
 
   command:silence {
     package-manager:exec install
   }
 
-  std-err:echo 🎉 Packages installed!
+  std-err:echo 🎉 Dependencies installed!
 }
 
 fn main {
   var corepack-version = (input:string &optional corepack-version)
+  var install-dependencies = (input:bool install-dependencies)
 
   ensure-node
 
@@ -123,7 +125,11 @@ fn main {
 
   ensure-package-manager
 
-  install-packages
+  if ($install-dependencies) {
+    install-dependencies
+  } else {
+    echo 💭 Skipping installation of the project dependencies...
+  }
 
   std-err:echo ✅📦 NodeJS context in "'"$pwd"'" ready!
 }

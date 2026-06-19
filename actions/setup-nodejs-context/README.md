@@ -45,7 +45,7 @@ steps:
    1. if the `corepack` command is available:
       1. display its version
 
-      1. call `corepack:setup` from [astral-bridge](https://github.com/giancosta86/astral-bridge), _disabling_ support for npm - the vanilla version provided by NodeJS will be used.
+      1. call `corepack:setup` from [astral-bridge](https://github.com/giancosta86/astral-bridge).
 
 1. Use the `packagemanager:exec` command from [astral-bridge](https://github.com/giancosta86/astral-bridge) to run the `--version` command for the package manager required by the project. In particular, it is detected from:
    1. the `packageManager` field in **package.json**
@@ -72,10 +72,11 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |    Type    |                    Description                    | Default value |
-| :-----------------: | :--------: | :-----------------------------------------------: | :-----------: |
-| `corepack-version`  | **string** | The version of corepack to install, empty to skip |  **latest**   |
-| `working-directory` | **string** |      The directory containing `package.json`      |     **.**     |
+|          Name          |    Type     |                    Description                    | Default value |
+| :--------------------: | :---------: | :-----------------------------------------------: | :-----------: |
+|   `corepack-version`   | **string**  | The version of corepack to install, empty to skip |  **latest**   |
+| `install-dependencies` | **boolean** |    Run the package manager's `install` command    |   **true**    |
+|  `working-directory`   | **string**  |      The directory containing `package.json`      |     **.**     |
 
 ## 🌐 Further references
 

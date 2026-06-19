@@ -6,6 +6,10 @@ inputs:
     description: The version of corepack to install, empty to skip.
     default: latest
 
+  install-dependencies:
+    description: Run the package manager's `install` command.
+    default: true
+
   working-directory:
     description: The directory containing package.json.
     default: .
@@ -26,3 +30,4 @@ runs:
         setup-nodejs-context:main
       env:
         corepack-version: ${{ inputs.corepack-version }}
+        install-dependencies: ${{ inputs.install-dependencies }}
