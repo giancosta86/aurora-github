@@ -1,5 +1,5 @@
 use os
-use github.com/giancosta86/astral-bridge/package-manager
+use github.com/giancosta86/astral-bridge/v1/package-manager
 use ./input
 
 fn main {
