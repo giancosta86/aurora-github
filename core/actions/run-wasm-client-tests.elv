@@ -6,7 +6,7 @@ fn main {
   var client-tests-directory = (input:string &optional $client-tests-directory)
 
   if $client-tests-directory {
-    if (os:is-dir~ $client-tests-directory) {
+    if (os:is-dir $client-tests-directory) {
       echo 💡 Client tests directory found!
 
       echo 🧭 Running the client tests...

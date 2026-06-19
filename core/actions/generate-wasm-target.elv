@@ -53,7 +53,7 @@ fn main {
     &npm-scope=$npm-scope
   ]
 
-  try-to-copy-package-json
+  try-to-copy-package-json $target-directory
 
   std-err:inspect &emoji=✅ 'WebAssembly target ready in' $target-directory
 }
