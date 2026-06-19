@@ -28,7 +28,10 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) to inject the branch version into **pkg/package-json**
 
-1. If the directory referenced by the `client-tests-directory` input exists, execute the tests in it.
+1. If the directory referenced by the `client-tests-directory` input exists:
+   1. Install their dependencies
+
+   1. Execute the tests via the package manager's `test` command.
 
 ## ☑️ Requirements
 
