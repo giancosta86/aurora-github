@@ -15,23 +15,9 @@ inputs:
   npm-scope:
     description: The npm package scope or `<ROOT>`.
 
-  nodejs-version:
-    description: The `engines -> node` version within `package.json`.
-
-  pnpm-version:
-    description: The `packageManager` reference to pnpm within `package.json`.
-
   wasm-target:
     description: The target of the `wasm-pack build` command.
     default: web
-
-  website-directory:
-    description: Relative directory containing the project website.
-    default: website
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
 
   working-directory:
     description: The directory containing `Cargo.toml`.

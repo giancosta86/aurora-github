@@ -1,4 +1,5 @@
 name: Test publish-rust-wasm
+description: Tests for publish-rust-wasm.
 
 runs:
   using: composite
@@ -7,7 +8,5 @@ runs:
       with:
         working-directory: tests/rust-wasm
         dry-run: true
-        wasm-pack-version: 0.13.1
-        nodejs-version: 20.15.1
-        pnpm-version: 10.6.1
+        wasm-pack-version: 0.15.0
         npm-scope: giancosta86
