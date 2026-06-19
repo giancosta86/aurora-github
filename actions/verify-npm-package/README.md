@@ -44,11 +44,11 @@ steps:
 
 ## 📥 Inputs
 
-|          Name           |    Type     |                       Description                       |              Default value               |
-| :---------------------: | :---------: | :-----------------------------------------------------: | :--------------------------------------: |
-|      `todo-files`       | **string**  |   File patterns potentially containing critical TODOs   | **src/\*\*[nomatch-ok].{js jsx ts tsx}** |
-| `check-subpath-exports` | **boolean** | Run `check-subpath-exports` after the **verify** script |                 **true**                 |
-|   `working-directory`   | **string**  |         The directory containing `package.json`         |                  **.**                   |
+|          Name           |    Type     |                       Description                       |                     Default value                     |
+| :---------------------: | :---------: | :-----------------------------------------------------: | :---------------------------------------------------: |
+|      `todo-files`       | **string**  |   File patterns potentially containing critical TODOs   | **{src tests}/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}** |
+| `check-subpath-exports` | **boolean** | Run `check-subpath-exports` after the **verify** script |                       **true**                        |
+|   `working-directory`   | **string**  |         The directory containing `package.json`         |                         **.**                         |
 
 ## 🌐 Further references
 

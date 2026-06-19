@@ -4,7 +4,7 @@ description: Verifies the source files of a NodeJS package.
 inputs:
   todo-files:
     description: File patterns potentially containing critical TODOs.
-    default: "src/**[nomatch-ok].{js jsx ts tsx}"
+    default: "{src tests}/**[nomatch-ok].{'' c m}{j t}s{'' x}"
 
   check-subpath-exports:
     description: Run check-subpath-exports after the `verify` package script.
