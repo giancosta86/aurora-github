@@ -14,13 +14,19 @@ steps:
 
 ## 💡 How it works
 
-1. Install the `wasm-pack` command.
+1. Call [setup-nodejs-context](../setup-nodejs-context/README.md), based on `working-directory`
+
+1. Install the `wasm-pack` command at `wasm-pack-version`.
 
 1. Invoke the [verify-rust-crate](../verify-rust-crate/README.md) action, passing all the matching inputs, to perform code analysis over the Rust source code.
 
 1. Run `wasm-pack test` to run headless browser tests on Chrome.
 
 1. Generate the NodeJS package source files in the **pkg** subdirectory.
+
+1. If `working-directory` contains a **package.json**, copy it into **pkg**
+
+1. Run [inject-branch-version](../inject-branch-version/README.md) to inject the branch version into **pkg/package-json**
 
 1. If the directory referenced by the `client-tests-directory` input exists, execute the tests in it.
 
