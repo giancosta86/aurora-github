@@ -9,12 +9,14 @@ fn main {
     if (os:is-dir $client-tests-directory) {
       echo 💡 Client tests directory found!
 
-      echo 🧭 Running the client tests...
-      {
-        tmp pwd = $client-tests-directory
-        package-manager:exec test
-      }
+      tmp pwd = $client-tests-directory
 
+      echo 📥 Installing client tests dependencies...
+      package-manager:exec install
+      echo 🚀 Client test dependencies ready!
+
+      echo 🧭 Running the client tests...
+      package-manager:exec test
       echo ✅ Client tests run!
     } else {
       echo 💭 Client tests directory cannot be found
