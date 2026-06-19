@@ -8,4 +8,4 @@ runs:
       with:
         working-directory: tests/rust-wasm
         npm-scope: giancosta86
-        wasm-pack-version: 0.13.1
+        wasm-pack-version: 0.15.0
