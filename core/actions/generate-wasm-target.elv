@@ -29,14 +29,17 @@ fn run-wasm-pack { |inputs|
   wasm-pack build --target $target $mode-arg $@npm-scope-args --out-dir $target-directory
 }
 
-fn try-to-copy-package-json { |target-directory|
-  if (os:is-regular package.json) {
-    echo 📜 Root package.json file found! Copying it to $target-directory...
+fn try-to-copy-special-root-files { |target-directory|
+  all [
+    package.json
+    .npmrc
+  ] |
+    keep-if $os:is-regular~ |
+    each { |source-path|
+      cp $source-path $target-directory
 
-    cp package.json $target-directory
-
-    echo 🎉 package.json copied!
-  }
+      echo 📜 "'"$source-path"'" copied to target directory!
+    }
 }
 
 fn main {
@@ -54,7 +57,7 @@ fn main {
     &npm-scope=$npm-scope
   ]
 
-  try-to-copy-package-json $target-directory
+  try-to-copy-special-root-files $target-directory
 
   std-err:inspect &emoji=✅ 'WebAssembly target ready in' $target-directory
 }

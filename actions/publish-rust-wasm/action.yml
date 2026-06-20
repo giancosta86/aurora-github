@@ -28,49 +28,36 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v11.0.0
-      with:
-        wasm-pack-version: ${{ inputs.wasm-pack-version }}
-
-    - name: Generate the NodeJS package source files
-      uses: giancosta86/aurora-github/actions/generate-wasm-target@v11.0.0
-      with:
-        target: ${{ inputs.wasm-target }}
-        npm-scope: ${{ inputs.npm-scope }}
-        nodejs-version: ${{ inputs.nodejs-version }}
-        pnpm-version: ${{ inputs.pnpm-version }}
-        development: false
-        target-directory: pkg
-        working-directory: ${{ inputs.working-directory }}
-
-    - name: Try to copy .npmrc from the project directory
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/rust/wasm
+        use github.com/giancosta86/aurora-github/install-wasm-pack
+        install-wasm-pack:main
+      env:
+        version: ${{ inputs.wasm-pack-version }}
 
-        wasm:copy-npmrc-from-working-directory
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/generate-wasm-target
+        generate-wasm-target:main
+      env:
+        target: ${{ inputs.wasm-target }}
+        target-directory: pkg
+        development: false
+        npm-scope: ${{ inputs.npm-scope }}
 
-    - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v11.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        optional: true
-        source-directory: ${{ inputs.working-directory }}/${{ inputs.website-directory }}
-        dry-run: ${{ inputs.dry-run }}
-        enforce-branch-version: ${{ inputs.enforce-branch-version }}
+        files: package.json
+        working-directory: ${{ inputs.working-directory }}/pkg
 
-    - name: Publish NodeJS package
-      uses: giancosta86/aurora-github/actions/publish-npm-package@v11.0.0
+    - uses: giancosta86/aurora-github/actions/publish-npm-package@v11.0.0
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
-        enforce-branch-version: ${{ inputs.enforce-branch-version }}
         working-directory: ${{ inputs.working-directory }}/pkg
 
     - name: Print confirmation message
       shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅🦀🌐 Rust web assembly publication action successful!
+      run: echo ✅🦀🌐 Rust web assembly publication action successful!

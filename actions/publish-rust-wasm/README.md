@@ -17,23 +17,26 @@ steps:
 
 ## 💡 How it works
 
-1. Install the `wasm-pack` command.
+1. Call [setup-nodejs-context](../setup-nodejs-context/README.md), based on `working-directory`
+
+1. Install the `wasm-pack` command at `wasm-pack-version`.
 
 1. Generate the NodeJS package source files in the **pkg** subdirectory.
 
-1. If a `.npmrc` configuration file exists in `working-directory`, copy it to **pkg**
+1. If `working-directory` contains any of the following files, copy it into **pkg**:
+   - **package.json**
+
+   - **.npmrc**
+
+1. Run [inject-branch-version](../inject-branch-version/README.md) to inject the branch version into **pkg/package-json**
 
 1. Call [publish-npm-package](../publish-npm-package/README.md) on the **pkg** directory - passing all the matching inputs - to publish the npm package.
 
 ## ☑️ Requirements
 
-- the `nodejs-version` input is required for the build process; optionally, you can set the `pnpm-version` input as well, in order to request a specific pnpm version.
-
 - `npm-token` is **mandatory** - unless `dry-run` is enabled
 
 - The requirements for [publish-npm-package](../publish-npm-package/README.md).
-
-- The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
 
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
