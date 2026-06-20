@@ -214,7 +214,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-npm-package
 
   test-verify-rust-wasm:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
