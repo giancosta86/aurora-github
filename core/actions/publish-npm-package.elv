@@ -28,10 +28,24 @@ fn publish-to-registry { |dry-run|
   npm publish --access public $@dry-run-arg
 }
 
+fn try-to-run-package-script { |script|
+  use github.com/giancosta86/ethereal/v1/seq
+
+  if (not os:is-regular package.json) {
+    return
+  }
+
+  var package-json = (from-json < package.json)
+
+  if (seq:drill-down $package-json scripts $script) {
+    package-manager:exec run $script
+  }
+}
+
 fn main {
   var dry-run = (input:bool dry-run)
 
-  package-manager:exec run build
+  try-to-run-package-script build
 
   std-err:section &emoji=📦 'package.json just before publication' {
     highlight:file package.json json
