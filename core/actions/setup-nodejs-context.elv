@@ -95,7 +95,9 @@ fn setup-corepack { |corepack-version|
 }
 
 fn ensure-package-manager {
-  std-err:section &emoji=📦 'Package manager ('$package-manager')' {
+  var detected-package-manager = (package-manager:detect)
+
+  std-err:section &emoji=📦 'Package manager ('$detected-package-manager')' {
     package-manager:exec --version
   }
 }
