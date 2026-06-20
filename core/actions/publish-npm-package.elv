@@ -31,7 +31,7 @@ fn publish-to-registry { |dry-run|
 fn try-to-run-package-script { |script|
   use github.com/giancosta86/ethereal/v1/seq
 
-  if (not os:is-regular package.json) {
+  if (not (os:is-regular package.json)) {
     return
   }
 
