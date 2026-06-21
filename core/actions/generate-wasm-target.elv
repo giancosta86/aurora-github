@@ -56,7 +56,7 @@ fn try-to-update-package-json { |inputs|
 
       set package-manager = (
         assoc $engines node $node-version |
-          assoc engines (all)
+          assoc $package-manager engines (all)
       )
     }
 
