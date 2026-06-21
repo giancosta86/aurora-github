@@ -4,6 +4,10 @@ use github.com/giancosta86/ethereal/v1/lang
 use ../std-err
 use ./input
 
+var root-files-to-copy = [
+  .npmrc
+]
+
 fn get-npm-scope-args { |npm-scope|
   var npm-scope-arg = (
     str:trim-left $npm-scope @
@@ -30,10 +34,7 @@ fn run-wasm-pack { |inputs|
 }
 
 fn try-to-copy-special-root-files { |target-directory|
-  all [
-    package.json
-    .npmrc
-  ] |
+  all $root-files-to-copy |
     keep-if $os:is-regular~ |
     each { |source-path|
       cp $source-path $target-directory

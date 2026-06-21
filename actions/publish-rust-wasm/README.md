@@ -23,10 +23,7 @@ steps:
 
 1. Generate the NodeJS package source files in the **pkg** subdirectory.
 
-1. If `working-directory` contains any of the following files, copy it into **pkg**:
-   - **package.json**
-
-   - **.npmrc**
+1. If `working-directory` contains **.npmrc**, copy it to **pkg**.
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) to inject the branch version into **pkg/package-json**
 
