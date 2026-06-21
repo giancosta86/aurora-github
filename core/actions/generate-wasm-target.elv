@@ -34,6 +34,12 @@ fn run-wasm-pack { |inputs|
 }
 
 fn try-to-update-package-json { |inputs|
+  tmp pwd = pkg
+
+  if (not (os:is-regular package.json)) {
+    return
+  }
+
   var node-version = $inputs[node-version]
   var package-manager = $inputs[package-manager]
 
