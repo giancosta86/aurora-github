@@ -29,9 +29,9 @@ steps:
 
 1. Run [setup-nodejs-context](../setup-nodejs-context/README.md)
 
-1. Run the `verify` script from **package.json**
+1. Run the `verify` script from **package.json** _if_ such script is present
 
-1. Run the `build` script from **package.json**
+1. Run the `build` script from **package.json** - _if_ such script is present
 
 1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) .
 
