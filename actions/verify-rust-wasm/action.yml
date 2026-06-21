@@ -12,6 +12,12 @@ inputs:
   npm-scope:
     description: The npm package scope, or an empty string.
 
+  node-version:
+    description: The required NodeJS version.
+
+  package-manager:
+    description: The required package manager, with version.
+
   client-tests-directory:
     description: Relative directory containing the client tests.
     default: client-tests
@@ -76,6 +82,8 @@ runs:
         target-directory: pkg
         development: true
         npm-scope: ${{ inputs.npm-scope }}
+        node-version: ${{ inputs.node-version }}
+        package-manager: ${{ inputs.package-manager }}
 
     - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:

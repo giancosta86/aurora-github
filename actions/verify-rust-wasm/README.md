@@ -22,7 +22,10 @@ steps:
 
 1. Run `wasm-pack test` to run headless browser tests on Chrome.
 
-1. Generate the NodeJS package source files in the **pkg** subdirectory.
+1. Generate the NodeJS package source files in the **pkg** subdirectory. In particular:
+   - if `node-version` is passed, it will be injected into the `engines/node` field in **package.json**
+
+   - if `package-manager` is passed, it will be injected into the `packageManager` field in **package.json**
 
 1. If `working-directory` contains **.npmrc**, copy it to **pkg**.
 
@@ -44,6 +47,8 @@ steps:
 |   `wasm-pack-version`    | **string**  |         The `wasm-pack` version to install          |                                                                                          |
 |      `wasm-target`       | **string**  |     The target of the `wasm-pack build` command     |                                         **web**                                          |
 |       `npm-scope`        | **string**  |      The npm package scope, or an empty string      |                                                                                          |
+|      `node-version`      | **string**  |             The required NodeJS version             |                                                                                          |
+|    `package-manager`     | **string**  |     The required package manager, with version      |                                                                                          |
 | `client-tests-directory` | **string**  |   Relative directory containing the client tests    |                                     **client-tests**                                     |
 |       `run-clippy`       | **boolean** |              Enable linting via Clippy              |                                         **true**                                         |
 |     `check-rustdoc`      | **boolean** |  Build the documentation - with warnings as errors  |                                        **false**                                         |

@@ -21,7 +21,10 @@ steps:
 
 1. Install the `wasm-pack` command at `wasm-pack-version`.
 
-1. Generate the NodeJS package source files in the **pkg** subdirectory.
+1. Generate the NodeJS package source files in the **pkg** subdirectory. In particular:
+   - if `node-version` is passed, it will be injected into the `engines/node` field in **package.json**
+
+   - if `package-manager` is passed, it will be injected into the `packageManager` field in **package.json**
 
 1. If `working-directory` contains **.npmrc**, copy it to **pkg**.
 
@@ -45,6 +48,8 @@ steps:
 |     `npm-token`     | **string**  | The secret token for publishing to the registry |               |
 | `wasm-pack-version` | **string**  |       The `wasm-pack` version to install        |               |
 |     `npm-scope`     | **string**  |        The npm package scope or `<ROOT>`        |               |
+|   `node-version`    | **string**  |           The required NodeJS version           |               |
+|  `package-manager`  | **string**  |   The required package manager, with version    |               |
 |    `wasm-target`    | **string**  |   The target of the `wasm-pack build` command   |    **web**    |
 | `working-directory` | **string**  |      The directory containing `Cargo.toml`      |     **.**     |
 

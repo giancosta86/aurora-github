@@ -15,6 +15,12 @@ inputs:
   npm-scope:
     description: The npm package scope or `<ROOT>`.
 
+  node-version:
+    description: The required NodeJS version.
+
+  package-manager:
+    description: The required package manager, with version.
+
   wasm-target:
     description: The target of the `wasm-pack build` command.
     default: web
@@ -51,6 +57,8 @@ runs:
         target-directory: pkg
         development: false
         npm-scope: ${{ inputs.npm-scope }}
+        node-version: ${{ inputs.node-version }}
+        package-manager: ${{ inputs.package-manager }}
 
     - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
