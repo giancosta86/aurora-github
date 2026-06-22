@@ -67,12 +67,13 @@ fn try-to-update-package-json { |inputs|
     }
 
     put $package-json |
-      to-json > package.json
-
-    if (has-external jq) {
-      jq package.json |
+      to-json |
+      if (has-external jq) {
+        jq |
+          to-lines > package.json
+      } else  {
         to-lines > package.json
-    }
+      }
   }
 }
 
