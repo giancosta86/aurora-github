@@ -20,6 +20,8 @@ runs:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
     - uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
+      with:
+        license-file: ${{ inputs.working-directory }}/LICENSE
 
     - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:

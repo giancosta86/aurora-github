@@ -1,11 +1,9 @@
 name: Test verify-python-package
+description: Tests for verify-python-package.
 
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭 Verifying 🐍 Python library..."
-
     - uses: ./actions/verify-python-package
       with:
         working-directory: tests/python-lib

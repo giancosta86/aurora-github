@@ -31,19 +31,15 @@ steps:
 
 ## 📥 Inputs
 
-|           Name            |          Type           |                  Description                   |       Default value       |
-| :-----------------------: | :---------------------: | :--------------------------------------------: | :-----------------------: |
-|       `pdm-version`       |       **string**        |       Version of PDM that should be used       |                           |
-| `crash-on-critical-todos` |       **boolean**       | Crash the workflow if critical TODOs are found |         **true**          |
-|    `source-file-regex`    |       **string**        |    PCRE pattern describing the source files    | view [source](action.yml) |
-| `enforce-branch-version`  | `inject`,`check`,`skip` |   How the branch version should be enforced    |        **inject**         |
-|    `working-directory`    |       **string**        |  The directory containing **pyproject.toml**   |           **.**           |
+|        Name         |    Type    |                     Description                     | Default value |
+| :-----------------: | :--------: | :-------------------------------------------------: | :-----------: |
+|    `pdm-version`    | **string** |         Version of PDM that should be used          |               |
+|    `todo-files`     | **string** | File patterns potentially containing critical TODOs |    **.py**    |
+| `working-directory` | **string** |     The directory containing **pyproject.toml**     |     **.**     |
 
 ## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
-
-- [enforce-branch-version](../enforce-branch-version/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

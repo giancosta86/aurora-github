@@ -5,17 +5,9 @@ inputs:
   pdm-version:
     description: Version of PDM that should be used.
 
-  crash-on-critical-todos:
-    description: Crash the workflow if critical TODOs are found.
-    default: true
-
-  source-file-regex:
-    description: PCRE pattern describing the source files.
-    default: '^(src|tests)\/.+\.pyw?$'
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
+  todo-files:
+    description: File patterns potentially containing critical TODOs.
+    default: "{src tests}/**[nomatch-ok].rs"
 
   working-directory:
     description: The directory containing `pyproject.toml`.
@@ -26,53 +18,27 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Check the project license
-      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
-
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
+    - uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
+        license-file: ${{ inputs.working-directory }}/LICENSE
+
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
+      with:
+        files: pyproject.toml
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Setup Python context
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/python/context
+        use github.com/giancosta86/aurora-github/actions/verify-python-package
+        verify-python-package:main
+      env:
+        pdm-version: ${{ inputs.pdm-version }}
 
-        var pdm-version = (input:string &optional pdm-version '${{ inputs.pdm-version }}')
-
-        context:setup &pdm-version=$pdm-version
-
-    - name: Verify the project
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/python/project
-
-        project:verify
-
-    - name: Build the project
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/python/project
-
-        project:build
-
-    - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
       with:
-        source-file-regex: ${{ inputs.source-file-regex }}
-        crash-on-found: ${{ inputs.crash-on-critical-todos }}
-        display-lines: true
+        files: ${{ inputs.todo-files }}
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Print confirmation message
-      shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅🐍 Python project verified!
+    - shell: elvish {0}
+      run: echo ✅🐍 Python project verified!
