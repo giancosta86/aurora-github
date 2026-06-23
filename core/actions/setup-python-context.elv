@@ -2,7 +2,7 @@ use os
 use ./input
 use ../python/pdm
 
-fn setup {
+fn main {
   var pdm-version = (input:string &optional pdm-version)
 
   echo 🐍💻 Setting up Python context in "'"$pwd"'"...
