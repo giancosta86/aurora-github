@@ -7,7 +7,7 @@ fn verify {
 fn build {
   echo 📦 Building the project...
   pdm build
-  echo ✅ Project built successfully!
+  echo ✅ Project built!
 }
 
 fn publish { |dry-run|
