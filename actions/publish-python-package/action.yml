@@ -52,4 +52,4 @@ runs:
         PDM_PUBLISH_PASSWORD: ${{ inputs.index-secret }}
 
     - shell: elvish {0}
-      run: console:echo ✅🐍 Python package published successfully!
+      run: echo ✅🐍 Python package published successfully!

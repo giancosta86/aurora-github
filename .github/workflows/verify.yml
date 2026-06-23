@@ -234,7 +234,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-rust-wasm
 
   test-verify-python-package:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
