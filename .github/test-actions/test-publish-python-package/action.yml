@@ -1,4 +1,5 @@
 name: Test publish-python-package
+description: Tests for publich-python-package
 
 inputs:
   index-secret:

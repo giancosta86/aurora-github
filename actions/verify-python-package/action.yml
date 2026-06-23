@@ -30,10 +30,16 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use github.com/giancosta86/aurora-github/actions/verify-python-package
-        verify-python-package:main
+        use github.com/giancosta86/aurora-github/actions/setup-python-context
+        setup-python-context:main
       env:
         pdm-version: ${{ inputs.pdm-version }}
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/verify-python-package
+        verify-python-package:main
 
     - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
       with:

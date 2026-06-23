@@ -18,14 +18,6 @@ inputs:
   index-secret:
     description: Password/token for publishing to the index.
 
-  website-directory:
-    description: Relative directory containing the project website.
-    default: website
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
-
   working-directory:
     description: The directory containing `pyproject.toml`.
     default: .
@@ -35,49 +27,29 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
+        files: pyproject.toml
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Setup Python context
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/python/context
-
-        var pdm-version = (input:string &optional pdm-version '${{ inputs.pdm-version }}')
-
-        context:setup &pdm-version=$pdm-version
-
-    - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v11.0.0
-      with:
-        optional: true
-        source-directory: ${{ inputs.working-directory }}/${{ inputs.website-directory }}
-        dry-run: ${{ inputs.dry-run }}
-        enforce-branch-version: ${{ inputs.enforce-branch-version }}
-
-    - name: Publish the package
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/python/project
-
-        var dry-run = (input:bool dry-run '${{ inputs.dry-run }}')
-
-        project:publish $dry-run
+        use github.com/giancosta86/aurora-github/actions/setup-python-context
+        setup-python-context:main
       env:
+        pdm-version: ${{ inputs.pdm-version }}
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/publish-python-package
+        publish-python-package:main
+      env:
+        dry-run: ${{ inputs.dry-run }}
         PDM_PUBLISH_REPO: ${{ inputs.index-url }}
         PDM_PUBLISH_USERNAME: ${{ inputs.index-user }}
         PDM_PUBLISH_PASSWORD: ${{ inputs.index-secret }}
 
-    - name: Print confirmation message
-      shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅🐍 Python package published successfully!
+    - shell: elvish {0}
+      run: console:echo ✅🐍 Python package published successfully!

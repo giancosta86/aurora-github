@@ -9,14 +9,3 @@ fn build {
   pdm build
   echo ✅ Project built!
 }
-
-fn publish { |dry-run|
-  if $dry-run {
-    echo 💭 dry-run is enabled: just building the 🐍 Python project...
-    build
-  } else {
-    echo 📤 Publishing the 🐍 Python package...
-    pdm publish
-    echo 💫 Package published!
-  }
-}

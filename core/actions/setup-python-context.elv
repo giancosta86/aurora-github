@@ -1,7 +1,10 @@
 use os
-use ./pdm
+use ./input
+use ../python/pdm
 
-fn setup { |&pdm-version=$nil|
+fn setup {
+  var pdm-version = (input:string &optional pdm-version)
+
   echo 🐍💻 Setting up Python context in "'"$pwd"'"...
 
   if (not (os:is-regular pyproject.toml)) {
