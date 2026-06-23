@@ -14,7 +14,7 @@ fn install-package { |package &version=$nil|
     set version-suffix = ''
   }
 
-  command:silent {
+  command:silence {
     pipx install $package''$version-suffix
   }
 
