@@ -1,3 +1,4 @@
+use github.com/giancosta86/ethereal/v1/command
 use ../std-err
 
 fn install-package { |package &version=$nil|
@@ -13,7 +14,9 @@ fn install-package { |package &version=$nil|
     set version-suffix = ''
   }
 
-  pipx install $package''$version-suffix
+  command:silent {
+    pipx install $package''$version-suffix
+  }
 
   echo ✅ $package installed!
 }

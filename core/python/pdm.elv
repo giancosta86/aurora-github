@@ -13,15 +13,12 @@ fn ensure { |&version=$nil|
     return
   }
 
-  echo 🌟 pdm is already installed!
-
   var installed-version = (pdm --version)
-  std-err:inspect 'Installed pdm version' $installed-version
+  std-err:inspect &emoji=📦 'Installed pdm version' $installed-version
 
   if (and $version (re:match '\b'$version'\b' installed-version )) {
     echo ✅ The requested pdm version is already installed!
-    return
+  } else {
+    -install $version
   }
-
-  -install $version
 }

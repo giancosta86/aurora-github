@@ -15,7 +15,7 @@ steps:
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
 
-1. Run [inject-branch-version](../inject-branch-version/README.md).
+1. Run [inject-branch-version](../inject-branch-version/README.md) on **Cargo.toml**.
 
 1. Run [setup-rust-context](../setup-rust-context/README.md).
 

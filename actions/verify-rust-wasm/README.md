@@ -29,7 +29,7 @@ steps:
 
 1. If `working-directory` contains **.npmrc**, copy it to **pkg**.
 
-1. Run [inject-branch-version](../inject-branch-version/README.md) to inject the branch version into **pkg/package-json**
+1. Run [inject-branch-version](../inject-branch-version/README.md) on **pkg/package-json**
 
 1. If the directory referenced by the `client-tests-directory` input exists:
    1. Install their dependencies
@@ -64,6 +64,6 @@ steps:
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
 
-- [enforce-branch-version](../enforce-branch-version/README.md)
+- [inject-branch-version](../inject-branch-version/README.md)
 
 - [aurora-github](../../README.md)

@@ -15,7 +15,7 @@ steps:
 
 1. Ensure that the package _metadata_ are declared.
 
-1. Run [inject-branch-version](../inject-branch-version/README.md) metadata descriptor.
+1. Run [inject-branch-version](../inject-branch-version/README.md) on **metadata.json**.
 
 1. Execute the tests.
 
@@ -36,6 +36,8 @@ steps:
 ## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
+
+- [inject-branch-version](../inject-branch-version/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

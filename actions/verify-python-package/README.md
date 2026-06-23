@@ -13,7 +13,7 @@ steps:
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
 
-1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+1. Run [inject-branch-version](../inject-branch-version/README.md) on **pyproject.toml**.
 
 1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**; upon installation, the latest version will be retrieved if `pdm-version` is not specified.
 
@@ -40,6 +40,8 @@ steps:
 ## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
+
+[inject-branch-version](../inject-branch-version/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

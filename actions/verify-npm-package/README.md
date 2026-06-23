@@ -25,7 +25,7 @@ steps:
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
 
-1. 1. Run [inject-branch-version](../inject-branch-version/README.md).
+1. 1. Run [inject-branch-version](../inject-branch-version/README.md) on **package.json**.
 
 1. Run [setup-nodejs-context](../setup-nodejs-context/README.md)
 

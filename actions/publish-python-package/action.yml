@@ -80,4 +80,4 @@ runs:
       run: |
         use github.com/giancosta86/aurora-elvish/console
 
-        console:echo ✅🐍 Python publication action successful!
+        console:echo ✅🐍 Python package published successfully!
