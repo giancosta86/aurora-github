@@ -48,23 +48,11 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/jvm/settings
-
-        settings:prepare-for-publication (get-env buildTool)
-
-    - name: Publish project
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/jvm/project/publication
-
-        var quiet-tool = (input:bool quiet-tool '${{ inputs.quiet-tool }}')
-
-        var dry-run = (input:bool dry-run '${{ inputs.dry-run }}')
-
-        publication:publish &quiet-tool=$quiet-tool &dry-run=$dry-run (get-env buildTool)
+        use github.com/giancosta86/aurora-github/actions/publish-jvm-project
+        publish-jvm-project:main
       env:
+        dry-run: ${{ inputs.dry-run }}
+        quiet-tool: ${{ inputs.quiet-tool }}
         JVM_AUTH_USER: ${{ inputs.auth-user }}
         JVM_AUTH_TOKEN: ${{ inputs.auth-token }}
 

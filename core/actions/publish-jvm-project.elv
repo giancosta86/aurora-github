@@ -1,16 +1,23 @@
-var -project-publishers = [
+use ./input
+
+var project-publishers = [
   &mvn={ |inputs|
-    use ../maven
+    use ../jvm/maven
     maven:publish-project &quiet=$inputs[quiet-tool] &dry-run=$inputs[dry-run]
   }
 
   &gradle={ |inputs|
-    use ../gradle
+    use ../jvm/gradle
     gradle:publish-project &quiet=$inputs[quiet-tool] &dry-run=$inputs[dry-run]
   }
 ]
 
-fn publish { |&quiet-tool=$true &dry-run=$true build-tool|
+fn main {
+  var quiet-tool = (input:bool quiet-tool)
+  var dry-run = (input:bool dry-run)
+
+  var build-tool = (get-env jvm-build-tool)
+
   var publisher = $-project-publishers[$build-tool]
 
   $publisher [
