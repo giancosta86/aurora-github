@@ -10,7 +10,7 @@ var project-verifiers = [
   }
 ]
 
-fn main { |&quiet-tool=$true build-tool|
+fn main {
   var jvm-build-tool = (input:string jvm-build-tool)
   var quiet-tool = (input:bool quiet-tool)
 
