@@ -18,7 +18,7 @@ fn main {
 
   var build-tool = (get-env jvm-build-tool)
 
-  var publisher = $-project-publishers[$build-tool]
+  var publisher = $project-publishers[$build-tool]
 
   $publisher [
     &quiet-tool=$quiet-tool
