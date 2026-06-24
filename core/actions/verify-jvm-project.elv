@@ -1,3 +1,5 @@
+use ./input
+
 var project-verifiers = [
   &mvn={ |quiet-tool|
     use ../jvm/maven
