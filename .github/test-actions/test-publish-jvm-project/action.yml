@@ -1,4 +1,5 @@
 name: Test publish-jvm-project
+description: Tests for publish-jvm-project.
 
 inputs:
   jvm-token:
@@ -7,8 +8,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭 Testing publication via Maven..."
+    - uses: ./actions/setup-elvish-context
+
+    - shell: elvish {0}
+      run: echo 🎭 Testing publication via Maven...
 
     - uses: ./actions/publish-jvm-project
       with:
@@ -17,8 +20,8 @@ runs:
         auth-user: giancosta86
         auth-token: ${{ inputs.jvm-token }}
 
-    - shell: bash
-      run: echo "🎭 Testing publication via Gradle..."
+    - shell: elvish {0}
+      run: echo 🎭 Testing publication via Gradle...
 
     - uses: ./actions/publish-jvm-project
       with:
