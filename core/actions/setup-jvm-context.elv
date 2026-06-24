@@ -1,6 +1,5 @@
 use os
 use ../ci-cd/env
-use ../jvm/project
 use ../jvm/sdkman
 use ./input
 
