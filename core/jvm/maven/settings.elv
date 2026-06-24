@@ -3,7 +3,7 @@ use path
 use str
 use github.com/giancosta86/ethereal/v1/fs
 use github.com/giancosta86/ethereal/v1/resources
-use ../../highlighting
+use ../../highlight
 
 var -resources = (resources:for-script (src))
 
@@ -19,7 +19,7 @@ fn -copy-default-settings {
   fs:copy $default-settings-path $-user-settings-path
 
   console:section &emoji=🪶 'Content of the per-user Maven settings file' {
-    cat $-user-settings-path | highlighting:highlight xml
+    highlight:file $-user-settings-path xml
   }
 }
 
