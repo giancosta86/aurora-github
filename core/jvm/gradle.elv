@@ -1,4 +1,5 @@
 use github.com/giancosta86/ethereal/v1/lang
+use ./gradle/settings
 
 fn run { |&quiet=$true @rest|
   var quiet-arg = (lang:ternary $quiet [-q] [])
@@ -15,6 +16,8 @@ fn verify-project { |&quiet=$true|
 }
 
 fn publish-project { |&quiet=$true &dry-run=$true|
+  settings:prepare-for-publication
+
   echo 🐘 Running Gradle to publish the project...
 
   var dry-run-arg = (lang:ternary $dry-run [--dry-run] [])

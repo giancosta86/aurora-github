@@ -1,5 +1,6 @@
 use github.com/giancosta86/ethereal/v1/lang
 use ../std-err
+use ./maven/settings
 
 fn run { |&quiet=$true @rest|
   var quiet-arg = (lang:ternary $quiet [-q] [])
@@ -16,6 +17,8 @@ fn verify-project { |&quiet=$true|
 }
 
 fn publish-project { |&quiet=$true &dry-run=$true|
+  settings:prepare-for-publication
+
   var dry-run-arg
 
   if $dry-run {

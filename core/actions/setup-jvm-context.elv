@@ -1,23 +1,31 @@
 use os
+use github.com/giancosta86/ethereal/v1/map
 use ../ci-cd/env
 use ../jvm/sdkman
 use ./input
+
+var build-tool-by-descriptor = [
+  &build.gradle.kts=gradle
+  &build.gradle=gradle
+  &pom.xml=mvn
+]
 
 var build-tool-sdks = [
   &mvn=maven
   &gradle=gradle
 ]
 
-fn detect-build-tool {
-  if (os:is-regular pom.xml) {
-    put mvn
-  } elif (os:is-regular build.gradle) {
-    put gradle
-  } elif (os:is-regular build.gradle.kts) {
-    put gradle
-  } else {
-    fail 'Cannot detect a supported JVM build tool for the project'
+fn detect-build-context {
+  map:iterate $build-tool-by-descriptor { |descriptor build-tool|
+    if (os:is-regular $descriptor) {
+      put [
+        &descriptor=$descriptor
+        &build-tool=$build-tool
+      ]
+    }
   }
+
+  fail 'Cannot detect a supported JVM build tool for the project'
 }
 
 fn main {
@@ -26,15 +34,19 @@ fn main {
   var java-version = (input:string &optional java-version)
   var tool-version = (input:string &optional tool-version)
 
-  var build-tool = (detect-build-tool)
-  env:write jvm-build-tool $build-tool
+  var build-context = (detect-build-context)
+
+  env:write jvm-descriptor $build-context[descriptor]
+  env:write jvm-build-tool $build-context[build-tool]
 
   if $java-version {
     sdkman:install-sdk java $java-version
   }
 
   if $tool-version {
-    var build-tool-sdk = $build-tool-sdks[build-tool]
+    var build-tool = $build-context[build-tool]
+
+    var build-tool-sdk = $build-tool-sdks[$build-tool]
 
     sdkman:install $build-tool-sdk $tool-version
   }

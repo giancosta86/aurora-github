@@ -22,14 +22,6 @@ inputs:
     description: Run the build tool in quiet mode
     default: true
 
-  website-directory:
-    description: Relative directory containing the project website.
-    default: website
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
-
   working-directory:
     description: The directory containing the project descriptor.
     default: .
@@ -39,40 +31,26 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
+        files: pom.xml build.gradle{'' .kts}
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Setup JVM context
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/ci-cd/env
-        use aurora-github/jvm/context
+        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
+        setup-jvm-context:main
+      env:
+        java-version: ${{ inputs.java-version }}
+        tool-version: ${{ inputs.tool-version }}
 
-        env:map (context:setup ^
-          &java-version=(input:string &optional java-version '${{ inputs.java-version }}') ^
-          &tool-version=(input:string &optional tool-version '${{ inputs.tool-version }}') ^
-        )
-
-    - name: Prepare settings for publication
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/jvm/settings
 
         settings:prepare-for-publication (get-env buildTool)
-
-    - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v11.0.0
-      with:
-        optional: true
-        source-directory: ${{ inputs.working-directory }}/${{ inputs.website-directory }}
-        dry-run: ${{ inputs.dry-run }}
-        enforce-branch-version: ${{ inputs.enforce-branch-version }}
 
     - name: Publish project
       shell: elvish {0}
@@ -90,9 +68,5 @@ runs:
         JVM_AUTH_USER: ${{ inputs.auth-user }}
         JVM_AUTH_TOKEN: ${{ inputs.auth-token }}
 
-    - name: Print confirmation message
-      shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅☕ JVM publication action successful!
+    - shell: elvish {0}
+      run: echo ✅☕ JVM publication action successful!

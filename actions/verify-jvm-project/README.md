@@ -22,6 +22,8 @@ steps:
 
 1. If a specific build tool version is declared as `tool-version`, pass it to [install-via-sdkman](../install-via-sdkman/README.md)
 
+1. Run [inject-branch-version](../inject-branch-version/README.md) on the project descriptor.
+
 1. Run:
    - `mvn verify` - always with batched output (`-B`)
 
@@ -53,6 +55,6 @@ steps:
 
 - [find-critical-todos](../find-critical-todos/README.md)
 
-- [enforce-branch-version](../enforce-branch-version/README.md)
+- [inject-branch-version](../inject-branch-version/README.md)
 
 - [aurora-github](../../README.md)

@@ -14,7 +14,7 @@ steps:
 
 ## 💡 How it works
 
-1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+1. Run [inject-branch-version](../inject-branch-version/README.md) on the project descriptor.
 
 1. Determine the build tool:
    - 🪶**Maven**, if the project descriptor is **pom.xml**
@@ -29,8 +29,6 @@ steps:
    - if the **settings.xml** file exists in `working-directory`, copy it to **$HOME/.m2**
 
    - otherwise, provide a default one connecting the action credentials (`auth-user`, `auth-token`) with a **target-server** server id
-
-1. Run [publish-github-pages](../publish-github-pages/README.md) with the `optional` flag enabled
 
 1. Publish, using the build tool:
    - for 🪶**Maven**, run `mvn deploy`
@@ -100,15 +98,13 @@ steps:
 |      `java-version`      |       **string**        |        Java version (in SDKMAN) to install        |               |
 |      `tool-version`      |       **string**        |     Build tool version (in SDKMAN) to install     |               |
 |       `quiet-tool`       |       **boolean**       |         Run the build tool in quiet mode          |   **true**    |
-|   `website-directory`    |       **string**        | Relative directory containing the project website |  **website**  |
-| `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |  **inject**   |
 |   `working-directory`    |       **string**        |  The directory containing the project descriptor  |     **.**     |
 
 ## 🌐 Further references
 
 - [publish-github-pages](../publish-github-pages/README.md)
 
-- [enforce-branch-version](../enforce-branch-version/README.md)
+- [inject-branch-version](../inject-branch-version/README.md)
 
 - [verify-jvm-project](../verify-jvm-project/README.md)
 
