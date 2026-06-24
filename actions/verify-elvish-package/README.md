@@ -19,7 +19,7 @@ steps:
 
 1. Execute the tests.
 
-1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
+1. Find [critical TODOs](../find-critical-todos/README.md) in the source code.
 
 ## ☑️ Requirements
 

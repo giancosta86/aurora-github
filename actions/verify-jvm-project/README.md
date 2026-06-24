@@ -13,8 +13,6 @@ steps:
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
 
-1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
-
 1. Determine the build tool:
    - 🪶**Maven**, if the project descriptor is **pom.xml**
 
@@ -31,7 +29,7 @@ steps:
 
    in quiet (`-q`) mode if `quiet-tool` is **true**.
 
-1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
+1. Find [critical TODOs](../find-critical-todos/README.md) in the source code.
 
 ## ☑️ Requirements
 
@@ -39,15 +37,13 @@ steps:
 
 ## 📥 Inputs
 
-|           Name            |          Type           |                   Description                   |       Default value       |
-| :-----------------------: | :---------------------: | :---------------------------------------------: | :-----------------------: |
-|      `java-version`       |       **string**        |       Java version (in SDKMAN) to install       |                           |
-|      `tool-version`       |       **string**        |    Build tool version (in SDKMAN) to install    |         **3.9.9**         |
-|       `quiet-tool`        |       **boolean**       |        Run the build tool in quiet mode         |         **true**          |
-| `crash-on-critical-todos` |       **boolean**       | Crash the workflow if critical TODOs are found  |         **true**          |
-|    `source-file-regex`    |       **string**        |    PCRE pattern describing the source files     | view [source](action.yml) |
-| `enforce-branch-version`  | `inject`,`check`,`skip` |    How the branch version should be enforced    |        **inject**         |
-|    `working-directory`    |       **string**        | The directory containing the project descriptor |           **.**           |
+|        Name         |    Type     |                     Description                     |                  Default value                  |
+| :-----------------: | :---------: | :-------------------------------------------------: | :---------------------------------------------: |
+|   `java-version`    | **string**  |         Java version (in SDKMAN) to install         |                                                 |
+|   `tool-version`    | **string**  |      Build tool version (in SDKMAN) to install      |                    **3.9.9**                    |
+|    `quiet-tool`     | **boolean** |          Run the build tool in quiet mode           |                    **true**                     |
+|    `todo-files`     | **string**  | File patterns potentially containing critical TODOs | **src/\*\*[nomatch-ok].{java kt scala groovy}** |
+| `working-directory` | **string**  |   The directory containing the project descriptor   |                      **.**                      |
 
 ## 🌐 Further references
 

@@ -12,17 +12,9 @@ inputs:
     description: Run the build tool in quiet mode
     default: true
 
-  crash-on-critical-todos:
-    description: Crash the workflow if critical TODOs are found.
-    default: true
-
-  source-file-regex:
-    description: PCRE pattern describing the source files.
-    default: '^src\/.+\.(java|kt|scala|groovy)$'
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
+  todo-files:
+    description: File patterns potentially containing critical TODOs.
+    default: "src/**[nomatch-ok].{java kt scala groovy}"
 
   working-directory:
     description: The directory containing the project descriptor.
@@ -37,47 +29,32 @@ runs:
       with:
         license-file: ${{ inputs.working-directory }}/LICENSE
 
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
+        files: pom.xml build.gradle{'' .kts}
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Setup JVM context
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/ci-cd/env
-        use aurora-github/jvm/context
+        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
+        setup-jvm-context:main
+      env:
+        java-version: ${{ inputs.java-version }}
+        tool-version: ${{ inputs.tool-version }}
 
-        env:map (context:setup ^
-          &java-version=(input:string &optional java-version '${{ inputs.java-version }}') ^
-          &tool-version=(input:string &optional tool-version '${{ inputs.tool-version }}') ^
-        )
-
-    - name: Verify project
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/jvm/project/verification
+        use github.com/giancosta86/aurora-github/actions/verify-jvm-project
+        verify-jvm-project:main
+      env:
+        quiet-tool: ${{ inputs.quiet-tool }}
 
-        var quiet-tool = (input:bool quiet-tool '${{ inputs.quiet-tool }}')
-
-        verification:verify &quiet-tool=$quiet-tool (get-env buildTool)
-
-    - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
       with:
-        source-file-regex: ${{ inputs.source-file-regex }}
-        crash-on-found: ${{ inputs.crash-on-critical-todos }}
-        display-lines: true
+        files: ${{ inputs.todo-files }}
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Print confirmation message
-      shell: elvish {0}
-      run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅☕ JVM project verified!
+    - shell: elvish {0}
+      run: echo ✅☕ JVM project verified!

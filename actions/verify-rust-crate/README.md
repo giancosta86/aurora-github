@@ -31,7 +31,7 @@ steps:
 
 1. Generate the documentation, with all the project features _enabled_. All warnings are considered errors. This step can be skipped.
 
-1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
+1. Find [critical TODOs](../find-critical-todos/README.md) in the source code.
 
 ## ☑️ Requirements
 

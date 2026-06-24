@@ -21,7 +21,7 @@ steps:
 
 1. Run `pdm build` to build the project artifacts.
 
-1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
+1. Find [critical TODOs](../find-critical-todos/README.md) in the source code.
 
 ## ☑️ Requirements
 
