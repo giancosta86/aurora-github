@@ -36,7 +36,7 @@ runs:
               var version = '${{ steps.version-detector.outputs.version }}'
 
               java -jar target/maven-project-$version.jar |
-                should-be '🪶 Maven project verified and run successfully!'
+                should-be 'Hello, world - from Kotlin and Maven! 🥳'
             }
           }
 
