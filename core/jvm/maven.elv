@@ -1,5 +1,5 @@
 use github.com/giancosta86/ethereal/v1/lang
-use ../../std-err
+use ../std-err
 
 fn run { |&quiet=$true @rest|
   var quiet-arg = (lang:ternary $quiet [-q] [])
