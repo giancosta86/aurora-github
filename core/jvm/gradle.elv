@@ -1,4 +1,4 @@
-use github.com/giancosta86/aurora-elvish/lang
+use github.com/giancosta86/ethereal/v1/lang
 
 fn run { |&quiet=$true @rest|
   var quiet-arg = (lang:ternary $quiet [-q] [])

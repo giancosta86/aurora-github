@@ -1,9 +1,8 @@
 use str
-use github.com/giancosta86/aurora-elvish/console
 use ./descriptor
 
 fn prepare-for-publication {
-  console:echo 🐘 Preparing Gradle settings for publication...
+  echo 🐘 Preparing Gradle settings for publication...
 
   var descriptor-name = (descriptor:get-name)
 
@@ -19,5 +18,5 @@ fn prepare-for-publication {
     }
   }
 
-  console:echo ✅ Gradle settings now ready!
+  echo ✅ Gradle settings now ready!
 }

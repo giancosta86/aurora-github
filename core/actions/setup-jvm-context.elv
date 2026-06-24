@@ -39,5 +39,5 @@ fn main {
     sdkman:install $build-tool-sdk $tool-version
   }
 
-  console:echo ✅☕ JVM context in "'"$pwd"'" ready!
+  echo ✅☕ JVM context in "'"$pwd"'" ready!
 }
