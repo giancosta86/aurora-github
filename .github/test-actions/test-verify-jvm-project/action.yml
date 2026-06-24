@@ -1,70 +1,62 @@
 name: Test verify-jvm-project
+description: Tests for verify-jvm-project.
 
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭 Displaying JVM versions..."
+    - uses: ./actions/setup-elvish-context
 
-    - shell: bash
+    - shell: elvish {0}
+      run: echo 🎭 Displaying JVM versions...
+
+    - shell: elvish {0}
       run: |
-        echo "☕ Java version: $(java --version | head -n 1)"
+        echo ☕ Java version: (java --version | head -n 1)
 
-        echo "🪶 Maven version: $(mvn --version | head -n 1)"
+        echo 🪶 Maven version: (mvn --version | head -n 1)
 
-        echo "🐘 Gradle version: $(gradle --version | grep -P '^Gradle \d+\.\d+(\.\d+)?$' | head -n 1 | cut -d ' ' -f 2)"
+        echo 🐘 Gradle version: (gradle --version | grep -P '^Gradle \d+\.\d+(\.\d+)?$' | head -n 1 | cut -d ' ' -f 2)
 
     - uses: ./actions/detect-branch-version
       id: version-detector
 
-    - shell: bash
-      run: echo "🎭 Build and verify the Maven project..."
+    - shell: elvish {0}
+      run: echo 🎭 Build and verify the Maven project...
 
-    - name: Build and verify the Maven project
-      uses: ./actions/verify-jvm-project
+    - uses: ./actions/verify-jvm-project
       with:
         working-directory: tests/maven-project
 
-    - name: Run the Maven-generated jar
-      shell: bash
-      working-directory: tests/maven-project
-      run: |
-        version="${{ steps.version-detector.outputs.version }}"
+    - uses: ./actions/run-elvish-code
+      with:
+        working-directory: tests/maven-project
+        code: |
+          >> 'Running code' {
+            >> 'from Maven project' {
+              var version = '${{ steps.version-detector.outputs.version }}'
 
-        programOutput="$(java -jar target/maven-project-$version.jar)"
+              java -jar target/maven-project-$version.jar |
+                should-be '🪶 Maven project verified and run successfully!'
+            }
+          }
 
-        echo "🔎 Maven program output: '$programOutput'"
-
-        if [[ "$programOutput" == "Hello, world - from Kotlin and Maven! 🥳" ]]
-        then
-          echo "🪶 Maven project verified and run successfully!"
-        else
-          echo "❌ Unexpected program output!" >&2
-          exit 1
-        fi
-
-    - shell: bash
-      run: echo "🎭 Build and verify the Gradle project..."
+    - shell: elvish {0}
+      run: echo 🎭 Build and verify the Gradle project...
 
     - name: Build and verify the Gradle project
       uses: ./actions/verify-jvm-project
       with:
         working-directory: tests/gradle-project
 
-    - name: Run the Gradle-generated jar
-      shell: bash
-      working-directory: tests/gradle-project
-      run: |
-        version="${{ steps.version-detector.outputs.version }}"
+    - uses: ./actions/run-elvish-code
+      with:
+        working-directory: tests/gradle-project
+        code: |
+          >> 'Running code' {
+            >> 'from Gradle project' {
+              var version = '${{ steps.version-detector.outputs.version }}'
 
-        programOutput="$(java -jar build/libs/gradle-project-$version.jar)"
-
-        echo "🔎 Gradle program output: '$programOutput'"
-
-        if [[ "$programOutput" == "Hello, world - from Kotlin and Gradle! 🥳" ]]
-        then
-          echo "🐘 Gradle project verified and run successfully!"
-        else
-          echo "❌ Unexpected program output!" >&2
-          exit 1
-        fi
+              java -jar build/libs/gradle-project-$version.jar |
+                should-be 'Hello, world - from Kotlin and Gradle! 🥳'
+            }
+          }
