@@ -22,6 +22,7 @@ fn detect-build-context {
         &descriptor=$descriptor
         &build-tool=$build-tool
       ]
+      return
     }
   }
 
