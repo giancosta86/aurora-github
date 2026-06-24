@@ -27,7 +27,7 @@ runs:
       with:
         working-directory: tests/maven-project
 
-    - uses: ./actions/run-elvish-code
+    - uses: ./actions/run-velvet-code
       with:
         working-directory: tests/maven-project
         code: |
@@ -48,7 +48,7 @@ runs:
       with:
         working-directory: tests/gradle-project
 
-    - uses: ./actions/run-elvish-code
+    - uses: ./actions/run-velvet-code
       with:
         working-directory: tests/gradle-project
         code: |
