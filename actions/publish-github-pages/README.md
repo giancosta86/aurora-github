@@ -9,36 +9,21 @@ steps:
   - uses: giancosta86/aurora-github/actions/publish-github-pages@v11
 ```
 
-**Please, note**: this action is automatically run by:
-
-- [publish-jvm-project](../publish-jvm-project/README.md)
-
-- [publish-python-package](../publish-python-package/README.md)
-
-- [publish-npm-package](../publish-npm-package/README.md)
-
-- [publish-rust-crate](../publish-rust-crate/README.md)
-
-- [publish-rust-wasm](../publish-rust-wasm/README.md).
-
 ## 💡 How it works
 
-1. If `source-directory` is set to an empty string (the default) or refers to a missing directory, if `optional` is set to **true** the action will simply exit, otherwise the workflow will fail.
+1. If `working-directory` is set to an empty string (the default) or refers to a missing directory, if `optional` is set to **true** the action will simply exit, otherwise the workflow will fail.
 
-1. If `source-directory` contains:
-
+1. If `working-directory` contains:
    - a **package.json** file:
-
      1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
-     1. Set up a NodeJS environment via [setup-nodejs-context](../setup-nodejs-context/README.md) in `source-directory`.
+     1. Set up a NodeJS environment via [setup-nodejs-context](../setup-nodejs-context/README.md) in `working-directory`.
 
      1. Run `pnpm build`.
 
      1. The **dist** subdirectory will contain the actual website.
 
    - a **pom.xml** file:
-
      1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
      1. Run `mvn site`.
@@ -52,7 +37,6 @@ steps:
 ## ☑️ Requirements
 
 - The following [permissions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work:
-
   - `pages`: **write**
 
   - `id-token`: **write**
@@ -63,16 +47,13 @@ steps:
 
 - It is recommended that GitHub Actions have **read/write** permissions on the repository.
 
-- Please, refer to [setup-nodejs-context](../setup-nodejs-context/README.md) for details about setting up a NodeJS environment.
-
 ## 📥 Inputs
 
-|           Name           |          Type           |                             Description                             | Default value |
-| :----------------------: | :---------------------: | :-----------------------------------------------------------------: | :-----------: |
-|    `source-directory`    |       **string**        |                  Directory containing the website                   |     **.**     |
-|        `optional`        |       **boolean**       | Whether `source-directory` can be empty string or missing directory |   **false**   |
-| `enforce-branch-version` | `inject`,`check`,`skip` |              How the branch version should be enforced              |  **inject**   |
-|        `dry-run`         |       **boolean**       |             Stop the publication just before uploading              |   **false**   |
+|        Name         |    Type     |                              Description                               | Default value |
+| :-----------------: | :---------: | :--------------------------------------------------------------------: | :-----------: |
+| `corepack-version`  | **string**  | The version of corepack to install for a NodeJS website, empty to skip |  **latest**   |
+|      `dry-run`      | **boolean** |               Stop the publication just before uploading               |   **false**   |
+| `working-directory` | **string**  |                    Directory containing the website                    |     **.**     |
 
 ## 📤 Outputs
 
@@ -83,12 +64,6 @@ steps:
 ## 🌐 Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
-
-- [publish-npm-package](../publish-npm-package/README.md)
-
-- [publish-rust-crate](../publish-rust-crate/README.md)
-
-- [publish-rust-wasm](../publish-rust-wasm/README.md)
 
 - [GitHub Pages](https://pages.github.com/)
 

@@ -1,4 +1,5 @@
 name: Test publish-github-pages
+description: Tests for publish-github-pages.
 
 runs:
   using: composite

@@ -2,6 +2,10 @@ name: Verify npm package
 description: Verifies the source files of a NodeJS package.
 
 inputs:
+  corepack-version:
+    description: The version of corepack to install, empty to skip.
+    default: latest
+
   todo-files:
     description: File patterns potentially containing critical TODOs.
     default: "{src tests}/**[nomatch-ok].{'' c m}{j t}s{'' x}"
@@ -31,6 +35,7 @@ runs:
     - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
       with:
         working-directory: ${{ inputs.working-directory }}
+        corepack-version: ${{ inputs.corepack-version }}
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}

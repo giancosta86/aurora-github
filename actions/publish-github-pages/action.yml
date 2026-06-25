@@ -2,17 +2,19 @@ name: Publish GitHub Pages
 description: Publishes a directory as the GitHub Pages website for the current repository.
 
 inputs:
-  source-directory:
+  working-directory:
     description: Directory containing the website.
     default: .
 
-  optional:
-    description: Whether `source-directory` can be empty string or missing directory.
-    default: false
+  corepack-version:
+    description: The version of corepack to install for a NodeJS website, empty to skip.
+    default: latest
 
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
+  java-version:
+    description: The Java version to use for Java websites.
+
+  java-tool-version:
+    description: The tool version to use for Java websites.
 
   dry-run:
     description: Stop the publication just before uploading.
@@ -28,72 +30,42 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Set up strategy
-      shell: elvish {0}
-      run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/website
-
-        var optional = (input:bool optional '${{ inputs.optional }}')
-
-        var source-directory = (input:directory &optional=$optional &can-be-missing=$optional source-directory '${{ inputs.source-directory }}')
-
-        website:detect-strategy-from-sources $source-directory
-
-    - name: Enforce branch version
-      if: env.strategy == 'nodejs' || env.strategy == 'maven'
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v11.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
+        files: package.json pom.xml
+        working-directory: ${{ inputs.working-directory }}
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/publish-github-pages
+        publish-github-pages:detect-strategy
+
+    - if: env.strategy == 'nodejs-site'
+      uses: giancosta86/aurora-github/actions/verify-npm-package@v11.0.0
+      with:
+        corepack-version: ${{ inputs.corepack-version }}
         working-directory: ${{ inputs.source-directory }}
 
-    - name: Setup NodeJS context
-      if: env.strategy == 'nodejs'
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
-      with:
-        working-directory: ${{ inputs.source-directory }}
-
-    - name: Create the website via NodeJS
-      if: env.strategy == 'nodejs'
+    - if: env.strategy == 'maven-site'
       shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/website
+        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
+        setup-jvm-context:main
+      env:
+        java-version: ${{ inputs.java-version }}
+        tool-version: ${{ inputs.java-tool-version }}
 
-        website:build-via-nodejs (input:string source-directory '${{ inputs.source-directory }}')
-
-    - name: Create the website via Maven
-      if: env.strategy == 'maven'
+    - if: env.strategy == 'maven-site'
       shell: elvish {0}
+      working-directory: ${{ inputs.source-directory }}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/website
+        use github.com/giancosta86/aurora-github/actions/publish-github-pages
+        publish-github-pages:build-via-maven
 
-        website:build-via-maven (input:string source-directory '${{ inputs.source-directory }}')
-
-    - name: Setup static artifacts
-      if: env.strategy == 'static-files'
-      shell: elvish {0}
-      run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/website
-
-        website:set-artifact-directory (input:string source-directory '${{ inputs.source-directory }}')
-
-    - name: Check artifacts
-      if: env.strategy != 'exit'
-      shell: elvish {0}
-      run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/website
-
-        var optional = (input:bool optional '${{ inputs.optional }}')
-
-        website:check-artifact-directory (get-env artifactDirectory) $optional
-
-    - name: Skip publication on dry-run
-      if: env.strategy != 'exit'
-      shell: elvish {0}
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use aurora-github/ci-cd/input
         use aurora-github/website
@@ -102,19 +74,21 @@ runs:
 
         website:skip-publication-on-dry-run $dry-run
 
-    - name: Upload website artifacts
-      if: env.strategy != 'exit'
+    - if: inputs.dry-run == true
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: echo 💭 Skipping publication, as requested by dry-run.
+
+    - if: inputs.dry-run != true
       uses: actions/upload-pages-artifact@v3
       with:
         path: ${{ env.artifactDirectory }}
 
-    - name: Publish website via GitHub Pages
-      if: env.strategy != 'exit'
+    - if: inputs.dry-run != true
       id: publish-pages
       uses: actions/deploy-pages@v4
 
-    - name: Print confirmation message
-      if: env.strategy != 'exit'
+    - if: inputs.dry-run != true
       shell: elvish {0}
       run: |
         use github.com/giancosta86/aurora-elvish/console
