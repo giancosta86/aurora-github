@@ -52,8 +52,10 @@ steps:
 |        Name         |    Type     |                              Description                               | Default value |
 | :-----------------: | :---------: | :--------------------------------------------------------------------: | :-----------: |
 | `corepack-version`  | **string**  | The version of corepack to install for a NodeJS website, empty to skip |  **latest**   |
+|   `java-version`    | **string**  |               The Java version to use for Java websites                |               |
+| `java-tool-version` | **string**  |               The tool version to use for Java websites                |               |
 |      `dry-run`      | **boolean** |               Stop the publication just before uploading               |   **false**   |
-| `working-directory` | **string**  |                    Directory containing the website                    |     **.**     |
+| `working-directory` | **string**  |          Directory containing the website or its source files          |     **.**     |
 
 ## 📤 Outputs
 

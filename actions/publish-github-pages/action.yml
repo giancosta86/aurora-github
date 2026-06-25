@@ -3,7 +3,7 @@ description: Publishes a directory as the GitHub Pages website for the current r
 
 inputs:
   working-directory:
-    description: Directory containing the website.
+    description: Directory containing the website or its source files.
     default: .
 
   corepack-version:
@@ -45,7 +45,7 @@ runs:
       uses: giancosta86/aurora-github/actions/verify-npm-package@v11.0.0
       with:
         corepack-version: ${{ inputs.corepack-version }}
-        working-directory: ${{ inputs.source-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
     - if: env.strategy == 'maven-site'
       shell: elvish {0}
@@ -59,20 +59,10 @@ runs:
 
     - if: env.strategy == 'maven-site'
       shell: elvish {0}
-      working-directory: ${{ inputs.source-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/publish-github-pages
         publish-github-pages:build-via-maven
-
-    - shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/website
-
-        var dry-run = (input:bool dry-run '${{ inputs.dry-run }}')
-
-        website:skip-publication-on-dry-run $dry-run
 
     - if: inputs.dry-run == true
       shell: elvish {0}
