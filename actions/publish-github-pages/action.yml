@@ -70,18 +70,17 @@ runs:
       run: echo 💭 Skipping publication, as requested by dry-run.
 
     - if: inputs.dry-run != true
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-pages-artifact@v5
       with:
         path: ${{ env.artifactDirectory }}
 
     - if: inputs.dry-run != true
       id: publish-pages
-      uses: actions/deploy-pages@v4
+      uses: actions/deploy-pages@v5
 
     - if: inputs.dry-run != true
       shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        use github.com/giancosta86/aurora-elvish/console
-
-        console:echo ✅ Website publication successful!
-        console:echo 🌐 Project website: ${{ steps.publish-pages.outputs.page_url }}
+        echo ✅ Website publication successful!
+        echo 🌐 Project website: ${{ steps.publish-pages.outputs.page_url }}
