@@ -10,7 +10,7 @@ steps:
     with:
       release-tag: v3.0.2
       files: logo.png data.zip
-      source-directory: dist
+      working-directory: dist
 ```
 
 ## 💡 How it works

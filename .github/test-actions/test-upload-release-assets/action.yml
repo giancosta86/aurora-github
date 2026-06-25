@@ -57,7 +57,7 @@ runs:
     - uses: ./actions/upload-release-assets
       with:
         release-tag: ${{ env.tag }}
-        source-directory: website/static
+        working-directory: website/static
         files: index.html
 
     - shell: elvish {0}
@@ -66,7 +66,7 @@ runs:
     - uses: ./actions/upload-release-assets
       with:
         release-tag: ${{ env.tag }}
-        source-directory: website/nextjs/public
+        working-directory: website/nextjs/public
         files: next.svg, favicon.png
 
     - shell: elvish {0}
@@ -75,7 +75,7 @@ runs:
     - uses: ./actions/upload-release-assets
       with:
         release-tag: ${{ env.tag }}
-        source-directory: website/nextjs/public
+        working-directory: website/nextjs/public
         files: favicon.png
         overwrite: true
 

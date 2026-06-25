@@ -10,7 +10,7 @@ runs:
     - name: A static website should be publishable
       uses: ./actions/publish-github-pages
       with:
-        source-directory: website/static
+        working-directory: website/static
         dry-run: true
 
     - shell: bash
@@ -19,7 +19,7 @@ runs:
     - name: A Maven-generated website should be publishable
       uses: ./actions/publish-github-pages
       with:
-        source-directory: tests/maven-project
+        working-directory: tests/maven-project
         dry-run: true
 
     - shell: bash
@@ -29,7 +29,7 @@ runs:
       id: publish-nextjs-pages
       uses: ./actions/publish-github-pages
       with:
-        source-directory: website/nextjs
+        working-directory: website/nextjs
 
     - name: The URL of the website should be defined
       shell: bash
@@ -49,7 +49,7 @@ runs:
 
     - uses: ./actions/publish-github-pages
       with:
-        source-directory: INEXISTENT_DIRECTORY
+        working-directory: INEXISTENT_DIRECTORY
         optional: true
 
     - shell: bash
@@ -57,5 +57,5 @@ runs:
 
     - uses: ./actions/publish-github-pages
       with:
-        source-directory: ""
+        working-directory: ""
         optional: true
