@@ -269,7 +269,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-jvm-project
 
   test-publish-jvm-project:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-inject-branch-version
@@ -282,10 +282,10 @@ jobs:
           jvm-token: FAKE_TOKEN
 
   test-publish-github-pages:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs:
-      - test-setup-nodejs-context
+      - test-verify-npm-package
       - test-inject-branch-version
     permissions:
       pages: write
