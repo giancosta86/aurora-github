@@ -64,28 +64,28 @@ runs:
         use github.com/giancosta86/aurora-github/actions/publish-github-pages
         publish-github-pages:build-via-maven
 
-    - if: inputs.dry-run == true
+    - if: inputs.dry-run == 'true'
       shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: echo 💭 Skipping publication, as requested by dry-run.
 
-    - if: inputs.dry-run != true
+    - if: inputs.dry-run != 'true'
       shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
         echo ☢️ DRY-RUN is: "'"${{ inputs.dry-run }}"'"
         fail KABOOM!
 
-    - if: inputs.dry-run != true
+    - if: inputs.dry-run != 'true'
       uses: actions/upload-pages-artifact@v5
       with:
         path: ${{ env.source-directory }}
 
-    - if: inputs.dry-run != true
+    - if: inputs.dry-run != 'true'
       id: publish-pages
       uses: actions/deploy-pages@v5
 
-    - if: inputs.dry-run != true
+    - if: inputs.dry-run != 'true'
       shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
