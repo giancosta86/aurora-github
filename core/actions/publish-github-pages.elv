@@ -10,17 +10,17 @@ fn detect-strategy {
     if (os:is-regular package.json) {
       put [
         &strategy=nodejs-site
-        &source-directory=dist
+        &source-directory=(path:join $pwd dist)
       ]
     } elif (os:is-regular pom.xml) {
       put [
         &strategy=maven-site
-        &source-directory=(path:join target site)
+        &source-directory=(path:join $pwd target site)
       ]
     } else {
       put [
         &strategy=static-site
-        &source-directory=.
+        &source-directory=$pwd
       ]
     }
   )
