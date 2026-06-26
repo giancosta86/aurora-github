@@ -1,6 +1,7 @@
 use os
 use ../ci-cd/env
 use ../jvm/maven
+use ../std-err
 use ./input
 
 fn detect-strategy {
@@ -22,6 +23,8 @@ fn detect-strategy {
       ]
     }
   )
+
+  std-err:inspect &emoji=🌐 'Website environment variables for GitHub Pages' $env-variables
 
   env:map $env-variables
 }
