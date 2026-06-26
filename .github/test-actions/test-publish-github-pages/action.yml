@@ -23,18 +23,17 @@ runs:
         dry-run: true
 
     - shell: bash
-      run: echo "🎭 Now publishing a NextJS site..."
+      run: echo "🎭 Now publishing a NodeJS site..."
 
-    - name: A NextJS website should be publishable
-      id: publish-nextjs-pages
+    - id: publish-nodejs-pages
       uses: ./actions/publish-github-pages
       with:
-        working-directory: website/nextjs
+        working-directory: website/nodejs
 
     - name: The URL of the website should be defined
       shell: bash
       run: |
-        websiteUrl="${{ steps.publish-nextjs-pages.outputs.url }}"
+        websiteUrl="${{ steps.publish-nodejs-pages.outputs.url }}"
 
         if [[ -n "$websiteUrl" ]]
         then
