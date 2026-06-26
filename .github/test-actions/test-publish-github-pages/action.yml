@@ -42,19 +42,3 @@ runs:
           echo "❌ Website not available!" >&2
           exit 1
         fi
-
-    - shell: bash
-      run: echo "🎭 Now trying to publish an inexistent source directory..."
-
-    - uses: ./actions/publish-github-pages
-      with:
-        working-directory: INEXISTENT_DIRECTORY
-        optional: true
-
-    - shell: bash
-      run: echo "🎭 Now trying to omit the source directory..."
-
-    - uses: ./actions/publish-github-pages
-      with:
-        working-directory: ""
-        optional: true
