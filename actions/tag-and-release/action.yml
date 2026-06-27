@@ -11,6 +11,7 @@ inputs:
 
   update-major-branch:
     description: Create/update the 'vX' branch containing the related major version.
+    default: true
 
 runs:
   using: composite
