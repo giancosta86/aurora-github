@@ -29,9 +29,9 @@ fn main {
   var branch-version = (semver:parse $branch)
   std-err:inspect &emoji=🏷️ 'Branch version' $branch-version
 
-  git switch $main-branch
-
-  git branch -d $branch
+  echo 🌴 Deleting the remote branch...
+  git push origin --delete $branch
+  echo ✅ Remote branch deleted!
 
   var version-string = $branch-version[major]'.'$branch-version[minor]'.'$branch-version[patch]
   std-err:inspect &emoji=📦 'Version string' $version-string
