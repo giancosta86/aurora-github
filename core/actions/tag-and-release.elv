@@ -29,14 +29,14 @@ fn main {
   var branch-version = (semver:parse $branch)
   std-err:inspect &emoji=🏷️ 'Branch version' $branch-version
 
-  echo 🌴 Deleting the remote branch...
-  git push origin --delete $branch
-  echo ✅ Remote branch deleted!
+  # echo 🌴 Deleting the remote branch...
+  # git push origin --delete $branch
+  # echo ✅ Remote branch deleted!
 
   var version-string = $branch-version[major]'.'$branch-version[minor]'.'$branch-version[patch]
   std-err:inspect &emoji=📦 'Version string' $version-string
 
-  var tag = 'v'$version-string
+  var tag = 'v'$version-string'xxxxx' #TODO: del this prefix - and reactivate branch deletion
   std-err:inspect &emoji=📌 'Tag' $tag
 
   git tag $tag
