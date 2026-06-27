@@ -2,14 +2,6 @@ name: Tag and release
 description: Creates a Git tag and a GitHub release from the current branch
 
 inputs:
-  draft:
-    description: Draft the release - do not publish it.
-    default: true
-
-  main-branch:
-    description: The name of the main branch.
-    default: main
-
   product-name:
     description: The name of the product; if empty, defaults to the repository name
 
@@ -38,8 +30,6 @@ runs:
         use github.com/giancosta86/aurora-github/actions/tag-and-release
         tag-and-release:main
       env:
-        draft: ${{ inputs.draft }}
-        main-branch: ${{ inputs.main-branch }}
         product-name: ${{ inputs.product-name }}
         update-major-branch: ${{ inputs.update-major-branch }}
         GH_TOKEN: ${{ github.token }}

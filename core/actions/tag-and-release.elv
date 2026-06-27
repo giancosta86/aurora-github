@@ -6,10 +6,6 @@ use ../std-err
 use ./input
 
 fn main {
-  var draft = (input:bool draft)
-
-  var main-branch = (input:string main-branch)
-
   var product-name = (
     input:string &optional product-name |
       coalesce (all) (repository:get-name)
@@ -18,7 +14,6 @@ fn main {
   var update-major-branch = (input:bool update-major-branch)
 
   std-err:inspect &emoji=📥 Inputs [
-    &draft=$draft
     &product-name=$product-name
     &update-major-branch=$update-major-branch
   ]
@@ -55,7 +50,7 @@ fn main {
 
     git:ensure-in-branch $major-branch
 
-    git merge $main-branch
+    git merge $tag
 
     git push origin $major-branch
 
