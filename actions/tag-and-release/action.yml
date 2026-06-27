@@ -23,7 +23,7 @@ runs:
         echo 'EVENT ACTION:' ${{github.event.action}}
         echo 'PR MERGED:' ${{github.event.pull_request.merged}}
         echo '💭 tag-and-release can only run when merging a pull request'
-        echo skip=true >> GITHUB_ENV
+        echo skip=true >> $GITHUB_ENV
 
     - if: env.skip != 'true'
       uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
