@@ -43,10 +43,10 @@ fn main {
 
   git push origin $tag
 
-  var release-name = $product-name' '$version-string
-  std-err:inspect &emoji=✏️ 'Release name' $release-name
+  var release-title = $product-name' '$version-string
+  std-err:inspect &emoji=✏️ 'Release title' $release-title
 
-  gh release create $tag --draft --title $release-name --generate-notes
+  gh release create $tag --draft --title $release-title --generate-notes
 
   if $update-major-branch {
     var major-branch = 'v'$branch-version[major]
