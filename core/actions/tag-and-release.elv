@@ -28,5 +28,17 @@ fn main {
   var branch-version = (semver:parse $branch)
   std-err:inspect &emoji=🏷️ 'Branch version' $branch-version
 
+  var event-name = (get-env GITHUB_EVENT_NAME)
+  std-err:inspect &emoji=⚡ 'Event name' $event-name
+
+  # Create the Git tag
+
+  # Create the (draft/official) release
   #gh release create $tag --draft --title 'Test release' --notes 'This volatile release is only used by the tests!'
+
+  if $update-major-branch {
+    # Update the major branch
+  }
+
+  fail KABOOM!
 }
