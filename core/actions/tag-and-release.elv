@@ -49,7 +49,7 @@ fn main {
   gh release create $tag --draft --title $release-name --notes ''
 
   if $update-major-branch {
-    var major-branch 'v'$branch-version[major]
+    var major-branch = 'v'$branch-version[major]
 
     std-err:inspect &emoji=🌳 'Updating major version branch' $major-branch
 
