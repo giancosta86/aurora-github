@@ -46,7 +46,7 @@ fn main {
   var release-name = $product-name' '$version-string
   std-err:inspect &emoji=✏️ 'Release name' $release-name
 
-  gh release create $tag --draft --title $release-name --notes ''
+  gh release create $tag --draft --title $release-name --generate-notes
 
   if $update-major-branch {
     var major-branch = 'v'$branch-version[major]
