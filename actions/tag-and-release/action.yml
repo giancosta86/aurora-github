@@ -16,7 +16,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - if: github.event_name != 'pull_request' || github.event.action != 'closed' || github.event.pull_request.merged != 'true'
+    - if: github.event_name != 'pull_request' || github.event.action != 'closed' || github.event.pull_request.merged != true
       shell: bash
       run: |
         echo 'EVENT NAME:' ${{github.event_name}}
@@ -24,10 +24,10 @@ runs:
         echo 'PR MERGED:' ${{github.event.pull_request.merged}}
         echo '💭 tag-and-release can only run when merging a pull request'
 
-    - if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == 'true'
+    - if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
       uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == 'true'
+    - if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
       shell: elvish {0}
       run: |
         use github.com/giancosta86/aurora-github/actions/tag-and-release
