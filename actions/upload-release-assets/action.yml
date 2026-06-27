@@ -22,7 +22,7 @@ runs:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
     - shell: elvish {0}
-      working-directory: ${{ inputs.source-directory }}
+      working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/upload-release-assets
         upload-release-assets:main

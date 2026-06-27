@@ -76,7 +76,7 @@ runs:
       with:
         release-tag: ${{ env.tag }}
         working-directory: website/nodejs/src/assets
-        files: vite-svg
+        files: vite.svg
         overwrite: true
 
     - shell: elvish {0}
