@@ -28,9 +28,6 @@ fn main {
   var branch-version = (semver:parse $branch)
   std-err:inspect &emoji=🏷️ 'Branch version' $branch-version
 
-  var event-name = (get-env GITHUB_EVENT_NAME)
-  std-err:inspect &emoji=⚡ 'Event name' $event-name
-
   # Create the Git tag
 
   # Create the (draft/official) release
