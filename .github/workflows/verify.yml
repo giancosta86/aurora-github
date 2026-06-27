@@ -282,7 +282,7 @@ jobs:
           jvm-token: FAKE_TOKEN
 
   test-publish-github-pages:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-verify-npm-package
@@ -295,7 +295,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-github-pages
 
   test-tag-and-release:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
