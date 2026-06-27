@@ -39,6 +39,7 @@ runs:
         tag-and-release:main
       env:
         draft: ${{ inputs.draft }}
+        main-branch: ${{ inputs.main-branch }}
         product-name: ${{ inputs.product-name }}
         update-major-branch: ${{ inputs.update-major-branch }}
         GH_TOKEN: ${{ github.token }}
