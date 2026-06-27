@@ -4,41 +4,39 @@ description: Tests for publish-github-pages.
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭 Now publishing (in dry-run) static files..."
+    - uses: ./actions/setup-elvish-context
 
-    - name: A static website should be publishable
-      uses: ./actions/publish-github-pages
+    - shell: elvish {0}
+      run: echo 🎭 Now publishing (in dry-run) static files...
+
+    - uses: ./actions/publish-github-pages
       with:
         working-directory: website/static
-        dry-run: true
+        dry-run: false
 
-    - shell: bash
-      run: echo "🎭 Now publishing (in dry-run) a Maven-generated site..."
+    - shell: elvish {0}
+      run: echo 🎭 Now publishing (in dry-run) a Maven-generated site...
 
-    - name: A Maven-generated website should be publishable
-      uses: ./actions/publish-github-pages
+    - uses: ./actions/publish-github-pages
       with:
         working-directory: tests/maven-project
         dry-run: true
 
-    - shell: bash
-      run: echo "🎭 Now publishing a NodeJS site..."
+    - shell: elvish {0}
+      run: echo 🎭 Now publishing a NodeJS site...
 
     - id: publish-nodejs-pages
       uses: ./actions/publish-github-pages
       with:
         working-directory: website/nodejs
+        dry-run: true
 
-    - name: The URL of the website should be defined
-      shell: bash
-      run: |
-        websiteUrl="${{ steps.publish-nodejs-pages.outputs.url }}"
-
-        if [[ -n "$websiteUrl" ]]
-        then
-          echo "✅ Website published and available at: '$websiteUrl'"
-        else
-          echo "❌ Website not available!" >&2
-          exit 1
-        fi
+    - uses: ./actions/run-velvet-code
+      with:
+        code: |
+          >> 'The website URL' {
+            >> 'should be the expected one' {
+              put '${{ steps.publish-nodejs-pages.outputs.url }}' |
+                should-be 'https://gianlucacosta.info/aurora-github/'
+            }
+          }
