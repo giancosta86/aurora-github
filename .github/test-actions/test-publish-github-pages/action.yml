@@ -7,7 +7,7 @@ runs:
     - uses: ./actions/setup-elvish-context
 
     - shell: elvish {0}
-      run: echo 🎭 Now publishing (in dry-run) static files...
+      run: echo 🎭 Testing static files...
 
     - uses: ./actions/publish-github-pages
       with:
@@ -15,7 +15,7 @@ runs:
         dry-run: false
 
     - shell: elvish {0}
-      run: echo 🎭 Now publishing (in dry-run) a Maven-generated site...
+      run: echo 🎭 Testing a Maven-generated site...
 
     - uses: ./actions/publish-github-pages
       with:
@@ -23,7 +23,7 @@ runs:
         dry-run: true
 
     - shell: elvish {0}
-      run: echo 🎭 Now publishing a NodeJS site...
+      run: echo 🎭 Testing a NodeJS site...
 
     - id: publish-nodejs-pages
       uses: ./actions/publish-github-pages
