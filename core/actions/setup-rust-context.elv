@@ -2,7 +2,7 @@ use os
 use ../ci-cd/env
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/lang
-use ../std-err
+use ../console
 use ./input
 
 fn -check-preconditions {
@@ -27,7 +27,7 @@ fn -check-toolchain-file {
   var toolchain-file = rust-toolchain.toml
 
   if (os:is-regular $toolchain-file) {
-    std-err:inspect &emoji=✅ 'Toolchain file found' $toolchain-file
+    console:inspect &emoji=✅ 'Toolchain file found' $toolchain-file
   } else {
     fail "Missing toolchain file: '"$toolchain-file"'"
   }
@@ -42,7 +42,7 @@ fn -ensure-required-components {
 }
 
 fn -print-component-versions {
-  std-err:section &emoji=🦀 'Rust component versions' {
+  console:section &emoji=🦀 'Rust component versions' {
     cargo --version
     rustc --version
     cargo fmt --version
@@ -55,7 +55,7 @@ fn main {
 
   var check-toolchain-file = (input:bool check-toolchain-file)
 
-  std-err:echo 🦀💻 Setting up Rust context in "'"$pwd"'"...
+  echo 🦀💻 Setting up Rust context in "'"$pwd"'"...
 
   -check-preconditions
 
@@ -69,5 +69,5 @@ fn main {
 
   -print-component-versions
 
-  std-err:echo ✅🦀 Rust context in "'"$pwd"'" ready!
+  echo ✅🦀 Rust context in "'"$pwd"'" ready!
 }

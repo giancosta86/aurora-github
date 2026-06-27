@@ -1,21 +1,21 @@
 use os
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/fs
-use ./std-err
+use ./console
 
 fn -should-run-installer { |required-command|
   if $required-command {
-    std-err:inspect &emoji=📥 'Required command' $required-command
+    console:inspect &emoji=📥 'Required command' $required-command
 
     if (command:exists-in-bash $required-command) {
-      std-err:echo ✅ Required command available - no need to install it!
+      echo ✅ Required command available - no need to install it!
       put $false
     } else {
-      std-err:echo 💬 Required command not available - now installing its packages...
+      echo 💬 Required command not available - now installing its packages...
       put $true
     }
   } else {
-    std-err:echo 💫 No required command passed - the requested packages will be installed unconditionally...
+    echo 💫 No required command passed - the requested packages will be installed unconditionally...
     put $true
   }
 }
@@ -24,11 +24,11 @@ fn -run-initial-update {
   var flag-file = ~/.install-system-packages-updated
 
   if (os:is-regular $flag-file) {
-    std-err:echo 💡 The package list has already been updated!
+    echo 💡 The package list has already been updated!
     return
   }
 
-  std-err:echo 📥 Updating the package list...
+  echo 📥 Updating the package list...
 
   command:silence {
     sudo apt-get update
@@ -38,13 +38,13 @@ fn -run-initial-update {
 }
 
 fn -run-installer { |requested-packages|
-  std-err:echo 📦 Installing packages...
+  echo 📦 Installing packages...
 
   command:silence {
     sudo apt-get install -y $@requested-packages
   }
 
-  std-err:echo ✅ Packages installed!
+  echo ✅ Packages installed!
 }
 
 fn install { |inputs|

@@ -3,7 +3,7 @@ use ../ci-cd/pull-request
 use ../ci-cd/release
 use ../ci-cd/repository
 use ../git
-use ../std-err
+use ../console
 use ./input
 
 fn main {
@@ -15,20 +15,20 @@ fn main {
   var update-major-branch = (input:bool update-major-branch)
 
   var branch = (pull-request:get-branch)
-  std-err:inspect &emoji=🌲 'Branch' $branch
+  console:inspect &emoji=🌲 'Branch' $branch
 
   var branch-version = (semver:parse $branch)
-  std-err:inspect &emoji=🏷️ 'Branch version' $branch-version
+  console:inspect &emoji=🏷️ 'Branch version' $branch-version
 
   echo 🌴 Deleting the remote branch...
   git push origin --delete $branch
   echo ✅ Remote branch deleted!
 
   var version-string = $branch-version[major]'.'$branch-version[minor]'.'$branch-version[patch]
-  std-err:inspect &emoji=📦 'Version string' $version-string
+  console:inspect &emoji=📦 'Version string' $version-string
 
   var tag = 'v'$version-string
-  std-err:inspect &emoji=📌 'Tag' $tag
+  console:inspect &emoji=📌 'Tag' $tag
 
   echo 📤 Creating and pushing the tag to origin...
   git tag $tag
@@ -37,14 +37,14 @@ fn main {
 
   var release-title = $product-name' '$version-string
 
-  std-err:inspect &emoji=📝 'Now creating release draft' $release-title
+  console:inspect &emoji=📝 'Now creating release draft' $release-title
   release:create-draft $tag $release-title
   echo ✅ Release draft created!
 
   if $update-major-branch {
     var major-branch = 'v'$branch-version[major]
 
-    std-err:inspect &emoji=🌳 'Updating major version branch' $major-branch
+    console:inspect &emoji=🌳 'Updating major version branch' $major-branch
 
     git:ensure-in-branch $major-branch
 

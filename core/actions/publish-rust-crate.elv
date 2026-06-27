@@ -1,7 +1,7 @@
 use str
 use github.com/giancosta86/ethereal/v1/edit
 use github.com/giancosta86/ethereal/v1/lang
-use ../std-err
+use ../console
 use ../highlight
 use ./input
 
@@ -10,11 +10,11 @@ fn -document-all-features {
     var docs-header = '[package.metadata.docs.rs]'
 
     if (str:contains $content $docs-header) {
-      std-err:echo 💬 Skipping documentation addendum because $docs-header already appears in Cargo.toml...
+      echo 💬 Skipping documentation addendum because $docs-header already appears in Cargo.toml...
 
       put $nil
     } else {
-      std-err:echo 📚 Now adding the documentation addendum to the project descriptor!
+      echo 📚 Now adding the documentation addendum to the project descriptor!
 
       var descriptor-addendum = (str:join "\n" [
         $docs-header
@@ -41,7 +41,7 @@ fn main {
     -document-all-features
   }
 
-  std-err:section &emoji=🦀 'Cargo.toml just before publication' {
+  console:section &emoji=🦀 'Cargo.toml just before publication' {
     highlight:file Cargo.toml toml
   }
 

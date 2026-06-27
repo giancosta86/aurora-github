@@ -1,7 +1,7 @@
 use os
 use str
 use github.com/giancosta86/ethereal/v1/lang
-use ../std-err
+use ../console
 use ./input
 
 var root-files-to-copy = [
@@ -13,7 +13,7 @@ fn get-npm-scope-args { |npm-scope|
     str:trim-left $npm-scope @
   )
 
-  std-err:inspect &emoji=☂ 'NPM scope' $npm-scope-arg
+  console:inspect &emoji=☂ 'NPM scope' $npm-scope-arg
 
   lang:ternary $npm-scope-arg ['--scope' $npm-scope-arg] []
 }
@@ -47,7 +47,7 @@ fn try-to-update-package-json { |inputs|
     var package-json = (from-json < package.json)
 
     if $node-version {
-      std-err:inspect &emoji=🧬 'Injecting the requested NodeJS version' $node-version
+      console:inspect &emoji=🧬 'Injecting the requested NodeJS version' $node-version
 
       var engines = (
         lang:get-value $package-json engines |
@@ -61,7 +61,7 @@ fn try-to-update-package-json { |inputs|
     }
 
     if $package-manager {
-      std-err:inspect &emoji=🧬 'Injecting the requested package manager' $package-manager
+      console:inspect &emoji=🧬 'Injecting the requested package manager' $package-manager
 
       set package-json = (assoc $package-json packageManager $package-manager)
     }
@@ -105,5 +105,5 @@ fn main {
 
   try-to-copy-special-root-files $target-directory
 
-  std-err:inspect &emoji=✅ 'WebAssembly target ready in' $target-directory
+  console:inspect &emoji=✅ 'WebAssembly target ready in' $target-directory
 }

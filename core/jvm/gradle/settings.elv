@@ -1,5 +1,5 @@
 use str
-use ../../std-err
+use ../../console
 
 fn prepare-for-publication {
   echo 🐘 Preparing Gradle settings for publication...
@@ -8,15 +8,15 @@ fn prepare-for-publication {
 
   var descriptor-content = (slurp < $descriptor)
 
-  std-err:section &emoji=🐘 'Checking the optional use of environment variables in the descriptor' {
+  console:section &emoji=🐘 'Checking the optional use of environment variables in the descriptor' {
     all [
       JVM_AUTH_USER
       JVM_AUTH_TOKEN
     ] | each { |env-var|
       if (str:contains $descriptor-content $env-var) {
-        std-err:inspect &emoji=✅ 'Referenced' $env-var
+        console:inspect &emoji=✅ 'Referenced' $env-var
       } else {
-        std-err:inspect &emoji=💭 'Not mentioned' $env-var
+        console:inspect &emoji=💭 'Not mentioned' $env-var
       }
     }
   }

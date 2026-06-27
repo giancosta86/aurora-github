@@ -4,7 +4,7 @@ use str
 use github.com/giancosta86/ethereal/v1/fs
 use github.com/giancosta86/ethereal/v1/resources
 use ../../highlight
-use ../../std-err
+use ../../console
 
 var -resources = (resources:for-script (src))
 
@@ -19,7 +19,7 @@ fn -copy-default-settings {
 
   fs:copy $default-settings-path $-user-settings-path
 
-  std-err:section &emoji=🪶 'Content of the per-user Maven settings file' {
+  console:section &emoji=🪶 'Content of the per-user Maven settings file' {
     highlight:file $-user-settings-path xml
   }
 }
@@ -38,7 +38,7 @@ fn prepare-for-publication {
   echo 🪶 Preparing Maven settings for publication...
 
   if (os:is-regular $-user-settings-path) {
-    std-err:inspect &emoji=🌟 'Maven settings file found at' $-user-settings-path
+    console:inspect &emoji=🌟 'Maven settings file found at' $-user-settings-path
     return
   }
 

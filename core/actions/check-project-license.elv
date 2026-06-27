@@ -1,6 +1,5 @@
 use os
 use github.com/giancosta86/ethereal/v1/seq
-use ../std-err
 use ./input
 
 fn -check-current-year-included { |license-file|
@@ -10,14 +9,12 @@ fn -check-current-year-included { |license-file|
     fail 'Cannot detect the current year!'
   }
 
-  std-err:redirect {
-    echo 🗓 Current year: $current-year
+  echo 🗓 Current year: $current-year
 
-    echo 🔎🗓 Searching the license file for the current year...
-  }
+  echo 🔎🗓 Searching the license file for the current year...
 
   if ?(grep --color=always $current-year $license-file > &2) {
-    std-err:echo ✅ Current year found in the license file!
+    echo ✅ Current year found in the license file!
   } else {
     fail 'Cannot find the current year in the license file!'
   }
@@ -29,6 +26,6 @@ fn main {
   if (os:is-regular $license-file) {
     -check-current-year-included $license-file
   } else {
-    std-err:echo 💭 License file not found: $license-file
+    echo 💭 License file not found: $license-file
   }
 }

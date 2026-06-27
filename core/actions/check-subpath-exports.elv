@@ -1,7 +1,6 @@
 use os
 use str
 use github.com/giancosta86/ethereal/v1/lang
-use ../std-err
 
 var check-json-value~
 

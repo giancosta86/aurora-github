@@ -1,5 +1,4 @@
 use os
-use ../std-err
 
 var -metadata-file = metadata.json
 
@@ -11,7 +10,7 @@ var -required-fields = [
 ]
 
 fn -check-metadata {
-  std-err:echo 🏷️ Checking library metadata...
+  echo 🏷️ Checking library metadata...
 
   if (not (os:is-regular $-metadata-file)) {
     fail 'Missing library metadata file: '$-metadata-file
@@ -25,7 +24,7 @@ fn -check-metadata {
     }
   }
 
-  std-err:echo ✅ Library metadata OK!
+  echo ✅ Library metadata OK!
 }
 
 fn main {

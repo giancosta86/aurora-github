@@ -1,5 +1,5 @@
 use github.com/giancosta86/ethereal/v1/lang
-use ../std-err
+use ../console
 use ./maven/settings
 
 fn run { |&quiet=$true @rest|
@@ -24,7 +24,7 @@ fn publish-project { |&quiet=$true &dry-run=$true|
   if $dry-run {
     var dry-run-directory = target/dry-run
 
-    std-err:inspect &emoji=📁 'dry-run mode enabled - publishing to local directory' $dry-run-directory
+    console:inspect &emoji=📁 'dry-run mode enabled - publishing to local directory' $dry-run-directory
 
     set dry-run-arg = [-DaltDeploymentRepository=target-server::default::file:$dry-run-directory]
   } else {

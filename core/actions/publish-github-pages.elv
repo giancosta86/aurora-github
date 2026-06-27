@@ -2,8 +2,7 @@ use os
 use path
 use ../ci-cd/env
 use ../jvm/maven
-use ../std-err
-use ./input
+use ../console
 
 fn detect-strategy {
   var env-variables = (
@@ -25,7 +24,7 @@ fn detect-strategy {
     }
   )
 
-  std-err:inspect &emoji=🌐 'Website environment variables for GitHub Pages' $env-variables
+  console:inspect &emoji=🌐 'Website environment variables for GitHub Pages' $env-variables
 
   env:map $env-variables
 }

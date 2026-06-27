@@ -1,5 +1,5 @@
 use github.com/giancosta86/ethereal/v1/command
-use ../std-err
+use ../console
 
 fn install-package { |package &version=$nil|
   echo 📥 Installing $package via pipx...
@@ -7,7 +7,7 @@ fn install-package { |package &version=$nil|
   var version-suffix
 
   if $version {
-    std-err:inspect &emoji=🏷 'Requested version' $version
+    console:inspect &emoji=🏷 'Requested version' $version
     set version-suffix = '=='$version
   } else {
     echo 🌟 Installing the latest version...

@@ -1,5 +1,5 @@
 use re
-use ../std-err
+use ../console
 use ./pipx
 
 fn -install { |version|
@@ -14,7 +14,7 @@ fn ensure { |&version=$nil|
   }
 
   var installed-version = (pdm --version)
-  std-err:inspect &emoji=📦 'Installed pdm version' $installed-version
+  console:inspect &emoji=📦 'Installed pdm version' $installed-version
 
   if (and $version (re:match '\b'$version'\b' installed-version )) {
     echo ✅ The requested pdm version is already installed!

@@ -1,7 +1,7 @@
 use os
 use github.com/giancosta86/ethereal/v1/lang
 use ../highlight
-use ../std-err
+use ../console
 use ../nodejs
 use ./input
 
@@ -17,7 +17,7 @@ fn ensure-npm-config {
 
   echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > $config-path
 
-  std-err:section &emoji=🎀 'Your auto-generated '$config-path' configuration file' {
+  console:section &emoji=🎀 'Your auto-generated '$config-path' configuration file' {
     highlight:file $config-path ini
   }
 }
@@ -33,7 +33,7 @@ fn main {
 
   nodejs:try-to-run-package-script build
 
-  std-err:section &emoji=📦 'package.json just before publication' {
+  console:section &emoji=📦 'package.json just before publication' {
     highlight:file package.json json
   }
 

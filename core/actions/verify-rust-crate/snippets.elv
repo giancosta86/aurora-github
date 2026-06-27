@@ -3,7 +3,7 @@ use re
 use str
 use github.com/giancosta86/ethereal/v1/fs
 use github.com/giancosta86/ethereal/v1/seq
-use ../../std-err
+use ../../console
 
 var -snippet-pattern = '(?s)```rust\s+(.*?)```'
 
@@ -18,15 +18,15 @@ fn -get-test-bootstrap-code { |ordinal|
 
 fn extract { |markdown-path test-filename-prefix|
   if (not (os:is-regular $markdown-path)) {
-    std-err:echo 💭 Source markdown path not found - cannot extract snippets
+    echo 💭 Source markdown path not found - cannot extract snippets
     return
   }
 
-  std-err:inspect &emoji=🗒️ 'Source markdown found' $markdown-path
+  console:inspect &emoji=🗒️ 'Source markdown found' $markdown-path
 
   var generated-test-paths = []
 
-  std-err:echo 🎩 Trying to extract tests from Rust snippets in Markdown...
+  echo 🎩 Trying to extract tests from Rust snippets in Markdown...
 
   slurp < $markdown-path |
     re:find $-snippet-pattern (all) |
@@ -48,12 +48,12 @@ fn extract { |markdown-path test-filename-prefix|
     }
 
   if (seq:is-non-empty $generated-test-paths) {
-    std-err:section &emoji=🪄 'Process completed! Generated test files' {
+    console:section &emoji=🪄 'Process completed! Generated test files' {
       all $generated-test-paths | each { |test-path|
-        std-err:echo 📄 $test-path
+        echo 📄 $test-path
       }
     }
   } else {
-      std-err:echo 💭 No snippets found in the source Markdown file...
+      echo 💭 No snippets found in the source Markdown file...
   }
 }
