@@ -1,59 +1,28 @@
 name: Tag and release
-description: Merges a pull request, creates a Git tag and publishes a GitHub release, from a Git branch named according to semantic versioning.
+description: Creates a Git tag and a GitHub release from the current branch
 
 inputs:
-  draft-release:
-    description: Draft the release - do not publish it. Can be `true`, `false` or `on-major`.
-    default: on-major
+  draft:
+    description: Draft the release - do not publish it.
+    default: true
 
-  notes-file-processor:
-    description: Shell script editing the generated release notes.
+  product-name:
+    description: The name of the product; if empty, defaults to the repository name
 
-  set-major-tag:
-    description: Create/move the `vX` tag to this commit (X=major version).
-    default: false
-
-  dry-run:
-    description: Run the action without performing commands.
-    default: false
-
-  git-strategy:
-    description: How to apply the pull request to the Git repository. Can be `merge`, `rebase` or `squash`.
-    default: squash
-
-outputs:
-  release-tag:
-    description: The Git tag associated with the release.
-    value: ${{ steps.action-body.outputs.tag }}
-
-  major-tag:
-    description: The Git tag of the major version, if set.
-    value: ${{ steps.action-body.outputs.major-tag }}
+  update-major-branch:
+    description: Create/update the 'vX' branch containing the related major version.
 
 runs:
   using: composite
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - id: action-body
-      shell: elvish {0}
+    - shell: elvish {0}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/ci-cd/output
-        use aurora-github/tag-and-release
-
-        var inputs = [
-          &draft-release=(input:enum draft-release '${{ inputs.draft-release }}' [true false on-major])
-
-          &notes-file-processor=(input:string &optional notes-file-processor '${{ inputs.notes-file-processor }}')
-
-          &set-major-tag=(input:bool set-major-tag '${{ inputs.set-major-tag }}')
-
-          &dry-run=(input:bool dry-run '${{ inputs.dry-run }}')
-
-          &git-strategy=(input:enum git-strategy '${{ inputs.git-strategy }}' [merge rebase squash])
-        ]
-
-        output:map (tag-and-release:run-action $inputs | only-values)
+        use github.com/giancosta86/aurora-github/actions/tag-and-release
+        tag-and-release:main
       env:
+        draft: ${{ inputs.draft }}
+        product-name: ${{ inputs.product-name }}
+        update-major-branch: ${{ inputs.update-major-branch }}
         GH_TOKEN: ${{ github.token }}
