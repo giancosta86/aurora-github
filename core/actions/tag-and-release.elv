@@ -1,5 +1,6 @@
 use github.com/giancosta86/ethereal/v1/semver
 use ../ci-cd/pull-request
+use ../ci-cd/release
 use ../ci-cd/repository
 use ../git
 use ../std-err
@@ -37,7 +38,7 @@ fn main {
   var release-title = $product-name' '$version-string
 
   std-err:inspect &emoji=📝 'Now creating release draft' $release-title
-  gh release create $tag --draft --title $release-title --generate-notes
+  release:create-draft $tag $release-title
   echo ✅ Release draft created!
 
   if $update-major-branch {
