@@ -13,11 +13,6 @@ fn main {
 
   var update-major-branch = (input:bool update-major-branch)
 
-  std-err:inspect &emoji=📥 Inputs [
-    &product-name=$product-name
-    &update-major-branch=$update-major-branch
-  ]
-
   var branch = (pull-request:get-branch)
   std-err:inspect &emoji=🌲 'Branch' $branch
 
@@ -34,14 +29,16 @@ fn main {
   var tag = 'v'$version-string
   std-err:inspect &emoji=📌 'Tag' $tag
 
+  echo 📤 Creating and pushing the tag to origin...
   git tag $tag
-
   git push origin $tag
+  echo ✅ Tag pushed!
 
   var release-title = $product-name' '$version-string
-  std-err:inspect &emoji=✏️ 'Release title' $release-title
 
+  std-err:inspect &emoji=📝 'Now creating release draft' $release-title
   gh release create $tag --draft --title $release-title --generate-notes
+  echo ✅ Release draft created!
 
   if $update-major-branch {
     var major-branch = 'v'$branch-version[major]
