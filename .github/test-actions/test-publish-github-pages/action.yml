@@ -20,7 +20,7 @@ runs:
     - uses: ./actions/publish-github-pages
       with:
         working-directory: tests/maven-project
-        dry-run: false
+        dry-run: true
 
     - shell: elvish {0}
       run: echo 🎭 Testing a NodeJS site...
@@ -29,7 +29,6 @@ runs:
       uses: ./actions/publish-github-pages
       with:
         working-directory: website/nodejs
-        dry-run: true
 
     - uses: ./actions/run-velvet-code
       with:
