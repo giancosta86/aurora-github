@@ -11,24 +11,20 @@ steps:
 
 ## 💡 How it works
 
-1. If `working-directory` is set to an empty string (the default) or refers to a missing directory, if `optional` is set to **true** the action will simply exit, otherwise the workflow will fail.
+1. Run [inject-branch-version](../inject-branch-version/README.md) on any descriptor supported in the steps below.
 
 1. If `working-directory` contains:
    - a **package.json** file:
-     1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
-
-     1. Set up a NodeJS environment via [setup-nodejs-context](../setup-nodejs-context/README.md) in `working-directory`.
-
-     1. Run `pnpm build`.
+     1. Run [verify-npm-package](../verify-npm-package/README.md) - especially the `build` script in **package.json**.
 
      1. The **dist** subdirectory will contain the actual website.
 
    - a **pom.xml** file:
-     1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
-
      1. Run `mvn site`.
 
      1. The **target/site** subdirectory will contain the actual website.
+
+   - otherwise, the entire directory will be considered a **static** website.
 
 1. If `dry-run` is set to **true**, interrupt the process without failing.
 
