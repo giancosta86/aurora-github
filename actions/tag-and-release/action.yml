@@ -6,6 +6,10 @@ inputs:
     description: Draft the release - do not publish it.
     default: true
 
+  main-branch:
+    description: The name of the main branch.
+    default: main
+
   product-name:
     description: The name of the product; if empty, defaults to the repository name
 

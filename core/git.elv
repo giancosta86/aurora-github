@@ -3,6 +3,14 @@ use github.com/giancosta86/aurora-elvish/command
 use github.com/giancosta86/aurora-elvish/console
 use github.com/giancosta86/aurora-elvish/lang
 
+fn ensure-in-branch { |branch|
+  try {
+    git switch -c $branch
+  } catch {
+    git switch $branch
+  }
+}
+
 fn hard-reset {
   console:echo ⏱️ Discarding local changes to the Git repository...
 

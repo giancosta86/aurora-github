@@ -1,11 +1,14 @@
 use github.com/giancosta86/ethereal/v1/semver
 use ../ci-cd/pull-request
 use ../ci-cd/repository
+use ../git
 use ../std-err
 use ./input
 
 fn main {
   var draft = (input:bool draft)
+
+  var main-branch = (input:string main-branch)
 
   var product-name = (
     input:string &optional product-name |
@@ -20,22 +23,36 @@ fn main {
     &update-major-branch=$update-major-branch
   ]
 
-  #TODO! Here, check the event, which MUST be a pull request merging
-
   var branch = (pull-request:get-branch)
   std-err:inspect &emoji=🌲 'Branch' $branch
 
   var branch-version = (semver:parse $branch)
   std-err:inspect &emoji=🏷️ 'Branch version' $branch-version
 
-  # Create the Git tag
+  git switch $main-branch
 
-  # Create the (draft/official) release
-  #gh release create $tag --draft --title 'Test release' --notes 'This volatile release is only used by the tests!'
+  git branch -d $branch
+
+  var version-string = $branch-version[major]'.'$branch-version[minor]'.'$branch-version[patch]
+  std-err:inspect &emoji=📦 'Version string' $version-string
+
+  var tag = 'v'$version-string
+  std-err:inspect &emoji=📌 'Tag' $tag
+
+  git tag $tag
+
+  git push origin $tag
+
+  var release-name = $product-name' '$version-string
+  std-err:inspect &emoji=✏️ 'Release name' $release-name
+
+  gh release create $tag --draft --title $release-name --notes ''
 
   if $update-major-branch {
-    # Update the major branch
+    echo 🌳 Updating major version branch...
+    git:ensure-in-branch 'v'$branch-version[major]
+    git merge $main-branch
+    git push
+    echo ✅ Major version branch updated!
   }
-
-  fail KABOOM!
 }
