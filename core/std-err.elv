@@ -2,11 +2,11 @@ use builtin
 
 fn redirect { |block|
   $block |
-    only-bytes >&2
+    only-bytes
 }
 
 fn echo { |@arguments|
-  builtin:echo $@arguments >&2
+  builtin:echo $@arguments
 }
 
 fn section { |&emoji=🔎 description block|

@@ -1,3 +1,4 @@
+use ../branch-version
 use ../ci-cd/repository
 use ../std-err
 use ./input
@@ -17,4 +18,8 @@ fn main {
     &product-name=$product-name
     &update-major-branch=$update-major-branch
   ]
+
+  var branch-version = (branch-version:detect)
+
+  std-err:inspect &emoji=🌲 'Branch version' $branch-version
 }
