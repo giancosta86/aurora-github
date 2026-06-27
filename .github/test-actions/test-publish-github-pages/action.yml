@@ -12,7 +12,7 @@ runs:
     - uses: ./actions/publish-github-pages
       with:
         working-directory: website/static
-        dry-run: false
+        dry-run: true
 
     - shell: elvish {0}
       run: echo 🎭 Testing a Maven-generated site...
@@ -20,7 +20,7 @@ runs:
     - uses: ./actions/publish-github-pages
       with:
         working-directory: tests/maven-project
-        dry-run: true
+        dry-run: false
 
     - shell: elvish {0}
       run: echo 🎭 Testing a NodeJS site...
@@ -34,9 +34,12 @@ runs:
     - uses: ./actions/run-velvet-code
       with:
         code: |
+          use str
+
           >> 'The website URL' {
             >> 'should be the expected one' {
               put '${{ steps.publish-nodejs-pages.outputs.url }}' |
+                str:trim-space (all) |
                 should-be 'https://gianlucacosta.info/aurora-github/'
             }
           }
