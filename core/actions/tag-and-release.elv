@@ -49,10 +49,16 @@ fn main {
   gh release create $tag --draft --title $release-name --notes ''
 
   if $update-major-branch {
-    echo 🌳 Updating major version branch...
-    git:ensure-in-branch 'v'$branch-version[major]
+    var major-branch 'v'$branch-version[major]
+
+    std-err:inspect &emoji=🌳 'Updating major version branch' $major-branch
+
+    git:ensure-in-branch $major-branch
+
     git merge $main-branch
-    git push
+
+    git push origin $major-branch
+
     echo ✅ Major version branch updated!
   }
 }
