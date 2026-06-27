@@ -12,7 +12,7 @@ jobs:
     if: false
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: ./.github/test-actions/test-setup-elvish-context
 
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-setup-elvish-context
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: ./.github/test-actions/test-install-elvish-packages
 
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-setup-elvish-context
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: ./.github/test-actions/test-run-velvet-code
 
@@ -41,14 +41,14 @@ jobs:
       - test-install-elvish-packages
       - test-run-velvet-code
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
   test-detect-branch-version:
     if: false
     runs-on: ubuntu-24.04
     needs: test-elvish-platform
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-detect-branch-version
 
   test-check-action-references:
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-detect-branch-version
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./actions/check-action-references
 
   test-check-project-license:
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-check-project-license
 
   test-find-regex-pattern:
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-find-regex-pattern
 
   test-find-critical-todos:
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-find-regex-pattern
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-find-critical-todos
 
   test-replace-regex-pattern:
@@ -88,7 +88,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-replace-regex-pattern
 
   test-inject-branch-version:
@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-replace-regex-pattern
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-inject-branch-version
 
   test-install-system-packages:
@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-install-system-packages
 
   test-install-via-sdkman:
@@ -112,7 +112,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-install-via-sdkman
 
   test-upload-release-assets:
@@ -120,7 +120,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-upload-release-assets
 
   test-run-elvish-tests:
@@ -128,7 +128,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-run-elvish-tests
 
   test-verify-elvish-package:
@@ -139,7 +139,7 @@ jobs:
       - test-inject-branch-version
       - test-find-critical-todos
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-elvish-package
 
   test-setup-rust-context:
@@ -147,7 +147,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-setup-rust-context
 
   test-verify-rust-crate:
@@ -159,7 +159,7 @@ jobs:
       - test-setup-rust-context
       - test-find-critical-todos
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-rust-crate
 
   test-publish-rust-crate:
@@ -170,7 +170,7 @@ jobs:
       - test-inject-branch-version
       - test-verify-rust-crate
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-rust-crate
 
   test-setup-nodejs-context:
@@ -178,7 +178,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-setup-nodejs-context
 
   test-check-subpath-exports:
@@ -186,7 +186,7 @@ jobs:
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-check-subpath-exports
 
   test-verify-npm-package:
@@ -199,7 +199,7 @@ jobs:
       - test-setup-nodejs-context
       - test-check-subpath-exports
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-npm-package
 
   test-publish-npm-package:
@@ -210,7 +210,7 @@ jobs:
       - test-setup-nodejs-context
       - test-verify-npm-package
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-npm-package
 
   test-verify-rust-wasm:
@@ -220,7 +220,7 @@ jobs:
       - test-check-project-license
       - test-verify-rust-crate
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-rust-wasm
 
   test-publish-rust-wasm:
@@ -230,7 +230,7 @@ jobs:
       - test-publish-npm-package
       - test-verify-rust-wasm
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-rust-wasm
 
   test-verify-python-package:
@@ -241,7 +241,7 @@ jobs:
       - test-find-critical-todos
       - test-inject-branch-version
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-python-package
 
   test-publish-python-package:
@@ -251,7 +251,7 @@ jobs:
       - test-inject-branch-version
       - test-verify-python-package
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-python-package
         with:
           index-secret: FAKE-SECRET
@@ -265,7 +265,7 @@ jobs:
       - test-inject-branch-version
       - test-install-via-sdkman
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-jvm-project
 
   test-publish-jvm-project:
@@ -276,7 +276,7 @@ jobs:
       - test-install-via-sdkman
       - test-verify-jvm-project
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-jvm-project
         with:
           jvm-token: FAKE_TOKEN
@@ -291,13 +291,13 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-github-pages
 
   temp-test-tag-and-release:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./actions/tag-and-release
 
   verify:
@@ -336,7 +336,7 @@ jobs:
       - test-publish-jvm-project
       - test-publish-github-pages
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./actions/check-required-jobs
         with:
           needs-as-json: ${{ toJSON(needs) }}
