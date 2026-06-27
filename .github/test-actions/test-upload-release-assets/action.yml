@@ -89,8 +89,8 @@ runs:
 
         all [
           index.html
-          next.svg
-          favicon.png
+          react.svg
+          vite.svg
         ] | each { |file-name|
           gh release download $tag -p $file-name -D $download-directory
         }
@@ -124,11 +124,11 @@ runs:
               put index.html |
                 should-match-original-in [website static]
 
-              put next.svg |
-                should-match-original-in [website nextjs public]
+              put react.svg |
+                should-match-original-in [website nodejs src assets]
 
-              put favicon.png |
-                should-match-original-in [website nextjs public]
+              put vite.svg |
+                should-match-original-in [website nodejs src assets]
             }
           }
 
