@@ -21,6 +21,7 @@ runs:
       run: |
         echo 'EVENT NAME:' ${{github.event_name}}
         echo 'EVENT ACTION:' ${{github.event.action}}
+        echo 'PR MERGED:' ${{github.event.pull_request.merged}}
         echo '💭 tag-and-release can only run when merging a pull request'
 
     - if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == 'true'
