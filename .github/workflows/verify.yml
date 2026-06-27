@@ -116,7 +116,7 @@ jobs:
       - uses: ./.github/test-actions/test-install-via-sdkman
 
   test-upload-release-assets:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-check-action-references
     steps:
