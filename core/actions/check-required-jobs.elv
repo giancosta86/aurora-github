@@ -14,7 +14,7 @@ fn main {
   var needs-as-json = (input:string needs-as-json)
 
   console:section &emoji=🐟 'needs-as-json' {
-    pprint $needs-as-json
+    echo $needs-as-json
   }
 
   var required-jobs = (echo $needs-as-json | from-json)
