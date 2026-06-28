@@ -16,4 +16,4 @@ runs:
         use github.com/giancosta86/aurora-github/actions/check-required-jobs
         check-required-jobs:main
       env:
-        needs-as-json: ${{ inputs.needs-as-json }}'
+        needs-as-json: ${{ inputs.needs-as-json }}
