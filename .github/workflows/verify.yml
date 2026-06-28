@@ -295,7 +295,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-github-pages
 
   test-tag-and-release:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs:
       - test-detect-branch-version
