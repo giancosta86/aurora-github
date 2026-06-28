@@ -55,6 +55,9 @@ fn main {
 
   var update-major-branch = (input:bool update-major-branch)
 
+  var branch = (pull-request:get-branch)
+  console:inspect &emoji=🌲 'Merged branch' $branch
+
   var branch-version = (semver:parse $branch)
   console:inspect &emoji=🏷️ 'Branch version' $branch-version
 
@@ -62,9 +65,6 @@ fn main {
     put $branch-version[major]'.'$branch-version[minor]'.'$branch-version[patch]
   )
   console:inspect &emoji=✒️ 'Version string' $version-string
-
-  var branch = (pull-request:get-branch)
-  console:inspect &emoji=🌲 'Merged branch' $branch
 
   #TODO: restore this
   #delete-branch-from-origin $branch
