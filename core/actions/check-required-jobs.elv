@@ -33,7 +33,7 @@ fn main {
           lang:get-value $result-descriptions $job-result &default=$unknown-result-description
         )
 
-        console:echo '* '$job-id': '$result-description
+        echo '* '$job-id': '$result-description
       }
   }
 
@@ -41,5 +41,5 @@ fn main {
     fail 'All the required jobs must be successful!'
   }
 
-  console:echo ✅ All the required jobs are OK!
+  echo ✅ All the required jobs are OK!
 }
