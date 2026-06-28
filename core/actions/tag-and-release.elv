@@ -40,6 +40,8 @@ fn update-major-branch { |major-branch tag|
 
   git:ensure-in-branch $major-branch
 
+  git pull
+
   git merge $tag
 
   git push origin $major-branch
