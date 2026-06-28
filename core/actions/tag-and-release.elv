@@ -1,10 +1,51 @@
 use github.com/giancosta86/ethereal/v1/semver
+use ../ci-cd/output
 use ../ci-cd/pull-request
 use ../ci-cd/release
 use ../ci-cd/repository
 use ../git
 use ../console
 use ./input
+
+fn delete-branch-from-origin { |branch|
+  console:inspect &emoji=🌴 'Deleting the merged branch' $branch
+
+  git push origin --delete $branch
+
+  echo ✅ Merged branch deleted!
+}
+
+fn create-and-push-tag { |tag|
+  echo 📤 Creating and pushing the tag to origin...
+
+  git tag $tag
+
+  git push origin $tag
+
+  echo ✅ Tag pushed!
+}
+
+fn create-release-draft { |product-name version-string tag|
+  var release-title = $product-name' '$version-string
+
+  console:inspect &emoji=📝 'Now creating release draft' $release-title
+
+  release:create-draft $tag $release-title
+
+  echo ✅ Release draft created!
+}
+
+fn update-major-branch { |major-branch tag|
+  console:inspect &emoji=🌳 'Updating major version branch' $major-branch
+
+  git:ensure-in-branch $major-branch
+
+  git merge $tag
+
+  git push origin $major-branch
+
+  echo ✅ Major version branch updated!
+}
 
 fn main {
   var product-name = (
@@ -14,44 +55,43 @@ fn main {
 
   var update-major-branch = (input:bool update-major-branch)
 
-  var branch = (pull-request:get-branch)
-  console:inspect &emoji=🌲 'Branch' $branch
-
   var branch-version = (semver:parse $branch)
   console:inspect &emoji=🏷️ 'Branch version' $branch-version
 
-  echo 🌴 Deleting the remote branch...
-  git push origin --delete $branch
-  echo ✅ Remote branch deleted!
+  var version-string = (
+    put $branch-version[major]'.'$branch-version[minor]'.'$branch-version[patch]
+  )
+  console:inspect &emoji=✒️ 'Version string' $version-string
 
-  var version-string = $branch-version[major]'.'$branch-version[minor]'.'$branch-version[patch]
+  var branch = (pull-request:get-branch)
+  console:inspect &emoji=🌲 'Merged branch' $branch
+
+  #TODO: restore this
+  #delete-branch-from-origin $branch
+
+  var version-string = (get-version-string $branch)
   console:inspect &emoji=📦 'Version string' $version-string
 
-  var tag = 'v'$version-string
+  #TODO: remove the suffix
+  var tag = 'v'$version-string'xxxxx'
   console:inspect &emoji=📌 'Tag' $tag
 
-  echo 📤 Creating and pushing the tag to origin...
-  git tag $tag
-  git push origin $tag
-  echo ✅ Tag pushed!
+  create-and-push-tag $tag
 
-  var release-title = $product-name' '$version-string
+  create-release-draft $product-name $version-string $tag
 
-  console:inspect &emoji=📝 'Now creating release draft' $release-title
-  release:create-draft $tag $release-title
-  echo ✅ Release draft created!
+  var major-branch
 
   if $update-major-branch {
-    var major-branch = 'v'$branch-version[major]
+    set major-branch = 'v'$branch-version[major]
 
-    console:inspect &emoji=🌳 'Updating major version branch' $major-branch
-
-    git:ensure-in-branch $major-branch
-
-    git merge $tag
-
-    git push origin $major-branch
-
-    echo ✅ Major version branch updated!
+    update-major-branch $major-branch $tag
+  } else {
+    set major-branch = ''
   }
+
+  output:map [
+    &tag=$tag
+    &major-branch=$major-branch
+  ]
 }

@@ -1,13 +1,22 @@
 name: Tag and release
-description: Creates a Git tag and a GitHub release from the current branch
+description: Creates a Git tag and a GitHub draft release when merging a pull request, in addition to updating a major version branch, from a Git branch named according to semantic versioning.
 
 inputs:
   product-name:
-    description: The name of the product; if empty, defaults to the repository name
+    description: The name of the product; if empty, defaults to the repository name.
 
   update-major-branch:
-    description: Create/update the 'vX' branch containing the related major version.
+    description: Create/update the 'v<major>' branch.
     default: true
+
+outputs:
+  tag:
+    description: The Git tag created for the release.
+    value: ${{ steps.main.outputs.tag }}
+
+  major-branch:
+    description: The Git branch of the major version, if updated.
+    value: ${{ steps.main.outputs.major-branch }}
 
 runs:
   using: composite
@@ -15,16 +24,14 @@ runs:
     - if: github.event_name != 'pull_request' || github.event.action != 'closed' || github.event.pull_request.merged != true
       shell: bash
       run: |
-        echo 'EVENT NAME:' ${{github.event_name}}
-        echo 'EVENT ACTION:' ${{github.event.action}}
-        echo 'PR MERGED:' ${{github.event.pull_request.merged}}
         echo '💭 tag-and-release can only run when merging a pull request'
         echo skip=true >> $GITHUB_ENV
 
     - if: env.skip != 'true'
       uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - if: env.skip != 'true'
+    - id: main
+      if: env.skip != 'true'
       shell: elvish {0}
       run: |
         use github.com/giancosta86/aurora-github/actions/tag-and-release
