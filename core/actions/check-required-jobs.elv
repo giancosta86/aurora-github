@@ -11,7 +11,7 @@ var result-descriptions = [
 var unknown-result-description = '❓ (UNKNOWN)'
 
 fn main {
-  var needs-as-json = (input:string needs-as-json)
+  var needs-as-json = (get-env needs-as-json)
 
   console:section &emoji=🐟 'needs-as-json' {
     echo $needs-as-json
