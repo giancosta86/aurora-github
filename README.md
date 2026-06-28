@@ -96,6 +96,14 @@ The actions can be grouped by technology:
 
 - [GitHub actions](https://docs.github.com/en/actions)
 
+- [Ethereal](https://github.com/giancosta86/ethereal) - _Elegant utilities for the Elvish shell_
+
+- [Velvet](https://github.com/giancosta86/velvet) - _Smooth, functional testing in the Elvish shell_
+
+- [astral-bridge](https://github.com/giancosta86/astral-bridge) - _Bridge between the Elvish shell and NodeJS_
+
+- [primrose](https://github.com/giancosta86/primrose) - _Elegant file analysis in Elvish_
+
 - [Elvish](https://elv.sh/) - Powerful modern shell scripting
 
 - [Google Gemini](https://gemini.google.com) - used to generate the logo
