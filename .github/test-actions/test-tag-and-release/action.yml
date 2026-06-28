@@ -1,0 +1,7 @@
+name: Test tag-and-release
+description: Tests for tag-and-release.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/tag-and-release
