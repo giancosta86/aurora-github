@@ -13,9 +13,7 @@ runs:
     - name: Check the required jobs
       shell: elvish {0}
       run: |
-        use aurora-github/ci-cd/input
-        use aurora-github/ci-cd/required-jobs
-
-        var needs-as-json = (input:string needs-as-json '${{ inputs.needs-as-json }}')
-
-        required-jobs:check $needs-as-json
+        use github.com/giancosta86/aurora-github/actions/check-required-jobs
+        check-required-jobs:main
+      env:
+        needs-as-json: ${{ inputs.needs-as-json }}'

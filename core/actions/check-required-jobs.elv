@@ -1,18 +1,21 @@
-use github.com/giancosta86/aurora-elvish/console
-use github.com/giancosta86/aurora-elvish/map
+use github.com/giancosta86/ethereal/v1/lang
+use ../console
+use ./input
 
-var -result-descriptions = [
+var result-descriptions = [
   &success='✅ (OK)'
   &failure='❌ (FAILURE)'
   &skipped='😴 (SKIPPED)'
 ]
 
-var -unknown-result-description = '❓ (UNKNOWN)'
+var unknown-result-description = '❓ (UNKNOWN)'
 
-fn check { |needs-as-json|
-  var failure = $false
+fn main {
+  var needs-as-json = (input:string needs-as-json)
 
   var required-jobs = (echo $needs-as-json | from-json)
+
+  var failure = $false
 
   console:section &emoji=🤹 'JOB SUMMARY' {
     keys $required-jobs |
@@ -22,12 +25,12 @@ fn check { |needs-as-json|
 
         var job-result = $raw-job[result]
 
-        if (!=s $job-result success) {
+        if (not-eq $job-result success) {
           set failure = $true
         }
 
         var result-description = (
-          map:get-value $-result-descriptions $job-result &default=$-unknown-result-description
+          lang:get-value $result-descriptions $job-result &default=$unknown-result-description
         )
 
         console:echo '* '$job-id': '$result-description
