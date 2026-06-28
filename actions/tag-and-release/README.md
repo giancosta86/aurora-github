@@ -38,6 +38,10 @@ For any trigger different from a **merged** pull request, the action will merely
 
    1. Push the updated `v<major>` branch
 
+## 💬 Remarks
+
+The action is **idempotent**; in particular, _if the merged branch has been deleted_ by a previous run, or the tag and the release have already been created, the job containing the action **can be re-run**.
+
 ## ☑️ Requirements
 
 - The following [permission](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work

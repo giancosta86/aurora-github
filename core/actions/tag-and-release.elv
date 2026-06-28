@@ -26,6 +26,12 @@ fn create-and-push-tag { |tag|
 }
 
 fn create-release-draft { |product-name version-string tag|
+  try {
+    gh release delete --yes $tag
+
+    console:inspect &emoji=🧹 'Existing release draft deleted for tag' $tag
+  } catch {}
+
   var release-title = $product-name' '$version-string
 
   console:inspect &emoji=📝 'Now creating release draft' $release-title
@@ -79,10 +85,10 @@ fn main {
 
   if $update-major-branch {
     set major-branch = 'v'$branch-version[major]
-
     update-major-branch $major-branch $tag
   } else {
     set major-branch = ''
+    echo 💭 Skipping the update of the major branch...
   }
 
   output:map [
