@@ -69,9 +69,6 @@ fn main {
   #TODO: restore this
   #delete-branch-from-origin $branch
 
-  var version-string = (get-version-string $branch)
-  console:inspect &emoji=📦 'Version string' $version-string
-
   #TODO: remove the suffix
   var tag = 'v'$version-string'xxxxx'
   console:inspect &emoji=📌 'Tag' $tag
