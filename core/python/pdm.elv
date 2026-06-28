@@ -1,5 +1,5 @@
 use re
-use ../console
+use github.com/giancosta86/ethereal/v1/console
 use ./pipx
 
 fn -install { |version|

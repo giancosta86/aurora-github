@@ -1,8 +1,8 @@
 use os
 use path
+use github.com/giancosta86/ethereal/v1/console
 use ../ci-cd/env
 use ../jvm/maven
-use ../console
 
 fn detect-strategy {
   var env-variables = (

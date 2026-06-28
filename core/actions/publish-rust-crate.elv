@@ -1,7 +1,7 @@
 use str
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/edit
 use github.com/giancosta86/ethereal/v1/lang
-use ../console
 use ../highlight
 use ./input
 

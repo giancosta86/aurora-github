@@ -1,10 +1,10 @@
+use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/git
 use github.com/giancosta86/ethereal/v1/semver
 use ../ci-cd/output
 use ../ci-cd/pull-request
 use ../ci-cd/release
 use ../ci-cd/repository
-use ../git
-use ../console
 use ./input
 
 fn delete-branch-from-origin { |branch|

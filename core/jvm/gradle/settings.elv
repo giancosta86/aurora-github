@@ -1,5 +1,5 @@
 use str
-use ../../console
+use github.com/giancosta86/ethereal/v1/console
 
 fn prepare-for-publication {
   echo 🐘 Preparing Gradle settings for publication...

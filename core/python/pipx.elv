@@ -1,5 +1,5 @@
 use github.com/giancosta86/ethereal/v1/command
-use ../console
+use github.com/giancosta86/ethereal/v1/console
 
 fn install-package { |package &version=$nil|
   echo 📥 Installing $package via pipx...

@@ -1,9 +1,9 @@
 use os
 use re
 use str
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/fs
 use github.com/giancosta86/ethereal/v1/seq
-use ../../console
 
 var -snippet-pattern = '(?s)```rust\s+(.*?)```'
 

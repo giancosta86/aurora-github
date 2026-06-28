@@ -1,10 +1,10 @@
 use github.com/giancosta86/aurora-github/ci-cd/env
 use github.com/giancosta86/ethereal/v1/command
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/astral-bridge/v1/corepack
 use github.com/giancosta86/astral-bridge/v1/nvm
 use github.com/giancosta86/astral-bridge/v1/package-manager
 use github.com/giancosta86/astral-bridge/v1/version/requested
-use ../console
 use ./input
 
 var nvm~ = $nvm:nvm~

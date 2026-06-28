@@ -1,7 +1,7 @@
 use os
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
 use ../highlight
-use ../console
 use ../nodejs
 use ./input
 

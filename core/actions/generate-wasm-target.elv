@@ -1,7 +1,7 @@
 use os
 use str
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
-use ../console
 use ./input
 
 var root-files-to-copy = [

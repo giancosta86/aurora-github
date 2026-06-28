@@ -1,7 +1,7 @@
 use os
 use github.com/giancosta86/ethereal/v1/command
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/fs
-use ./console
 
 fn -should-run-installer { |required-command|
   if $required-command {

@@ -1,8 +1,8 @@
 use os
 use ../ci-cd/env
 use github.com/giancosta86/ethereal/v1/command
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
-use ../console
 use ./input
 
 fn -check-preconditions {
