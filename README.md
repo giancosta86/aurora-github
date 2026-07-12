@@ -12,10 +12,6 @@ The actions can be grouped by technology:
 
 ## 🔮 Elvish shell
 
-- [setup-elvish-context](actions/setup-elvish-context/README.md)
-
-- [install-elvish-packages](actions/install-elvish-packages/README.md)
-
 - [run-elvish-tests](actions/run-elvish-tests/README.md)
 
 - [run-velvet-code](actions/run-velvet-code/README.md)

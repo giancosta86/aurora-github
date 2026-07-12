@@ -1,17 +1,16 @@
 use github.com/giancosta86/ethereal/v1/seq
-use ../branch-version
 use ../ci-cd/action-references
 
 fn main {
-  var branch = (branch-version:detect)[branch]
-
-  var regex = (action-references:get-regex-for-references-to-other-branches $branch)
-
-  var grep-outcome = ?(
-    grep --color=always --perl-regexp $regex **.yml > &2
+  var references-to-other-branches=(
+    action-references:find-to-other-branches
   )
 
-  if $grep-outcome {
+  if (seq:non-empty $references-to-other-branches) {
+    all $references-to-other-branches | each { |reference|
+      styled red bold $reference
+    }
+
     fail "There are references to actions within '"$pwd"' residing in other branches!"
   }
 

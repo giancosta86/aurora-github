@@ -5,13 +5,9 @@ use github.com/giancosta86/ethereal/v1/seq
 use ./ci-cd/git-refs
 
 fn detect {
-  var actual-ref = (git-refs:get-actual)
+  var current-ref = (git-refs:get-current)
 
-  if (seq:is-empty $actual-ref) {
-    fail 'Cannot detect the actual Git ref!'
-  }
-
-  var branch = [(str:split / $actual-ref)][-1]
+  var branch = [(str:split / $current-ref)][-1]
 
   var semantic-version = (semver:parse $branch)
 
@@ -22,7 +18,7 @@ fn detect {
   var major = $semantic-version[major]
 
   put [
-    &actual-ref=$actual-ref
+    &current-ref=$current-ref
     &branch=$branch
     &version=$version
     &escaped-version=$escaped-version

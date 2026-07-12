@@ -61,7 +61,7 @@ fn main {
 
   var update-major-branch = (input:bool update-major-branch)
 
-  var branch = (pull-request:get-branch)
+  var branch = (pull-request:get-ref)
   console:inspect &emoji=🌲 'Merged branch' $branch
 
   var branch-version = (semver:parse $branch)

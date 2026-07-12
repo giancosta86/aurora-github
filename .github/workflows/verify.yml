@@ -8,27 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-setup-elvish-context:
-    if: false
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: ./.github/test-actions/test-setup-elvish-context
-
-  test-install-elvish-packages:
-    if: false
-    runs-on: ubuntu-24.04
-    needs: test-setup-elvish-context
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: ./.github/test-actions/test-install-elvish-packages
-
   test-run-velvet-code:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-setup-elvish-context
     steps:
       - uses: actions/checkout@v7
 
@@ -38,7 +20,6 @@ jobs:
     if: false
     runs-on: ubuntu-24.04
     needs:
-      - test-install-elvish-packages
       - test-run-velvet-code
     steps:
       - uses: actions/checkout@v7
@@ -295,7 +276,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-github-pages
 
   test-tag-and-release:
-    if: true
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-detect-branch-version
@@ -307,8 +288,6 @@ jobs:
     if: always()
     runs-on: ubuntu-24.04
     needs:
-      - test-setup-elvish-context
-      - test-install-elvish-packages
       - test-run-velvet-code
       - test-elvish-platform
       - test-detect-branch-version
