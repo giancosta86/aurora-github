@@ -72,6 +72,6 @@ runs:
 
         var second-test-output = (slurp < out-2.txt)
 
-        if (not-eq $first-test-output 'SECOND VELVET TEST OK') {
+        if (not-eq $second-test-output 'SECOND VELVET TEST OK') {
           fail 'Unexpected 2nd test output: '$second-test-output
         }
