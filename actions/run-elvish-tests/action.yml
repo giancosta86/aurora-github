@@ -3,22 +3,38 @@ description: Runs tests via an Elvish script or via Velvet.
 
 inputs:
   velvet-version:
-    description: The Velvet version to use.
+    description: Velvet version to use.
     default: v4
 
+  velvet-scripts:
+    description: Comma-separated Velvet scripts to run.
+
   working-directory:
-    description: The directory containing the tests.
+    description: Directory containing the tests.
     default: .
 
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/run-elvish-tests
         run-elvish-tests:main
+
+    - if: env.run-velvet == 'true'
+      uses: giancosta86/epm-plus/actions/install-elvish-packages@v1
+      with:
+        packages: github.com/giancosta86/velvet@${{ inputs.velvet-version }}
+
+    - if: env.run-velvet == 'true'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-elvish-tests
+        run-elvish-tests:run-velvet
       env:
         velvet-version: ${{ inputs.velvet-version }}
+        velvet-scripts: ${{ inputs.velvet-scripts }}

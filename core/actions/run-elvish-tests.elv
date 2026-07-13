@@ -1,19 +1,32 @@
 use os
-use ./input
-use ../velvet
+use use github.com/giancosta86/gauntlet/v1/env
+use use github.com/giancosta86/gauntlet/v1/input
 
-var -verification-script = verify.elv
+var verification-script = verify.elv
 
 fn main {
-  if (os:is-regular $-verification-script) {
+  var verification-script-exists = (os:is-regular $verification-script)
+
+  if $verification-script-exists {
     echo 📜 Verification script found! Now running it...
 
-    elvish $-verification-script
-  } else {
-    var velvet-version = (input:string velvet-version)
-
-    echo 🐞 Running Velvet $velvet-version...
-
-    velvet:run-flawless $velvet-version
+    elvish $verification-script
   }
+
+  not $verification-script-exists |
+    env:set run-velvet
+}
+
+fn run-velvet {
+  var velvet-version = (input:string velvet-version)
+
+  var velvet-script = (input:list velvet-scripts)
+
+  echo 🐞 Running Velvet $velvet-version...
+
+  var velvet-module: = (
+    use-mod 'github.com/giancosta86/velvet/'$velvet-version'/velvet'
+  )
+
+  velvet-module:velvet &flawless $@velvet-scripts
 }

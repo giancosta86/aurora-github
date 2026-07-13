@@ -14,8 +14,6 @@ The actions can be grouped by technology:
 
 - [run-elvish-tests](actions/run-elvish-tests/README.md)
 
-- [run-velvet-code](actions/run-velvet-code/README.md)
-
 - [verify-elvish-package](actions/verify-elvish-package/README.md)
 
 ## 🦀 Rust

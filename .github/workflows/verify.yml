@@ -8,19 +8,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-run-velvet-code:
-    if: false
+  test-run-elvish-tests:
+    if: true
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-
-      - uses: ./.github/test-actions/test-run-velvet-code
+      - uses: ./.github/test-actions/test-run-elvish-tests
 
   test-elvish-platform:
     if: false
     runs-on: ubuntu-24.04
     needs:
-      - test-run-velvet-code
+      - test-run-elvish-tests
     steps:
       - uses: actions/checkout@v7
 
@@ -103,14 +102,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-upload-release-assets
-
-  test-run-elvish-tests:
-    if: false
-    runs-on: ubuntu-24.04
-    needs: test-check-action-references
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ./.github/test-actions/test-run-elvish-tests
 
   test-verify-elvish-package:
     if: false
@@ -288,7 +279,7 @@ jobs:
     if: always()
     runs-on: ubuntu-24.04
     needs:
-      - test-run-velvet-code
+      - test-run-elvish-tests
       - test-elvish-platform
       - test-detect-branch-version
       - test-check-action-references
@@ -300,7 +291,6 @@ jobs:
       - test-install-system-packages
       - test-install-via-sdkman
       - test-upload-release-assets
-      - test-run-elvish-tests
       - test-verify-elvish-package
       - test-setup-rust-context
       - test-verify-rust-crate

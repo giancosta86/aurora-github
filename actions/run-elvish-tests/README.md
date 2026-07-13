@@ -11,20 +11,21 @@ steps:
 
 ## 💡 How it works
 
-1. If the `working-directory` contains a **verify.elv** script, just run it.
+1. If `working-directory` contains a **verify.elv** script, just run it.
 
-1. Otherwise, ensure the given `velvet-version` is installed, then run:
+1. Otherwise ensure the given `velvet-version` is installed, then run:
 
-   > velvet &flawless
+   > velvet &flawless [<velvet-scripts>]
 
    within `working-directory`.
 
 ## 📥 Inputs
 
-|        Name         |    Type    |            Description             | Default value |
-| :-----------------: | :--------: | :--------------------------------: | :-----------: |
-|  `velvet-version`   | **string** |     The Velvet version to use      |    **v4**     |
-| `working-directory` | **string** | The directory containing the tests |     **.**     |
+|        Name         |    Type    |              Description              | Default value |
+| :-----------------: | :--------: | :-----------------------------------: | :-----------: |
+|  `velvet-version`   | **string** |         Velvet version to use         |    **v4**     |
+|  `velvet-scripts`   | **string** | Comma-separated Velvet scripts to run |               |
+| `working-directory` | **string** |    Directory containing the tests     |     **.**     |
 
 ## 🌐 Further references
 
