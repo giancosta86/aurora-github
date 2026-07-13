@@ -43,8 +43,7 @@ runs:
     - shell: elvish {0}
       run: echo 🎭 Build and verify the Gradle project...
 
-    - name: Build and verify the Gradle project
-      uses: ./actions/verify-jvm-project
+    - uses: ./actions/verify-jvm-project
       with:
         working-directory: tests/gradle-project
 

@@ -11,8 +11,10 @@ runs:
         echo 'alpha' > A.txt
         echo 'beta' > B.txt
 
-    - name: Testing replacement with enumerated files
-      uses: ./actions/replace-regex-pattern
+    - shell: elvish {0}
+      run: echo 🎭 Testing replacement with enumerated files...
+
+    - uses: ./actions/replace-regex-pattern
       with:
         files: A.txt, B.txt
         regex: "([ae])"
@@ -29,8 +31,10 @@ runs:
               should-be 'b*e*t*a*'
           }
 
-    - name: Testing replacement with wildcard
-      uses: ./actions/replace-regex-pattern
+    - shell: elvish {0}
+      run: echo 🎭 Testing replacement with wildcard...
+
+    - uses: ./actions/replace-regex-pattern
       with:
         files: "*.txt"
         regex: "\\*"

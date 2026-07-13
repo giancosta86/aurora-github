@@ -6,8 +6,7 @@ runs:
   steps:
     - uses: ./actions/setup-elvish-context
 
-    - name: Setup environment variables
-      shell: elvish {0}
+    - shell: elvish {0}
       run: |
         use github.com/giancosta86/aurora-github/ci-cd/env
 

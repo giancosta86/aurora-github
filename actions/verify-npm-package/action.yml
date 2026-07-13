@@ -53,6 +53,5 @@ runs:
         files: ${{ inputs.todo-files }}
         working-directory: ${{ inputs.working-directory }}
 
-    - name: Print confirmation message
-      shell: elvish {0}
+    - shell: elvish {0}
       run: echo ✅📦 npm package project verified!

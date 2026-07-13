@@ -9,16 +9,14 @@ runs:
     - shell: elvish {0}
       run: echo 🎭 Testing on Rust crate...
 
-    - name: Run for Rust crate project
-      uses: ./actions/setup-rust-context
+    - uses: ./actions/setup-rust-context
       with:
         working-directory: tests/rust-crate
 
     - shell: elvish {0}
       run: echo 🎭 Testing on Rust Wasm...
 
-    - name: Run for Rust web assembly project
-      uses: ./actions/setup-rust-context
+    - uses: ./actions/setup-rust-context
       with:
         working-directory: tests/rust-wasm
 

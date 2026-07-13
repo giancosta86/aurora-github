@@ -71,6 +71,5 @@ runs:
         npm-token: ${{ inputs.npm-token }}
         working-directory: ${{ inputs.working-directory }}/pkg
 
-    - name: Print confirmation message
-      shell: elvish {0}
+    - shell: elvish {0}
       run: echo ✅🦀🌐 Rust web assembly publication action successful!

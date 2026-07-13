@@ -7,10 +7,9 @@ runs:
     - uses: ./actions/setup-elvish-context
 
     - shell: elvish {0}
-      run: echo 🎭 Testing NodeJS context setup...
+      run: echo 🎭 Initializing environment variable...
 
-    - name: Initialize environment variables
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: tests/npm-package
       run: |
         use str
@@ -35,8 +34,10 @@ runs:
           &expected-pnpm-version=$expected-pnpm-version
         ]
 
-    - name: Testing preconditions
-      uses: ./actions/run-velvet-code
+    - shell: elvish {0}
+      run: echo 🎭 Testing precoditions...
+
+    - uses: ./actions/run-velvet-code
       with:
         working-directory: tests/npm-package
         code: |
@@ -62,8 +63,10 @@ runs:
       with:
         working-directory: tests/npm-package
 
-    - name: Testing effects
-      uses: ./actions/run-velvet-code
+    - shell: elvish {0}
+      run: echo 🎭 Testing effects...
+
+    - uses: ./actions/run-velvet-code
       with:
         working-directory: tests/npm-package
         code: |

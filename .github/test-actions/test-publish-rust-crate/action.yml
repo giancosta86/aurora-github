@@ -6,8 +6,10 @@ runs:
   steps:
     - uses: ./actions/setup-elvish-context
 
-    - name: Perform the initial backup of Cargo.toml
-      shell: elvish {0}
+    - shell: elvish {0}
+      run: echo 🎭 Now performing an initial descriptor backup...
+
+    - shell: elvish {0}
       working-directory: tests/rust-crate
       run: cp Cargo.toml Cargo.toml.bak
 

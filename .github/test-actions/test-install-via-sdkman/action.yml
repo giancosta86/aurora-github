@@ -6,8 +6,7 @@ runs:
   steps:
     - uses: ./actions/setup-elvish-context
 
-    - name: Setup environment variables
-      shell: elvish {0}
+    - shell: elvish {0}
       run: |
         use github.com/giancosta86/aurora-github/ci-cd/env
         env:map [
@@ -16,10 +15,9 @@ runs:
         ]
 
     - shell: elvish {0}
-      run: echo "🎭 Checking the test environment..."
+      run: echo 🎭 Checking the test environment...
 
-    - name: Ensuring preconditions
-      uses: ./actions/run-velvet-code
+    - uses: ./actions/run-velvet-code
       with:
         code: |
           >> 'The expected Maven version' {
@@ -54,8 +52,7 @@ runs:
         candidate: gradle
         version: ${{ env.expected-gradle-version }}
 
-    - name: Testing the results
-      uses: ./actions/run-velvet-code
+    - uses: ./actions/run-velvet-code
       with:
         code: |
           >> 'The expected Maven version' {

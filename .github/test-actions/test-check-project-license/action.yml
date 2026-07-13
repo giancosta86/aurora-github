@@ -4,5 +4,4 @@ description: Tests for check-project-license.
 runs:
   using: composite
   steps:
-    - name: Check project license
-      uses: ./actions/check-project-license
+    - uses: ./actions/check-project-license

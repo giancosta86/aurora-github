@@ -18,8 +18,7 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Create and run the test script
-      shell: elvish {0}
+    - shell: elvish {0}
       run: |
         use github.com/giancosta86/aurora-github/actions/run-velvet-code
         run-velvet-code:main

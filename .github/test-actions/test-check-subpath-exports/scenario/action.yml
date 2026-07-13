@@ -14,8 +14,7 @@ runs:
     - shell: elvish {0}
       run: echo 🎭 ${{inputs.header}}
 
-    - name: Run the requested jq operation on package.json
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: tests/npm-package
       run: |
         jq '${{ inputs.jq-operation }}' package.json > package.json.temp

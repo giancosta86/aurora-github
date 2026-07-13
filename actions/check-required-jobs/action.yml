@@ -10,8 +10,7 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - name: Check the required jobs
-      shell: elvish {0}
+    - shell: elvish {0}
       run: |
         use github.com/giancosta86/aurora-github/actions/check-required-jobs
         check-required-jobs:main
