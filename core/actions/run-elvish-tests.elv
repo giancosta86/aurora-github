@@ -1,6 +1,6 @@
 use os
-use use github.com/giancosta86/gauntlet/v1/env
-use use github.com/giancosta86/gauntlet/v1/input
+use github.com/giancosta86/gauntlet/v1/env
+use github.com/giancosta86/gauntlet/v1/input
 
 var verification-script = verify.elv
 
