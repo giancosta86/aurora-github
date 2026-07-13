@@ -20,7 +20,7 @@ fn main {
 fn run-velvet {
   var velvet-version = (input:string velvet-version)
 
-  var velvet-script = (input:list velvet-scripts)
+  var velvet-scripts = (input:list velvet-scripts)
 
   echo 🐞 Running Velvet $velvet-version...
 
