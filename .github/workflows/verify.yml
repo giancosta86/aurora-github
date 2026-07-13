@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1.0.0 #TODO! V1 here
       - uses: ./.github/test-actions/test-run-elvish-tests
 
   test-elvish-platform:

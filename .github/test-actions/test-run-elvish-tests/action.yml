@@ -4,6 +4,8 @@ description: Tests for run-elvish-tests.
 runs:
   using: composite
   steps:
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1.0.0 #TODO! V1 here
+
     - shell: elvish {0}
       run: echo 🎭 Running tests from a directory containing an Elvish verification script...
 
@@ -12,18 +14,15 @@ runs:
         working-directory: tests/elvish/script
 
     - shell: elvish {0}
-      run: echo 🎭 Now checking the custom script output...
+      working-directory: tests/elvish/script
+      run: |
+        echo 🎭 Now checking the custom script output...
 
-    - uses: ./actions/run-velvet-code
-      with:
-        working-directory: tests/elvish/script
-        code: |
-          >> 'The tests' {
-            >> 'should produce the expected output file' {
-              slurp < out.txt |
-                should-be 'TEST OK'
-            }
-          }
+        var test-output = (slurp < out.txt)
+
+        if (not-eq $test-output 'TEST OK') {
+          fail 'Unexpected test output: '$test-output
+        }
 
     - shell: elvish {0}
       run: echo 🎭 Running tests from a directory containing Velvet scripts...
@@ -33,15 +32,46 @@ runs:
         working-directory: tests/elvish/velvet
 
     - shell: elvish {0}
-      run: echo 🎭 Now checking the Velvet test output...
+      working-directory: tests/elvish/velvet
+      run: |
+        echo 🎭 Now checking the Velvet test output...
 
-    - uses: ./actions/run-velvet-code
+        var first-test-output = (slurp < out.txt)
+
+        if (not-eq $first-test-output 'FIRST VELVET TEST OK') {
+          fail 'Unexpected 1st test output: '$test-output
+        }
+
+        var second-test-output = (slurp < out-2.txt)
+
+        if (not-eq $first-test-output 'SECOND VELVET TEST OK') {
+          fail 'Unexpected 2nd test output: '$test-output
+        }
+
+    - shell: elvish {0}
+      working-directory: tests/elvish/velvet
+      run: |
+        echo 🎭 Now running a specific Velvet script...
+        rm *.txt
+
+    - uses: ./actions/run-elvish-tests
       with:
         working-directory: tests/elvish/velvet
-        code: |
-          >> 'The tests' {
-            >> 'should produce the expected output file' {
-              slurp < out.txt |
-                should-be 'TEST OK'
-            }
-          }
+        velvet-scripts: protocol-2
+
+    - shell: elvish {0}
+      working-directory: tests/elvish/velvet
+      run: |
+        use os
+
+        echo 🎭 Now checking the specific Velvet test output...
+
+        if (os:is-regular out.txt) {
+          fail 'Only the second protocol script should run!'
+        }
+
+        var second-test-output = (slurp < out-2.txt)
+
+        if (not-eq $first-test-output 'SECOND VELVET TEST OK') {
+          fail 'Unexpected 2nd test output: '$test-output
+        }

@@ -1,5 +1,5 @@
 >> 'The testing protocol' {
-  >> 'should be satisfied' {
-    print 'TEST OK' > out.txt
+  >> 'should be satisfied in the first test' {
+    print 'FIRST VELVET TEST OK' > out.txt
   }
 }
