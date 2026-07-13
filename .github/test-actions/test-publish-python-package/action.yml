@@ -3,7 +3,7 @@ description: Tests for publich-python-package.
 
 inputs:
   index-secret:
-    description: The password/token for publishing to the index.
+    description: Password/token for publishing to the index.
 
 runs:
   using: composite

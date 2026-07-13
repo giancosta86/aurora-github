@@ -23,9 +23,9 @@ steps:
 
 ## 📥 Inputs
 
-|      Name      |    Type    |         Description          | Default value |
-| :------------: | :--------: | :--------------------------: | :-----------: |
-| `license-file` | **string** | The path to the license file |  **LICENSE**  |
+|      Name      |    Type    |       Description        | Default value |
+| :------------: | :--------: | :----------------------: | :-----------: |
+| `license-file` | **string** | Path to the license file |  **LICENSE**  |
 
 ## 🌐 Further references
 

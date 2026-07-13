@@ -7,26 +7,26 @@ inputs:
     default: false
 
   npm-token:
-    description: The secret token for publishing to the registry.
+    description: Secret token for publishing to the registry.
 
   wasm-pack-version:
-    description: The wasm-pack version to install.
+    description: wasm-pack version to install.
 
   npm-scope:
-    description: The npm package scope or `<ROOT>`.
+    description: npm package scope or `<ROOT>`.
 
   node-version:
-    description: The required NodeJS version.
+    description: Required NodeJS version.
 
   package-manager:
-    description: The required package manager, with version.
+    description: Required package manager, with version.
 
   wasm-target:
-    description: The target of the `wasm-pack build` command.
+    description: Target of the `wasm-pack build` command.
     default: web
 
   working-directory:
-    description: The directory containing `Cargo.toml`.
+    description: Directory containing `Cargo.toml`.
     default: .
 
 runs:

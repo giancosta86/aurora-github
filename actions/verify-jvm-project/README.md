@@ -45,7 +45,7 @@ steps:
 |   `tool-version`    | **string**  |      Build tool version (in SDKMAN) to install      |                    **3.9.9**                    |
 |    `quiet-tool`     | **boolean** |          Run the build tool in quiet mode           |                    **true**                     |
 |    `todo-files`     | **string**  | File patterns potentially containing critical TODOs | **src/\*\*[nomatch-ok].{java kt scala groovy}** |
-| `working-directory` | **string**  |   The directory containing the project descriptor   |                      **.**                      |
+| `working-directory` | **string**  |     Directory containing the project descriptor     |                      **.**                      |
 
 ## 🌐 Further references
 

@@ -17,7 +17,7 @@ inputs:
     default: "src/**[nomatch-ok].{java kt scala groovy}"
 
   working-directory:
-    description: The directory containing the project descriptor.
+    description: Directory containing the project descriptor.
     default: .
 
 runs:

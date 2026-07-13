@@ -3,7 +3,7 @@ description: Verifies that all the subpath exports in package.json actually matc
 
 inputs:
   working-directory:
-    description: The directory containing `package.json`.
+    description: Directory containing `package.json`.
     default: .
 
 runs:

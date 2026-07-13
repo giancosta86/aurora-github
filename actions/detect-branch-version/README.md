@@ -22,12 +22,12 @@ _No inputs required._
 
 ## 📤 Outputs
 
-|       Name        |    Type    |                         Description                          |   Example   |
-| :---------------: | :--------: | :----------------------------------------------------------: | :---------: |
-|     `branch`      | **string** |                    The current Git branch                    | **v2.4.8**  |
-|     `version`     | **string** | The version detected from the branch - always without prefix |  **2.4.8**  |
-| `escaped-version` | **string** |        The escaped version - for regular expressions         | **2\.4\.8** |
-|      `major`      | **string** |             The `major` component of the version             |    **2**    |
+|       Name        |    Type    |                       Description                        |   Example   |
+| :---------------: | :--------: | :------------------------------------------------------: | :---------: |
+|     `branch`      | **string** |                    Current Git branch                    | **v2.4.8**  |
+|     `version`     | **string** | Version detected from the branch - always without prefix |  **2.4.8**  |
+| `escaped-version` | **string** |        Escaped version - for regular expressions         | **2\.4\.8** |
+|      `major`      | **string** |             `major` component of the version             |    **2**    |
 
 ## 🌐 Further references
 

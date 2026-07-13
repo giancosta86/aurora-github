@@ -15,7 +15,7 @@ inputs:
     default: "{src tests}/**[nomatch-ok].rs"
 
   working-directory:
-    description: The directory containing `Cargo.toml`.
+    description: Directory containing `Cargo.toml`.
     default: .
 
 runs:

@@ -7,20 +7,20 @@ inputs:
     default: "**"
 
   regex:
-    description: The Perl regular expression pattern.
+    description: Perl regular expression pattern.
 
   crash-when:
     description: When the action should crash. Can be 'found', 'not-found' or just empty.
 
   crash-message:
-    description: The message to show upon crash in lieu of the default ones.
+    description: Message to show upon crash in lieu of the default ones.
 
   quiet:
     description: Do not show the matches.
     default: false
 
   working-directory:
-    description: The directory where the action must run.
+    description: Directory where the action must run.
     default: .
 
 outputs:

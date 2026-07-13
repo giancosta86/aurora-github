@@ -7,10 +7,10 @@ inputs:
     default: false
 
   npm-token:
-    description: The secret token for publishing to the registry.
+    description: Secret token for publishing to the registry.
 
   working-directory:
-    description: The directory containing `package.json`.
+    description: Directory containing `package.json`.
     default: .
 
 runs:

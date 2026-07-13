@@ -10,7 +10,7 @@ inputs:
     default: "{src tests}/**[nomatch-ok].rs"
 
   working-directory:
-    description: The directory containing `pyproject.toml`.
+    description: Directory containing `pyproject.toml`.
     default: .
 
 runs:

@@ -19,9 +19,9 @@ When creating actions in a repository acting as a library for GitHub Actions, yo
 
 ## 📥 Inputs
 
-|        Name         |    Type    |                      Description                      | Default value |
-| :-----------------: | :--------: | :---------------------------------------------------: | :-----------: |
-| `actions-directory` | **string** | The root of the directory tree containing the actions |  **actions**  |
+|        Name         |    Type    |                    Description                    | Default value |
+| :-----------------: | :--------: | :-----------------------------------------------: | :-----------: |
+| `actions-directory` | **string** | Root of the directory tree containing the actions |  **actions**  |
 
 ## 🌐 Further references
 

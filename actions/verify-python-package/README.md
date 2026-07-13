@@ -35,7 +35,7 @@ steps:
 | :-----------------: | :--------: | :-------------------------------------------------: | :-----------: |
 |    `pdm-version`    | **string** |         Version of PDM that should be used          |               |
 |    `todo-files`     | **string** | File patterns potentially containing critical TODOs |    **.py**    |
-| `working-directory` | **string** |     The directory containing **pyproject.toml**     |     **.**     |
+| `working-directory` | **string** |       Directory containing **pyproject.toml**       |     **.**     |
 
 ## 🌐 Further references
 

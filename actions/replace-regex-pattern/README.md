@@ -26,12 +26,12 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |    Type    |                    Description                    | Default value |
-| :-----------------: | :--------: | :-----------------------------------------------: | :-----------: |
-|       `files`       | **string** |          _Comma-separated_ file patterns          |     `**`      |
-|       `regex`       | **string** |     The **Perl** regular expression pattern     |               |
-|    `replacement`    | **string** | The replacement string - supporting `$<X>` groups |               |
-| `working-directory` | **string** |     The directory where the action should run     |      `.`      |
+|        Name         |    Type    |                  Description                  | Default value |
+| :-----------------: | :--------: | :-------------------------------------------: | :-----------: |
+|       `files`       | **string** |        _Comma-separated_ file patterns        |     `**`      |
+|       `regex`       | **string** |      **Perl** regular expression pattern      |               |
+|    `replacement`    | **string** | Replacement string - supporting `$<X>` groups |               |
+| `working-directory` | **string** |     Directory where the action should run     |      `.`      |
 
 ## 🌐 Further references
 

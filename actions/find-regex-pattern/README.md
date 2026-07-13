@@ -15,14 +15,14 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |             Type              |                        Description                         | Default value |
-| :-----------------: | :---------------------------: | :--------------------------------------------------------: | :-----------: |
-|       `files`       |          **string**           |              _Comma-separated_ file patterns               |     `**`      |
-|       `regex`       |          **string**           |          The **Perl** regular expression pattern           |               |
-|    `crash-when`     | **found\|not-found\|(empty)** |                When the action should crash                |               |
-|   `crash-message`   |          **string**           | The message to show upon crash in lieu of the default ones |               |
-|       `quiet`       |          **boolean**          |                  Do not show the matches                   |    `false`    |
-| `working-directory` |          **string**           |         The directory where the action should run          |      `.`      |
+|        Name         |             Type              |                      Description                       | Default value |
+| :-----------------: | :---------------------------: | :----------------------------------------------------: | :-----------: |
+|       `files`       |          **string**           |            _Comma-separated_ file patterns             |     `**`      |
+|       `regex`       |          **string**           |          **Perl** regular expression pattern           |               |
+|    `crash-when`     | **found\|not-found\|(empty)** |              When the action should crash              |               |
+|   `crash-message`   |          **string**           | Message to show upon crash in lieu of the default ones |               |
+|       `quiet`       |          **boolean**          |                Do not show the matches                 |    `false`    |
+| `working-directory` |          **string**           |         Directory where the action should run          |      `.`      |
 
 ## 📤 Outputs
 

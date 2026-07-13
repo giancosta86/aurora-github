@@ -48,8 +48,8 @@ steps:
 | :---------------------: | :---------: | :-----------------------------------------------------: | :---------------------------------------------------: |
 |      `todo-files`       | **string**  |   File patterns potentially containing critical TODOs   | **{src tests}/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}** |
 | `check-subpath-exports` | **boolean** | Run `check-subpath-exports` after the **verify** script |                       **true**                        |
-|   `corepack-version`    | **string**  |    The version of corepack to install, empty to skip    |                      **latest**                       |
-|   `working-directory`   | **string**  |         The directory containing `package.json`         |                         **.**                         |
+|   `corepack-version`    | **string**  |     **corepack** version to install, empty to skip      |                      **latest**                       |
+|   `working-directory`   | **string**  |           Directory containing `package.json`           |                         **.**                         |
 
 ## 🌐 Further references
 

@@ -72,11 +72,11 @@ steps:
 
 ## 📥 Inputs
 
-|          Name          |    Type     |                    Description                    | Default value |
-| :--------------------: | :---------: | :-----------------------------------------------: | :-----------: |
-|   `corepack-version`   | **string**  | The version of corepack to install, empty to skip |  **latest**   |
-| `install-dependencies` | **boolean** |    Run the package manager's `install` command    |   **true**    |
-|  `working-directory`   | **string**  |      The directory containing `package.json`      |     **.**     |
+|          Name          |    Type     |                  Description                   | Default value |
+| :--------------------: | :---------: | :--------------------------------------------: | :-----------: |
+|   `corepack-version`   | **string**  | **corepack** version to install, empty to skip |  **latest**   |
+| `install-dependencies` | **boolean** |  Run the package manager's `install` command   |   **true**    |
+|  `working-directory`   | **string**  |      Directory containing `package.json`       |     **.**     |
 
 ## 🌐 Further references
 

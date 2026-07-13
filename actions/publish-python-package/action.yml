@@ -19,7 +19,7 @@ inputs:
     description: Password/token for publishing to the index.
 
   working-directory:
-    description: The directory containing `pyproject.toml`.
+    description: Directory containing `pyproject.toml`.
     default: .
 
 runs:

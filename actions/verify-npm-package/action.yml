@@ -3,7 +3,7 @@ description: Verifies the source files of a NodeJS package.
 
 inputs:
   corepack-version:
-    description: The version of corepack to install, empty to skip.
+    description: corepack version to install, empty to skip.
     default: latest
 
   todo-files:
@@ -15,7 +15,7 @@ inputs:
     default: true
 
   working-directory:
-    description: The directory containing `package.json`.
+    description: Directory containing `package.json`.
     default: .
 
 runs:

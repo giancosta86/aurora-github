@@ -6,7 +6,7 @@ inputs:
     description: Header for this scenario.
 
   jq-operation:
-    description: The jq operation altering the package.json descriptor.
+    description: jq operation altering the package.json descriptor.
 
 runs:
   using: composite

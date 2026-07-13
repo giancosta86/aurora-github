@@ -42,16 +42,16 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |    Type     |                   Description                   | Default value |
-| :-----------------: | :---------: | :---------------------------------------------: | :-----------: |
-|      `dry-run`      | **boolean** |   Run a simulated publication via `--dry-run`   |   **false**   |
-|     `npm-token`     | **string**  | The secret token for publishing to the registry |               |
-| `wasm-pack-version` | **string**  |       The `wasm-pack` version to install        |               |
-|     `npm-scope`     | **string**  |        The npm package scope or `<ROOT>`        |               |
-|   `node-version`    | **string**  |           The required NodeJS version           |               |
-|  `package-manager`  | **string**  |   The required package manager, with version    |               |
-|    `wasm-target`    | **string**  |   The target of the `wasm-pack build` command   |    **web**    |
-| `working-directory` | **string**  |      The directory containing `Cargo.toml`      |     **.**     |
+|        Name         |    Type     |                 Description                 | Default value |
+| :-----------------: | :---------: | :-----------------------------------------: | :-----------: |
+|      `dry-run`      | **boolean** | Run a simulated publication via `--dry-run` |   **false**   |
+|     `npm-token`     | **string**  | Secret token for publishing to the registry |               |
+| `wasm-pack-version` | **string**  |       `wasm-pack` version to install        |               |
+|     `npm-scope`     | **string**  |        npm package scope or `<ROOT>`        |               |
+|   `node-version`    | **string**  |           Required NodeJS version           |               |
+|  `package-manager`  | **string**  |   Required package manager, with version    |               |
+|    `wasm-target`    | **string**  |   Target of the `wasm-pack build` command   |    **web**    |
+| `working-directory` | **string**  |      Directory containing `Cargo.toml`      |     **.**     |
 
 ## 🌐 Further references
 

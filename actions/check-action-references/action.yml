@@ -3,7 +3,7 @@ description: Prevents cross-branch `uses:` directives between GitHub actions res
 
 inputs:
   actions-directory:
-    description: The root of the directory tree containing the actions.
+    description: Root of the directory tree containing the actions.
     default: actions
 
 runs:

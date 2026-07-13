@@ -44,17 +44,17 @@ steps:
 
 |           Name           |    Type     |                     Description                     |                                      Default value                                       |
 | :----------------------: | :---------: | :-------------------------------------------------: | :--------------------------------------------------------------------------------------: |
-|   `wasm-pack-version`    | **string**  |         The `wasm-pack` version to install          |                                                                                          |
-|      `wasm-target`       | **string**  |     The target of the `wasm-pack build` command     |                                         **web**                                          |
-|       `npm-scope`        | **string**  |      The npm package scope, or an empty string      |                                                                                          |
-|      `node-version`      | **string**  |             The required NodeJS version             |                                                                                          |
-|    `package-manager`     | **string**  |     The required package manager, with version      |                                                                                          |
+|   `wasm-pack-version`    | **string**  |           `wasm-pack` version to install            |                                                                                          |
+|      `wasm-target`       | **string**  |       Target of the `wasm-pack build` command       |                                         **web**                                          |
+|       `npm-scope`        | **string**  |        npm package scope, or an empty string        |                                                                                          |
+|      `node-version`      | **string**  |               Required NodeJS version               |                                                                                          |
+|    `package-manager`     | **string**  |       Required package manager, with version        |                                                                                          |
 | `client-tests-directory` | **string**  |   Relative directory containing the client tests    |                                     **client-tests**                                     |
 |       `run-clippy`       | **boolean** |              Enable linting via Clippy              |                                         **true**                                         |
 |     `check-rustdoc`      | **boolean** |  Build the documentation - with warnings as errors  |                                        **false**                                         |
 |       `todo-files`       | **string**  | File patterns potentially containing critical TODOs | **{{src tests}/\*\*[nomatch-ok].rs client-tests/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}}** |
 
-| `working-directory` | **string** | The directory containing `Cargo.toml` | **.** |
+| `working-directory` | **string** | Directory containing `Cargo.toml` | **.** |
 
 ## 🌐 Further references
 

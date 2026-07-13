@@ -6,7 +6,7 @@ inputs:
     description: Comma-separated file patterns.
 
   working-directory:
-    description: The directory where the action must run.
+    description: Directory where the action must run.
     default: .
 
 runs:

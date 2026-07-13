@@ -45,19 +45,19 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |    Type     |                              Description                               | Default value |
-| :-----------------: | :---------: | :--------------------------------------------------------------------: | :-----------: |
-| `corepack-version`  | **string**  | The version of corepack to install for a NodeJS website, empty to skip |  **latest**   |
-|   `java-version`    | **string**  |               The Java version to use for Java websites                |               |
-| `java-tool-version` | **string**  |               The tool version to use for Java websites                |               |
-|      `dry-run`      | **boolean** |               Stop the publication just before uploading               |   **false**   |
-| `working-directory` | **string**  |          Directory containing the website or its source files          |     **.**     |
+|        Name         |    Type     |                            Description                             | Default value |
+| :-----------------: | :---------: | :----------------------------------------------------------------: | :-----------: |
+| `corepack-version`  | **string**  | Version of corepack to install for a NodeJS website, empty to skip |  **latest**   |
+|   `java-version`    | **string**  |               Java version to use for Java websites                |               |
+| `java-tool-version` | **string**  |               Tool version to use for Java websites                |               |
+|      `dry-run`      | **boolean** |             Stop the publication just before uploading             |   **false**   |
+| `working-directory` | **string**  |        Directory containing the website or its source files        |     **.**     |
 
 ## 📤 Outputs
 
-| Name  |    Type    |           Description            |   Example   |
-| :---: | :--------: | :------------------------------: | :---------: |
-| `url` | **string** | The URL of the published website | _HTTPS url_ |
+| Name  |    Type    |         Description          |   Example   |
+| :---: | :--------: | :--------------------------: | :---------: |
+| `url` | **string** | URL of the published website | _HTTPS url_ |
 
 ## 🌐 Further references
 

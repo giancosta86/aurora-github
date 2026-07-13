@@ -7,14 +7,14 @@ inputs:
     default: false
 
   cargo-token:
-    description: The secret token for publishing to the registry.
+    description: Secret token for publishing to the registry.
 
   document-all-features:
     description: Enable Rustdoc for all features.
     default: true
 
   working-directory:
-    description: The directory containing `Cargo.toml`.
+    description: Directory containing `Cargo.toml`.
     default: .
 
 runs:

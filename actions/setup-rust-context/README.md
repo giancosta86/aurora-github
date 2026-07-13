@@ -38,11 +38,11 @@ steps:
 
 ## 📥 Inputs
 
-|          Name          |    Type     |                 Description                 | Default value |
-| :--------------------: | :---------: | :-----------------------------------------: | :-----------: |
-|     `cargo-colors`     | **boolean** |           Enable colors for Cargo           |   **true**    |
-| `check-toolchain-file` | **boolean** | Verify the existence of the toolchain file  |   **true**    |
-|  `working-directory`   | **string**  | The directory containing the toolchain file |     **.**     |
+|          Name          |    Type     |                Description                 | Default value |
+| :--------------------: | :---------: | :----------------------------------------: | :-----------: |
+|     `cargo-colors`     | **boolean** |          Enable colors for Cargo           |   **true**    |
+| `check-toolchain-file` | **boolean** | Verify the existence of the toolchain file |   **true**    |
+|  `working-directory`   | **string**  |  Directory containing the toolchain file   |     **.**     |
 
 ## 🌐 Further references
 

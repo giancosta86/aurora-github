@@ -3,7 +3,7 @@ description: Installs and configures a NodeJS environment.
 
 inputs:
   corepack-version:
-    description: The version of corepack to install, empty to skip.
+    description: corepack version to install, empty to skip.
     default: latest
 
   install-dependencies:
@@ -11,7 +11,7 @@ inputs:
     default: true
 
   working-directory:
-    description: The directory containing package.json.
+    description: Directory containing package.json.
     default: .
 
 runs:

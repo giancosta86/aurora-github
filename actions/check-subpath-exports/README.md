@@ -13,9 +13,9 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |    Type    |               Description               | Default value |
-| :-----------------: | :--------: | :-------------------------------------: | :-----------: |
-| `working-directory` | **string** | The directory containing `package.json` |     **.**     |
+|        Name         |    Type    |             Description             | Default value |
+| :-----------------: | :--------: | :---------------------------------: | :-----------: |
+| `working-directory` | **string** | Directory containing `package.json` |     **.**     |
 
 ## 🌐 Further references
 

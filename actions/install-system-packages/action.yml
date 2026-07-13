@@ -3,10 +3,10 @@ description: Installs software using the platform's package manager.
 
 inputs:
   required-command:
-    description: When declared, the packages are installed only if the command is missing.
+    description: The packages will be installed only if the command is missing.
 
   packages:
-    description: The packages to install, separated by commas.
+    description: Packages to install, separated by commas.
 
   initial-update:
     description: Update the package list before the first installation.

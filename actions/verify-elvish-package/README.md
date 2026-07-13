@@ -30,8 +30,8 @@ steps:
 |        Name         |    Type    |                     Description                     |      Default value       |
 | :-----------------: | :--------: | :-------------------------------------------------: | :----------------------: |
 |    `todo-files`     | **string** | File patterns potentially containing critical TODOs | **\*\*[nomatch-ok].elv** |
-|  `velvet-version`   | **string** |              The Velvet version to use              |          **v4**          |
-| `working-directory` | **string** |      The directory containing `metadata.json`       |          **.**           |
+|  `velvet-version`   | **string** |                Velvet version to use                |          **v4**          |
+| `working-directory` | **string** |        Directory containing `metadata.json`         |          **.**           |
 
 ## 🌐 Further references
 

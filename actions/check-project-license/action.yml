@@ -3,7 +3,7 @@ description: Checks the validity of the project license file.
 
 inputs:
   license-file:
-    description: The path to the license file.
+    description: Path to the license file.
     default: LICENSE
 
 runs:

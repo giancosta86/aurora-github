@@ -7,14 +7,14 @@ inputs:
     default: .
 
   corepack-version:
-    description: The version of corepack to install for a NodeJS website, empty to skip.
+    description: Version of corepack to install for a NodeJS website, empty to skip.
     default: latest
 
   java-version:
-    description: The Java version to use for Java websites.
+    description: Java version to use for Java websites.
 
   java-tool-version:
-    description: The tool version to use for Java websites.
+    description: Tool version to use for Java websites.
 
   dry-run:
     description: Stop the publication just before uploading.
@@ -22,7 +22,7 @@ inputs:
 
 outputs:
   url:
-    description: The URL of the published website.
+    description: URL of the published website.
     value: ${{ steps.publish-pages.outputs.page_url }}
 
 runs:

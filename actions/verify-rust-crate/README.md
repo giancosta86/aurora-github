@@ -44,7 +44,7 @@ steps:
 |    `run-clippy`     | **boolean** |              Enable linting via Clippy              |              **true**               |
 |   `check-rustdoc`   | **boolean** |  Build the documentation - with warnings as errors  |              **true**               |
 |    `todo-files`     | **string**  | File patterns potentially containing critical TODOs | **{src tests}/\*\*[nomatch-ok].rs** |
-| `working-directory` | **string**  |        The directory containing `Cargo.toml`        |                **.**                |
+| `working-directory` | **string**  |          Directory containing `Cargo.toml`          |                **.**                |
 
 ## 🌐 Further references
 

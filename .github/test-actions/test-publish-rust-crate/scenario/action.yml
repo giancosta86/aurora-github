@@ -3,7 +3,7 @@ description: Runs a scenario for publish-rust-crate.
 
 inputs:
   header:
-    description: The header for this test.
+    description: Header for this test.
 
   pre-existing-addendum:
     description: Whether the documentation addendum should exist before running the action.

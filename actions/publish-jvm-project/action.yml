@@ -7,10 +7,10 @@ inputs:
     default: false
 
   auth-user:
-    description: The username for publishing.
+    description: Username for publishing.
 
   auth-token:
-    description: The secret token for publishing.
+    description: Secret token for publishing.
 
   java-version:
     description: Java version (in SDKMAN) to install.
@@ -23,7 +23,7 @@ inputs:
     default: true
 
   working-directory:
-    description: The directory containing the project descriptor.
+    description: Directory containing the project descriptor.
     default: .
 
 runs:

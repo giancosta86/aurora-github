@@ -3,7 +3,7 @@ description: Tests for publish-jvm-project.
 
 inputs:
   jvm-token:
-    description: The token used when publishing to a Maven repo.
+    description: Token used when publishing to a Maven repo.
 
 runs:
   using: composite

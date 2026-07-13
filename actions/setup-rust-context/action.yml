@@ -11,7 +11,7 @@ inputs:
     default: true
 
   working-directory:
-    description: The directory containing the toolchain file.
+    description: Directory containing the toolchain file.
     default: .
 
 runs:

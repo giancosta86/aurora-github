@@ -7,7 +7,7 @@ inputs:
     default: "**"
 
   working-directory:
-    description: The directory where the action should run.
+    description: Directory where the action should run.
     default: .
 
 runs:

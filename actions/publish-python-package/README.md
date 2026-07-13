@@ -37,7 +37,7 @@ steps:
 |     `index-url`     | **string**  |          URL of the target index           |               |
 |    `index-user`     | **string**  |      User for publishing to the index      |               |
 |   `index-secret`    | **string**  | Password/token for publishing to the index |               |
-| `working-directory` | **string**  | The directory containing `pyproject.toml`  |     **.**     |
+| `working-directory` | **string**  |   Directory containing `pyproject.toml`    |     **.**     |
 
 ## 🌐 Further references
 

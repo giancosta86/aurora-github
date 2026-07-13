@@ -3,19 +3,19 @@ description: Extracts the version from the name of the current Git branch, retur
 
 outputs:
   branch:
-    description: The current Git branch.
+    description: Current Git branch.
     value: ${{ steps.detect-version.outputs.branch }}
 
   version:
-    description: The version detected from the Git branch - always without prefix.
+    description: Version detected from the Git branch - always without prefix.
     value: ${{ steps.detect-version.outputs.version }}
 
   escaped-version:
-    description: The escaped version - for example, with `\.` in lieu of `.` - for regular expressions.
+    description: Escaped version - for example, with `\.` in lieu of `.` - for regular expressions.
     value: ${{ steps.detect-version.outputs.escaped-version }}
 
   major:
-    description: The `major` component of the version.
+    description: Major component of the version.
     value: ${{ steps.detect-version.outputs.major }}
 
 runs:

@@ -3,7 +3,7 @@ description: Creates a Git tag and a GitHub draft release when merging a pull re
 
 inputs:
   product-name:
-    description: The name of the product; if empty, defaults to the repository name.
+    description: Name of the product; if empty, defaults to the repository name.
 
   update-major-branch:
     description: Create/update the 'v<major>' branch.
@@ -11,11 +11,11 @@ inputs:
 
 outputs:
   tag:
-    description: The Git tag created for the release.
+    description: Git tag created for the release.
     value: ${{ steps.main.outputs.tag }}
 
   major-branch:
-    description: The Git branch of the major version, if updated.
+    description: Git branch of the major version, if updated.
     value: ${{ steps.main.outputs.major-branch }}
 
 runs:

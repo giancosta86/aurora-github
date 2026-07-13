@@ -13,10 +13,10 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |    Type    |                Description                | Default value |
-| :-----------------: | :--------: | :---------------------------------------: | :-----------: |
-|       `files`       | **string** |      _Comma-separated_ file patterns      |     `**`      |
-| `working-directory` | **string** | The directory where the action should run |      `.`      |
+|        Name         |    Type    |              Description              | Default value |
+| :-----------------: | :--------: | :-----------------------------------: | :-----------: |
+|       `files`       | **string** |    _Comma-separated_ file patterns    |     `**`      |
+| `working-directory` | **string** | Directory where the action should run |      `.`      |
 
 ## 🌐 Further references
 

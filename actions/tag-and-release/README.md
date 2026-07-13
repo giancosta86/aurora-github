@@ -54,17 +54,17 @@ The action is **idempotent**; in particular, _if the merged branch has been dele
 
 ## 📥 Inputs
 
-|         Name          |    Type    |                            Description                             | Default value |
-| :-------------------: | :--------: | :----------------------------------------------------------------: | :-----------: |
-|    `product-name`     | **string** | The name of the product; if empty, defaults to the repository name |               |
-| `update-major-branch` |  **true**  |                Create/update the 'v<major>' branch                 | **on-major**  |
+|         Name          |    Type    |                          Description                           | Default value |
+| :-------------------: | :--------: | :------------------------------------------------------------: | :-----------: |
+|    `product-name`     | **string** | Name of the product; if empty, defaults to the repository name |               |
+| `update-major-branch` |  **true**  |              Create/update the 'v<major>' branch               | **on-major**  |
 
 ## 📤 Outputs
 
-|      Name      |    Type    |                   Description                   |  Example   |
-| :------------: | :--------: | :---------------------------------------------: | :--------: |
-|     `tag`      | **string** |       The Git tag created for the release       | **v7.4.9** |
-| `major-branch` | **string** | The Git branch of the major version, if updated |   **v7**   |
+|      Name      |    Type    |                 Description                 |  Example   |
+| :------------: | :--------: | :-----------------------------------------: | :--------: |
+|     `tag`      | **string** |       Git tag created for the release       | **v7.4.9** |
+| `major-branch` | **string** | Git branch of the major version, if updated |   **v7**   |
 
 ## 🌐 Further references
 

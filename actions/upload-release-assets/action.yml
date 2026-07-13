@@ -3,7 +3,7 @@ description: Uploads one or more asset files to a GitHub release.
 
 inputs:
   release-tag:
-    description: The tag of the target release.
+    description: Tag of the target release.
 
   files:
     description: Comma-separated relative paths of the asset files to upload.

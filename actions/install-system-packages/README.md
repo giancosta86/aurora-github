@@ -25,11 +25,11 @@ This action currently supports only the `apt-get` package manager.
 
 ## 📥 Inputs
 
-|        Name        |    Type     |                               Description                                | Default value |
-| :----------------: | :---------: | :----------------------------------------------------------------------: | :-----------: |
-| `required-command` | **string**  | When declared, the packages are installed only if the command is missing |               |
-|     `packages`     | **string**  |               The packages to install, separated by commas               |               |
-|  `initial-update`  | **boolean** |          Update the package list before the first installation           |   **true**    |
+|        Name        |    Type     |                          Description                          | Default value |
+| :----------------: | :---------: | :-----------------------------------------------------------: | :-----------: |
+| `required-command` | **string**  | The packages will be installed only if the command is missing |               |
+|     `packages`     | **string**  |           Packages to install, separated by commas            |               |
+|  `initial-update`  | **boolean** |     Update the package list before the first installation     |   **true**    |
 
 ## 🌐 Further references
 

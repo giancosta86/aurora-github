@@ -7,11 +7,11 @@ inputs:
     default: "**[nomatch-ok].elv"
 
   velvet-version:
-    description: The Velvet version to use.
+    description: Velvet version to use.
     default: v4
 
   working-directory:
-    description: The directory containing `metadata.json`.
+    description: Directory containing `metadata.json`.
     default: .
 
 runs:

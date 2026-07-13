@@ -18,7 +18,7 @@ steps:
 |        Name         |    Type    |                          Description                          | Default value |
 | :-----------------: | :--------: | :-----------------------------------------------------------: | :-----------: |
 |       `files`       | **string** | Comma-separated file patterns; if empty, the action won't run |               |
-| `working-directory` | **string** |            The directory where the action must run            |     **.**     |
+| `working-directory` | **string** |              Directory where the action must run              |     **.**     |
 
 ## 🌐 Further references
 
