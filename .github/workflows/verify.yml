@@ -15,18 +15,10 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-run-elvish-tests
 
-  test-elvish-platform:
-    if: false
-    runs-on: ubuntu-24.04
-    needs:
-      - test-run-elvish-tests
-    steps:
-      - uses: actions/checkout@v7
-
   test-detect-branch-version:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-elvish-platform
+    needs: test-run-elvish-tests
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-detect-branch-version
@@ -39,10 +31,21 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./actions/check-action-references
 
+  test-fundamental-actions:
+    if: false
+    runs-on: ubuntu-24.04
+    needs:
+      - test-run-elvish-tests
+      - test-detect-branch-version
+      - test-check-action-references
+    steps:
+      - shell: bash
+        run: echo '✅ All the fundamental actions are OK!'
+
   test-check-project-license:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-check-action-references
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-check-project-license
@@ -50,7 +53,7 @@ jobs:
   test-find-regex-pattern:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-check-action-references
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-find-regex-pattern
@@ -66,7 +69,7 @@ jobs:
   test-replace-regex-pattern:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-check-action-references
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-replace-regex-pattern
@@ -82,7 +85,7 @@ jobs:
   test-install-system-packages:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-check-action-references
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-install-system-packages
@@ -90,7 +93,7 @@ jobs:
   test-install-via-sdkman:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-check-action-references
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-install-via-sdkman
@@ -98,7 +101,7 @@ jobs:
   test-upload-release-assets:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-check-action-references
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-upload-release-assets
@@ -117,7 +120,7 @@ jobs:
   test-setup-rust-context:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-check-action-references
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-setup-rust-context
@@ -148,7 +151,7 @@ jobs:
   test-setup-nodejs-context:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-check-action-references
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-setup-nodejs-context
@@ -156,7 +159,7 @@ jobs:
   test-check-subpath-exports:
     if: false
     runs-on: ubuntu-24.04
-    needs: test-check-action-references
+    needs: test-setup-nodejs-context
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-check-subpath-exports
@@ -269,8 +272,7 @@ jobs:
   test-tag-and-release:
     if: false
     runs-on: ubuntu-24.04
-    needs:
-      - test-detect-branch-version
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-tag-and-release
@@ -280,9 +282,9 @@ jobs:
     runs-on: ubuntu-24.04
     needs:
       - test-run-elvish-tests
-      - test-elvish-platform
       - test-detect-branch-version
       - test-check-action-references
+      - test-fundamental-actions
       - test-check-project-license
       - test-find-regex-pattern
       - test-find-critical-todos
