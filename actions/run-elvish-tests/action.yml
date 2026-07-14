@@ -16,7 +16,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1.0.0 #TODO! v1 here!
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}

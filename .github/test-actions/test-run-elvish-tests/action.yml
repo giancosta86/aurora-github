@@ -4,7 +4,7 @@ description: Tests for run-elvish-tests.
 runs:
   using: composite
   steps:
-    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1.0.0 #TODO! V1 here
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
       run: echo 🎭 Running tests from a directory containing an Elvish verification script...
