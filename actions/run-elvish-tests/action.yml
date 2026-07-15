@@ -46,5 +46,4 @@ runs:
         use github.com/giancosta86/aurora-github/actions/run-elvish-tests
         run-elvish-tests:run-velvet
       env:
-        velvet-version: ${{ inputs.velvet-version }}
         velvet-scripts: ${{ inputs.velvet-scripts }}
