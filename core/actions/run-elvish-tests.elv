@@ -42,13 +42,24 @@ var infer-velvet-version~ = (
   }
 
   fn detect-velvet-version-from-metadata {
+    if (not (os:is-regular metadata.json)) {
+      put $nil
+      return
+    }
+
     var metadata = (from-json < metadata.json)
 
-    {
-      all $metadata[devDependencies]
+    all [
+      dependencies
+      devDependencies
+    ] |
+      each { |metadata-key|
+        var reference-list = (
+          lang:get-value &default=[] $metadata $metadata-key
+        )
 
-      all $metadata[dependencies]
-    } |
+        all $reference-list
+      } |
       each { |reference|
         detect-velvet-version-from-package-reference $reference |
           lang:map { |velvet-version|
@@ -62,11 +73,7 @@ var infer-velvet-version~ = (
 
   put {
     var velvet-version = (
-      if (os:is-regular metadata.json) {
-        detect-velvet-version-from-metadata
-      } else {
-        put $nil
-      } |
+      detect-velvet-version-from-metadata |
         coalesce (all) $default-velvet-version
     )
 
