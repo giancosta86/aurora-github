@@ -29,34 +29,31 @@ runs:
             fail 'Velvet tests must not run when running the test script!'
           }
 
-        echo ✅ Test script run OK!
-
-    - shell: elvish {0}
-      run: echo 🎭 Running tests from a directory containing Velvet scripts...
+        echo ✅ Test script execution OK!
 
     - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
       with:
-        header: Now checking the Velvet test output...
+        header: Now running Velvet tests...
         first-output-should-exist: true
         second-output-should-exist: true
 
     - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
       with:
-        header: Now running a specific Velvet script...
+        header: Running a specific Velvet script...
         velvet-scripts: second
         first-output-should-exist: false
         second-output-should-exist: true
 
     - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
       with:
-        header: Now running with a wildcard...
+        header: Running Velvet scripts with a wildcard...
         velvet-scripts: "*cond*"
         first-output-should-exist: false
         second-output-should-exist: true
 
     - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
       with:
-        header: Now running with metadata...
+        header: Running Velvet scripts with metadata...
         include-metadata: true
         first-output-should-exist: true
         second-output-should-exist: true

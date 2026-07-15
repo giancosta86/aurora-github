@@ -1,5 +1,5 @@
 name: Run Velvet tests and check the output.
-description: Scenario for test-run-elvish.
+description: Scenario for run-elvish-tests.
 
 inputs:
   header:
@@ -53,12 +53,12 @@ runs:
         use os
 
         fn test-output-file { |ordinal|
+          var output-path = 'velvet-'$ordinal'.txt'
+
           var output-should-exist = (
-            get-env $ordinal'-output-should-exist |
+            get-env $ordinal'-output-should-exist' |
               eq (all) true
           )
-
-          var output-path = 'velvet-'$ordinal'.txt'
 
           if $output-should-exist {
             if (not (os:is-regular $output-path)) {
