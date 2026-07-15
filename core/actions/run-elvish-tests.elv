@@ -77,7 +77,7 @@ var infer-velvet-version~ = (
 )
 
 fn run-velvet {
-  var velvet-version = (getenv velvet-version)
+  var velvet-version = (get-env velvet-version)
 
   var velvet-scripts = [(
     input:list velvet-scripts |
