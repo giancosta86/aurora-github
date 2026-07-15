@@ -13,7 +13,7 @@ steps:
 
 1. If `working-directory` contains a **verify.elv** script, just run it.
 
-1. Otherwise ensure the given `velvet-version` is installed, then run:
+1. Otherwise, run [velvet](https://github.com/giancosta86/velvet):
 
    > velvet &flawless [<velvet-scripts>]
 
@@ -21,11 +21,10 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |    Type    |              Description              | Default value |
-| :-----------------: | :--------: | :-----------------------------------: | :-----------: |
-|  `velvet-version`   | **string** |         Velvet version to use         |    **v4**     |
-|  `velvet-scripts`   | **string** | Comma-separated Velvet scripts to run |               |
-| `working-directory` | **string** |    Directory containing the tests     |     **.**     |
+|        Name         |    Type    |                           Description                           | Default value |
+| :-----------------: | :--------: | :-------------------------------------------------------------: | :-----------: |
+|  `velvet-scripts`   | **string** | Comma-separated Velvet scripts to run; wildcards are supported. |               |
+| `working-directory` | **string** |                 Directory containing the tests                  |     **.**     |
 
 ## 🌐 Further references
 

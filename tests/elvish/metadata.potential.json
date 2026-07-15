@@ -1,0 +1,5 @@
+{
+  "description": "Basic test",
+
+  "devDependencies": ["github.com/giancosta86/velvet@v4.1.1"]
+}

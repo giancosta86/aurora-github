@@ -7,71 +7,56 @@ runs:
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
-      run: echo 🎭 Running tests from a directory containing an Elvish verification script...
+      run: echo 🎭 Running the custom verification script...
 
     - uses: ./actions/run-elvish-tests
       with:
-        working-directory: tests/elvish/script
+        working-directory: tests/elvish
 
     - shell: elvish {0}
-      working-directory: tests/elvish/script
+      working-directory: tests/elvish
       run: |
-        echo 🎭 Now checking the custom script output...
+        use os
 
-        var test-output = (slurp < out.txt)
+        echo 🔎 Now checking the custom script output...
 
-        if (not-eq $test-output 'TEST OK') {
-          fail 'Unexpected test output: '$test-output
+        if (not (os:is-regular script-out.txt)) {
+          fail 'Missing test output script!'
         }
+
+        put velvet*[nomatch-ok].txt |
+          if (not-eq [(all)] []) {
+            fail 'Velvet tests must not run when running the test script!'
+          }
+
+        echo ✅ Test script run OK!
 
     - shell: elvish {0}
       run: echo 🎭 Running tests from a directory containing Velvet scripts...
 
-    - uses: ./actions/run-elvish-tests
+    - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
       with:
-        working-directory: tests/elvish/velvet
+        header: Now checking the Velvet test output...
+        first-output-should-exist: true
+        second-output-should-exist: true
 
-    - shell: elvish {0}
-      working-directory: tests/elvish/velvet
-      run: |
-        echo 🎭 Now checking the Velvet test output...
-
-        var first-test-output = (slurp < out.txt)
-
-        if (not-eq $first-test-output 'FIRST VELVET TEST OK') {
-          fail 'Unexpected 1st test output: '$first-test-output
-        }
-
-        var second-test-output = (slurp < out-2.txt)
-
-        if (not-eq $second-test-output 'SECOND VELVET TEST OK') {
-          fail 'Unexpected 2nd test output: '$second-test-output
-        }
-
-    - shell: elvish {0}
-      working-directory: tests/elvish/velvet
-      run: |
-        echo 🎭 Now running a specific Velvet script...
-        rm *.txt
-
-    - uses: ./actions/run-elvish-tests
+    - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
       with:
-        working-directory: tests/elvish/velvet
-        velvet-scripts: protocol-2
+        header: Now running a specific Velvet script...
+        velvet-scripts: second
+        first-output-should-exist: false
+        second-output-should-exist: true
 
-    - shell: elvish {0}
-      working-directory: tests/elvish/velvet
-      run: |
-        use os
+    - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
+      with:
+        header: Now running with a wildcard...
+        velvet-scripts: "*cond*"
+        first-output-should-exist: false
+        second-output-should-exist: true
 
-        echo 🎭 Now checking the specific Velvet test output...
-
-        if (os:is-regular out.txt) {
-          fail 'Only the second protocol script should run!'
-        }
-
-        var second-test-output = (slurp < out-2.txt)
-
-        if (not-eq $second-test-output 'SECOND VELVET TEST OK') {
-          fail 'Unexpected 2nd test output: '$second-test-output
-        }
+    - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
+      with:
+        header: Now running with metadata...
+        include-metadata: true
+        first-output-should-exist: true
+        second-output-should-exist: true

@@ -2,12 +2,8 @@ name: Run Elvish tests
 description: Runs tests via an Elvish script or via Velvet.
 
 inputs:
-  velvet-version:
-    description: Velvet version to use.
-    default: v4
-
   velvet-scripts:
-    description: Comma-separated Velvet scripts to run.
+    description: Comma-separated Velvet scripts to run; wildcards are supported.
 
   working-directory:
     description: Directory containing the tests.
@@ -22,12 +18,26 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/run-elvish-tests
-        run-elvish-tests:main
+        run-elvish-tests:infer-test-strategy
 
-    - if: env.run-velvet == 'true'
+    - if: env.test-strategy == 'test-script'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-elvish-tests
+        run-elvish-tests:run-test-script
+
+    - if: env.test-strategy == 'velvet'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-elvish-tests
+        run-elvish-tests:infer-velvet-version
+
+    - if: env.test-strategy == 'velvet'
       uses: giancosta86/epm-plus/actions/install-elvish-packages@v1
       with:
-        packages: github.com/giancosta86/velvet@${{ inputs.velvet-version }}
+        packages: github.com/giancosta86/velvet@${{ env.velvet-version }}
 
     - if: env.run-velvet == 'true'
       shell: elvish {0}

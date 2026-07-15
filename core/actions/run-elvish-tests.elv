@@ -1,28 +1,90 @@
+use re
 use os
+use github.com/giancosta86/ethereal/v1/lang
+use github.com/giancosta86/ethereal/v1/seq
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 
 var verification-script = verify.elv
 
-fn main {
+fn infer-test-strategy {
   var verification-script-exists = (os:is-regular $verification-script)
 
-  if $verification-script-exists {
-    echo 📜 Verification script found! Now running it...
+  var test-strategy = (
+    if $verification-script-exists {
+      put test-script
+    } else {
+      put velvet
+    }
+  )
 
-    elvish $verification-script
-  }
-
-  not $verification-script-exists |
-    env:set run-velvet
+  env:set test-strategy $test-strategy
 }
 
+fn run-test-script {
+  echo 📜 Running verification script...
+
+  elvish $verification-script
+}
+
+var infer-velvet-version~ = (
+  var velvet-version-regex = 'github\.com\/giancosta86\/velvet(?:@(.+))?'
+
+  var default-velvet-version = v4
+
+  fn detect-velvet-version-from-package-reference { |reference|
+    re:find $velvet-version-regex $reference |
+      lang:map { |match|
+        put $match[groups][1][text] |
+          seq:empty-to-default
+      }
+  }
+
+  fn detect-velvet-version-from-metadata {
+    var metadata = (from-json < metadata.json)
+
+    {
+      all $metadata[devDependencies]
+
+      all $metadata[dependencies]
+    } |
+      each { |reference|
+        detect-velvet-version-from-package-reference $reference |
+          lang:map { |velvet-version|
+            put $velvet-version
+            return
+          }
+      }
+
+    put $nil
+  }
+
+  put {
+    var velvet-version = (
+      if (os:is-regular metadata.json) {
+        detect-velvet-version-from-metadata
+      } else {
+        put $nil
+      } |
+        coalesce (all) $default-velvet-version
+    )
+
+    echo 🐞 Running Velvet $velvet-version...
+
+    env:set velvet-version $velvet-version
+  }
+)
+
 fn run-velvet {
-  var velvet-version = (input:string velvet-version)
+  var velvet-version = (getenv velvet-version)
 
-  var velvet-scripts = (input:list velvet-scripts)
-
-  echo 🐞 Running Velvet $velvet-version...
+  var velvet-scripts = [(
+    input:list velvet-scripts |
+      all (all) |
+      each { |entry|
+        eval 'put '$entry
+      }
+  )]
 
   var velvet-module: = (
     use-mod 'github.com/giancosta86/velvet/'$velvet-version'/velvet'
