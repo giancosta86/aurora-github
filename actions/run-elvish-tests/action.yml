@@ -39,7 +39,7 @@ runs:
       with:
         packages: github.com/giancosta86/velvet@${{ env.velvet-version }}
 
-    - if: env.run-velvet == 'true'
+    - if: env.test-strategy == 'velvet'
       shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |

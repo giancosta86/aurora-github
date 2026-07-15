@@ -1,5 +1,6 @@
 use re
 use os
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/ethereal/v1/seq
 use github.com/giancosta86/gauntlet/v1/env
@@ -22,7 +23,7 @@ fn infer-test-strategy {
 }
 
 fn run-test-script {
-  echo 📜 Running verification script...
+  console:inspect &emoji=📜 'Running verification script' $verification-script
 
   elvish $verification-script
 }
@@ -69,7 +70,7 @@ var infer-velvet-version~ = (
         coalesce (all) $default-velvet-version
     )
 
-    echo 🐞 Running Velvet $velvet-version...
+    console:inspect &emoji=🐞 'Velvet version to run' $velvet-version
 
     env:set velvet-version $velvet-version
   }
