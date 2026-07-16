@@ -15,8 +15,6 @@ runs:
         working-directory: tests/unknown-tech/src
         files: "*.txt"
         regex: TO.O!
-        crash-when: found
-        crash-message: My custom message!
 
     - uses: ./actions/run-elvish-tests
       with:
@@ -33,6 +31,7 @@ runs:
       with:
         files: tests/unknown-tech/src/*.txt
         regex: SOMETHING-ELSE
+        crash-when: not-found
 
     - uses: ./actions/run-elvish-tests
       with:
