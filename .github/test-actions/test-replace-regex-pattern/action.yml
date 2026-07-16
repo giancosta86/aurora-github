@@ -41,7 +41,7 @@ runs:
     - uses: ./actions/replace-regex-pattern
       with:
         files: "*.txt"
-        regex: \\*
+        regex: "\\*"
         replacement: ""
         working-directory: ${{ env.temp-dir }}
 
