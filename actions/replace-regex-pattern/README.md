@@ -15,7 +15,7 @@ steps:
 
 ## 💡 How it works
 
-1. The _comma-separated_ items in the `files` input are evaluated as _path patterns_ with **wildcards**; _non-file paths_ are ignored, so you don't need `[type:regular]`.
+1. The _comma-separated_ items in the `files` input are evaluated as _path patterns_ with **wildcards**; _non-file paths_ are ignored, so adding `[type:regular]` is not required.
 
 1. For **every** regular file emitted from the above point:
    1. The file content is read.
@@ -29,7 +29,7 @@ steps:
 |        Name         |    Type    |                  Description                  | Default value |
 | :-----------------: | :--------: | :-------------------------------------------: | :-----------: |
 |       `files`       | **string** |        _Comma-separated_ file patterns        |     `**`      |
-|       `regex`       | **string** |      **Perl** regular expression pattern      |               |
+|       `regex`       | **string** |     **Elvish** regular expression pattern     |               |
 |    `replacement`    | **string** | Replacement string - supporting `$<X>` groups |               |
 | `working-directory` | **string** |     Directory where the action should run     |      `.`      |
 

@@ -4,9 +4,18 @@ description: Tests for replace-regex-pattern.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
+      run: |
+        use os
+        use github.com/giancosta86/gauntlet/v1/env
+
+        os:temp-dir |
+          env:set temp-dir (all)
+
+    - shell: elvish {0}
+      working-directory: ${{ env.temp-dir }}
       run: |
         echo 'alpha' > A.txt
         echo 'beta' > B.txt
@@ -19,17 +28,12 @@ runs:
         files: A.txt, B.txt
         regex: "([ae])"
         replacement: "*$1*"
+        working-directory: ${{ env.temp-dir }}
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        code: |
-          >> 'Checking replacement with enumerated files' {
-            to-lines < A.txt |
-              should-be '*a*lph*a*'
-
-            to-lines < B.txt |
-              should-be 'b*e*t*a*'
-          }
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: enumeration
 
     - shell: elvish {0}
       run: echo 🎭 Testing replacement with wildcard...
@@ -39,14 +43,9 @@ runs:
         files: "*.txt"
         regex: "\\*"
         replacement: ""
+        working-directory: ${{ env.temp-dir }}
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        code: |
-          >> 'Checking replacement with wildcard' {
-            to-lines < A.txt |
-              should-be 'alpha'
-
-            to-lines < B.txt |
-              should-be 'beta'
-          }
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: wildcard

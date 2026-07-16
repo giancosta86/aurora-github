@@ -7,7 +7,7 @@ inputs:
     default: "**"
 
   regex:
-    description: Perl regular expression pattern.
+    description: Elvish regular expression pattern.
 
   replacement:
     description: Replacement string - supporting $X groups.
