@@ -8,7 +8,7 @@ fn main {
 
   if (seq:is-non-empty $references-to-other-branches) {
     all $references-to-other-branches |
-      each $echo~
+      each $echo~ >&2
 
     fail 'There are action references to other branches of this repository!'
   } else {
