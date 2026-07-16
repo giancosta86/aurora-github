@@ -17,8 +17,8 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ env.temp-dir }}
       run: |
-        echo alpha > A.txt
-        echo beta > B.txt
+        print alpha > A.txt
+        print beta > B.txt
 
     - shell: elvish {0}
       run: echo 🎭 Testing replacement with enumerated files...
