@@ -44,5 +44,5 @@ fn main {
       fail (all)
   }
 
-  output:write found $found
+  output:set found $found
 }
