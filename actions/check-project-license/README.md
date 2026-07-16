@@ -9,7 +9,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/check-project-license@v11
 ```
 
-**Please, note**: this action is automatically run by most language-oriented `verify-` actions.
+**Please, note**: this action is automatically run by most `verify-` actions.
 
 ## ☑️ Requirements
 

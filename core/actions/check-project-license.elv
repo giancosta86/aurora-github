@@ -1,6 +1,7 @@
 use os
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/seq
-use ./input
+use github.com/giancosta86/gauntlet/v1/input
 
 fn -check-current-year-included { |license-file|
   var current-year = (date +%Y)
@@ -9,7 +10,7 @@ fn -check-current-year-included { |license-file|
     fail 'Cannot detect the current year!'
   }
 
-  echo 🗓 Current year: $current-year
+  console:inspect &emoji=🗓 'Current year' $current-year
 
   echo 🔎🗓 Searching the license file for the current year...
 
@@ -26,6 +27,6 @@ fn main {
   if (os:is-regular $license-file) {
     -check-current-year-included $license-file
   } else {
-    echo 💭 License file not found: $license-file
+    console:inspect &emoji=💭 'License file not found' $license-file
   }
 }

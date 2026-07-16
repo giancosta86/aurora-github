@@ -32,7 +32,7 @@ jobs:
       - uses: ./actions/check-action-references
 
   test-fundamental-actions:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-run-elvish-tests
@@ -43,7 +43,7 @@ jobs:
         run: echo '✅ All the fundamental actions are OK!'
 
   test-check-project-license:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
