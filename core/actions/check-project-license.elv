@@ -10,9 +10,9 @@ fn -check-current-year-included { |license-file|
     fail 'Cannot detect the current year!'
   }
 
-  console:inspect &emoji=🗓 'Current year' $current-year
+  console:inspect &emoji=🗓️  'Current year' $current-year
 
-  echo 🔎🗓 Searching the license file for the current year...
+  echo 🔎🗓️ Searching the license file for the current year...
 
   if ?(grep --color=always $current-year $license-file > &2) {
     echo ✅ Current year found in the license file!
