@@ -12,7 +12,7 @@ fn setup-test { |ordinal|
         eq (all) true
     )
 
-    if (output-should-exist) {
+    if $output-should-exist {
       >> 'should exist' {
         put $output-path |
           should-be-regular
