@@ -1,6 +1,6 @@
 >> 'The `found` output' {
   >> 'should be false' {
-    put '' |
+    get-env found |
       should-be false
   }
 }
