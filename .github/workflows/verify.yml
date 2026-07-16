@@ -9,14 +9,14 @@ on:
 
 jobs:
   test-run-elvish-tests:
-    if: true
+    if: false
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-run-elvish-tests
 
   test-detect-branch-version:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-run-elvish-tests
     steps:

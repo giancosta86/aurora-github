@@ -1,16 +1,34 @@
-use ../branch-version
-use ../ci-cd/output
+use re
+use str
+use github.com/giancosta86/ethereal/v1/semver
+use github.com/giancosta86/gauntlet/v1/git-refs
+use github.com/giancosta86/gauntlet/v1/output
 
 fn main {
-  var result = (branch-version:detect)
+  var current-ref = (git-refs:get-current)
 
-  echo 🌲 Current Git branch: $result[branch]
+  var branch = [(str:split / $current-ref)][-1]
 
-  echo 🦋 Detected version: $result[version]
+  echo 🌲 Current Git branch: $branch
 
-  echo 🧵 Escaped version: $result[escaped-version]
+  var semantic-version = (semver:parse $branch)
 
-  echo 🪩 Major version: $result[major]
+  var version = (semver:to-string $semantic-version)
 
-  output:map $result
+  echo 🦋 Detected version: $version
+
+  var escaped-version = (re:quote $version)
+
+  echo 🧵 Escaped version: $escaped-version
+
+  var major = $semantic-version[major]
+
+  echo 🪩 Major version: $major
+
+  output:map [
+    &branch=$branch
+    &version=$version
+    &escaped-version=$escaped-version
+    &major=$major
+  ]
 }

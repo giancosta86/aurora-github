@@ -14,8 +14,6 @@ steps:
 
 - **Essential**: the branch name must adhere to a [semantic version](https://semver.org/) format, optionally preceded by `v`. For example: `v1.0.2`.
 
-- the branch name is read from `github.head_ref` if such variable is non-empty - and from `github.ref` otherwise.
-
 ## 📥 Inputs
 
 _No inputs required._

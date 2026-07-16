@@ -7,27 +7,11 @@ runs:
     - id: detect-branch-version
       uses: ./actions/detect-branch-version
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        code: |
-          >> 'Action outputs' {
-            >> 'branch' {
-              put '${{ steps.detect-branch-version.outputs.branch }}' |
-                should-not-be-empty
-            }
-
-            >> 'version' {
-              put '${{ steps.detect-branch-version.outputs.version }}' |
-                should-not-be-empty
-            }
-
-            >> 'escaped version' {
-              put '${{ steps.detect-branch-version.outputs.escaped-version }}' |
-                should-contain \.
-            }
-
-            >> 'major component' {
-              put '${{ steps.detect-branch-version.outputs.major }}' |
-                should-not-be-empty
-            }
-          }
+        working-directory: ${{ github.action_path }}
+      env:
+        branch: ${{ steps.detect-branch-version.outputs.branch }}
+        version: ${{ steps.detect-branch-version.outputs.version }}
+        escaped-version: ${{ steps.detect-branch-version.outputs.escaped-version }}
+        major: ${{ steps.detect-branch-version.outputs.major }}
