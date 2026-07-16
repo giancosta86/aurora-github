@@ -15,7 +15,7 @@
   }
 
   >> 'major component' {
-    get-env major |
-      should-not-be-empty
+    get-env version |
+      should-start-with (get-env major)
   }
 }
