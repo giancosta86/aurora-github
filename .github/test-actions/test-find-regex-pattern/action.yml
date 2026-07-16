@@ -16,6 +16,7 @@ runs:
         files: "*.txt"
         regex: TO.O!
         crash-when: found
+        crash-message: My custom message!
 
     - uses: ./actions/run-elvish-tests
       with:
