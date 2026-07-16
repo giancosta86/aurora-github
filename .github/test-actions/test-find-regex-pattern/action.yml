@@ -15,6 +15,7 @@ runs:
         working-directory: tests/unknown-tech/src
         files: "*.txt"
         regex: TO.O!
+        crash-when: found
 
     - uses: ./actions/run-elvish-tests
       with:
