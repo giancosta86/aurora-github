@@ -6,7 +6,7 @@ inputs:
     description: Comma-separated Velvet scripts to run; wildcards are supported.
 
   working-directory:
-    description: Directory containing the tests.
+    description: Directory containing the tests and, optionally, metadata.json.
     default: .
 
 runs:

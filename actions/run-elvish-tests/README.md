@@ -19,12 +19,16 @@ steps:
 
    within `working-directory`.
 
+## 💬 Remarks
+
+By default, Velvet **v4** will be used when running Velvet tests; however, if a **metadata.json** file exists in `working-directory` - and one of its `dependencies` or `devDependencies` is Velvet - such version will be used instead.
+
 ## 📥 Inputs
 
-|        Name         |    Type    |                           Description                           | Default value |
-| :-----------------: | :--------: | :-------------------------------------------------------------: | :-----------: |
-|  `velvet-scripts`   | **string** | Comma-separated Velvet scripts to run; wildcards are supported. |               |
-| `working-directory` | **string** |                 Directory containing the tests                  |     **.**     |
+|        Name         |    Type    |                            Description                            | Default value |
+| :-----------------: | :--------: | :---------------------------------------------------------------: | :-----------: |
+|  `velvet-scripts`   | **string** |  Comma-separated Velvet scripts to run; wildcards are supported   |               |
+| `working-directory` | **string** | Directory containing the tests and, optionally, **metadata.json** |     **.**     |
 
 ## 🌐 Further references
 
