@@ -5,5 +5,3 @@ runs:
   using: composite
   steps:
     - uses: ./actions/check-project-license
-      with:
-        license-file: DODO
