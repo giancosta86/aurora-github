@@ -1,6 +1,6 @@
 use path
 
-cd (path:join .. .. tests elvish)
+cd (path:join .. .. .. tests elvish)
 
 >> 'The verification script output' {
   >> 'should exist' {
