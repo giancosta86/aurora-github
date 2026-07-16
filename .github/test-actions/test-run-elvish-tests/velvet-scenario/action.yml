@@ -48,38 +48,11 @@ runs:
         velvet-scripts: ${{ inputs.velvet-scripts }}
 
     - shell: elvish {0}
-      working-directory: tests/elvish
+      working-directory: ${{ github.action_path }}
       run: |
-        use os
+        use github.com/giancosta86/velvet/v4/velvet
 
-        fn test-output-file { |ordinal|
-          var output-path = 'velvet-'$ordinal'.txt'
-
-          var output-should-exist = (
-            get-env $ordinal'-output-should-exist' |
-              eq (all) true
-          )
-
-          if $output-should-exist {
-            if (not (os:is-regular $output-path)) {
-              fail $ordinal' Velvet output does not exist!'
-            }
-          } else {
-            if (os:is-regular $output-path) {
-              fail $ordinal' Velvet output unexpectedly exists!'
-            }
-          }
-        }
-
-        echo 🔎 Now checking the Velvet tests output...
-
-        all [
-          first
-          second
-        ] |
-          each $test-output-file~
-
-        echo ✅ Velvet output checked!
+        velvet &flawless velvet-scripts
       env:
         first-output-should-exist: ${{ inputs.first-output-should-exist }}
         second-output-should-exist: ${{ inputs.second-output-should-exist }}
