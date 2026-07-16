@@ -41,9 +41,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v10.0.0
+    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
 
-    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v10.0.0
+    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
       with:
         working-directory: ${{ inputs.working-directory }}
         install-dependencies: false
