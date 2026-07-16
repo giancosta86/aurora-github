@@ -25,7 +25,7 @@ fn main {
   all $files | each { |file-wildcard|
     var escaped-wildcard = (string:escape-single-quotes $file-wildcard)
 
-    var paths = [(eval 'put '$escaped-wildcard)]
+    var paths = [(put $escaped-wildcard)]
 
     var grep-status = ?(
       grep --perl-regexp --color=always --with-filename --line-number $@quiet-grep-arg $regex $@paths >&2

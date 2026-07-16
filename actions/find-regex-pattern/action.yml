@@ -20,7 +20,7 @@ inputs:
     default: false
 
   working-directory:
-    description: Directory where the action must run.
+    description: Directory where the action should run.
     default: .
 
 outputs:
@@ -31,7 +31,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - id: main
       shell: elvish {0}

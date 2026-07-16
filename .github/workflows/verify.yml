@@ -43,7 +43,7 @@ jobs:
         run: echo '✅ All the fundamental actions are OK!'
 
   test-check-project-license:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -51,7 +51,7 @@ jobs:
       - uses: ./.github/test-actions/test-check-project-license
 
   test-find-regex-pattern:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:

@@ -4,7 +4,7 @@ description: Tests for find-regex-pattern.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
       run: echo 🎭 Looking for existing pattern...
@@ -14,17 +14,13 @@ runs:
       with:
         working-directory: tests/unknown-tech/src
         files: "*.txt"
-        regex: TODO!
+        regex: TO.O!
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        code: |
-          >> 'The `found` output' {
-            >> 'should be true' {
-              put '${{ steps.find-matching-pattern.outputs.found }}' |
-                should-be true
-            }
-          }
+        working-directory: ${{ github.action_path }}
+      env:
+        found: ${{ steps.find-matching-pattern.outputs.found }}
 
     - shell: elvish {0}
       run: echo 🎭 Looking for missing pattern...
@@ -35,12 +31,8 @@ runs:
         files: tests/unknown-tech/src/*.txt
         regex: SOMETHING-ELSE
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        code: |
-          >> 'The `found` output' {
-            >> 'should be false' {
-              put '${{ steps.look-for-missing-pattern.outputs.found }}' |
-                should-be false
-            }
-          }
+        working-directory: ${{ github.action_path }}
+      env:
+        found: ${{ steps.look-for-missing-pattern.outputs.found }}
