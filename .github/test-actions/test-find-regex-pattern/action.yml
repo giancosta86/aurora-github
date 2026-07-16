@@ -32,6 +32,7 @@ runs:
         files: tests/unknown-tech/src/*.txt
         regex: SOMETHING-ELSE
         crash-when: not-found
+        crash-message: Another custom message!
 
     - uses: ./actions/run-elvish-tests
       with:
