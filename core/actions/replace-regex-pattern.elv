@@ -2,7 +2,7 @@ use os
 use re
 use github.com/giancosta86/ethereal/v1/edit
 use github.com/giancosta86/ethereal/v1/string
-use ./input
+use github.com/giancosta86/gauntlet/v1/input
 
 fn main {
   var files = (input:list files)
