@@ -7,7 +7,7 @@ runs:
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
-      run: echo 🎭 Looking for existing pattern...
+      run: echo 🎭 Looking for matching pattern...
 
     - uses: ./actions/find-regex-pattern
       id: find-matching-pattern
