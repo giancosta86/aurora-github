@@ -11,7 +11,7 @@ steps:
 
 ## 💡 How it works
 
-When creating actions in a repository acting as a library for GitHub Actions, you could need to reference one action from another: this action ensures that all the above local `@` tags only reference actions on the current branch.
+When creating actions in a repository, you could need to reference one action from another: this action ensures that all the above local `@` tags only reference actions on the current branch.
 
 ## ☑️ Requirements
 
