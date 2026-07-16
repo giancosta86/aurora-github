@@ -6,6 +6,10 @@ runs:
   steps:
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
+    - uses: giancosta86/epm-plus/actions/install-elvish-packages@v1
+      with:
+        packages: github.com/giancosta86/velvet@v4
+
     - shell: elvish {0}
       run: echo 🎭 Running the custom verification script...
 
@@ -14,22 +18,11 @@ runs:
         working-directory: tests/elvish
 
     - shell: elvish {0}
-      working-directory: tests/elvish
+      working-directory: ${{ github.action_path }}
       run: |
-        use os
+        use github.com/giancosta86/velvet/v4/velvet
 
-        echo 🔎 Now checking the custom script output...
-
-        if (not (os:is-regular script-out.txt)) {
-          fail 'Missing test output script!'
-        }
-
-        put velvet*[nomatch-ok].txt |
-          if (not-eq [(all)] []) {
-            fail 'Velvet tests must not run when running the test script!'
-          }
-
-        echo ✅ Test script execution OK!
+        velvet:velvet &flawless verification-script
 
     - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
       with:
