@@ -52,7 +52,7 @@ runs:
       run: |
         use github.com/giancosta86/velvet/v4/velvet
 
-        velvet &flawless velvet-scripts
+        velvet:velvet &flawless velvet-scripts
       env:
         first-output-should-exist: ${{ inputs.first-output-should-exist }}
         second-output-should-exist: ${{ inputs.second-output-should-exist }}
