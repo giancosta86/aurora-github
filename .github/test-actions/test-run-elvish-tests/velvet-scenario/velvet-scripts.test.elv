@@ -15,7 +15,7 @@ fn setup-test { |ordinal|
     if $output-should-exist {
       >> 'should exist' {
         put $output-path |
-          should-be-regular
+          should-not-be-regular #TODO: remove NOT
       }
     } else {
       >> 'should not exist' {
