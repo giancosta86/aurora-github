@@ -11,8 +11,8 @@ runs:
 
     - uses: ./actions/find-critical-todos
       with:
-        files: "*"
-        working-directory: tests/unknown-tech/src
+        files: README.md
+        working-directory: tests/unknown-tech
 
     - shell: elvish {0}
       run: echo ✅ Tests OK!
