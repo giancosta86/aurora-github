@@ -21,7 +21,7 @@ steps:
 
 ## 💬 Remarks
 
-By default, Velvet **v4** will be used when running Velvet tests; however, if a **metadata.json** file exists in `working-directory` - and one of its `dependencies` or `devDependencies` is Velvet - such version will be used instead.
+By default, Velvet **v4** will be installed and used when running Velvet tests; however, if a **metadata.json** file exists in `working-directory` - and one of its `dependencies` or `devDependencies` is Velvet - such version will be installed and used instead.
 
 ## 📥 Inputs
 
