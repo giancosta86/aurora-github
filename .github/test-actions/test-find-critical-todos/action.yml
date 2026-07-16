@@ -4,14 +4,14 @@ description: Tests for find-critical-todos.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
       run: echo 🎭 Looking for inexistent critical TODOs...
 
     - uses: ./actions/find-critical-todos
       with:
-        files: "README.md"
+        files: README.md
         working-directory: tests/unknown-tech
 
     - shell: elvish {0}

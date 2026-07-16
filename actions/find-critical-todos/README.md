@@ -11,7 +11,7 @@ steps:
       files: "*.elv"
 ```
 
-**Please, note**: this action is automatically run by most language-oriented `verify-` actions.
+**Please, note**: this action is automatically run by most `verify-` actions.
 
 ## 📥 Inputs
 

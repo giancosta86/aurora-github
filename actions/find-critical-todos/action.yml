@@ -1,9 +1,9 @@
-name: Find regex pattern
-description: Finds the given regex in all the requested file patterns, optionally crashing.
+name: Find critical TODOs
+description: Looks for critical TODOs - that is, instances of the 'TODO!' string - in source files.
 
 inputs:
   files:
-    description: Comma-separated file patterns.
+    description: Comma-separated file patterns; if empty, the action won't run.
 
   working-directory:
     description: Directory where the action must run.
@@ -33,4 +33,4 @@ runs:
 
     - if: inputs.files == ''
       shell: elvish {0}
-      run: echo 💭 Critical TODOs check disabled...
+      run: echo 💭 Skipping critical TODOs check, as requested...
