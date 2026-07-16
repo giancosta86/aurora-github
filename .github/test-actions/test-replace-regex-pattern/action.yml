@@ -17,8 +17,8 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ env.temp-dir }}
       run: |
-        echo 'alpha' > A.txt
-        echo 'beta' > B.txt
+        echo alpha > A.txt
+        echo beta > B.txt
 
     - shell: elvish {0}
       run: echo 🎭 Testing replacement with enumerated files...
@@ -26,7 +26,7 @@ runs:
     - uses: ./actions/replace-regex-pattern
       with:
         files: A.txt, B.txt
-        regex: "([ae])"
+        regex: ([ae])
         replacement: "*$1*"
         working-directory: ${{ env.temp-dir }}
 
@@ -41,7 +41,7 @@ runs:
     - uses: ./actions/replace-regex-pattern
       with:
         files: "*.txt"
-        regex: "\\*"
+        regex: \\*
         replacement: ""
         working-directory: ${{ env.temp-dir }}
 
