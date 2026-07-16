@@ -15,7 +15,7 @@ runs:
         files: package.json
         working-directory: tests/npm-package
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
         working-directory: ${{ github.action_path }}
       env:
