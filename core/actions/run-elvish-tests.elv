@@ -13,7 +13,7 @@ fn infer-test-strategy {
 
   var test-strategy = (
     if $verification-script-exists {
-      put test-script
+      put verification-script
     } else {
       put velvet
     }

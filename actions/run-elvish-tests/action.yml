@@ -21,7 +21,7 @@ runs:
 
         run-elvish-tests:infer-test-strategy
 
-    - if: env.test-strategy == 'test-script'
+    - if: env.test-strategy == 'verification-script'
       shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
