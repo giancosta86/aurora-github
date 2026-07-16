@@ -6,7 +6,7 @@ fn main {
     action-references:get-to-other-branches &colors
   )]
 
-  if (seq:non-empty $references-to-other-branches) {
+  if (seq:is-non-empty $references-to-other-branches) {
     all $references-to-other-branches |
       each $echo~
 
