@@ -1,1 +1,1 @@
-print 'TEST OK' > script-out.txt
+print 'TEST OK' > verify-out.txt
