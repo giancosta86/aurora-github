@@ -1,7 +1,7 @@
 use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/ethereal/v1/string
-use ../ci-cd/output
-use ./input
+use github.com/giancosta86/gauntlet/v1/input
+use github.com/giancosta86/gauntlet/v1/output
 
 fn main {
   var files = (input:list files)
