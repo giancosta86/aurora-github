@@ -22,4 +22,6 @@ steps:
 
 - [detect-branch-version](../detect-branch-version/README.md)
 
+- [replace-regex-pattern](../replace-regex-pattern/README.md)
+
 - [aurora-github](../../README.md)

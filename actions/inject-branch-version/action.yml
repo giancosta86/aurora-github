@@ -13,8 +13,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
-
     - id: detect-branch-version
       uses: giancosta86/aurora-github/actions/detect-branch-version@v11.0.0
 

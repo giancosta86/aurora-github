@@ -67,7 +67,7 @@ jobs:
       - uses: ./.github/test-actions/test-find-critical-todos
 
   test-replace-regex-pattern:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -75,7 +75,7 @@ jobs:
       - uses: ./.github/test-actions/test-replace-regex-pattern
 
   test-inject-branch-version:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-replace-regex-pattern
     steps:

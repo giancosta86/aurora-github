@@ -8,7 +8,7 @@ runs:
       uses: ./actions/detect-branch-version
 
     - shell: elvish {0}
-      run: echo 🎭 Now injecting into a NodeJS project...
+      run: echo 🎭 Now injecting branch version into a NodeJS project...
 
     - uses: ./actions/inject-branch-version
       with:
@@ -17,12 +17,6 @@ runs:
 
     - uses: ./actions/run-velvet-code
       with:
-        working-directory: tests/npm-package
-        code: |
-          >> 'The branch version' {
-            >> 'should be injected into package.json' {
-              from-json < package.json |
-                put (all)[version] |
-                should-be ${{ steps.detect-branch-version.outputs.version }}
-            }
-          }
+        working-directory: ${{ github.action_path }}
+      env:
+        version: ${{ steps.detect-branch-version.outputs.version }}
