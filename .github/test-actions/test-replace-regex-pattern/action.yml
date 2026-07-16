@@ -49,3 +49,6 @@ runs:
       with:
         working-directory: ${{ github.action_path }}
         velvet-scripts: wildcard
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!
