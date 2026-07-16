@@ -22,7 +22,7 @@ fn infer-test-strategy {
   env:set test-strategy $test-strategy
 }
 
-fn run-test-script {
+fn run-verification-script {
   console:inspect &emoji=📜 'Running verification script' $verification-script
 
   elvish $verification-script

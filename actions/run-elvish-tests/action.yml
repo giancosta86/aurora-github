@@ -27,7 +27,7 @@ runs:
       run: |
         use github.com/giancosta86/aurora-github/actions/run-elvish-tests
 
-        run-elvish-tests:run-test-script
+        run-elvish-tests:run-verification-script
 
     - if: env.test-strategy == 'velvet'
       shell: elvish {0}
