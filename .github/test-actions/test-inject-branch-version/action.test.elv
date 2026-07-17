@@ -1,6 +1,6 @@
 use path
 
-cd (path:join .. .. .. tests npm)
+cd (path:join .. .. .. tests npm-package)
 
 >> 'The branch version' {
   >> 'should be injected into package.json' {
