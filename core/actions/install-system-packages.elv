@@ -2,8 +2,8 @@ use os
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/seq
-use use github.com/giancosta86/gauntlet/v1/env
-use use github.com/giancosta86/gauntlet/v1/input
+use github.com/giancosta86/gauntlet/v1/env
+use github.com/giancosta86/gauntlet/v1/input
 
 fn should-run-installer { |required-command|
   if $required-command {
