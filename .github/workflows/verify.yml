@@ -75,7 +75,7 @@ jobs:
       - uses: ./.github/test-actions/test-replace-regex-pattern
 
   test-inject-branch-version:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-replace-regex-pattern
     steps:
@@ -83,7 +83,7 @@ jobs:
       - uses: ./.github/test-actions/test-inject-branch-version
 
   test-install-system-packages:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:

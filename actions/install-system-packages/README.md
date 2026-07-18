@@ -13,9 +13,11 @@ steps:
 
 ## 💡 How it works
 
-1. If `required-command` is specified and can be found by the `type` command, just exit the action.
+1. If `packages` is an empty list, just exit the action.
 
-1. If `initial-update` is **true** and no packages were installed by this action in the current workflow, update the package list.
+1. If `required-command` is specified and can be found by the `type` Bash command, just exit the action.
+
+1. If `initial-update` is **true** and no packages were installed by this action in the current job, update the package list.
 
 1. Install the requested packages.
 

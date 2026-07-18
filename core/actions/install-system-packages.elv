@@ -1,10 +1,11 @@
 use os
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
-use github.com/giancosta86/ethereal/v1/fs
-use ./input
+use github.com/giancosta86/ethereal/v1/seq
+use use github.com/giancosta86/gauntlet/v1/env
+use use github.com/giancosta86/gauntlet/v1/input
 
-fn -should-run-installer { |required-command|
+fn should-run-installer { |required-command|
   if $required-command {
     console:inspect &emoji=📥 'Required command' $required-command
 
@@ -21,10 +22,14 @@ fn -should-run-installer { |required-command|
   }
 }
 
-fn -run-initial-update {
-  var flag-file = ~/.install-system-packages-updated
+fn try-to-run-initial-update {
+  var flag-variable = aurora-github-install-system-packages-initial-update-done
 
-  if (os:is-regular $flag-file) {
+  var installer-already-run = (
+    and (has-env $flag-variable) (eq (get-env $flag-variable) true)
+  )
+
+  if $installer-already-run {
     echo 💡 The package list has already been updated!
     return
   }
@@ -35,10 +40,10 @@ fn -run-initial-update {
     sudo apt-get update
   }
 
-  fs:touch $flag-file
+  env:set $flag-variable true
 }
 
-fn -run-installer { |requested-packages|
+fn run-installer { |requested-packages|
   echo 📦 Installing packages...
 
   command:silence {
@@ -48,20 +53,25 @@ fn -run-installer { |requested-packages|
   echo ✅ Packages installed!
 }
 
-fn main { |inputs|
-  var required-command = (input:string &optional required-command)
-
+fn main {
   var packages = (input:list packages)
+
+  if (seq:is-empty $packages) {
+    echo 💭 No packages requested...
+    return
+  }
+
+  var required-command = (input:string &optional required-command)
 
   var initial-update = (input:bool initial-update)
 
-  if (not (-should-run-installer $required-command)) {
+  if (not (should-run-installer $required-command)) {
     return
   }
 
   if $initial-update {
-    -run-initial-update
+    try-to-run-initial-update
   }
 
-  -run-installer $packages
+  run-installer $packages
 }
