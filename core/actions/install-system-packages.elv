@@ -7,17 +7,17 @@ use github.com/giancosta86/gauntlet/v1/input
 
 fn should-run-installer { |required-command|
   if $required-command {
-    console:inspect &emoji=📥 'Required command' $required-command
+    console:inspect &emoji=📥 'Required command' $required-command >&2
 
     if (command:exists-in-bash $required-command) {
-      echo ✅ Required command available - no need to install it!
+      echo ✅ Required command available - no need to install it! >&2
       put $false
     } else {
-      echo 💬 Required command not available - now installing its packages...
+      echo 💬 Required command not available - now installing its packages... >&2
       put $true
     }
   } else {
-    echo 💫 No required command passed - the requested packages will be installed unconditionally...
+    echo 💫 No required command passed - the requested packages will be installed unconditionally... >&2
     put $true
   }
 }
