@@ -4,11 +4,12 @@ description: Tests for install-via-sdk-man.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
       run: |
-        use github.com/giancosta86/aurora-github/ci-cd/env
+        use github.com/giancosta86/gauntlet/v1/env
+
         env:map [
           &expected-maven-version=3.8.7
           &expected-gradle-version=8.2.1
@@ -17,27 +18,13 @@ runs:
     - shell: elvish {0}
       run: echo 🎭 Checking the test environment...
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        code: |
-          >> 'The expected Maven version' {
-            >> 'should not be installed' {
-              mvn --version |
-                slurp |
-                should-not-contain (get-env expected-maven-version)
-            }
-          }
-
-          >> 'The expected Gradle version' {
-            >> 'should not be installed' {
-              gradle --version |
-                slurp |
-                should-not-contain (get-env expected-gradle-version)
-            }
-          }
+        working-directory: ${{ github.action_ref }}
+        velvet-scripts: preconditions
 
     - shell: elvish {0}
-      run: echo "🎭 Installing 🪶 Maven..."
+      run: echo 🎭 Installing 🪶 Maven...
 
     - uses: ./actions/install-via-sdkman
       with:
@@ -45,28 +32,14 @@ runs:
         version: ${{ env.expected-maven-version }}
 
     - shell: bash
-      run: echo "🎭 Installing 🐘 Gradle..."
+      run: echo 🎭 Installing 🐘 Gradle...
 
     - uses: ./actions/install-via-sdkman
       with:
         candidate: gradle
         version: ${{ env.expected-gradle-version }}
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        code: |
-          >> 'The expected Maven version' {
-            >> 'should be installed' {
-              mvn --version |
-                slurp |
-                should-contain (get-env expected-maven-version)
-            }
-          }
-
-          >> 'The expected Gradle version' {
-            >> 'should be installed' {
-              gradle --version |
-                slurp |
-                should-contain (get-env expected-gradle-version)
-            }
-          }
+        working-directory: ${{ github.action_ref }}
+        velvet-scripts: action
