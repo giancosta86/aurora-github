@@ -29,15 +29,17 @@ fn install-sdk { |candidate version|
     bash -c "source '"$-sdkman-script"'; sdk install '"$candidate"' '"$version"'"
   }
 
+  echo ✅ $candidate'('$version')' installed!
+
   var sdk-bin = $-sdkman-home/candidates/$candidate/$version/bin
 
   if (not (os:is-dir $sdk-bin)) {
-    fail 'Inexistent sdk ''bin'' directory: '$sdk-bin
+    echo 💭 Inexistent sdk bin directory...
+  } else {
+    var updated-path = $sdk-bin':'(get-env PATH)
+
+    env:set PATH $updated-path
+
+    echo ✅ SDK bin directory prepended to the PATH!
   }
-
-  var updated-path = $sdk-bin':'(get-env PATH)
-
-  env:write PATH $updated-path
-
-  echo ✅ $candidate'('$version')' installed!
 }

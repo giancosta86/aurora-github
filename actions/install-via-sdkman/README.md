@@ -16,7 +16,7 @@ steps:
 
 1. If SDKMAN is not installed, download and install it.
 
-1. Install the requested SDK and append its path to the **PATH** environment variable.
+1. Install the requested SDK and **prepend** its path to the **PATH** environment variable.
 
 **Please, note**: all the SDKS are installed to `$HOME/.sdkman/candidates`
 

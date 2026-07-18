@@ -1,6 +1,6 @@
 use github.com/giancosta86/ethereal/v1/curl
+use github.com/giancosta86/gauntlet/v1/input
 use ../jvm/sdkman
-use ./input
 
 fn main {
   var candidate = (input:string candidate)
