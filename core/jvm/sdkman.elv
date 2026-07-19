@@ -1,6 +1,5 @@
 use os
 use github.com/giancosta86/ethereal/v1/command
-use ../ci-cd/env
 
 var -sdkman-home = ~/.sdkman
 var -sdkman-script = $-sdkman-home/bin/sdkman-init.sh
@@ -38,7 +37,7 @@ fn install-sdk { |candidate version|
   } else {
     var updated-path = $sdk-bin':'(get-env PATH)
 
-    env:set PATH $updated-path
+    set-env PATH $updated-path
 
     echo ✅ SDK bin directory prepended to the PATH!
   }
