@@ -33,7 +33,7 @@ fn install-sdk { |candidate version|
   var sdk-bin = $-sdkman-home/candidates/$candidate/$version/bin
 
   if (not (os:is-dir $sdk-bin)) {
-    echo 💭 Inexistent sdk bin directory...
+    echo 💭 Inexistent SDK bin directory...
   } else {
     var updated-path = $sdk-bin':'(get-env PATH)
 

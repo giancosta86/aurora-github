@@ -39,6 +39,9 @@ runs:
         candidate: gradle
         version: ${{ env.expected-gradle-version }}
 
+    - shell: bash
+      run: echo 🎭 Now checking the effects...
+
     - uses: ./actions/run-elvish-tests
       with:
         working-directory: ${{ github.action_path }}
