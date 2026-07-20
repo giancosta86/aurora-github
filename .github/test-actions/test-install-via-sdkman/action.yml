@@ -16,7 +16,7 @@ runs:
         ]
 
     - shell: elvish {0}
-      run: echo 🎭 Checking the test environment...
+      run: echo 🎭 Ensuring the preconditions...
 
     - uses: ./actions/run-elvish-tests
       with:
@@ -46,3 +46,6 @@ runs:
       with:
         working-directory: ${{ github.action_path }}
         velvet-scripts: action
+
+    - shell: bash
+      run: echo ✅ All tests OK!
