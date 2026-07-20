@@ -1,3 +1,4 @@
+use os
 use path
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/curl
