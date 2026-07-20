@@ -1,5 +1,5 @@
 name: Test install-via-sdkman
-description: Tests for install-via-sdk-man.
+description: Tests for install-via-sdkman.
 
 runs:
   using: composite
