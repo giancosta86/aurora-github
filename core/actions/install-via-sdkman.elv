@@ -10,7 +10,7 @@ use github.com/giancosta86/gauntlet/v1/input
 var sdkman~ = $sdkman:sdkman~
 
 fn install-sdk { |candidate version|
-  echo 📥 Installing $candidate'('$version')...'
+  echo 📥 Installing $candidate' ('$version')...'
 
   fs:with-path-sandbox curl:configuration-path {
     curl:display-errors-only
@@ -20,7 +20,7 @@ fn install-sdk { |candidate version|
     }
   }
 
-  echo ✅ $candidate'('$version')' installed!
+  echo ✅ $candidate' ('$version')' installed!
 
   var sdk-bin = (
     sdkman:get-sdk-directory $candidate $version |
