@@ -9,7 +9,7 @@ runs:
     - shell: elvish {0}
       run: |
         use os
-        use github.com/giancosta86/aurora-github/ci-cd/env
+        use github.com/giancosta86/gauntlet/v1/env
 
         env:map [
           &tag=test-release
