@@ -1,4 +1,4 @@
-use ../ci-cd/release
+use github.com/giancosta86/gauntlet/v1/release
 use ./input
 
 fn main {

@@ -9,8 +9,8 @@ steps:
   - uses: giancosta86/aurora-github/actions/upload-release-assets@v11
     with:
       release-tag: v3.0.2
-      files: logo.png data.zip
       working-directory: dist
+      files: logo.png data.zip
 ```
 
 ## 💡 How it works
@@ -19,9 +19,7 @@ This action calls the [gh release upload](https://cli.github.com/manual/gh_relea
 
 ## ☑️ Requirements
 
-- The `release-tag` input must be the tag of an existing release - which could be, for example, the `release-tag` output of the [tag-and-release](../tag-and-release/README.md) action.
-
-- The `files` input must be comma-separated
+- The `release-tag` input must be the tag of an existing release.
 
 ## 📥 Inputs
 

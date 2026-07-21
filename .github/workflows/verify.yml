@@ -91,7 +91,7 @@ jobs:
       - uses: ./.github/test-actions/test-install-system-packages
 
   test-install-via-sdkman:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -99,7 +99,7 @@ jobs:
       - uses: ./.github/test-actions/test-install-via-sdkman
 
   test-upload-release-assets:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:

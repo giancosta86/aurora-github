@@ -4,7 +4,7 @@ description: Tests for upload-release-assets.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
       run: |
