@@ -1,5 +1,5 @@
+use github.com/giancosta86/gauntlet/v1/input
 use github.com/giancosta86/gauntlet/v1/release
-use ./input
 
 fn main {
   release:upload-assets [
