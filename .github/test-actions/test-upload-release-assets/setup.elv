@@ -1,8 +1,7 @@
-use os
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/gauntlet/v1/env
 
-var test-tag = test-release
+var test-tag = my-test-release
 
 fn clean-previous-runs {
   env:set test-tag $test-tag
@@ -26,7 +25,7 @@ fn create-test-release {
   echo ✅ Test tag created!
 
   echo 📝 Now creating a ''''$test-tag'''' draft release just for these tests...
-  gh release create $test-tag --draft --title 'Test release' --notes 'This volatile release is only used by the tests!'
+  gh release create $test-tag --draft --title 'My test release' --notes 'This volatile release is only used by the tests!'
   echo ✅ Test release created!
 }
 
