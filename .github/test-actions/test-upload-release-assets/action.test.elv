@@ -7,8 +7,12 @@ fn should-match-original-in { |directory-components-within-repo|
   var filename = (one)
 
   var downloaded-file = (path:join $download-directory $filename)
+  put $downloaded-file |
+    should-be-regular
 
   var original-file = (path:join .. .. .. $@directory-components-within-repo $filename)
+  put $original-file |
+    should-be-regular
 
   if (not ?(cmp -s $downloaded-file $original-file)) {
     fail $downloaded-file' is corrupted!'
