@@ -20,12 +20,12 @@ fn clean-previous-runs {
 }
 
 fn create-test-release {
-  echo 📌 Now creating a $test-tag tag just for these tests...
+  echo 📌 Now creating a ''''$test-tag'''' tag just for these tests...
   git tag -f $test-tag
   git push origin $test-tag
   echo ✅ Test tag created!
 
-  echo 📝 Now creating a $test-tag draft release just for these tests...
+  echo 📝 Now creating a ''''$test-tag'''' draft release just for these tests...
   gh release create $test-tag --draft --title 'Test release' --notes 'This volatile release is only used by the tests!'
   echo ✅ Test release created!
 }
