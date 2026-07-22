@@ -39,5 +39,3 @@ fn main {
 
   echo ✅ Test environment ready!
 }
-
-main
