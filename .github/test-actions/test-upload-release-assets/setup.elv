@@ -33,8 +33,6 @@ fn create-test-release {
 fn main {
   echo 🎭 Initializing the test environment...
 
-  setup-environment-variables
-
   clean-previous-runs
 
   create-test-release
