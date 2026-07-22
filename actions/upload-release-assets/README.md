@@ -27,7 +27,7 @@ This action calls the [gh release upload](https://cli.github.com/manual/gh_relea
 | :-----------------: | :-------------------------: | :--------------------------------------------------: | :-----------: |
 |    `release-tag`    |         **string**          |              Tag of the target release               |               |
 |       `files`       | **string**, comma-separated | Paths - even relative - of the asset files to upload |               |
-|     `overwrite`     |         **boolean**         |       Overwrite existing assets in the release       |   **true**    |
+|     `overwrite`     |         **boolean**         |       Overwrite existing assets in the release       |   **false**   |
 | `working-directory` |         **string**          |           Directory containing the `files`           |     **.**     |
 
 ## 🌐 Further references

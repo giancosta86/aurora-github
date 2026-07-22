@@ -10,7 +10,7 @@ inputs:
 
   overwrite:
     description: Overwrite existing assets in the release.
-    default: true
+    default: false
 
   working-directory:
     description: Directory containing the files.
