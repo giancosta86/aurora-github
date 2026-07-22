@@ -99,7 +99,7 @@ jobs:
       - uses: ./.github/test-actions/test-install-via-sdkman
 
   test-upload-release-assets:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -107,7 +107,7 @@ jobs:
       - uses: ./.github/test-actions/test-upload-release-assets
 
   test-verify-elvish-package:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license

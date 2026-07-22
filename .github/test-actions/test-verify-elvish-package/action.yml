@@ -6,4 +6,4 @@ runs:
   steps:
     - uses: ./actions/verify-elvish-package
       with:
-        working-directory: tests/elvish-library
+        working-directory: tests/elvish-package

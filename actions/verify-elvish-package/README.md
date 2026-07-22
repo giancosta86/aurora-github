@@ -17,7 +17,9 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **metadata.json**.
 
-1. Execute the tests.
+1. Perform a **metadata-driven install** via [epm-plus](https://github.com/giancosta86/epm-plus)
+
+1. Execute the tests via [run-elvish-tests](../run-elvish-tests/README.md)
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code.
 
@@ -30,7 +32,6 @@ steps:
 |        Name         |    Type    |                     Description                     |      Default value       |
 | :-----------------: | :--------: | :-------------------------------------------------: | :----------------------: |
 |    `todo-files`     | **string** | File patterns potentially containing critical TODOs | **\*\*[nomatch-ok].elv** |
-|  `velvet-version`   | **string** |                Velvet version to use                |          **v4**          |
 | `working-directory` | **string** |        Directory containing `metadata.json`         |          **.**           |
 
 ## 🌐 Further references
@@ -38,6 +39,8 @@ steps:
 - [check-project-license](../check-project-license/README.md)
 
 - [inject-branch-version](../inject-branch-version/README.md)
+
+- [run-elvish-tests](../run-elvish-tests/README.md
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

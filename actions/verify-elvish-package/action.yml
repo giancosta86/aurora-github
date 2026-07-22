@@ -6,10 +6,6 @@ inputs:
     description: File patterns potentially containing critical TODOs.
     default: "**[nomatch-ok].elv"
 
-  velvet-version:
-    description: Velvet version to use.
-    default: v4
-
   working-directory:
     description: Directory containing `metadata.json`.
     default: .
@@ -17,7 +13,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
       with:
@@ -27,16 +23,19 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/verify-elvish-package
-        verify-elvish-package:main
+        verify-elvish-package:perform-checks
 
     - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
         files: metadata.json
         working-directory: ${{ inputs.working-directory }}
 
+    - uses: giancosta86/epm-plus/actions/install-elvish-packages@v1
+      with:
+        working-directory: ${{ inputs.working-directory }}
+
     - uses: giancosta86/aurora-github/actions/run-elvish-tests@v11.0.0
       with:
-        velvet-version: ${{ inputs.velvet-version }}
         working-directory: ${{ inputs.working-directory }}
 
     - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
