@@ -7,7 +7,7 @@ var test-tag = test-release
 fn clean-previous-runs {
   env:set test-tag $test-tag
 
-  echo 🧹 Preventively deleting the $test-tag release and its tag, if existing...
+  echo 🧹 Preventively deleting the ''''$test-tag'''' release and its tag, if existing...
 
   all [
     { gh release delete --cleanup-tag --yes $test-tag }
