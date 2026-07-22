@@ -9,6 +9,7 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ github.action_path }}
       run: |
+        echo -----> $pwd
         use ./setup
         setup:main
       env:
