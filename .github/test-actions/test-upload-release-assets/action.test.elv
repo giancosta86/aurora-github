@@ -23,14 +23,14 @@ fn should-match-original-in { |directory-components-within-repo|
   }
 
   >> 'should have the same bytes as the original files' {
-    var tag = (get-env tag)
+    var test-tag = (get-env test-tag)
 
     all [
       index.html
       react.svg
       vite.svg
     ] | each { |file-name|
-      gh release download $tag -p $file-name -D $download-directory
+      gh release download $test-tag -p $file-name -D $download-directory
     }
 
     put index.html |

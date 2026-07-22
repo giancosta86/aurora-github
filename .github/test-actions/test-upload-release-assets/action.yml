@@ -17,7 +17,7 @@ runs:
 
     - uses: ./actions/upload-release-assets
       with:
-        release-tag: ${{ env.tag }}
+        release-tag: ${{ env.test-tag }}
         working-directory: website/static
         files: index.html
 
@@ -26,7 +26,7 @@ runs:
 
     - uses: ./actions/upload-release-assets
       with:
-        release-tag: ${{ env.tag }}
+        release-tag: ${{ env.test-tag }}
         working-directory: website/nodejs/src/assets
         files: react.svg, vite.svg
 
@@ -35,7 +35,7 @@ runs:
 
     - uses: ./actions/upload-release-assets
       with:
-        release-tag: ${{ env.tag }}
+        release-tag: ${{ env.test-tag }}
         working-directory: website/nodejs/src/assets
         files: vite.svg
         overwrite: true

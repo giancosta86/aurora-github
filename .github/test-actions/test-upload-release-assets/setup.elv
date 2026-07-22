@@ -2,17 +2,17 @@ use os
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/gauntlet/v1/env
 
-var tag = test-release
+var test-tag = test-release
 
 fn clean-previous-runs {
-  env:set tag $tag
+  env:set test-tag $test-tag
 
-  echo 🧹 Preventively deleting the $tag release and its tag, if existing...
+  echo 🧹 Preventively deleting the $test-tag release and its tag, if existing...
 
   all [
-    { gh release delete --cleanup-tag --yes $tag }
-    { git tag --delete $tag }
-    { git push origin --delete $tag }
+    { gh release delete --cleanup-tag --yes $test-tag }
+    { git tag --delete $test-tag }
+    { git push origin --delete $test-tag }
   ] |
     each { |block| command:silence &on-exception=none $block }
 
@@ -20,13 +20,13 @@ fn clean-previous-runs {
 }
 
 fn create-test-release {
-  echo 📝 Now creating a $tag tag just for these tests...
-  git tag -f $tag
-  git push origin $tag
+  echo 📌 Now creating a $test-tag tag just for these tests...
+  git tag -f $test-tag
+  git push origin $test-tag
   echo ✅ Test tag created!
 
-  echo 📝 Now creating a $tag draft release just for these tests...
-  gh release create $tag --draft --title 'Test release' --notes 'This volatile release is only used by the tests!'
+  echo 📝 Now creating a $test-tag draft release just for these tests...
+  gh release create $test-tag --draft --title 'Test release' --notes 'This volatile release is only used by the tests!'
   echo ✅ Test release created!
 }
 
