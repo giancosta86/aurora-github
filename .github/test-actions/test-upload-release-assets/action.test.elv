@@ -3,20 +3,12 @@ use path
 
 var download-directory = (os:temp-dir)
 
-fn should-match-original-in { |source-directory-components|
+fn should-match-original-in { |directory-components-within-repo|
   var filename = (one)
 
   var downloaded-file = (path:join $download-directory $filename)
 
-  var original-file = (path:join $@source-directory-components $filename)
-
-  use github.com/giancosta86/ethereal/v1/console
-  console:section &emoji=📥 'DOWNLOADED' {
-    ls -l $downloaded-file
-  }
-  console:section &emoji=🎩 ORIGINAL {
-    ls -l $original-file
-  }
+  var original-file = (path:join .. .. .. $@directory-components-within-repo $filename)
 
   if (not ?(cmp -s $downloaded-file $original-file)) {
     fail $downloaded-file' is corrupted!'
