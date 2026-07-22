@@ -36,6 +36,8 @@ fn main {
   clean-previous-runs
 
   create-test-release
+
+  echo ✅ Test environment ready!
 }
 
 main

@@ -10,6 +10,14 @@ fn should-match-original-in { |source-directory-components|
 
   var original-file = (path:join $@source-directory-components $filename)
 
+  use github.com/giancosta86/ethereal/v1/console
+  console:section &emoji=📥 'DOWNLOADED' {
+    ls -l $downloaded-file
+  }
+  console:secction &emoji=🎩 ORIGINAL {
+    ls -l $original-file
+  }
+
   if (not ?(cmp -s $downloaded-file $original-file)) {
     fail $downloaded-file' is corrupted!'
   }
