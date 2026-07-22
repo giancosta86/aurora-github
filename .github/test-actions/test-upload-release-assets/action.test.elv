@@ -14,7 +14,7 @@ fn should-match-original-in { |source-directory-components|
   console:section &emoji=📥 'DOWNLOADED' {
     ls -l $downloaded-file
   }
-  console:secction &emoji=🎩 ORIGINAL {
+  console:section &emoji=🎩 ORIGINAL {
     ls -l $original-file
   }
 
