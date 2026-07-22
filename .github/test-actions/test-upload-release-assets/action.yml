@@ -6,47 +6,9 @@ runs:
   steps:
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
-    - shell: elvish {0}
-      run: |
-        use os
-        use github.com/giancosta86/gauntlet/v1/env
-
-        env:map [
-          &tag=test-release
-          &download-directory=(os:temp-dir)
-        ]
-
-    - shell: elvish {0}
-      run: |
-        use github.com/giancosta86/ethereal/v1/command
-
-        var tag = (get-env tag)
-
-        echo 🧹 Preventively deleting the $tag release and its tag, if existing...
-
-        all [
-          { gh release delete --cleanup-tag --yes $tag }
-          { git tag --delete $tag }
-          { git push origin --delete $tag }
-        ] |
-          each { |block| command:silence &on-exception=none $block }
-
-        echo ✅ Pre-existing tag and release do not exist now!
-      env:
-        GH_TOKEN: ${{ github.token }}
-
-    - shell: elvish {0}
-      run: |
-        var tag = (get-env tag)
-
-        echo 📝 Now creating a $tag tag just for these tests...
-        git tag -f $tag
-        git push origin $tag
-        echo ✅ Test tag created!
-
-        echo 📝 Now creating a $tag draft release just for these tests...
-        gh release create $tag --draft --title 'Test release' --notes 'This volatile release is only used by the tests!'
-        echo ✅ Test release created!
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish setup.elv
       env:
         GH_TOKEN: ${{ github.token }}
 
@@ -79,71 +41,17 @@ runs:
         overwrite: true
 
     - shell: elvish {0}
-      run: echo 🎭 Downloading the uploaded assets...
+      run: echo 🎭 Checking the artifact validity...
 
-    - shell: elvish {0}
-      run: |
-        var tag = (get-env tag)
-        var download-directory = (get-env download-directory)
-
-        all [
-          index.html
-          react.svg
-          vite.svg
-        ] | each { |file-name|
-          gh release download $tag -p $file-name -D $download-directory
-        }
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: action
       env:
         GH_TOKEN: ${{ github.token }}
 
-    - shell: elvish {0}
-      run: echo 🎭 Checking the integrity of the downloaded assets...
-
-    - uses: ./actions/run-velvet-code
-      with:
-        code: |
-          use path
-
-          var download-directory = (get-env download-directory)
-
-          fn should-match-original-in { |source-directory-components|
-            var filename = (one)
-
-            var downloaded-file = (path:join $download-directory $filename)
-
-            var original-file = (path:join $@source-directory-components $filename)
-
-            if (not ?(cmp -s $downloaded-file $original-file)) {
-              fail $downloaded-file' is corrupted!'
-            }
-          }
-
-          >> 'The downloaded files' {
-            >> 'should match the original ones' {
-              put index.html |
-                should-match-original-in [website static]
-
-              put react.svg |
-                should-match-original-in [website nodejs src assets]
-
-              put vite.svg |
-                should-match-original-in [website nodejs src assets]
-            }
-          }
-
-    - shell: elvish {0}
-      run: |
-        use os
-
-        var tag = (get-env tag)
-        var download-directory = (get-env download-directory)
-
-        echo 🚮 Now deleting the $tag release and its tag...
-        gh release delete --cleanup-tag --yes $tag
-        echo ✅ Test release and tag deleted!
-
-        echo 🚮 Now deleting the download directory...
-        os:remove-all $download-directory
-        echo ✅ Download directory deleted!
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish teardown.elv
       env:
         GH_TOKEN: ${{ github.token }}
