@@ -25,8 +25,6 @@ fn should-match-original-in { |source-directory-components|
   >> 'should have the same bytes as the original files' {
     var tag = (get-env tag)
 
-    var download-directory = (get-env download-directory)
-
     all [
       index.html
       react.svg
