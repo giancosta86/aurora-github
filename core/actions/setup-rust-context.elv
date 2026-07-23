@@ -30,6 +30,14 @@ fn check-preconditions {
     echo 🌟 rustup available on the system!
   } else {
     install-rustup
+
+    🦀 RUSTUP 🦀
+    rustup --version
+    🦀🦀🦀🦀🦀🦀
+
+    🦀 CARGO 🦀
+    cargo --version
+    🦀🦀🦀🦀🦀
   }
 }
 
@@ -65,8 +73,8 @@ fn print-component-versions {
 }
 
 fn main {
-  echo 🔎 CARGO: (which cargo)
-  echo 🔎 RUSTUP: (which rustup)
+  rm /home/runner/.cargo/bin/cargo
+  /home/runner/.cargo/bin/rustup
 
   var cargo-colors = (input:bool cargo-colors)
 
