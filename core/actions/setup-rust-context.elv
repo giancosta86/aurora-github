@@ -32,11 +32,11 @@ fn check-preconditions {
     install-rustup
 
     echo 🦀 RUSTUP 🦀
-    echo rustup --version
+    rustup --version
     echo 🦀🦀🦀🦀🦀🦀
 
     echo 🦀 CARGO 🦀
-    echo cargo --version
+    cargo --version
     echo 🦀🦀🦀🦀🦀
   }
 }
