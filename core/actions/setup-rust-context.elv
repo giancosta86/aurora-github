@@ -14,7 +14,7 @@ fn install-rustup {
     command:silence {
       curl:display-errors-only
 
-      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -y
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     }
 
     echo 🚀 rustup installed!
