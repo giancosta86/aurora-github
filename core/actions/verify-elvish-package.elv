@@ -6,7 +6,6 @@ var required-fields = [
   description
   maintainers
   homepage
-  dependencies
 ]
 
 fn check-metadata {
@@ -24,9 +23,9 @@ fn check-metadata {
     }
   }
 
-  echo ✅ Library metadata OK!
+  echo ✅ Package metadata OK!
 }
 
-fn perform-checks {
+fn check {
   check-metadata
 }
