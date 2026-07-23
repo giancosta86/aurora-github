@@ -3,7 +3,7 @@ description: Installs and configures a Rust toolchain.
 
 inputs:
   cargo-colors:
-    description: Enable colors for `cargo`
+    description: Enable colors for Cargo.
     default: true
 
   check-toolchain-file:
