@@ -1,8 +1,18 @@
-use ./input
-use ./verify-rust-crate/rustdoc
+use path
+use github.com/giancosta86/gauntlet/v1/input
 use ./verify-rust-crate/snippets
 use ./verify-rust-crate/style
 use ./verify-rust-crate/tests
+
+fn check-rustdoc {
+  echo 📚 Building rustdoc documentation with all the features enabled...
+
+  tmp E:RUSTDOCFLAGS = '-D warnings'
+
+  cargo doc --all-features
+
+  echo ✅ Documentation built successfully!
+}
 
 fn main {
   var run-clippy = (input:bool run-clippy)
@@ -12,10 +22,10 @@ fn main {
   style:check &run-clippy=$run-clippy
 
   if $check-rustdoc {
-    rustdoc:check
+    check-rustdoc
   }
 
-  snippets:extract README.md 'tests/readme_test_'
+  snippets:extract README.md (path:join tests 'readme_test_')
 
   tests:run
 }

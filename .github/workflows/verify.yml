@@ -118,7 +118,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-elvish-package
 
   test-setup-rust-context:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -126,7 +126,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-rust-context
 
   test-verify-rust-crate:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
