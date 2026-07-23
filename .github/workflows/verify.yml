@@ -9,7 +9,7 @@ on:
 
 jobs:
   test-run-elvish-tests:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7

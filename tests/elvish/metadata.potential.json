@@ -1,5 +1,7 @@
 {
   "description": "Basic test",
 
+  "dependencies": ["github.com/giancosta86/primrose@v1"],
+
   "devDependencies": ["github.com/giancosta86/velvet@v4.1.1"]
 }
