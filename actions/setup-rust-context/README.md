@@ -13,19 +13,17 @@ steps:
 
 ## 💡 How it works
 
-1. Set the `CARGO_TERM_COLOR` environment variable according to the value of the `cargo-colors` input.
+1. If the `check-toolchain-file` input is **true**, verify that the **rust-toolchain.toml** (see below) exists.
 
-1. If the `check-toolchain-file` input is **true**, verify that the toolchain file (see below) exists.
+1. If the `rustup` and `cargo` commands are not accessible, install their latest versions.
+
+1. Set the `CARGO_TERM_COLOR` environment variable according to the value of the `cargo-colors` input.
 
 1. Ensure the required components (**rustfmt**, **clippy**) are installed.
 
 1. Display the versions of the executables in the current Rust toolchain.
 
 ## ☑️ Requirements
-
-- The **Cargo.toml** descriptor must exist in `working-directory`.
-
-- Some version of the `cargo` and `rustup` executables must already be available in the path.
 
 - if the `check-toolchain-file` input is **true**, the [toolchain file](https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file) file must exist within `working-directory`.
 

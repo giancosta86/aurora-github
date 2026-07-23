@@ -7,9 +7,9 @@ use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 
-fn install-rustup {
+fn install-rust {
   fs:with-path-sandbox $curl:configuration-path {
-    echo 📥 Now installing rustup...
+    echo 📥 Now installing 🦀Rust core...
 
     command:silence {
       curl:display-errors-only
@@ -17,19 +17,17 @@ fn install-rustup {
       curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     }
 
-    echo 🚀 rustup installed!
+    echo 🚀 Rust core installed!
   }
 }
 
-fn check-preconditions {
-  if (not (os:is-regular Cargo.toml)) {
-    fail 'The Cargo.toml descriptor is missing!'
-  }
-
-  if (has-external rustup) {
-    echo 🌟 rustup available on the system!
+fn ensure-rust-core {
+  if (
+    and (has-external rustup) (has-external cargo)
+  ) {
+    echo 🌟 rustup and cargo are available on the system!
   } else {
-    install-rustup
+    install-rust
   }
 }
 
@@ -49,8 +47,6 @@ fn check-toolchain-file {
 
 fn ensure-required-components {
   command:silence {
-    cargo --version
-
     rustup component add rustfmt clippy
   }
 }
@@ -71,13 +67,13 @@ fn main {
 
   echo 🦀💻 Setting up Rust context in "'"$pwd"'"...
 
-  check-preconditions
-
-  set-cargo-colors $cargo-colors
-
   if $check-toolchain-file {
     check-toolchain-file
   }
+
+  ensure-rust-core
+
+  set-cargo-colors $cargo-colors
 
   ensure-required-components
 
