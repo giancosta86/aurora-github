@@ -1,11 +1,11 @@
 use os
-use ../ci-cd/env
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
-use ./input
+use github.com/giancosta86/gauntlet/v1/env
+use github.com/giancosta86/gauntlet/v1/input
 
-fn -check-preconditions {
+fn check-preconditions {
   if (not (os:is-regular Cargo.toml)) {
     fail 'The Cargo.toml descriptor is missing!'
   }
@@ -19,11 +19,11 @@ fn -check-preconditions {
   }
 }
 
-fn -set-cargo-colors { |enabled|
+fn set-cargo-colors { |enabled|
   env:write CARGO_TERM_COLOR (lang:ternary $enabled always never)
 }
 
-fn -check-toolchain-file {
+fn check-toolchain-file {
   var toolchain-file = rust-toolchain.toml
 
   if (os:is-regular $toolchain-file) {
@@ -33,7 +33,7 @@ fn -check-toolchain-file {
   }
 }
 
-fn -ensure-required-components {
+fn ensure-required-components {
   command:silence {
     cargo --version
 
@@ -41,7 +41,7 @@ fn -ensure-required-components {
   }
 }
 
-fn -print-component-versions {
+fn print-component-versions {
   console:section &emoji=🦀 'Rust component versions' {
     cargo --version
     rustc --version
@@ -57,17 +57,17 @@ fn main {
 
   echo 🦀💻 Setting up Rust context in "'"$pwd"'"...
 
-  -check-preconditions
+  check-preconditions
 
-  -set-cargo-colors $cargo-colors
+  set-cargo-colors $cargo-colors
 
   if $check-toolchain-file {
-    -check-toolchain-file
+    check-toolchain-file
   }
 
-  -ensure-required-components
+  ensure-required-components
 
-  -print-component-versions
+  print-component-versions
 
   echo ✅🦀 Rust context in "'"$pwd"'" ready!
 }
