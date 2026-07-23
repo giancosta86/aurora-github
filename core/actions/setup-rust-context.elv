@@ -20,7 +20,7 @@ fn check-preconditions {
 }
 
 fn set-cargo-colors { |enabled|
-  env:write CARGO_TERM_COLOR (lang:ternary $enabled always never)
+  env:set CARGO_TERM_COLOR (lang:ternary $enabled always never)
 }
 
 fn check-toolchain-file {
