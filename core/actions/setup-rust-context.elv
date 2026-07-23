@@ -8,7 +8,7 @@ use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 
 fn install-rustup {
-  fs:with-path-sandbox $curl:configuration-file {
+  fs:with-path-sandbox $curl:configuration-path {
     echo 📥 Now installing rustup...
 
     command:silence {
