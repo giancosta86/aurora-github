@@ -13,19 +13,19 @@ steps:
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
 
-1. Ensure that the package _metadata_ are declared.
-
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **metadata.json**.
 
-1. Perform a **metadata-driven install** via [epm-plus](https://github.com/giancosta86/epm-plus)
+1. Performs checks on **metadata.json**.
 
-1. Execute the tests via [run-elvish-tests](../run-elvish-tests/README.md)
+1. Perform a **metadata-driven install** via [epm-plus](https://github.com/giancosta86/epm-plus).
+
+1. Execute the tests via [run-elvish-tests](../run-elvish-tests/README.md).
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code.
 
 ## ☑️ Requirements
 
-- `metadata.xml` must be present in `working-directory` - as described in [epm:metadata](https://elv.sh/ref/epm.html#epm:metadata)
+- `metadata.json` must be present in `working-directory` - as described in [epm:metadata](https://elv.sh/ref/epm.html#epm:metadata)
 
 ## 📥 Inputs
 

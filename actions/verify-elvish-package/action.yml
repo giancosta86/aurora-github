@@ -19,16 +19,16 @@ runs:
       with:
         license-file: ${{ inputs.working-directory }}/LICENSE
 
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
+      with:
+        files: metadata.json
+        working-directory: ${{ inputs.working-directory }}
+
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/verify-elvish-package
         verify-elvish-package:check
-
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
-      with:
-        files: metadata.json
-        working-directory: ${{ inputs.working-directory }}
 
     - uses: giancosta86/epm-plus/actions/install-elvish-packages@v1
       with:
