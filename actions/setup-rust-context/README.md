@@ -15,7 +15,7 @@ steps:
 
 1. Set the `CARGO_TERM_COLOR` environment variable according to the value of the `cargo-colors` input.
 
-1. If the `check-toolchain-file` input is **true**, verify that the toolchain file (discussed above) exists.
+1. If the `check-toolchain-file` input is **true**, verify that the toolchain file (see below) exists.
 
 1. Ensure the required components (**rustfmt**, **clippy**) are installed.
 
@@ -49,5 +49,7 @@ steps:
 - [verify-rust-crate](../verify-rust-crate/README.md)
 
 - [publish-rust-crate](../publish-rust-crate/README.md)
+
+- [Rust language](https://rust-lang.org/)
 
 - [aurora-github](../../README.md)

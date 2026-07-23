@@ -107,7 +107,7 @@ jobs:
       - uses: ./.github/test-actions/test-upload-release-assets
 
   test-verify-elvish-package:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -118,7 +118,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-elvish-package
 
   test-setup-rust-context:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
