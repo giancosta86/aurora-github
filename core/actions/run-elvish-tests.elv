@@ -62,11 +62,6 @@ var infer-velvet-version~ = (
         all $reference-list
       } |
       each { |reference|
-        {
-          echo 📦NOW, THE REFERENCE IS:
-          pprint $reference
-        } >&2
-
         detect-velvet-version-from-package-reference $reference |
           lang:map { |velvet-version|
             put $velvet-version
