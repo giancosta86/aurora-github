@@ -62,6 +62,7 @@ var infer-velvet-version~ = (
       } |
       each { |reference|
         echo '📦 REFERENCE: '$reference
+        fail KABOOM
 
         detect-velvet-version-from-package-reference $reference |
           lang:map { |velvet-version|
