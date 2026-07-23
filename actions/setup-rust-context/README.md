@@ -13,7 +13,7 @@ steps:
 
 ## 💡 How it works
 
-1. If the `check-toolchain-file` input is **true**, verify that the **rust-toolchain.toml** (see below) exists.
+1. If the `check-toolchain-file` input is **true**, verify that **rust-toolchain.toml** (see below) exists.
 
 1. If the `rustup` and `cargo` commands are not accessible, install their latest versions.
 
@@ -21,13 +21,11 @@ steps:
 
 1. Ensure the required components (**rustfmt**, **clippy**) are installed.
 
-1. Display the versions of the executables in the current Rust toolchain.
+1. Display the versions of the main executables in the current Rust toolchain.
 
 ## ☑️ Requirements
 
-- if the `check-toolchain-file` input is **true**, the [toolchain file](https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file) file must exist within `working-directory`.
-
-  It should include at least the required toolchain version, for example:
+- If existing, **rust-toolchain.toml** should include at least the required toolchain version - for example:
 
   ```toml
   [toolchain]
