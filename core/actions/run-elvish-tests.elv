@@ -37,6 +37,7 @@ var infer-velvet-version~ = (
     echo 📦REFERENCE HERE IS: $reference
 
     re:find $velvet-version-regex $reference |
+      lang:ensure-put |
       lang:map { |match|
         put $match[groups][1][text] |
           seq:empty-to-default
