@@ -34,6 +34,8 @@ var infer-velvet-version~ = (
   var default-velvet-version = v4
 
   fn detect-velvet-version-from-package-reference { |reference|
+    echo 📦REFERENCE HERE IS: $reference
+
     re:find $velvet-version-regex $reference |
       lang:map { |match|
         put $match[groups][1][text] |
@@ -61,9 +63,6 @@ var infer-velvet-version~ = (
         all $reference-list
       } |
       each { |reference|
-        echo '📦 REFERENCE: '$reference
-        fail KABOOM
-
         detect-velvet-version-from-package-reference $reference |
           lang:map { |velvet-version|
             put $velvet-version
