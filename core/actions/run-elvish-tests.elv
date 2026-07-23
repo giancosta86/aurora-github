@@ -34,8 +34,6 @@ var infer-velvet-version~ = (
   var default-velvet-version = v4
 
   fn detect-velvet-version-from-package-reference { |reference|
-    echo 📦REFERENCE HERE IS: $reference
-
     re:find $velvet-version-regex $reference |
       lang:ensure-put |
       lang:map { |match|
