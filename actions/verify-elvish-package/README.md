@@ -15,7 +15,7 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **metadata.json**.
 
-1. Performs checks on **metadata.json**.
+1. Perform checks on **metadata.json**.
 
 1. Perform a **metadata-driven install** via [epm-plus](https://github.com/giancosta86/epm-plus).
 
