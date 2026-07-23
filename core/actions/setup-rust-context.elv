@@ -1,21 +1,35 @@
 use os
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/curl
+use github.com/giancosta86/ethereal/v1/fs
 use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
+
+fn install-rustup {
+  fs:with-path-sandbox $curl:configuration-file {
+    echo 📥 Now installing rustup...
+
+    command:silence {
+      curl:display-errors-only
+
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    }
+
+    echo 🚀 rustup installed!
+  }
+}
 
 fn check-preconditions {
   if (not (os:is-regular Cargo.toml)) {
     fail 'The Cargo.toml descriptor is missing!'
   }
 
-  if (not (has-external cargo)) {
-    fail 'Some version of Cargo must be installed!'
-  }
-
-  if (not (has-external rustup)) {
-    fail 'Some version of rustup must be installed!'
+  if (has-external rustup) {
+    echo 🌟 rustup available on the system!
+  } else {
+    install-rustup
   }
 }
 
@@ -51,6 +65,9 @@ fn print-component-versions {
 }
 
 fn main {
+  echo 🔎 CARGO: (which cargo)
+  echo 🔎 RUSTUP: (which rustup)
+
   var cargo-colors = (input:bool cargo-colors)
 
   var check-toolchain-file = (input:bool check-toolchain-file)
