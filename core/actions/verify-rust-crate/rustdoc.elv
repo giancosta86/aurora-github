@@ -1,4 +1,4 @@
-fn check-rustdoc {
+fn check {
   echo 📚 Building rustdoc documentation with all the features enabled...
 
   tmp E:RUSTDOCFLAGS = '-D warnings'
