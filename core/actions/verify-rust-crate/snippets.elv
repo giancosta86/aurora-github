@@ -7,15 +7,6 @@ use github.com/giancosta86/ethereal/v1/seq
 
 var -snippet-pattern = '(?s)```rust\s+(.*?)```'
 
-fn -get-test-bootstrap-code { |ordinal|
-  str:join "\n" [
-    '#[test]'
-    'fn run_code_snippet_'$ordinal'() {'
-    '    main().unwrap();'
-    '}'
-  ]
-}
-
 fn extract { |markdown-path test-filename-prefix|
   if (not (os:is-regular $markdown-path)) {
     echo 💭 Source markdown path not found - cannot extract snippets
@@ -24,28 +15,37 @@ fn extract { |markdown-path test-filename-prefix|
 
   console:inspect &emoji=🗒️ 'Source markdown found' $markdown-path
 
-  var generated-test-paths = []
-
   echo 🎩 Trying to extract tests from Rust snippets in Markdown...
 
-  slurp < $markdown-path |
-    re:find $-snippet-pattern (all) |
-    seq:enumerate |
-    seq:spread { |index match|
-      var snippet = (str:trim-space $match[groups][1][text])
+  var generated-test-paths = (
+    slurp < $markdown-path |
+      re:find $-snippet-pattern (all) |
+      seq:enumerate |
+      seq:reduce [] { |cumulated index-match-pair|
+        var index match = (all $index-match-pair)
 
-      var ordinal = (+ $index 1)
+        var snippet = (str:trim-space $match[groups][1][text])
 
-      var snippet-path = $test-filename-prefix''$ordinal'.rs'
+        var ordinal = (+ $index 1)
 
-      var test-bootstrap-code = (-get-test-bootstrap-code $ordinal)
+        var snippet-path = $test-filename-prefix''$ordinal'.rs'
 
-      var updated-snippet = $snippet"\n\n"$test-bootstrap-code
+        var test-bootstrap-code = (
+          str:join "\n" [
+            '#[test]'
+            'fn run_code_snippet_'$ordinal'() {'
+            '    main().unwrap();'
+            '}'
+          ]
+        )
 
-      fs:save-anywhere $snippet-path $updated-snippet
+        var updated-snippet = $snippet"\n\n"$test-bootstrap-code
 
-      set generated-test-paths = (conj $generated-test-paths $snippet-path)
-    }
+        fs:save-anywhere $snippet-path $updated-snippet
+
+        conj $cumulated $snippet-path
+      }
+  )
 
   if (seq:is-non-empty $generated-test-paths) {
     console:section &emoji=🪄 'Process completed! Generated test files' {
