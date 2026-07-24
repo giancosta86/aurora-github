@@ -35,7 +35,9 @@ steps:
 
 ## ☑️ Requirements
 
-- `rust-toolchain.toml` must be present in `working-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
+- **rust-toolchain.toml** must be present in `working-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
+
+- **Cargo.toml** must exist in `working-directory`.
 
 ## 📥 Inputs
 
