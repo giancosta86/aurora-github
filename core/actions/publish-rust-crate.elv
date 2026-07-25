@@ -10,11 +10,11 @@ fn -document-all-features {
     var docs-header = '[package.metadata.docs.rs]'
 
     if (str:contains $content $docs-header) {
-      echo 💬 Skipping documentation addendum because $docs-header already appears in Cargo.toml...
+      echo 💬 Skipping documentation addendum because $docs-header already appears in Cargo.toml... >&2
 
       put $nil
     } else {
-      echo 📚 Now adding the documentation addendum to the project descriptor!
+      echo 📚 Now adding the documentation addendum to the project descriptor! >&2
 
       var descriptor-addendum = (str:join "\n" [
         $docs-header
