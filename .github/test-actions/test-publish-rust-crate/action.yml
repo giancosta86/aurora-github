@@ -4,32 +4,31 @@ description: Tests for publish-rust-crate.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
-
-    - shell: elvish {0}
-      run: echo 🎭 Now performing an initial descriptor backup...
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
       working-directory: tests/rust-crate
-      run: cp Cargo.toml Cargo.toml.bak
+      run: |
+        echo 🎭 Now performing an initial descriptor backup...
+        cp Cargo.toml Cargo.toml.bak
 
     - uses: ./.github/test-actions/test-publish-rust-crate/scenario
       with:
         header: Testing publication with no initial addendum - and creation disabled
-        pre-existing-addendum: false
+        pre-addendum: false
         document-all-features: false
-        should-contain-addendum: false
+        post-addendum: false
 
     - uses: ./.github/test-actions/test-publish-rust-crate/scenario
       with:
         header: Testing publication with no initial addendum - and creation enabled
-        pre-existing-addendum: false
+        pre-addendum: false
         document-all-features: true
-        should-contain-addendum: true
+        post-addendum: true
 
     - uses: ./.github/test-actions/test-publish-rust-crate/scenario
       with:
         header: Testing publication with initial addendum - and creation enabled
-        pre-existing-addendum: true
+        pre-addendum: true
         document-all-features: true
-        should-contain-addendum: true
+        post-addendum: true

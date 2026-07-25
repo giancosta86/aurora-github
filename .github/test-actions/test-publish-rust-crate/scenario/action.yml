@@ -3,16 +3,16 @@ description: Runs a scenario for publish-rust-crate.
 
 inputs:
   header:
-    description: Header for this test.
+    description: Header to display for this test.
 
-  pre-existing-addendum:
-    description: Whether the documentation addendum should exist before running the action.
+  pre-addendum:
+    description: Whether the documentation addendum should be added before running the action.
 
   document-all-features:
     description: Forwarded to the action.
 
-  should-contain-addendum:
-    description: Whether Cargo.toml should contain the documentation addendum.
+  post-addendum:
+    description: Whether Cargo.toml should contain the documentation addendum after running the action.
 
 runs:
   using: composite
@@ -20,13 +20,11 @@ runs:
     - shell: elvish {0}
       run: echo 🎭 ${{ inputs.header }}
 
-    - name: Restore Cargo.toml from the initial backup
-      shell: elvish {0}
+    - shell: elvish {0}
       working-directory: tests/rust-crate
       run: cp Cargo.toml.bak Cargo.toml
 
-    - name: Manually add the documentation addendum
-      if: inputs.pre-existing-addendum == 'true'
+    - if: inputs.pre-addendum == 'true'
       shell: elvish {0}
       working-directory: tests/rust-crate
       run: |
@@ -43,26 +41,10 @@ runs:
         document-all-features: ${{ inputs.document-all-features }}
         working-directory: tests/rust-crate
 
-    - if: inputs.should-contain-addendum == 'true'
-      uses: ./actions/run-velvet-code
+    - if: inputs.post-addendum == 'true'
+      uses: ./actions/run-elvish-tests
       with:
-        working-directory: tests/rust-crate
-        code: |
-          >> 'Cargo.toml' {
-            >> 'should contain the document-all addendum' {
-              slurp < Cargo.toml |
-                should-contain package.metadata.docs.rs
-            }
-          }
-
-    - if: inputs.should-contain-addendum != 'true'
-      uses: ./actions/run-velvet-code
-      with:
-        working-directory: tests/rust-crate
-        code: |
-          >> 'Cargo.toml' {
-            >> 'should not contain the document-all addendum' {
-              slurp < Cargo.toml |
-                should-not-contain package.metadata.docs.rs
-            }
-          }
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: action
+      env:
+        post-addendum: ${{ inputs.post-addendum }}

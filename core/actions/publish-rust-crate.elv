@@ -1,9 +1,9 @@
 use str
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/edit
+use github.com/giancosta86/ethereal/v1/highlight
 use github.com/giancosta86/ethereal/v1/lang
-use ../highlight
-use ./input
+use github.com/giancosta86/gauntlet/v1/input
 
 fn -document-all-features {
   edit:file Cargo.toml { |content|
