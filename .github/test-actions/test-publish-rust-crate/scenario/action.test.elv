@@ -1,4 +1,6 @@
-cd tests/rust-crate
+use path
+
+cd (path:join .. .. .. .. tests rust-crate)
 
 var expectation assertion = (
   get-env post-addendum |
