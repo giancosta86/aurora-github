@@ -1,6 +1,8 @@
 use path
 
-cd (get-env GITHUB_WORKSPACE)
+get-env GITHUB_WORKSPACE |
+  path:join (all) tests rust-crate |
+  cd (all)
 
 var expectation assertion = (
   if (eq (get-env post-addendum) true) {
