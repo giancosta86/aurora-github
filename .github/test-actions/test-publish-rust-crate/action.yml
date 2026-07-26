@@ -32,3 +32,6 @@ runs:
         pre-addendum: true
         document-all-features: true
         post-addendum: true
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!
