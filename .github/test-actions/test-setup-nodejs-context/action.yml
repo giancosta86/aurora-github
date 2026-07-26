@@ -4,60 +4,19 @@ description: Tests for setup-nodejs-context.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
+
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish setup.elv
 
     - shell: elvish {0}
-      run: echo 🎭 Initializing environment variable...
+      run: echo 🎭 Testing preconditions...
 
-    - shell: elvish {0}
-      working-directory: tests/npm-package
-      run: |
-        use str
-        use github.com/giancosta86/aurora-github/ci-cd/env
-
-        var expected-node-version = (
-          from-json < package.json |
-            put (all)[engines][node]
-        )
-        echo 🎡 Expected NodeJS version: $expected-node-version
-
-        var expected-pnpm-version = (
-          from-json < package.json |
-            put (all)[packageManager] |
-            str:split @ (all) |
-            drop 1
-        )
-        echo 📦 Expected pnpm version: $expected-pnpm-version
-
-        env:map [
-          &expected-node-version=$expected-node-version
-          &expected-pnpm-version=$expected-pnpm-version
-        ]
-
-    - shell: elvish {0}
-      run: echo 🎭 Testing precoditions...
-
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        working-directory: tests/npm-package
-        code: |
-          >> 'The expected NodeJS version' {
-            >> 'should not be already installed' {
-              if (has-external node) {
-                node --version |
-                  should-not-match-regex '\bv?'(get-env expected-node-version)'\b'
-              }
-            }
-          }
-
-          >> 'The expected pnpm version' {
-            >> 'should not be already installed' {
-              if (has-external pnpm) {
-                pnpm --version |
-                  should-not-match-regex '\bv?'(get-env expected-pnpm-version)'\b'
-              }
-            }
-          }
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: preconditions
 
     - uses: ./actions/setup-nodejs-context
       with:
@@ -66,32 +25,10 @@ runs:
     - shell: elvish {0}
       run: echo 🎭 Testing effects...
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        working-directory: tests/npm-package
-        code: |
-          use path
-
-          >> 'The expected NodeJS version' {
-            >> 'should now be available' {
-              node --version |
-                should-match-regex '\bv?'(get-env expected-node-version)'\b'
-            }
-          }
-
-          >> 'The expected pnpm version' {
-            >> 'should now be available' {
-              pnpm --version |
-                should-match-regex '\bv?'(get-env expected-pnpm-version)'\b'
-            }
-          }
-
-          >> 'The project packages' {
-            >> 'should be installed' {
-              path:join node_modules @giancosta86 typed-env package.json |
-                should-be-regular
-            }
-          }
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: action
 
     - shell: elvish {0}
       run: echo ✅ All tests OK!
