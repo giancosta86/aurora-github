@@ -19,7 +19,7 @@ runs:
   steps:
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
-    - uses: giancosta86/aurora-github/actions/install-elvish-packages@v11.0.0
+    - uses: giancosta86/epm-plus/actions/install-elvish-packages@v1
       with:
         packages: github.com/giancosta86/astral-bridge@v1
 
