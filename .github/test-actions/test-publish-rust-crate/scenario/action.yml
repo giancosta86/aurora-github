@@ -18,11 +18,11 @@ runs:
   using: composite
   steps:
     - shell: elvish {0}
-      run: echo 🎭 ${{ inputs.header }}
-
-    - shell: elvish {0}
       working-directory: tests/rust-crate
-      run: cp Cargo.toml.bak Cargo.toml
+      run: |
+        echo 🎭 ${{ inputs.header }}
+
+        cp Cargo.toml.bak Cargo.toml
 
     - if: inputs.pre-addendum == 'true'
       shell: elvish {0}
