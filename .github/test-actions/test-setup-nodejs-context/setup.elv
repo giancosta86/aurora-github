@@ -2,7 +2,7 @@ use path
 use str
 use github.com/giancosta86/gauntlet/v1/env
 
-echo 🎭 Initializing environment variable...
+echo 🎭 Initializing the test environment...
 
 get-env GITHUB_WORKSPACE |
   path:join (all) tests npm-package |

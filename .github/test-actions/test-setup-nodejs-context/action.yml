@@ -23,7 +23,7 @@ runs:
         working-directory: tests/npm-package
 
     - shell: elvish {0}
-      run: echo 🎭 Testing effects...
+      run: echo 🎭 Testing action side-effects...
 
     - uses: ./actions/run-elvish-tests
       with:
