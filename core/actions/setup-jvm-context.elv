@@ -37,8 +37,8 @@ fn main {
 
   var build-context = (detect-build-context)
 
-  env:write jvm-descriptor $build-context[descriptor]
-  env:write jvm-build-tool $build-context[build-tool]
+  env:set jvm-descriptor $build-context[descriptor]
+  env:set jvm-build-tool $build-context[build-tool]
 
   if $java-version {
     sdkman:install-sdk java $java-version

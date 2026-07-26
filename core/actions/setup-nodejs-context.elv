@@ -42,7 +42,7 @@ fn ensure-node {
     command:silence {
       nvm install $requested-node-version
 
-      env:write PATH (get-env PATH)
+      env:set PATH (get-env PATH)
     }
 
     echo 🚀 NodeJS ready!
@@ -54,7 +54,7 @@ fn ensure-node {
 
       nvm install latest
 
-      env:write PATH (get-env PATH)
+      env:set PATH (get-env PATH)
     }
   }
 
