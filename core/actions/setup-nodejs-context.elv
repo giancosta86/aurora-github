@@ -9,13 +9,13 @@ use github.com/giancosta86/astral-bridge/v1/version/requested
 
 var nvm~ = $nvm:nvm~
 
-var nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
-
 fn ensure-nvm {
   if (command:exists-in-bash nvm) {
     echo 🌟 nvm already available!
   } else {
     echo 📥 Installing nvm...
+
+    var nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
 
     command:silence {
       bash -c $nvm-setup-command
@@ -29,36 +29,36 @@ fn ensure-nvm {
   }
 }
 
+fn install-specific-nodejs { |version|
+  ensure-nvm
+
+  echo 📥 Installing NodeJS '('$version')'...
+
+  command:silence {
+    nvm install $version
+  }
+
+  # The path set by nvm must be preserved all over the workflow
+  get-env PATH |
+    env:set PATH
+
+  echo 🚀 NodeJS '('$version')' ready!
+}
+
 fn ensure-node {
   var requested-node-version = (requested:detect-recursively $pwd)
 
   if $requested-node-version {
     console:inspect &emoji=🏷️ 'Requested NodeJS version' $requested-node-version
 
-    ensure-nvm
-
-    echo 📥 Installing NodeJS...
-
-    command:silence {
-      nvm install $requested-node-version
-    }
-
-    env:set PATH (get-env PATH)
-
-    echo 🚀 NodeJS ready!
+    install-specific-nodejs $requested-node-version
   } else {
     echo 💭 No specific NodeJS version requested...
 
     if (has-external node) {
       echo 🌟 NodeJS is already on the system!
     } else {
-      ensure-nvm
-
-      command:silence {
-        nvm install latest
-      }
-
-      env:set PATH (get-env PATH)
+      install-specific-nodejs latest
     }
   }
 
@@ -67,7 +67,7 @@ fn ensure-node {
   }
 }
 
-fn prepare-corepack { |corepack-version|
+fn configure-corepack { |corepack-version|
   if $corepack-version {
     echo 📥 Now installing corepack@$corepack-version...
 
@@ -120,11 +120,12 @@ fn install-dependencies {
 
 fn main {
   var corepack-version = (input:string &optional corepack-version)
+
   var install-dependencies = (input:bool install-dependencies)
 
   ensure-node
 
-  prepare-corepack $corepack-version
+  configure-corepack $corepack-version
 
   ensure-package-manager
 
