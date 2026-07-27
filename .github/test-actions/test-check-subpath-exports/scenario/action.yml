@@ -19,7 +19,7 @@ runs:
       run: |
         jq '${{ inputs.jq-operation }}' package.json |
           slurp |
-          print (all)
+          print (all) > package.json
 
         echo 🔎 The 'exports' field is:
         jq -C '.exports' package.json
