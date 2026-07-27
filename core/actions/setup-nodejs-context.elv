@@ -12,7 +12,9 @@ var nvm~ = $nvm:nvm~
 var nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
 
 fn ensure-nvm {
-  if (not (command:exists-in-bash nvm)) {
+  if (command:exists-in-bash nvm) {
+    echo 🌟 nvm already available!
+  } else {
     echo 📥 Installing nvm...
 
     command:silence {
@@ -20,8 +22,6 @@ fn ensure-nvm {
     }
 
     echo 🚀 nvm ready!
-  } else {
-    echo 🌟 nvm already available!
   }
 
   console:section &emoji=🚢 'nvm version' {
@@ -41,18 +41,22 @@ fn ensure-node {
 
     command:silence {
       nvm install $requested-node-version
-
-      env:set PATH (get-env PATH)
     }
+
+    env:set PATH (get-env PATH)
 
     echo 🚀 NodeJS ready!
   } else {
     echo 💭 No specific NodeJS version requested...
 
-    if (not (has-external node)) {
+    if (has-external node) {
+      echo 🌟 NodeJS is already on the system!
+    } else {
       ensure-nvm
 
-      nvm install latest
+      command:silence {
+        nvm install latest
+      }
 
       env:set PATH (get-env PATH)
     }
@@ -63,7 +67,7 @@ fn ensure-node {
   }
 }
 
-fn setup-corepack { |corepack-version|
+fn prepare-corepack { |corepack-version|
   if $corepack-version {
     echo 📥 Now installing corepack@$corepack-version...
 
@@ -73,7 +77,7 @@ fn setup-corepack { |corepack-version|
 
     echo 🎉 corepack installed!
   } else {
-    echo 💭 Skipping corepack installation...
+    echo 💭 Skipping corepack installation, as it was not requested...
   }
 
   if (has-external corepack) {
@@ -89,7 +93,7 @@ fn setup-corepack { |corepack-version|
 
     echo 🚀 corepack ready!
   } else {
-    echo 💭 corepack not available
+    echo 💭 corepack not available on the system...
   }
 }
 
@@ -120,7 +124,7 @@ fn main {
 
   ensure-node
 
-  setup-corepack $corepack-version
+  prepare-corepack $corepack-version
 
   ensure-package-manager
 

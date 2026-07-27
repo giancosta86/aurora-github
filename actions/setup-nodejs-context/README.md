@@ -13,7 +13,7 @@ steps:
 
 ## 💡 How it works
 
-1. Detect if a specific **NodeJS** version was requested for this project. In particular:
+1. Detect if a specific **NodeJS** version was requested for this project. In particular, in one of these cases:
    1. If the **.nvmrc** file exists in the project directory - containing the requested NodeJS version, as expected by `nvm`.
 
    1. If **package.json** declares the following field:
@@ -64,7 +64,7 @@ steps:
 
    1. a recognized _lockfile_ in the project directory
 
-1. Run again the package manager, passing the `install` command.
+1. Run again the package manager, passing the `install` command - provided that `install-dependencies` is not set to **false**.
 
 ## ☑️ Requirements
 
