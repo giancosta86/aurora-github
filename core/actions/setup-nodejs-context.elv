@@ -21,10 +21,6 @@ fn ensure-nvm {
       bash -c $nvm-setup-command
     }
 
-    if (command:exists-in-bash nvm) {
-      fail KABOOM
-    }
-
     echo 🚀 nvm ready!
   }
 
