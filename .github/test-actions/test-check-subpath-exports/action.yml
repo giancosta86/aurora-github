@@ -4,10 +4,7 @@ description: Tests for check-subpath-exports.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
-
-    - shell: elvish {0}
-      run: echo 🎭 Now testing the action in multiple scenarios...
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - uses: ./.github/test-actions/test-check-subpath-exports/scenario
       with:

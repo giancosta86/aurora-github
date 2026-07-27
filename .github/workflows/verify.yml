@@ -149,7 +149,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-rust-crate
 
   test-setup-nodejs-context:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -157,7 +157,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-nodejs-context
 
   test-check-subpath-exports:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-setup-nodejs-context
     steps:
