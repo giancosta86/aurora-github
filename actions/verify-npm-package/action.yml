@@ -41,7 +41,7 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/verify-npm-package
-        verify-npm-package:main
+        verify-npm-package:run-package-scripts
 
     - if: inputs.check-subpath-exports == 'true'
       uses: giancosta86/aurora-github/actions/check-subpath-exports@v11.0.0
