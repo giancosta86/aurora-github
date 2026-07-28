@@ -1,6 +1,7 @@
 use os
 use str
 use github.com/giancosta86/ethereal/v1/lang
+use github.com/giancosta86/ethereal/v1/seq
 
 var check-json-value~
 
@@ -17,11 +18,8 @@ fn check-file-pattern { |path-in-json file-pattern|
 
   var files-found = (
     if (str:contains $file-pattern '*') {
-      var parent-dir = (
-        str:split '*' $file-pattern |
-        take 1
-      )
-      os:is-dir $parent-dir
+      eval 'put '$file-pattern |
+        seq:is-non-empty
     } else {
       os:is-regular $file-pattern
     }
@@ -37,7 +35,7 @@ fn check-file-pattern { |path-in-json file-pattern|
 
 set check-json-value~ = { |path-in-json json-value|
   var checker = (
-    ==s (kind-of $json-value) map |
+    eq (kind-of $json-value) map |
       lang:ternary (all) $check-json-object~ $check-file-pattern~
   )
 
