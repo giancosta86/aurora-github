@@ -1,7 +1,7 @@
-use github.com/giancosta86/aurora-github/nodejs
+use github.com/giancosta86/astral-bridge/v1/package-manager
 
-fn main {
-  nodejs:try-to-run-package-script verify
+fn run-package-scripts {
+  package-manager:run-script &optional verify
 
-  nodejs:try-to-run-package-script build
+  package-manager:run-script &optional build
 }

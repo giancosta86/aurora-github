@@ -1,6 +1,7 @@
 use os
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
+use github.com/giancosta86/astral-bridge/v1/package-manager
 use ../highlight
 use ../nodejs
 use ./input
@@ -31,7 +32,7 @@ fn publish-to-registry { |dry-run|
 fn main {
   var dry-run = (input:bool dry-run)
 
-  nodejs:try-to-run-package-script build
+  package-manager:run-script &optional build
 
   console:section &emoji=📦 'package.json just before publication' {
     highlight:file package.json json
