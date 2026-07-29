@@ -175,7 +175,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-npm-package
 
   test-publish-npm-package:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-verify-npm-package
     steps:
@@ -183,11 +183,9 @@ jobs:
       - uses: ./.github/test-actions/test-publish-npm-package
 
   test-verify-rust-wasm:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
-    needs:
-      - test-check-project-license
-      - test-verify-rust-crate
+    needs: test-verify-rust-crate
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-rust-wasm

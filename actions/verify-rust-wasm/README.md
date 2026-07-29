@@ -14,9 +14,9 @@ steps:
 
 ## 💡 How it works
 
-1. Call [setup-nodejs-context](../setup-nodejs-context/README.md), based on `working-directory`
+1. Call [setup-nodejs-context](../setup-nodejs-context/README.md) based on `working-directory`, without installing dependencies.
 
-1. Install the `wasm-pack` command at `wasm-pack-version`.
+1. Ensure the `wasm-pack` command at `wasm-pack-version` is available.
 
 1. Invoke the [verify-rust-crate](../verify-rust-crate/README.md) action, passing all the matching inputs, to perform code analysis over the Rust source code.
 
@@ -46,24 +46,18 @@ steps:
 | :----------------------: | :---------: | :-------------------------------------------------: | :--------------------------------------------------------------------------------------: |
 |   `wasm-pack-version`    | **string**  |           `wasm-pack` version to install            |                                                                                          |
 |      `wasm-target`       | **string**  |       Target of the `wasm-pack build` command       |                                         **web**                                          |
-|       `npm-scope`        | **string**  |        npm package scope, or an empty string        |                                                                                          |
+|       `npm-scope`        | **string**  |           npm package scope, or `<ROOT>`            |                                                                                          |
 |      `node-version`      | **string**  |               Required NodeJS version               |                                                                                          |
-|    `package-manager`     | **string**  |       Required package manager, with version        |                                                                                          |
+|    `package-manager`     | **string**  |     Required package manager, with `@` version      |                                                                                          |
 | `client-tests-directory` | **string**  |   Relative directory containing the client tests    |                                     **client-tests**                                     |
 |       `run-clippy`       | **boolean** |              Enable linting via Clippy              |                                         **true**                                         |
 |     `check-rustdoc`      | **boolean** |  Build the documentation - with warnings as errors  |                                        **false**                                         |
 |       `todo-files`       | **string**  | File patterns potentially containing critical TODOs | **{{src tests}/\*\*[nomatch-ok].rs client-tests/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}}** |
 
-| `working-directory` | **string** | Directory containing `Cargo.toml` | **.** |
+| `working-directory` | **string** | Directory containing **Cargo.toml** | **.** |
 
 ## 🌐 Further references
 
-- [check-project-license](../check-project-license/README.md)
-
-- [setup-rust-context](../setup-rust-context/README.md)
-
 - [verify-rust-crate](../verify-rust-crate/README.md)
-
-- [inject-branch-version](../inject-branch-version/README.md)
 
 - [aurora-github](../../README.md)

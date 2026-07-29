@@ -1,6 +1,6 @@
 use os
 use github.com/giancosta86/astral-bridge/v1/package-manager
-use ./input
+use github.com/giancosta86/gauntlet/v1/input
 
 fn main {
   var client-tests-directory = (input:string &optional client-tests-directory)
@@ -17,9 +17,9 @@ fn main {
 
       echo 🧭 Running the client tests...
       package-manager:exec test
-      echo ✅ Client tests run!
+      echo ✅ Client tests OK!
     } else {
-      echo 💭 Client tests directory cannot be found
+      echo 💭 Client tests directory not found...
     }
   } else {
     echo 💭 No client tests directory specified...

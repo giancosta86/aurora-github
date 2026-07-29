@@ -2,11 +2,7 @@ use os
 use str
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
-use ./input
-
-var root-files-to-copy = [
-  .npmrc
-]
+use github.com/giancosta86/gauntlet/v1/input
 
 fn get-npm-scope-args { |npm-scope|
   var npm-scope-arg = (
@@ -15,7 +11,8 @@ fn get-npm-scope-args { |npm-scope|
 
   console:inspect &emoji=☂ 'NPM scope' $npm-scope-arg
 
-  lang:ternary $npm-scope-arg ['--scope' $npm-scope-arg] []
+  eq $npm-scope-arg '<ROOT>' |
+    lang:ternary (all) ['--scope' $npm-scope-arg] []
 }
 
 fn run-wasm-pack { |inputs|
@@ -72,6 +69,10 @@ fn try-to-update-package-json { |inputs|
 }
 
 fn try-to-copy-special-root-files { |target-directory|
+  var root-files-to-copy = [
+    .npmrc
+  ]
+
   all $root-files-to-copy |
     keep-if $os:is-regular~ |
     each { |source-path|
@@ -87,7 +88,7 @@ fn main {
   var target = (input:string target)
   var target-directory = (input:string target-directory)
   var development = (input:bool development)
-  var npm-scope = (input:string &optional npm-scope)
+  var npm-scope = (input:string npm-scope)
   var node-version = (input:string &optional node-version)
   var package-manager = (input:string &optional package-manager)
 
