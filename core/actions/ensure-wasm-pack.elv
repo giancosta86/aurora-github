@@ -1,4 +1,5 @@
 use re
+use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/gauntlet/v1/input
 
@@ -22,7 +23,9 @@ fn main {
 
   echo 🌐 Installing wasm-pack $version...
 
-  npm install -g 'wasm-pack@'$version
+  command:silence {
+    npm install -g 'wasm-pack@'$version
+  }
 
   echo ✅ wasm-pack installed!
 }
