@@ -9,7 +9,7 @@ fn get-npm-scope-args { |npm-scope|
     str:trim-left $npm-scope @
   )
 
-  console:inspect &emoji=☂ 'NPM scope' $npm-scope-arg
+  console:inspect &emoji=☂ 'NPM scope' $npm-scope-arg >&2
 
   eq $npm-scope-arg '<ROOT>' |
     lang:ternary (all) ['--scope' $npm-scope-arg] []
