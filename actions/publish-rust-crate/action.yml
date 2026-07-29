@@ -3,7 +3,7 @@ description: Publishes a Rust crate - by default, to crates.io - with all of its
 
 inputs:
   dry-run:
-    description: Run a simulated publication via `--dry-run`.
+    description: Run a simulated publication.
     default: false
 
   cargo-token:

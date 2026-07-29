@@ -140,10 +140,7 @@ jobs:
   test-publish-rust-crate:
     if: false
     runs-on: ubuntu-24.04
-    needs:
-      - test-setup-rust-context
-      - test-inject-branch-version
-      - test-verify-rust-crate
+    needs: test-verify-rust-crate
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-rust-crate
@@ -165,7 +162,7 @@ jobs:
       - uses: ./.github/test-actions/test-check-subpath-exports
 
   test-verify-npm-package:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -178,12 +175,9 @@ jobs:
       - uses: ./.github/test-actions/test-verify-npm-package
 
   test-publish-npm-package:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
-    needs:
-      - test-inject-branch-version
-      - test-setup-nodejs-context
-      - test-verify-npm-package
+    needs: test-verify-npm-package
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-npm-package
@@ -202,8 +196,8 @@ jobs:
     if: false
     runs-on: ubuntu-24.04
     needs:
-      - test-publish-npm-package
       - test-verify-rust-wasm
+      - test-publish-npm-package
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-rust-wasm
@@ -222,9 +216,7 @@ jobs:
   test-publish-python-package:
     if: false
     runs-on: ubuntu-24.04
-    needs:
-      - test-inject-branch-version
-      - test-verify-python-package
+    needs: test-verify-python-package
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-python-package
@@ -246,10 +238,7 @@ jobs:
   test-publish-jvm-project:
     if: false
     runs-on: ubuntu-24.04
-    needs:
-      - test-inject-branch-version
-      - test-install-via-sdkman
-      - test-verify-jvm-project
+    needs: test-verify-jvm-project
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-jvm-project
@@ -259,9 +248,7 @@ jobs:
   test-publish-github-pages:
     if: false
     runs-on: ubuntu-24.04
-    needs:
-      - test-verify-npm-package
-      - test-inject-branch-version
+    needs: test-verify-npm-package
     permissions:
       pages: write
       id-token: write

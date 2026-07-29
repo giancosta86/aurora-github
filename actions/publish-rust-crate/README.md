@@ -37,7 +37,7 @@ steps:
 
 |          Name           |    Type     |                            Description                            | Default value |
 | :---------------------: | :---------: | :---------------------------------------------------------------: | :-----------: |
-|        `dry-run`        | **boolean** |            Run a simulated publication via `--dry-run`            |   **false**   |
+|        `dry-run`        | **boolean** |                  Run a simulated publication via                  |   **false**   |
 |      `cargo-token`      | **string**  |            Secret token for publishing to the registry            |               |
 | `document-all-features` | **boolean** | Enable [Rustdoc for all features](https://docs.rs/about/metadata) |   **true**    |
 |   `working-directory`   | **string**  |                 Directory containing `Cargo.toml`                 |     **.**     |

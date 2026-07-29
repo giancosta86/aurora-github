@@ -47,7 +47,7 @@ steps:
 
 |           Name           |          Type           |                    Description                    | Default value |
 | :----------------------: | :---------------------: | :-----------------------------------------------: | :-----------: |
-|        `dry-run`         |       **boolean**       |    Run a simulated publication via `--dry-run`    |   **false**   |
+|        `dry-run`         |       **boolean**       |            Run a simulated publication            |   **false**   |
 |       `npm-token`        |       **string**        |    Secret token for publishing to the registry    |               |
 |   `website-directory`    |       **string**        | Relative directory containing the project website |  **website**  |
 | `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |  **inject**   |
