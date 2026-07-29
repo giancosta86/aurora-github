@@ -18,7 +18,7 @@ runs:
         package-manager: pnpm@10.22.0
 
     - shell: elvish {0}
-      run: echo 🎭 Running with <ROOT> pseudo-scope, without NodeJS and package manager constraints...
+      run: echo 🎭 Running with '<ROOT>' pseudo-scope, without NodeJS and package manager constraints...
 
     - uses: ./actions/verify-rust-wasm
       with:
