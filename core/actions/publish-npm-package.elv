@@ -1,10 +1,9 @@
 use os
 use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/highlight
 use github.com/giancosta86/ethereal/v1/lang
+use github.com/giancosta86/gauntlet/v1/input
 use github.com/giancosta86/astral-bridge/v1/package-manager
-use ../highlight
-use ../nodejs
-use ./input
 
 fn ensure-npm-config {
   var config-path = .npmrc
