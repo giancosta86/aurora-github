@@ -7,7 +7,7 @@ runs:
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
-      run: echo 🎭 Running with npm cope...
+      run: echo 🎭 Running with npm scope...
 
     - uses: ./actions/verify-rust-wasm
       with:
@@ -18,15 +18,13 @@ runs:
         package-manager: pnpm@10.22.0
 
     - shell: elvish {0}
-      run: echo 🎭 Running with <ROOT> pseudo-scope...
+      run: echo 🎭 Running with <ROOT> pseudo-scope, without NodeJS and package manager constraints...
 
     - uses: ./actions/verify-rust-wasm
       with:
         working-directory: tests/rust-wasm
         wasm-pack-version: 0.15.0
         npm-scope: <ROOT>
-        node-version: 26.2.0
-        package-manager: pnpm@10.22.0
 
     - shell: elvish {0}
       run: echo ✅ All tests OK!
