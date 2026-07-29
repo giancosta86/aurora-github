@@ -27,29 +27,29 @@ steps:
 
 1. 1. Run [inject-branch-version](../inject-branch-version/README.md) on **package.json**.
 
-1. Run [setup-nodejs-context](../setup-nodejs-context/README.md)
+1. Run [setup-nodejs-context](../setup-nodejs-context/README.md), forwarding `corepack-version` and installing the dependencies.
 
-1. Run the `verify` script from **package.json** _if_ such script is present
+1. Run each of the following scripts from **package.json** - provided that it's declared:
+   1. `verify`
 
-1. Run the `build` script from **package.json** - _if_ such script is present
+   1. `build`
 
-1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) .
+1. Run [check-subpath-exports](../check-subpath-exports/README.md), unless prevented by the related input.
+
+1. Ensure there are no [critical TODOs](../find-critical-todos/README.md).
 
 ## ☑️ Requirements
 
-- **package.json** must exists - and it must contain the following scripts:
-  - `verify`
-
-  - `build`
+- **package.json** must exist.
 
 ## 📥 Inputs
 
-|          Name           |    Type     |                       Description                       |                     Default value                     |
-| :---------------------: | :---------: | :-----------------------------------------------------: | :---------------------------------------------------: |
-|      `todo-files`       | **string**  |   File patterns potentially containing critical TODOs   | **{src tests}/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}** |
-| `check-subpath-exports` | **boolean** | Run `check-subpath-exports` after the **verify** script |                       **true**                        |
-|   `corepack-version`    | **string**  |     **corepack** version to install, empty to skip      |                      **latest**                       |
-|   `working-directory`   | **string**  |           Directory containing `package.json`           |                         **.**                         |
+|          Name           |    Type     |                      Description                      |                     Default value                     |
+| :---------------------: | :---------: | :---------------------------------------------------: | :---------------------------------------------------: |
+|   `corepack-version`    | **string**  |    **corepack** version to install, empty to skip     |                      **latest**                       |
+|      `todo-files`       | **string**  |  File patterns potentially containing critical TODOs  | **{src tests}/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}** |
+| `check-subpath-exports` | **boolean** | Run `check-subpath-exports` after the package scripts |                       **true**                        |
+|   `working-directory`   | **string**  |          Directory containing `package.json`          |                         **.**                         |
 
 ## 🌐 Further references
 

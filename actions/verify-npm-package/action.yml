@@ -11,7 +11,7 @@ inputs:
     default: "{src tests}/**[nomatch-ok].{'' c m}{j t}s{'' x}"
 
   check-subpath-exports:
-    description: Run check-subpath-exports after the `verify` package script.
+    description: Run check-subpath-exports after the package scripts.
     default: true
 
   working-directory:
