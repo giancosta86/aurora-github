@@ -93,6 +93,12 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
+        use github.com/giancosta86/aurora-github/actions/verify-rust-wasm
+        verify-rust-wasm:print-wasm-descriptor
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
         use github.com/giancosta86/aurora-github/actions/run-wasm-client-tests
         run-wasm-client-tests:main
       env:
