@@ -5,7 +5,7 @@ description = "My sample Python library"
 readme = "README.md"
 authors = [{ name = "Gianluca Costa", email = "gianluca@gianlucacosta.info" }]
 requires-python = ">=3.12"
-dependencies = ["info-gianlucacosta-iris==4.0.1"]
+dependencies = ["info-gianlucacosta-eos-core==1.0.0"]
 
 [build-system]
 requires = ["hatchling"]
@@ -15,4 +15,4 @@ build-backend = "hatchling.build"
 distribution = true
 
 [tool.pdm.scripts]
-verify = "echo '🐍📃 pyproject.toml `verify` script!'"
+verify = "python src/tests.py"

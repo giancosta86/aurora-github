@@ -5,18 +5,18 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:574bd4c09781ef03993cca6b78996248c9686c5ea81b8e4287fad8cba55cd72c"
+content_hash = "sha256:e0ae89ca48832fc9688c49a21445ee449042cc10f911a9f57496e9c1370fb96c"
 
 [[metadata.targets]]
 requires_python = ">=3.12"
 
 [[package]]
-name = "info-gianlucacosta-iris"
-version = "4.0.1"
-requires_python = ">=3.6.2,<4.0.0"
-summary = "General-purpose library for Python"
+name = "info-gianlucacosta-eos-core"
+version = "1.0.0"
+requires_python = ">=3.10,<4.0"
+summary = "Type-checked, dependency-free utility library for modern Python"
 groups = ["default"]
 files = [
-    {file = "info.gianlucacosta.iris-4.0.1-py3-none-any.whl", hash = "sha256:251d8e97e92f4f27ad6a7e8e8bbdd21d0d41709bb37a5213947386703e73dd1e"},
-    {file = "info.gianlucacosta.iris-4.0.1.tar.gz", hash = "sha256:17e0c4ccd6160c22ccfe2076b2f7eb66a235580a9a69c7f706509d682b45183b"},
+    {file = "info.gianlucacosta.eos.core-1.0.0-py3-none-any.whl", hash = "sha256:d5302bddf62a3dc27b8fab52f3059b21c38abff03dd72c9084b3cfd2fc36e4a9"},
+    {file = "info.gianlucacosta.eos.core-1.0.0.tar.gz", hash = "sha256:9b19503485674e4e400de1bbb4408d0e802538395d6d929a61d5b36bde93284c"},
 ]

@@ -33,7 +33,7 @@ steps:
 
   ```toml
   [tool.pdm.scripts]
-  verify = "echo '🐍📃 pyproject.toml `verify` script!'"
+  verify = "<your shell commands here>"
   ```
 
 ## 📥 Inputs
