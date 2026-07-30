@@ -15,7 +15,9 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **pyproject.toml**.
 
-1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**; upon installation, the latest version will be retrieved if `pdm-version` is not specified.
+1. If **pipx** is not already installed, install it.
+
+1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**: the latest version will be retrieved if `pdm-version` is not specified.
 
 1. Run `pdm run verify` - where the **verify** script should be defined in the `[tool.pdm.scripts]` of **pyproject.toml**.
 
@@ -25,9 +27,12 @@ steps:
 
 ## ☑️ Requirements
 
-- `pipx` is mandatory when PDM has to be installed.
+- the **verify** script must be declared within **pyproject.toml**, like this:
 
-- the **verify** script must be declared within **pyproject.toml**.
+  ```toml
+  [tool.pdm.scripts]
+  verify = "echo '🐍📃 pyproject.toml `verify` script!'"
+  ```
 
 ## 📥 Inputs
 
@@ -39,9 +44,11 @@ steps:
 
 ## 🌐 Further references
 
+- [PDM](https://pdm-project.org)
+
 - [check-project-license](../check-project-license/README.md)
 
-[inject-branch-version](../inject-branch-version/README.md)
+- [inject-branch-version](../inject-branch-version/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

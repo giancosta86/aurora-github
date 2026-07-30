@@ -4,6 +4,23 @@ description: Tests for verify-python-package.
 runs:
   using: composite
   steps:
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
+
+    - shell: elvish {0}
+      run: echo 🎭 Running for the first time...
+
     - uses: ./actions/verify-python-package
       with:
         working-directory: tests/python-lib
+        pdm-version: 2.28.0
+
+    - shell: elvish {0}
+      run: echo 🎭 Running for a second time, to test caching...
+
+    - uses: ./actions/verify-python-package
+      with:
+        working-directory: tests/python-lib
+        pdm-version: 2.28.0
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

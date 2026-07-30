@@ -7,8 +7,10 @@ fn main {
 
   echo 🐍💻 Setting up Python context in "'"$pwd"'"...
 
-  if (not (os:is-regular pyproject.toml)) {
-    fail 'The pyproject.toml descriptor is missing!'
+  var descriptor = pyproject.toml
+
+  if (not (os:is-regular $descriptor)) {
+    fail 'The '$descriptor' descriptor is missing!'
   }
 
   pdm:ensure &version=$pdm-version

@@ -1,18 +1,23 @@
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/lang
 
 fn install-package { |package &version=$nil|
-  echo 📥 Installing $package via pipx...
+  if (not has-external pipx) {
+    echo 📥 Installing pipx...
 
-  var version-suffix
+    command:silence {
+      python3 -m pip install pipx
+    }
 
-  if $version {
-    console:inspect &emoji=🏷 'Requested version' $version
-    set version-suffix = '=='$version
-  } else {
-    echo 🌟 Installing the latest version...
-    set version-suffix = ''
+    echo 🚀 pipx ready!
   }
+  coalesce $version latest |
+    echo 📥 Installing $package '('(all)')' via pipx...
+
+  var version-suffix = (
+    lang:ternary $version '=='$version ''
+  )
 
   command:silence {
     pipx install $package''$version-suffix
