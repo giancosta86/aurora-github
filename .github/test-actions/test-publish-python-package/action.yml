@@ -10,6 +10,8 @@ runs:
   steps:
     - uses: ./actions/publish-python-package
       with:
+        pdm-version: 2.28.0
+
         dry-run: true
 
         index-url: https://api.repsy.io/pypi/giancosta86/pyground
