@@ -12,6 +12,10 @@ inputs:
   wasm-pack-version:
     description: wasm-pack version to install.
 
+  wasm-target:
+    description: Target of the `wasm-pack build` command.
+    default: web
+
   npm-scope:
     description: npm package scope or `<ROOT>`.
 
@@ -20,10 +24,6 @@ inputs:
 
   package-manager:
     description: Required package manager, with version.
-
-  wasm-target:
-    description: Target of the `wasm-pack build` command.
-    default: web
 
   working-directory:
     description: Directory containing `Cargo.toml`.

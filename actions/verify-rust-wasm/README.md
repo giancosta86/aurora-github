@@ -9,7 +9,7 @@ steps:
   - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v11
     with:
       wasm-pack-version: 0.13.1
-      npm-scope: your-npm-scope
+      npm-scope: your-npm-scope, or <ROOT>
 ```
 
 ## 💡 How it works

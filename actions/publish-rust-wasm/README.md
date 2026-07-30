@@ -10,14 +10,14 @@ steps:
     with:
       npm-token: ${{ secrets.NPM_TOKEN }}
       wasm-pack-version: 0.13.1
-      npm-scope: your-npm-scope
+      npm-scope: your-npm-scope, or <ROOT>
 ```
 
 **Please, note**: this action is designed for _publication_ only - not for verification: you might want to use [verify-rust-wasm](../verify-rust-wasm/README.md) for that.
 
 ## 💡 How it works
 
-1. Call [setup-nodejs-context](../setup-nodejs-context/README.md), based on `working-directory`
+1. Call [setup-nodejs-context](../setup-nodejs-context/README.md), based on `working-directory`, without installing dependencies.
 
 1. Install the `wasm-pack` command at `wasm-pack-version`.
 
@@ -47,10 +47,10 @@ steps:
 |      `dry-run`      | **boolean** | Run a simulated publication via `--dry-run` |   **false**   |
 |     `npm-token`     | **string**  | Secret token for publishing to the registry |               |
 | `wasm-pack-version` | **string**  |       `wasm-pack` version to install        |               |
+|    `wasm-target`    | **string**  |   Target of the `wasm-pack build` command   |    **web**    |
 |     `npm-scope`     | **string**  |        npm package scope or `<ROOT>`        |               |
 |   `node-version`    | **string**  |           Required NodeJS version           |               |
 |  `package-manager`  | **string**  |   Required package manager, with version    |               |
-|    `wasm-target`    | **string**  |   Target of the `wasm-pack build` command   |    **web**    |
 | `working-directory` | **string**  |      Directory containing `Cargo.toml`      |     **.**     |
 
 ## 🌐 Further references
