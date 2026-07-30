@@ -1,8 +1,8 @@
 use os
 use github.com/giancosta86/ethereal/v1/map
-use ../ci-cd/env
-use ../jvm/sdkman
-use ./input
+use github.com/giancosta86/ethereal/v1/sdkman
+use github.com/giancosta86/gauntlet/v1/env
+use github.com/giancosta86/gauntlet/v1/input
 
 var build-tool-by-descriptor = [
   &build.gradle.kts=gradle

@@ -4,58 +4,38 @@ description: Tests for verify-jvm-project.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
-    - shell: elvish {0}
-      run: echo 🎭 Displaying JVM versions...
-
-    - shell: elvish {0}
-      run: |
-        echo ☕ Java version: (java --version | head -n 1)
-
-        echo 🪶 Maven version: (mvn --version | head -n 1)
-
-        echo 🐘 Gradle version: (gradle --version | grep -P '^Gradle \d+\.\d+(\.\d+)?$' | head -n 1 | cut -d ' ' -f 2)
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish setup.elv
 
     - uses: ./actions/detect-branch-version
       id: version-detector
 
     - shell: elvish {0}
-      run: echo 🎭 Build and verify the Maven project...
+      run: echo 🎭 Verifying the Maven project...
 
     - uses: ./actions/verify-jvm-project
       with:
         working-directory: tests/maven-project
-
-    - uses: ./actions/run-velvet-code
-      with:
-        working-directory: tests/maven-project
-        code: |
-          >> 'Running code' {
-            >> 'from Maven project' {
-              var version = '${{ steps.version-detector.outputs.version }}'
-
-              java -jar target/maven-project-$version.jar |
-                should-be 'Hello, world - from Kotlin and Maven! 🥳'
-            }
-          }
 
     - shell: elvish {0}
-      run: echo 🎭 Build and verify the Gradle project...
+      run: echo 🎭 Verifying the Gradle project...
 
     - uses: ./actions/verify-jvm-project
       with:
         working-directory: tests/gradle-project
 
-    - uses: ./actions/run-velvet-code
-      with:
-        working-directory: tests/gradle-project
-        code: |
-          >> 'Running code' {
-            >> 'from Gradle project' {
-              var version = '${{ steps.version-detector.outputs.version }}'
+    - shell: elvish {0}
+      run: echo 🎭 Checking the effects...
 
-              java -jar build/libs/gradle-project-$version.jar |
-                should-be 'Hello, world - from Kotlin and Gradle! 🥳'
-            }
-          }
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: action
+      env:
+        version: ${{ steps.version-detector.outputs.version }}
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

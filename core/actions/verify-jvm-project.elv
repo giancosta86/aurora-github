@@ -1,4 +1,4 @@
-use ./input
+use github.com/giancosta86/gauntlet/v1/input
 
 var project-verifiers = [
   &mvn={ |quiet-tool|
