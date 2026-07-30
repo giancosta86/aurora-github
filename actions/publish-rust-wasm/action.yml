@@ -42,8 +42,8 @@ runs:
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
       run: |
-        use github.com/giancosta86/aurora-github/actions/install-wasm-pack
-        install-wasm-pack:main
+        use github.com/giancosta86/aurora-github/actions/ensure-wasm-pack
+        ensure-wasm-pack:main
       env:
         version: ${{ inputs.wasm-pack-version }}
 
