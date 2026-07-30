@@ -3,7 +3,7 @@ use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
 
 fn install-package { |package &version=$nil|
-  if (not has-external pipx) {
+  if (not (has-external pipx)) {
     echo 📥 Installing pipx...
 
     command:silence {
@@ -12,6 +12,7 @@ fn install-package { |package &version=$nil|
 
     echo 🚀 pipx ready!
   }
+
   coalesce $version latest |
     echo 📥 Installing $package '('(all)')' via pipx...
 
