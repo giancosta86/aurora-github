@@ -1,6 +1,6 @@
 fn install-dependencies {
   echo 📥 Installing project dependencies...
-  #pdm install
+  pdm install
   echo 🚀 Project dependencies ready!
 }
 
