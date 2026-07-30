@@ -24,8 +24,6 @@ steps:
 
 ## ☑️ Requirements
 
-- `pipx` is mandatory when PDM has to be installed.
-
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
 ## 📥 Inputs
