@@ -22,7 +22,7 @@ steps:
 
 1. Run `wasm-pack test` to run headless browser tests on Chrome.
 
-1. Generate the NodeJS package source files in the **pkg** subdirectory. In particular:
+1. Generate the NodeJS package source files into the **pkg** subdirectory. In particular:
    - if `node-version` is passed, it will be injected into the `engines/node` field in **package.json**
 
    - if `package-manager` is passed, it will be injected into the `packageManager` field in **package.json**
@@ -31,7 +31,7 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **pkg/package-json**
 
-1. If the directory referenced by the `client-tests-directory` input exists:
+1. If the directory referenced by the optional `client-tests-directory` input exists:
    1. Install their dependencies
 
    1. Execute the tests via the package manager's `test` command.

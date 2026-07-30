@@ -1,6 +1,7 @@
 use os
 use github.com/giancosta86/astral-bridge/v1/package-manager
 use github.com/giancosta86/gauntlet/v1/input
+use github.com/giancosta86/ethereal/v1/
 
 fn main {
   var client-tests-directory = (input:string &optional client-tests-directory)
@@ -12,7 +13,9 @@ fn main {
       tmp pwd = $client-tests-directory
 
       echo 📥 Installing client tests dependencies...
-      package-manager:exec install
+      command:silence {
+        package-manager:exec install
+      }
       echo 🚀 Client test dependencies ready!
 
       echo 🧭 Running the client tests...
