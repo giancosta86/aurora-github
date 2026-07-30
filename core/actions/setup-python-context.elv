@@ -1,6 +1,7 @@
 use os
 use github.com/giancosta86/gauntlet/v1/input
 use ../python/pdm
+use ../python/project
 
 fn main {
   var pdm-version = (input:string &optional pdm-version)
@@ -14,6 +15,8 @@ fn main {
   }
 
   pdm:ensure &version=$pdm-version
+
+  project:install-dependencies
 
   echo ✅🐍 NodeJS context in "'"$pwd"'" ready!
 }
