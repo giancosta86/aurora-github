@@ -1,3 +1,5 @@
+use path
+
 var version = (get-env version)
 
 get-env GITHUB_WORKSPACE |
