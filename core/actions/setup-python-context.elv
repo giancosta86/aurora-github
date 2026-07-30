@@ -1,5 +1,5 @@
 use os
-use ./input
+use github.com/giancosta86/gauntlet/v1/input
 use ../python/pdm
 
 fn main {
