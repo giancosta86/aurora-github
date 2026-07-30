@@ -2,7 +2,7 @@ use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
 
-fn install-package { |package &version=$nil|
+fn -ensure-pipx {
   if (not (has-external pipx)) {
     echo 📥 Installing pipx...
 
@@ -12,6 +12,10 @@ fn install-package { |package &version=$nil|
 
     echo 🚀 pipx ready!
   }
+}
+
+fn install-package { |package &version=$nil|
+  -ensure-pipx
 
   coalesce $version latest |
     echo 📥 Installing $package '('(all)')' via pipx...
