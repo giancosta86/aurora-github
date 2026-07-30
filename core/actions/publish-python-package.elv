@@ -1,4 +1,5 @@
 use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/highlight
 use github.com/giancosta86/gauntlet/v1/input
 use ../python/project
 
