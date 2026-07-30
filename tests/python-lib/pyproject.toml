@@ -5,7 +5,7 @@ description = "My sample Python library"
 readme = "README.md"
 authors = [{ name = "Gianluca Costa", email = "gianluca@gianlucacosta.info" }]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["info-gianlucacosta-iris==4.0.1"]
 
 [build-system]
 requires = ["hatchling"]
