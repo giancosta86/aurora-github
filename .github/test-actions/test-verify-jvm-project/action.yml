@@ -28,7 +28,7 @@ runs:
         working-directory: tests/gradle-project
 
     - shell: elvish {0}
-      run: echo 🎭 Checking the effects...
+      run: echo 🎭 Checking the action effects...
 
     - uses: ./actions/run-elvish-tests
       with:
