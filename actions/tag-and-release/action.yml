@@ -24,6 +24,7 @@ runs:
     - shell: bash
       run: |
         echo "🍄🍄🍄 ACTION REPOSITORY IN T-A-R IS: '"${{ github.action_repository }}"'"
+        echo "🍄🍄🍄 ACTION PATH IS: '"${{ github.action_path }}"'"
 
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
       with:
