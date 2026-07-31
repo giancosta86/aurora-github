@@ -2,8 +2,11 @@ use str
 
 >> 'The website URL' {
   >> 'should be the expected one' {
-    get-env website-url |
-      str:trim-space (all) |
+    var website-url = (get-env website-url)
+
+    echo 🌐 WEBSITE URL: "'"$website-url"'"
+
+    put $website-url |
       should-be 'https://gianlucacosta.info/aurora-github/'
   }
 }
