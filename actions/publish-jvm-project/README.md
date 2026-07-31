@@ -26,13 +26,13 @@ steps:
 1. If a specific version of the build tool is requested via `tool-version`, install it using SDKMAN
 
 1. If **Maven** is the build tool:
-   - if the **settings.xml** file exists in `working-directory`, copy it to **$HOME/.m2**
+   - if the **settings.xml** file exists in `working-directory`, copy it to the **$HOME/.m2** directory
 
-   - otherwise, provide a default one connecting the action credentials (`auth-user`, `auth-token`) with a **target-server** server id
+   - otherwise, provide a default one connecting the action credentials (`auth-user`, `auth-token`) with a **target-server** server id, which should be mentioned in a `<distributionManagement>/<repository>/<id>` within **pom.xml**
 
 1. Publish, using the build tool:
    - for 🪶**Maven**, run `mvn deploy`
-     - if `dry-run` is enabled, actually publish to the **target/dry-run** subdirectory instead of the target server
+     - if `dry-run` is enabled, actually publish to the **target/fake-publish** subdirectory instead of the target server
 
    - for 🐘**Gradle**, run `gradle publish`
      - if `dry-run` is enabled, the `--dry-run` flag is passed
@@ -44,10 +44,8 @@ steps:
 
 ## ☑️ Requirements
 
-- The `mvn` or `gradle` command must be available, depending on the descriptor within the project directory - which also implies that a suitable **Java** environment is installed; by passing `java-version` and `tool-version`, you can enforce specific required versions instead of the default ones provided by the selected GitHub Actions runner.
-
 - `auth-user` and `auth-token` are never mandatory - because of the flexibility provided by the supported build tools - but they are recommended for the most common scenarios:
-  - when the build tool is 🪶**Maven**, for deploying a conventional library it is generally essential to declare a server named **target-server** within **pom.xml**, like this:
+  - when the build tool is 🪶**Maven**, for deploying a conventional library it is a wise idea to declare a server named **target-server** within **pom.xml**, like this:
 
     ```xml
     <distributionManagement>
@@ -59,7 +57,7 @@ steps:
     </distributionManagement>
     ```
 
-    As a plus, a default **settings.xml** will be generated for you - referencing the environment variables containing the credentials.
+    As a plus, a default **settings.xml** will be generated for you - referencing the environment variables containing the credentials for `target-server`.
 
   - when the build tool is 🐘**Gradle**, deploying a conventional library is more minimalist - something like this (in **build.gradle.kts**):
 
@@ -84,8 +82,6 @@ steps:
 
     where the environment variables are automatically provided by the action, forwarding `auth-user` and `auth-token` to the build script.
 
-- The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
-
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
 ## 📥 Inputs
@@ -101,8 +97,6 @@ steps:
 | `working-directory` | **string**  | Directory containing the project descriptor |     **.**     |
 
 ## 🌐 Further references
-
-- [publish-github-pages](../publish-github-pages/README.md)
 
 - [inject-branch-version](../inject-branch-version/README.md)
 

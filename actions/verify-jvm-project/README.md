@@ -33,10 +33,6 @@ steps:
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code.
 
-## ☑️ Requirements
-
-- The `mvn` or `gradle` command must be available, depending on the descriptor within the project directory - which also implies that a suitable **Java** environment is installed; by passing `java-version` and `tool-version`, you can enforce specific required versions instead of the default ones provided by the selected GitHub Actions runner.
-
 ## 📥 Inputs
 
 |        Name         |    Type     |                     Description                     |                  Default value                  |
