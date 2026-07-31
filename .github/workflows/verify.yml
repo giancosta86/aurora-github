@@ -234,7 +234,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-jvm-project
 
   test-publish-jvm-project:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-verify-jvm-project
     steps:
