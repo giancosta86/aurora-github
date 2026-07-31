@@ -40,7 +40,15 @@ For any trigger different from a **merged** pull request, the action will merely
 
 ## 💬 Remarks
 
-The action is **idempotent**; in particular, _if the merged branch has been deleted_ by a previous run, or the tag and the release have already been created, the job containing the action **can be re-run**.
+The action is **idempotent**; in particular, even if:
+
+- the pull request has been merged
+
+- the merged branch has been deleted
+
+- the tag and the release have already been created
+
+the job containing the action **can be safely re-run**, performing all of its tasks as if it were the first run.
 
 ## ☑️ Requirements
 
