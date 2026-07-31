@@ -9,5 +9,5 @@ var modules-by-build-tool = [
 fn get-module { |@arguments|
   var build-tool = (lang:get-single-input $arguments)
 
-  use-mod $verifier-modules-by-build-tool[$build-tool]
+  use-mod $modules-by-build-tool[$build-tool]
 }
