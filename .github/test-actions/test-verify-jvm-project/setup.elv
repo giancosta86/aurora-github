@@ -1,6 +1,6 @@
 use github.com/giancosta86/ethereal/v1/console
 
-console:section &emoji=☕ 'Java tools' {
+console:section &emoji=💿 'Available Java tools' {
   java --version |
     head -n 1 |
     echo ☕ Java version: (all)
