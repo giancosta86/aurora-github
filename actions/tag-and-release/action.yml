@@ -21,6 +21,10 @@ outputs:
 runs:
   using: composite
   steps:
+    - shell: elvish {0}
+      run: |
+        echo 💥💥💥 ACTION REPOSITORY IN T-A-R IS: "'"${{ github.action_repository }}"'"
+
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
       with:
         core-repository: ${{ github.action_repository }}
