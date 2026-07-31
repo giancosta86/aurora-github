@@ -23,6 +23,7 @@ runs:
   steps:
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
       with:
+        core-repository: ${{ github.action_repository }}
         core-directory: ${{ github.action_path }}/../../core
 
     - if: github.event_name != 'pull_request' || github.event.action != 'closed' || github.event.pull_request.merged != true
