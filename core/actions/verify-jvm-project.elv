@@ -7,8 +7,9 @@ var verifier-modules-by-build-tool = [
 ]
 
 fn main {
-  var jvm-build-tool = (input:string jvm-build-tool)
   var quiet-tool = (input:bool quiet-tool)
+
+  var jvm-build-tool = (get-env jvm-build-tool)
 
   var verifier-module: = (
     use-mod $verifier-modules-by-build-tool[$jvm-build-tool]

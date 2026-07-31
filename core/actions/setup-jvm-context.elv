@@ -4,23 +4,23 @@ use github.com/giancosta86/ethereal/v1/sdkman
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 
-var build-tool-by-descriptor = [
-  &build.gradle.kts=gradle
-  &build.gradle=gradle
+var build-tools-by-descriptor = [
   &pom.xml=mvn
+  &build.gradle=gradle
+  &build.gradle.kts=gradle
 ]
 
-var build-tool-sdks = [
+var sdkman-candidates-by-build-tool = [
   &mvn=maven
   &gradle=gradle
 ]
 
 fn detect-build-context {
-  map:iterate $build-tool-by-descriptor { |descriptor build-tool|
+  map:iterate $build-tools-by-descriptor { |descriptor build-tool|
     if (os:is-regular $descriptor) {
       put [
-        &descriptor=$descriptor
-        &build-tool=$build-tool
+        &jvm-descriptor=$descriptor
+        &jvm-build-tool=$build-tool
       ]
       return
     }
@@ -37,19 +37,18 @@ fn main {
 
   var build-context = (detect-build-context)
 
-  env:set jvm-descriptor $build-context[descriptor]
-  env:set jvm-build-tool $build-context[build-tool]
+  env:map $build-context
 
   if $java-version {
     sdkman:install-sdk java $java-version
   }
 
   if $tool-version {
-    var build-tool = $build-context[build-tool]
+    var build-tool = $build-context[jvm-build-tool]
 
-    var build-tool-sdk = $build-tool-sdks[$build-tool]
+    var tool-candidate = $sdkman-candidates-by-build-tool[$build-tool]
 
-    sdkman:install $build-tool-sdk $tool-version
+    sdkman:install $tool-candidate $tool-version
   }
 
   echo ✅☕ JVM context in "'"$pwd"'" ready!
