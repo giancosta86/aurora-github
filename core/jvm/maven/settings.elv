@@ -8,7 +8,9 @@ use github.com/giancosta86/ethereal/v1/resources
 
 var -resources = (resources:for-script (src))
 
-var -user-settings-path = ~/.m2/settings.xml
+var -user-settings-path = (
+  path:join ~ .m2 settings.xml
+)
 
 var -user-settings-filename = (path:base $-user-settings-path)
 
@@ -24,7 +26,7 @@ fn -copy-default-settings {
   }
 }
 
-fn -check-server-in-pom {
+fn -check-default-server-in-pom {
   var server-name = target-server
 
   if (slurp < pom.xml | str:contains (all) $server-name) {
@@ -51,7 +53,7 @@ fn prepare-for-publication {
   } else {
     -copy-default-settings
 
-    -check-server-in-pom
+    -check-default-server-in-pom
   }
 
   echo ✅ Maven settings now ready!

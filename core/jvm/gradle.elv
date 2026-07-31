@@ -1,10 +1,10 @@
 use github.com/giancosta86/ethereal/v1/lang
 use ./gradle/settings
 
-fn run { |&quiet=$true @rest|
+fn run { |&quiet=$true @arguments|
   var quiet-arg = (lang:ternary $quiet [-q] [])
 
-  gradle --no-daemon --no-scan $@quiet-arg $@rest
+  gradle --no-daemon --no-scan $@quiet-arg $@arguments
 }
 
 fn verify-project { |&quiet=$true|

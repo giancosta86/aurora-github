@@ -1,11 +1,12 @@
+use path
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
 use ./maven/settings
 
-fn run { |&quiet=$true @rest|
+fn run { |&quiet=$true @arguments|
   var quiet-arg = (lang:ternary $quiet [-q] [])
 
-  mvn -B $@quiet-arg $@rest
+  mvn -B $@quiet-arg $@arguments
 }
 
 fn verify-project { |&quiet=$true|
@@ -19,17 +20,21 @@ fn verify-project { |&quiet=$true|
 fn publish-project { |&quiet=$true &dry-run=$true|
   settings:prepare-for-publication
 
-  var dry-run-arg
+  var fake-publish-arg = (
+    if $dry-run {
+      var fake-publish-directory = (
+        path:join target fake-publish
+      )
 
-  if $dry-run {
-    var dry-run-directory = target/dry-run
+      console:inspect &emoji=📁 'dry-run mode enabled - publishing to local directory' $fake-publish-directory >&2
 
-    console:inspect &emoji=📁 'dry-run mode enabled - publishing to local directory' $dry-run-directory
+      put [
+        -DaltDeploymentRepository=target-server::default::file:$fake-publish-directory
+      ]
+    } else {
+      put []
+    }
+  )
 
-    set dry-run-arg = [-DaltDeploymentRepository=target-server::default::file:$dry-run-directory]
-  } else {
-    set dry-run-arg = []
-  }
-
-  run &quiet=$quiet $@dry-run-arg deploy
+  run &quiet=$quiet $@fake-publish-arg deploy
 }
