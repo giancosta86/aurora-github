@@ -2,10 +2,6 @@ name: Publish GitHub Pages
 description: Publishes a directory as the GitHub Pages website for the current repository.
 
 inputs:
-  working-directory:
-    description: Directory containing the website or its source files.
-    default: .
-
   corepack-version:
     description: Version of corepack to install for a NodeJS website, empty to skip.
     default: latest
@@ -19,6 +15,10 @@ inputs:
   dry-run:
     description: Stop the publication just before uploading.
     default: false
+
+  working-directory:
+    description: Directory containing the website or its source files.
+    default: .
 
 outputs:
   url:

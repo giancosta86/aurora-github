@@ -15,7 +15,7 @@ steps:
 
 1. If `working-directory` contains:
    - a **package.json** file:
-     1. Run [verify-npm-package](../verify-npm-package/README.md) - especially the `build` script in **package.json**.
+     1. Run [verify-npm-package](../verify-npm-package/README.md) - which, in particular, executes the `build` script in **package.json**.
 
      1. The **dist** subdirectory will contain the actual website.
 
@@ -26,11 +26,13 @@ steps:
 
    - otherwise, the entire directory will be considered a **static** website.
 
-1. If `dry-run` is set to **true**, interrupt the process without failing.
+1. If `dry-run` is set to **true**, stop the process without actually publishing.
 
 1. Publish the files to GitHub Pages.
 
 ## ☑️ Requirements
+
+- **GitHub Pages** must be enabled for the current repository - and having GitHub Actions as their **source**.
 
 - The following [permissions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work:
   - `pages`: **write**
@@ -38,8 +40,6 @@ steps:
   - `id-token`: **write**
 
   **Please, note**: at the same time, you may want to _declare your required default permissions_ - such as `contents`, necessary for some Git operations - because, otherwise, they would be disabled by an explicit `permissions` block.
-
-- **GitHub Pages** must be enabled for the current repository - and having GitHub Actions as their **source**.
 
 - It is recommended that GitHub Actions have **read/write** permissions on the repository.
 
