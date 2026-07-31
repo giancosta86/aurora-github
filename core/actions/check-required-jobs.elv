@@ -1,6 +1,6 @@
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
-use ./input
+use github.com/giancosta86/gauntlet/v1/input
 
 var result-descriptions = [
   &success='✅ (OK)'
@@ -13,7 +13,10 @@ var unknown-result-description = '❓ (UNKNOWN)'
 fn main {
   var needs-as-json = (input:string needs-as-json)
 
-  var required-jobs = (echo $needs-as-json | from-json)
+  var required-jobs = (
+    echo $needs-as-json |
+      from-json
+  )
 
   var failure = $false
 
@@ -21,9 +24,9 @@ fn main {
     keys $required-jobs |
       order |
       each { |job-id|
-        var raw-job = $required-jobs[$job-id]
+        var job = $required-jobs[$job-id]
 
-        var job-result = $raw-job[result]
+        var job-result = $job[result]
 
         if (not-eq $job-result success) {
           set failure = $true
