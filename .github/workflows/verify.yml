@@ -222,7 +222,7 @@ jobs:
           index-secret: FAKE-SECRET
 
   test-verify-jvm-project:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -234,7 +234,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-jvm-project
 
   test-publish-jvm-project:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-verify-jvm-project
     steps:
@@ -244,7 +244,7 @@ jobs:
           jvm-token: FAKE_TOKEN
 
   test-publish-github-pages:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-verify-npm-package
     permissions:

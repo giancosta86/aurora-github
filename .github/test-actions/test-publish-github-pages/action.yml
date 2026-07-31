@@ -4,7 +4,7 @@ description: Tests for publish-github-pages.
 runs:
   using: composite
   steps:
-    - uses: ./actions/setup-elvish-context
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
       run: echo 🎭 Testing static files...
@@ -30,15 +30,9 @@ runs:
       with:
         working-directory: website/nodejs
 
-    - uses: ./actions/run-velvet-code
+    - uses: ./actions/run-elvish-tests
       with:
-        code: |
-          use str
-
-          >> 'The website URL' {
-            >> 'should be the expected one' {
-              put '${{ steps.publish-nodejs-pages.outputs.url }}' |
-                str:trim-space (all) |
-                should-be 'https://gianlucacosta.info/aurora-github/'
-            }
-          }
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: action
+      env:
+        website-url: ${{ steps.publish-nodejs-pages.outputs.url }}

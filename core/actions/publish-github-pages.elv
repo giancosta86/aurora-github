@@ -1,7 +1,7 @@
 use os
 use path
 use github.com/giancosta86/ethereal/v1/console
-use ../ci-cd/env
+use github.com/giancosta86/gauntlet/v1/env
 use ../jvm/maven
 
 fn detect-strategy {
