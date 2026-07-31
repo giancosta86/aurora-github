@@ -17,13 +17,13 @@ on:
     types: [closed]
 ```
 
-For any trigger different from a **merged** pull request, the action will merely print out a message.
+For any trigger different from a **merged** pull request, the action will merely print out an informational message.
 
 ## 💡 How it works
 
 1. If the action is not triggered by a **merged** pull request, just display a message and exit the action.
 
-1. Parse a **semantic version** from the _branch name_ (e.g.: **v7.2.0**, or just **7.2**)
+1. Parse a **semantic version** from the _branch name_ (e.g.: **v7.2.0**, or just **7.2.0**, or even **7.2**)
 
 1. **Delete** the merged branch from the repository.
 
@@ -54,10 +54,10 @@ The action is **idempotent**; in particular, _if the merged branch has been dele
 
 ## 📥 Inputs
 
-|         Name          |    Type    |                          Description                           | Default value |
-| :-------------------: | :--------: | :------------------------------------------------------------: | :-----------: |
-|    `product-name`     | **string** | Name of the product; if empty, defaults to the repository name |               |
-| `update-major-branch` |  **true**  |              Create/update the 'v<major>' branch               | **on-major**  |
+|         Name          |    Type     |                          Description                           | Default value |
+| :-------------------: | :---------: | :------------------------------------------------------------: | :-----------: |
+|    `product-name`     | **string**  | Name of the product; if empty, defaults to the repository name |               |
+| `update-major-branch` | **boolean** |             Create/update the 'v\<major\>' branch              |   **true**    |
 
 ## 📤 Outputs
 

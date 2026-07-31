@@ -28,7 +28,7 @@ runs:
         echo skip=true >> $GITHUB_ENV
 
     - if: env.skip != 'true'
-      uses: giancosta86/aurora-github/actions/setup-elvish-context@v11.0.0
+      uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - id: main
       if: env.skip != 'true'

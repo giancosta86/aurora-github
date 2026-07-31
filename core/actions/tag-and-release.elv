@@ -1,11 +1,11 @@
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/git
 use github.com/giancosta86/ethereal/v1/semver
-use ../ci-cd/output
-use ../ci-cd/pull-request
-use ../ci-cd/release
-use ../ci-cd/repository
-use ./input
+use github.com/giancosta86/gauntlet/v1/input
+use github.com/giancosta86/gauntlet/v1/output
+use github.com/giancosta86/gauntlet/v1/pull-request
+use github.com/giancosta86/gauntlet/v1/release
+use github.com/giancosta86/gauntlet/v1/repository
 
 fn delete-branch-from-origin { |branch|
   console:inspect &emoji=🌴 'Deleting the merged branch' $branch
