@@ -61,10 +61,10 @@ The action is **idempotent**; in particular, _if the merged branch has been dele
 
 ## 📤 Outputs
 
-|      Name      |    Type    |                 Description                 |  Example   |
-| :------------: | :--------: | :-----------------------------------------: | :--------: |
-|     `tag`      | **string** |       Git tag created for the release       | **v7.4.9** |
-| `major-branch` | **string** | Git branch of the major version, if updated |   **v7**   |
+|      Name      |    Type    |                         Description                          |  Example   |
+| :------------: | :--------: | :----------------------------------------------------------: | :--------: |
+|     `tag`      | **string** |               Git tag created for the release                | **v7.4.9** |
+| `major-branch` | **string** | Git branch of the major version, if updated; empty otherwise |   **v7**   |
 
 ## 🌐 Further references
 

@@ -1,38 +1,47 @@
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/git
 use github.com/giancosta86/ethereal/v1/semver
+use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 use github.com/giancosta86/gauntlet/v1/output
 use github.com/giancosta86/gauntlet/v1/pull-request
 use github.com/giancosta86/gauntlet/v1/release
 use github.com/giancosta86/gauntlet/v1/repository
 
+fn skip {
+  echo '💭 tag-and-release can only run when merging a pull request...'
+
+  env:set skip true
+}
+
 fn delete-branch-from-origin { |branch|
   console:inspect &emoji=🌴 'Deleting the merged branch' $branch
 
-  git push origin --delete $branch
-
-  echo ✅ Merged branch deleted!
+  try {
+    git push origin --delete $branch
+    echo ✅ Merged branch deleted!
+  } catch {
+    echo 💭 The branch could not be deleted - probably, it is already deleted...
+  }
 }
 
 fn create-and-push-tag { |tag|
   echo 📤 Creating and pushing the tag to origin...
 
-  git tag $tag
+  git tag -f $tag
 
   git push origin $tag
 
   echo ✅ Tag pushed!
 }
 
-fn create-release-draft { |product-name version-string tag|
+fn create-release-draft { |release-title tag|
   try {
     gh release delete --yes $tag
 
     console:inspect &emoji=🧹 'Existing release draft deleted for tag' $tag
-  } catch {}
-
-  var release-title = $product-name' '$version-string
+  } catch {
+  }
 
   console:inspect &emoji=📝 'Now creating release draft' $release-title
 
@@ -79,7 +88,8 @@ fn main {
 
   create-and-push-tag $tag
 
-  create-release-draft $product-name $version-string $tag
+  var release-title = $product-name' '$version-string
+  create-release-draft $release-title $tag
 
   var major-branch
 
@@ -88,7 +98,7 @@ fn main {
     update-major-branch $major-branch $tag
   } else {
     set major-branch = ''
-    echo 💭 Skipping the update of the major branch...
+    echo 💭 Skipping the update of the major branch, as requested...
   }
 
   output:map [
