@@ -21,7 +21,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - shell: elvish {0}
+    - shell: bash
       run: |
         echo "🍄🍄🍄 ACTION REPOSITORY IN T-A-R IS: '"${{ github.action_repository }}"'"
 
