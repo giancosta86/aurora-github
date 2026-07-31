@@ -7,7 +7,7 @@ runs:
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
 
     - shell: elvish {0}
-      run: echo 🎭 Testing static files...
+      run: echo 🎭 Testing a static site...
 
     - uses: ./actions/publish-github-pages
       with:
