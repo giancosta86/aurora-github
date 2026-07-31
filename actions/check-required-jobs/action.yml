@@ -8,10 +8,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
-      with:
-        core-package: github.com/giancosta86/aurora-github
-        core-directory: ${{ github.action_path }}/../../core
+    - uses: ${{ github.action_path }}/../init-aurora-github
 
     - shell: elvish {0}
       run: |
