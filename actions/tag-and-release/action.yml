@@ -21,14 +21,9 @@ outputs:
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: |
-        echo "🍄🍄🍄 ACTION REPOSITORY IN T-A-R IS: '"${{ github.action_repository }}"'"
-        echo "🍄🍄🍄 ACTION PATH IS: '"${{ github.action_path }}"'"
-
     - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
       with:
-        core-repository: ${{ github.action_repository }}
+        core-package: github.com/giancosta86/aurora-github
         core-directory: ${{ github.action_path }}/../../core
 
     - if: github.event_name != 'pull_request' || github.event.action != 'closed' || github.event.pull_request.merged != true
