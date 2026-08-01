@@ -18,9 +18,9 @@ runs:
       working-directory: tests/npm-package
       run: |
         use github.com/giancosta86/ethereal/v1/console
+        use github.com/giancosta86/ethereal/v1/edit
 
-        jq '${{ inputs.jq-operation }}' package.json > package.tmp
-        mv package.tmp package.json
+        edit:json package.json '${{ inputs.jq-operation }}'
 
         console:section &emoji=🔎 'The "exports" field is' {
           jq -C '.exports' package.json
