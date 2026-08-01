@@ -4,7 +4,7 @@ description: Tests for install-system-packages.
 runs:
   using: composite
   steps:
-    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
+    - uses: ./actions/init-aurora-github
 
     - shell: elvish {0}
       run: |

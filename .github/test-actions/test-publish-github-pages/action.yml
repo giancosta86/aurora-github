@@ -4,7 +4,7 @@ description: Tests for publish-github-pages.
 runs:
   using: composite
   steps:
-    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
+    - uses: ./actions/init-aurora-github
 
     - shell: elvish {0}
       run: echo 🎭 Testing a static site...
