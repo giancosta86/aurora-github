@@ -16,6 +16,6 @@
 
   >> 'major component' {
     get-env version |
-      should-start-with (get-env major)
+      should-have-prefix (get-env major)
   }
 }
