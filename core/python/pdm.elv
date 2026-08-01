@@ -1,9 +1,12 @@
 use re
+use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
 use ./pipx
 
 fn -install { |version|
-  pipx:install-package &version=$version pdm
+  command:silence {
+    pipx:install-package &version=$version pdm
+  }
 }
 
 fn ensure { |&version=$nil|

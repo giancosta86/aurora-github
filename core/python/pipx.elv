@@ -1,13 +1,10 @@
-use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/lang
 
 fn -ensure-pipx {
   if (not (has-external pipx)) {
     echo 📥 Installing pipx...
 
-    command:silence {
-      python3 -m pip install pipx
-    }
+    python3 -m pip install pipx
 
     echo 🚀 pipx ready!
   }
@@ -23,9 +20,7 @@ fn install-package { |package &version=$nil|
     lang:ternary $version '=='$version ''
   )
 
-  command:silence {
-    pipx install $package''$version-suffix
-  }
+  pipx install $package''$version-suffix
 
   echo ✅ $package installed!
 }
