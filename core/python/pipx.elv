@@ -1,5 +1,4 @@
 use github.com/giancosta86/ethereal/v1/command
-use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
 
 fn -ensure-pipx {
