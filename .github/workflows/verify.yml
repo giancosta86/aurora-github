@@ -9,14 +9,14 @@ on:
 
 jobs:
   test-run-elvish-tests:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-run-elvish-tests
 
   test-detect-branch-version:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-run-elvish-tests
     steps:
@@ -24,7 +24,7 @@ jobs:
       - uses: ./.github/test-actions/test-detect-branch-version
 
   test-check-action-references:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-detect-branch-version
     steps:
@@ -32,7 +32,7 @@ jobs:
       - uses: ./actions/check-action-references
 
   test-fundamental-actions:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs:
       - test-run-elvish-tests
@@ -43,7 +43,7 @@ jobs:
         run: echo '✅ All the fundamental actions are OK!'
 
   test-check-project-license:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -51,7 +51,7 @@ jobs:
       - uses: ./.github/test-actions/test-check-project-license
 
   test-find-regex-pattern:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -59,7 +59,7 @@ jobs:
       - uses: ./.github/test-actions/test-find-regex-pattern
 
   test-find-critical-todos:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-find-regex-pattern
     steps:
@@ -67,7 +67,7 @@ jobs:
       - uses: ./.github/test-actions/test-find-critical-todos
 
   test-replace-regex-pattern:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -75,7 +75,7 @@ jobs:
       - uses: ./.github/test-actions/test-replace-regex-pattern
 
   test-inject-branch-version:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-replace-regex-pattern
     steps:
@@ -83,7 +83,7 @@ jobs:
       - uses: ./.github/test-actions/test-inject-branch-version
 
   test-install-system-packages:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -91,7 +91,7 @@ jobs:
       - uses: ./.github/test-actions/test-install-system-packages
 
   test-install-via-sdkman:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -99,7 +99,7 @@ jobs:
       - uses: ./.github/test-actions/test-install-via-sdkman
 
   test-upload-release-assets:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -107,7 +107,7 @@ jobs:
       - uses: ./.github/test-actions/test-upload-release-assets
 
   test-verify-elvish-package:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -118,7 +118,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-elvish-package
 
   test-setup-rust-context:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -126,7 +126,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-rust-context
 
   test-verify-rust-crate:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -138,7 +138,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-rust-crate
 
   test-publish-rust-crate:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-verify-rust-crate
     steps:
@@ -146,7 +146,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-rust-crate
 
   test-setup-nodejs-context:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -154,7 +154,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-nodejs-context
 
   test-check-subpath-exports:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-setup-nodejs-context
     steps:
@@ -162,7 +162,7 @@ jobs:
       - uses: ./.github/test-actions/test-check-subpath-exports
 
   test-verify-npm-package:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -175,7 +175,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-npm-package
 
   test-publish-npm-package:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-verify-npm-package
     steps:
@@ -183,7 +183,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-npm-package
 
   test-verify-rust-wasm:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-verify-rust-crate
     steps:
@@ -191,7 +191,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-rust-wasm
 
   test-publish-rust-wasm:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs:
       - test-verify-rust-wasm
@@ -201,7 +201,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-rust-wasm
 
   test-verify-python-package:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -212,7 +212,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-python-package
 
   test-publish-python-package:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-verify-python-package
     steps:
@@ -222,7 +222,7 @@ jobs:
           index-secret: FAKE-SECRET
 
   test-verify-jvm-project:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -234,7 +234,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-jvm-project
 
   test-publish-jvm-project:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-verify-jvm-project
     steps:
@@ -244,7 +244,7 @@ jobs:
           jvm-token: FAKE_TOKEN
 
   test-publish-github-pages:
-    if: false
+    if: true
     runs-on: ubuntu-24.04
     needs: test-verify-npm-package
     permissions:
