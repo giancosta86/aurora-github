@@ -3,7 +3,7 @@ use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/seq
 use github.com/giancosta86/gauntlet/v1/input
 
-fn -check-current-year-included { |license-file|
+fn check-current-year-included { |license-file|
   var current-year = (date +%Y)
 
   if (seq:is-empty $current-year) {
@@ -25,7 +25,7 @@ fn main {
   var license-file = (input:string license-file)
 
   if (os:is-regular $license-file) {
-    -check-current-year-included $license-file
+    check-current-year-included $license-file
   } else {
     console:inspect &emoji=💭 'License file not found' $license-file
   }
