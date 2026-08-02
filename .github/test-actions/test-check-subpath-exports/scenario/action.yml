@@ -17,6 +17,8 @@ runs:
     - shell: bash
       working-directory: ${{ github.action_path }}
       run: elvish action.elv
+      env:
+        jq-operation: ${{ inputs.jq-operation }}
 
     - uses: ./actions/check-subpath-exports
       with:

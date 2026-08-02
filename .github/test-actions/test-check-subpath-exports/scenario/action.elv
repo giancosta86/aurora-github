@@ -4,7 +4,8 @@ use github.com/giancosta86/gauntlet/v1/repository
 
 cd (repository:get-path tests npm-package)
 
-edit:json package.json '${{ inputs.jq-operation }}'
+get-env jq-operation |
+  edit:json package.json (all)
 
 console:section &emoji=🔎 'The "exports" field is' {
   jq -C '.exports' package.json
