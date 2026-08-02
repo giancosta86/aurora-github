@@ -1,3 +1,5 @@
+#!/usr/bin/env elvish
+
 #
 # Script updating the inter-repository 'uses:' references
 # between composite GitHub actions, so that only the current branch is referenced.
@@ -5,6 +7,7 @@
 # Just run the script, with no arguments; also, the execution is idempotent.
 #
 
+use path
 use re
 
 var reference-regex = '(-\s+uses:\s+giancosta86/aurora-github/actions/[^@]+@)\S+'
@@ -16,7 +19,12 @@ var git-branch = (
 )
 echo 🌲 Current Git branch: $git-branch
 
-put ../actions/**.yml |
+src |
+  put (all)[name]
+  path:dir (all) |
+  path:dir (all) |
+  path:join (all) actions |
+  put (all)/**.yml |
   each { |action-path|
     var content = (slurp < $action-path)
 
