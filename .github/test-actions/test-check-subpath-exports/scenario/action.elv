@@ -4,7 +4,7 @@ use github.com/giancosta86/gauntlet/v1/repository
 cd (repository:get-path tests npm-package)
 
 get-env jq-operation |
-  jq (all) package.json > package.tmp
+  jq (all) < package.json > package.tmp
 
 mv package.tmp package.json
 
