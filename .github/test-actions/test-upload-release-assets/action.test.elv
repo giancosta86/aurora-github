@@ -1,5 +1,6 @@
 use os
 use path
+use github.com/giancosta86/gauntlet/v1/repository
 
 var download-directory = (os:temp-dir)
 
@@ -10,7 +11,7 @@ fn should-match-original-in { |directory-components-within-repo|
   put $downloaded-file |
     should-be-regular
 
-  var original-file = (path:join .. .. .. $@directory-components-within-repo $filename)
+  var original-file = (repository:get-path $@directory-components-within-repo $filename)
   put $original-file |
     should-be-regular
 

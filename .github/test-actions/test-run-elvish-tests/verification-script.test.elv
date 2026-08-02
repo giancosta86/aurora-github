@@ -1,6 +1,6 @@
-use path
+use github.com/giancosta86/gauntlet/v1/repository
 
-cd (path:join .. .. .. tests elvish)
+cd (repository:get-path tests elvish)
 
 >> 'The verification script output' {
   >> 'should exist' {

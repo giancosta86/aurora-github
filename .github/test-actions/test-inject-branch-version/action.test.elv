@@ -1,6 +1,6 @@
-use path
+use github.com/giancosta86/gauntlet/v1/repository
 
-cd (path:join .. .. .. tests npm-package)
+cd (repository:get-path tests npm-package)
 
 >> 'The branch version' {
   >> 'should be injected into package.json' {
