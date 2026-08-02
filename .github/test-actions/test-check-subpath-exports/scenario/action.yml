@@ -14,17 +14,9 @@ runs:
     - shell: elvish {0}
       run: echo 🎭 ${{inputs.header}}
 
-    - shell: elvish {0}
-      working-directory: tests/npm-package
-      run: |
-        use github.com/giancosta86/ethereal/v1/console
-        use github.com/giancosta86/ethereal/v1/edit
-
-        edit:json package.json '${{ inputs.jq-operation }}'
-
-        console:section &emoji=🔎 'The "exports" field is' {
-          jq -C '.exports' package.json
-        }
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish action.elv
 
     - uses: ./actions/check-subpath-exports
       with:
