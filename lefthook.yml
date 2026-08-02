@@ -1,9 +1,0 @@
-pre-commit:
-  scripts:
-    check-elvish-syntax.elv:
-      runner: elvish
-
-post-checkout:
-  scripts:
-    update-action-references.elv:
-      runner: elvish
