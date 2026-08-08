@@ -2,11 +2,11 @@ use github.com/giancosta86/gauntlet/v1/input
 use github.com/giancosta86/gauntlet/v1/release
 
 fn main {
-  release:upload-artifacts [
-    &release-tag=(input:string release-tag)
+  var overwrite = (input:bool overwrite)
 
-    &files=(input:list files)
+  var release-tag = (input:string release-tag)
 
-    &overwrite=(input:bool overwrite)
-  ]
+  var files = (input:list files)
+
+  release:upload-artifacts &overwrite=$overwrite $release-tag $@files
 }

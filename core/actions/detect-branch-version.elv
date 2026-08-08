@@ -1,11 +1,11 @@
 use re
 use str
 use github.com/giancosta86/ethereal/v1/semver
-use github.com/giancosta86/gauntlet/v1/git-refs
+use github.com/giancosta86/gauntlet/v1/branches
 use github.com/giancosta86/gauntlet/v1/output
 
 fn main {
-  var current-ref = (git-refs:get-current)
+  var current-ref = (branches:get-current)
 
   var branch = [(str:split / $current-ref)][-1]
 
