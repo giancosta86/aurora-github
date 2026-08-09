@@ -22,7 +22,7 @@ runs:
       run: |
         use github.com/giancosta86/velvet/v4/velvet
 
-        velvet:velvet &flawless verification-script
+        velvet:velvet &flawless verification-script-only
 
     - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
       with:
