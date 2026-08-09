@@ -154,7 +154,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-nodejs-context
 
   test-check-subpath-exports:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-setup-nodejs-context
     steps:

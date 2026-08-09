@@ -22,7 +22,7 @@ fn publish-project { |&quiet=$true &dry-run=$true|
   settings:prepare-for-publication
 
   console:section &emoji=🪶 'pom.xml descriptor' {
-    highlight:file pom.xml
+    highlight:file pom.xml xml
   }
 
   var fake-publish-arg = (
