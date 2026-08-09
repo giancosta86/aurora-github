@@ -18,12 +18,16 @@ fn verify-project { |&quiet=$true|
   echo ✅ Maven verification OK!
 }
 
+fn -print-descriptor {
+  console:section &emoji=🪶 'pom.xml descriptor just before publication' {
+    highlight:file pom.xml xml
+  }
+}
+
 fn publish-project { |&quiet=$true &dry-run=$true|
   settings:prepare-for-publication
 
-  console:section &emoji=🪶 'pom.xml descriptor' {
-    highlight:file pom.xml xml
-  }
+  -print-descriptor
 
   var fake-publish-arg = (
     if $dry-run {

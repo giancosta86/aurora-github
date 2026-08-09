@@ -1,3 +1,5 @@
+use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/highlight
 use github.com/giancosta86/ethereal/v1/lang
 use ./gradle/settings
 
@@ -15,8 +17,27 @@ fn verify-project { |&quiet=$true|
   echo ✅ Gradle verification OK!
 }
 
+fn -print-descriptor {
+  var descriptor = (get-env jvm-descriptor)
+
+  console:section &emoji=🐘 'Gradle descriptor just before publication' {
+    fs:split-ext $descriptor |
+      drop 1 |
+      lang:switch [
+        &.kts={
+          highlight:file $descriptor kotlin
+        }
+        &.gradle={
+          highlight:file $descriptor groovy
+        }
+      ]
+  }
+}
+
 fn publish-project { |&quiet=$true &dry-run=$true|
   settings:prepare-for-publication
+
+  -print-descriptor
 
   echo 🐘 Running Gradle to publish the project...
 
