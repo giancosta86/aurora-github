@@ -183,7 +183,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-npm-package
 
   test-verify-rust-wasm:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-verify-rust-crate
     steps:
@@ -234,7 +234,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-jvm-project
 
   test-publish-jvm-project:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-verify-jvm-project
     steps:
