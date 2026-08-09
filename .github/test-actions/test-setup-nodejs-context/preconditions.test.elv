@@ -1,9 +1,10 @@
 use path
-use ./shared
+use github.com/giancosta86/ethereal/v1/semver
 
 fn should-not-match-version { |version|
   one |
-    should-not-match-regex (shared:get-version-regex $version)
+    semver:contains $version |
+    should-be $false
 }
 
 >> 'The expected NodeJS version' {

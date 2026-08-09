@@ -1,6 +1,6 @@
-use re
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/semver
 use ./pipx
 
 fn -install { |version|
@@ -11,10 +11,9 @@ fn -install { |version|
 
 fn ensure { |&version=$nil|
   if (has-external pdm) {
-    var installed-version = (pdm --version)
-
     var version-found = (
-      and $version (re:match '(?:^|\s)'$version'(?:\s|$)' $installed-version)
+      pdm --version |
+        semver:contains $version
     )
 
     if $version-found {

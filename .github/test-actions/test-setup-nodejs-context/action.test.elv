@@ -1,5 +1,5 @@
 use path
-use ./shared
+use github.com/giancosta86/ethereal/v1/semver
 
 get-env GITHUB_WORKSPACE |
   path:join (all) tests npm-package |
@@ -7,7 +7,8 @@ get-env GITHUB_WORKSPACE |
 
 fn should-match-version { |version|
   one |
-    should-match-regex (shared:get-version-regex $version)
+    semver:contains $version |
+    should-be $true
 }
 
 >> 'The expected NodeJS version' {
