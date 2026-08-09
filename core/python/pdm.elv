@@ -11,8 +11,10 @@ fn -install { |version|
 
 fn ensure { |&version=$nil|
   if (has-external pdm) {
+    var installed-version = (pdm --version)
+
     var version-found = (
-      pdm --version |
+      put $installed-version |
         semver:contains $version
     )
 

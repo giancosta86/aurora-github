@@ -7,8 +7,10 @@ fn main {
   var version = (input:string version)
 
   if (has-external wasm-pack) {
+    var current-version = (wasm-pack --version)
+
     if (
-      wasm-pack --version |
+      put $current-version |
         semver:contains $version
     ) {
       echo 🎉 The requested wasm-pack version is installed!
