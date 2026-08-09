@@ -1,5 +1,6 @@
 use path
 use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/highlight
 use github.com/giancosta86/ethereal/v1/lang
 use ./maven/settings
 
@@ -19,6 +20,10 @@ fn verify-project { |&quiet=$true|
 
 fn publish-project { |&quiet=$true &dry-run=$true|
   settings:prepare-for-publication
+
+  console:section &emoji=🪶 'pom.xml descriptor' {
+    highlight:file pom.xml
+  }
 
   var fake-publish-arg = (
     if $dry-run {
