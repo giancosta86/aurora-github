@@ -30,6 +30,8 @@ steps:
 
    - otherwise, provide a default one connecting the action credentials (`auth-user`, `auth-token`) with a **target-server** server id, which should be mentioned in a `<distributionManagement>/<repository>/<id>` within **pom.xml**
 
+1. Display the _project descriptor_, according to the current build tool.
+
 1. Publish, using the build tool:
    - for 🪶**Maven**, run `mvn deploy`
      - if `dry-run` is enabled, actually publish to the **target/fake-publish** subdirectory instead of the target server

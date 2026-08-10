@@ -23,6 +23,8 @@ steps:
 
 1. If the `.npmrc` file does not exist, generate a new one - publishing to the official npm registry and using the **NPM_TOKEN** environment variable as the authentication token. The `.npmrc` file will be displayed only if auto-generated.
 
+1. Display the **package.json** descriptor.
+
 1. Run `pnpm publish`, with the value of `npm-token` injected into the **NPM_TOKEN** environment variable - accessible, for example, from the `.npmrc` configuration file.
 
 ## 💬 Remarks

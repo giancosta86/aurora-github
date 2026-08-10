@@ -21,7 +21,7 @@ steps:
 
 1. If the `document-all-features` input is **true**, enable documentation for all the features - but only if the `[package.metadata.docs.rs]` header is not already in the descriptor. For details, please consult [this link](https://docs.rs/about/metadata).
 
-1. Display **Cargo.toml** just before publication.
+1. Display the **Cargo.toml** descriptor.
 
 1. Run `cargo publish`, with the `--all-features` flag.
 

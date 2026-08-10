@@ -20,6 +20,8 @@ steps:
 
 1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**; upon installation, the latest version will be retrieved if `pdm-version` is not specified.
 
+1. Display the **pyproject.toml** descriptor.
+
 1. Run `pdm publish`, passing the `index-` inputs as environment variables; if `dry-run` is enabled, just perform a `pdm build`, skipping actual deployment.
 
 ## ☑️ Requirements
