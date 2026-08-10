@@ -47,7 +47,6 @@ steps:
 
 |        Name         |    Type     |                            Description                             | Default value |
 | :-----------------: | :---------: | :----------------------------------------------------------------: | :-----------: |
-|   `check-license`   | **boolean** |                 Run checks on the project license                  |   **true**    |
 | `corepack-version`  | **string**  | Version of corepack to install for a NodeJS website, empty to skip |  **latest**   |
 |   `java-version`    | **string**  |               Java version to use for Java websites                |               |
 | `java-tool-version` | **string**  |               Tool version to use for Java websites                |               |

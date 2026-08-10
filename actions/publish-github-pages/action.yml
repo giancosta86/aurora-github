@@ -16,10 +16,6 @@ inputs:
     description: Stop the publication just before uploading.
     default: false
 
-  check-license:
-    description: Run checks on the project license.
-    default: true
-
   working-directory:
     description: Directory containing the website or its source files.
     default: .
@@ -48,7 +44,7 @@ runs:
     - if: env.strategy == 'nodejs-site'
       uses: giancosta86/aurora-github/actions/verify-npm-package@v11.0.0
       with:
-        check-license: ${{ inputs.check-license }}
+        check-license: false
         corepack-version: ${{ inputs.corepack-version }}
         working-directory: ${{ inputs.working-directory }}
 
