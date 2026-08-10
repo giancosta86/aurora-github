@@ -2,7 +2,7 @@ use os
 use github.com/giancosta86/astral-bridge/v1/package-manager
 use github.com/giancosta86/gauntlet/v1/input
 use github.com/giancosta86/ethereal/v1/command
-use github.com/giancosta86/gauntlet/v1/output
+use github.com/giancosta86/gauntlet/v1/env
 
 fn check-preconditions {
   var client-tests-directory = (input:string &optional client-tests-directory)
@@ -14,7 +14,7 @@ fn check-preconditions {
     echo 💭 No client tests directory specified... >&2
     put $false
   } |
-    output:set run-client-tests (all)
+    env:set run-client-tests (all)
 }
 
 fn main {
