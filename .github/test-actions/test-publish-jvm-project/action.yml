@@ -15,6 +15,7 @@ runs:
 
     - uses: ./actions/publish-jvm-project
       with:
+        dry-run: true
         working-directory: tests/maven-project
         auth-user: gian-token
         auth-token: ${{ inputs.jvm-token }}
@@ -24,6 +25,7 @@ runs:
 
     - uses: ./actions/publish-jvm-project
       with:
+        dry-run: true
         working-directory: tests/gradle-project
         auth-user: gian-token
         auth-token: ${{ inputs.jvm-token }}
