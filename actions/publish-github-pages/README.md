@@ -35,11 +35,14 @@ steps:
 - **GitHub Pages** must be enabled for the current repository - and having GitHub Actions as their **source**.
 
 - The following [permissions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work:
-  - `pages`: **write**
 
-  - `id-token`: **write**
+  ```yaml
+  permissions:
+    pages: write
+    id-token: write
+  ```
 
-  **Please, note**: at the same time, you may want to _declare your required default permissions_ - such as `contents`, necessary for some Git operations - because, otherwise, they would be disabled by an explicit `permissions` block.
+  **Please, note**: at the same time, you may want to _declare your required default permissions_ - such as `contents: write`, necessary for some Git operations - because, otherwise, they would be disabled by an explicit `permissions` block.
 
 - It is recommended that GitHub Actions have **read/write** permissions on the repository.
 
