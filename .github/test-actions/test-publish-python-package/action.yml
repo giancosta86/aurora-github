@@ -12,11 +12,9 @@ runs:
       with:
         pdm-version: 2.28.0
 
-        dry-run: true
-
         index-url: https://api.repsy.io/pypi/giancosta86/pyground
 
-        index-user: giancosta86
+        index-user: gian-token
 
         index-secret: ${{ inputs.index-secret }}
 
