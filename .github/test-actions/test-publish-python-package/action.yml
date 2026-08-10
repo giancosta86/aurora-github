@@ -12,7 +12,7 @@ runs:
       with:
         pdm-version: 2.28.0
 
-        index-url: https://repo.repsy.io/giancosta86/pyground/simple
+        index-url: https://repo.repsy.io/giancosta86/pyground
 
         index-user: gian-token
 
