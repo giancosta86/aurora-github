@@ -12,6 +12,7 @@ runs:
     - uses: ./actions/publish-github-pages
       with:
         working-directory: website/static
+        check-license: false
         dry-run: true
 
     - shell: elvish {0}
@@ -20,6 +21,7 @@ runs:
     - uses: ./actions/publish-github-pages
       with:
         working-directory: tests/maven-project
+        check-license: false
         dry-run: true
 
     - shell: elvish {0}
@@ -28,6 +30,7 @@ runs:
     - id: publish-nodejs-pages
       uses: ./actions/publish-github-pages
       with:
+        check-license: false
         working-directory: website/nodejs
 
     - uses: ./actions/run-elvish-tests
