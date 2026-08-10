@@ -100,6 +100,20 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       run: |
         use github.com/giancosta86/aurora-github/actions/run-wasm-client-tests
+        run-wasm-client-tests:check-preconditions
+      env:
+        client-tests-directory: ${{ inputs.client-tests-directory }}
+
+    - if: env.run-client-tests == 'true'
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
+      with:
+        working-directory: ${{ inputs.client-tests-directory }}
+
+    - if: env.run-client-tests == 'true'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-wasm-client-tests
         run-wasm-client-tests:main
       env:
         client-tests-directory: ${{ inputs.client-tests-directory }}
