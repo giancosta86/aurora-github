@@ -14,7 +14,7 @@ runs:
 
         index-url: https://repo.repsy.io/giancosta86/pyground/simple
 
-        index-user: giancosta86
+        index-user: gian-token
 
         index-secret: ${{ inputs.index-secret }}
 
