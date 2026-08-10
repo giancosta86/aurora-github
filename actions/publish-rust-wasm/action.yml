@@ -3,138 +3,73 @@ description: Publishes a Rust web assembly to an npm registry.
 
 inputs:
   dry-run:
-    description: Run a simulated publication via --dry-run.
+    description: Run a simulated publication via `--dry-run`.
     default: false
 
   npm-token:
-    description: The secret token for publishing to the registry.
+    description: Secret token for publishing to the registry.
 
   wasm-pack-version:
-    description: The wasm-pack version to install.
-
-  npm-scope:
-    description: The npm package scope or "<ROOT>".
-
-  nodejs-version:
-    description: The "engines / node" version within package.json.
-
-  pnpm-version:
-    description: The "packageManager" reference to pnpm within package.json.
+    description: wasm-pack version to install.
 
   wasm-target:
-    description: The target of the 'wasm-pack build' command.
+    description: Target of the `wasm-pack build` command.
     default: web
 
-  website-directory:
-    description: Relative directory containing the project website.
-    default: website
+  npm-scope:
+    description: npm package scope or `<ROOT>`.
 
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
+  node-version:
+    description: Required NodeJS version.
 
-  project-directory:
-    description: The directory containing Cargo.toml.
+  package-manager:
+    description: Required package manager, with version.
+
+  working-directory:
+    description: Directory containing `Cargo.toml`.
     default: .
 
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
+
+    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
+      with:
+        working-directory: ${{ inputs.working-directory }}
+        install-dependencies: false
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        if [[ -z "${{ inputs.dry-run }}" ]]
-        then
-          echo "❌Missing action input: 'dry-run'!" >&2
-          exit 1
-        fi
+        use github.com/giancosta86/aurora-github/actions/ensure-wasm-pack
+        ensure-wasm-pack:main
+      env:
+        version: ${{ inputs.wasm-pack-version }}
 
-        if [[ ${{ inputs.dry-run }} != 'true' && -z "${{ inputs.npm-token }}" ]]
-        then
-          echo "❌Missing action input: 'npm-token'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.wasm-pack-version }}" ]]
-        then
-          echo "❌Missing action input: 'wasm-pack-version'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.npm-scope }}" ]]
-        then
-          echo "❌Missing action input: 'npm-scope'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.nodejs-version }}" ]]
-        then
-          echo "❌Missing action input: 'nodejs-version'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.wasm-target }}" ]]
-        then
-          echo "❌Missing action input: 'wasm-target'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.website-directory }}" ]]
-        then
-          echo "❌Missing action input: 'website-directory'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
-
-    - name: Install wasm-pack
-      uses: giancosta86/aurora-github/actions/install-wasm-pack@v10.2.0
-      with:
-        wasm-pack-version: ${{ inputs.wasm-pack-version }}
-
-    - name: Generate the NodeJS package source files
-      uses: giancosta86/aurora-github/actions/generate-wasm-target@v10.2.0
-      with:
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/generate-wasm-target
+        generate-wasm-target:main
+      env:
         target: ${{ inputs.wasm-target }}
-        npm-scope: ${{ inputs.npm-scope }}
-        nodejs-version: ${{ inputs.nodejs-version }}
-        pnpm-version: ${{ inputs.pnpm-version }}
-        development: false
         target-directory: pkg
-        project-directory: ${{ inputs.project-directory }}
+        development: false
+        npm-scope: ${{ inputs.npm-scope }}
+        node-version: ${{ inputs.node-version }}
+        package-manager: ${{ inputs.package-manager }}
 
-    - name: Try to copy .npmrc from the project directory
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -f ".npmrc" ]]
-        then
-          echo "🎉.npmrc configuration file found! Copying it to the package directory..."
-
-          cp .npmrc pkg/
-
-          echo "✅.npmrc file copied!"
-        else
-          echo "💭No .npmrc configuration file found in the project directory..."
-        fi
-
-    - name: Publish the GitHub Pages website
-      uses: giancosta86/aurora-github/actions/publish-github-pages@v10.2.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        optional: true
-        source-directory: ${{ inputs.project-directory }}/${{ inputs.website-directory }}
-        dry-run: ${{ inputs.dry-run }}
-        enforce-branch-version: ${{ inputs.enforce-branch-version }}
+        files: package.json
+        working-directory: ${{ inputs.working-directory }}/pkg
 
-    - name: Publish NodeJS package
-      uses: giancosta86/aurora-github/actions/publish-npm-package@v10.2.0
+    - uses: giancosta86/aurora-github/actions/publish-npm-package@v11.0.0
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
-        enforce-branch-version: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}/pkg
+        working-directory: ${{ inputs.working-directory }}/pkg
+
+    - shell: elvish {0}
+      run: echo ✅🦀🌐 Rust web assembly publication action successful!

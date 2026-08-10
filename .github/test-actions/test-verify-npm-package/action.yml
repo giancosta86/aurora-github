@@ -1,8 +1,10 @@
 name: Test verify-npm-package
+description: Tests for verify-npm-package.
 
 runs:
   using: composite
   steps:
     - uses: ./actions/verify-npm-package
       with:
-        project-directory: tests/npm-package
+        working-directory: tests/npm-package
+        check-license: false

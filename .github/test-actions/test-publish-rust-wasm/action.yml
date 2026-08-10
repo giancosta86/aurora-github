@@ -1,12 +1,14 @@
 name: Test publish-rust-wasm
+description: Tests for publish-rust-wasm.
 
 runs:
   using: composite
   steps:
     - uses: ./actions/publish-rust-wasm
       with:
-        project-directory: tests/rust-wasm
+        working-directory: tests/rust-wasm
         dry-run: true
-        wasm-pack-version: 0.13.1
-        nodejs-version: 20.15.1
+        wasm-pack-version: 0.15.0
         npm-scope: giancosta86
+        node-version: 26.2.0
+        package-manager: pnpm@10.22.0

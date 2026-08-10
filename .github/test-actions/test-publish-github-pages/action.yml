@@ -1,44 +1,38 @@
 name: Test publish-github-pages
+description: Tests for publish-github-pages.
 
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭Now publishing static files with dry-run enabled..."
+    - uses: ./actions/init-aurora-github
 
-    - name: A static website should be publishable
-      uses: ./actions/publish-github-pages
+    - shell: elvish {0}
+      run: echo 🎭 Testing a static site...
+
+    - uses: ./actions/publish-github-pages
       with:
-        source-directory: website/static
+        working-directory: website/static
         dry-run: true
 
-    - shell: bash
-      run: echo "🎭Now publishing a Maven-generated site with dry-run enabled..."
+    - shell: elvish {0}
+      run: echo 🎭 Testing a Maven-generated site...
 
-    - name: A Maven-generated website should be publishable
-      uses: ./actions/publish-github-pages
+    - uses: ./actions/publish-github-pages
       with:
-        source-directory: tests/maven-project
+        working-directory: tests/maven-project
         dry-run: true
 
-    - shell: bash
-      run: echo "🎭Now publishing a NextJS site..."
+    - shell: elvish {0}
+      run: echo 🎭 Testing a NodeJS site...
 
-    - name: A NextJS website should be publishable
-      id: publish-nextjs-pages
+    - id: publish-nodejs-pages
       uses: ./actions/publish-github-pages
       with:
-        source-directory: website/nextjs
+        working-directory: website/nodejs
 
-    - name: The URL of the website should be defined
-      shell: bash
-      run: |
-        websiteUrl="${{ steps.publish-nextjs-pages.outputs.url }}"
-
-        if [[ -n "$websiteUrl" ]]
-        then
-          echo "✅Website published and available at: '$websiteUrl'"
-        else
-          echo "❌Website not available!" >&2
-          exit 1
-        fi
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: action
+      env:
+        website-url: ${{ steps.publish-nodejs-pages.outputs.url }}

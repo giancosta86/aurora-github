@@ -1,0 +1,47 @@
+name: Find regex pattern
+description: Finds the given regex in all the requested file patterns, optionally crashing.
+
+inputs:
+  files:
+    description: Comma-separated file patterns.
+    default: "**"
+
+  regex:
+    description: Perl regular expression pattern.
+
+  crash-when:
+    description: When the action should crash. Can be 'found', 'not-found' or just empty.
+
+  crash-message:
+    description: Message to show upon crash in lieu of the default ones.
+
+  quiet:
+    description: Do not show the matches.
+    default: false
+
+  working-directory:
+    description: Directory where the action should run.
+    default: .
+
+outputs:
+  found:
+    description: true if at least one match was found in some file, false otherwise.
+    value: ${{ steps.main.outputs.found }}
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
+
+    - id: main
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/find-regex-pattern
+        find-regex-pattern:main
+      env:
+        files: ${{ inputs.files }}
+        regex: ${{ inputs.regex }}
+        crash-when: ${{ inputs.crash-when }}
+        crash-message: ${{ inputs.crash-message }}
+        quiet: ${{ inputs.quiet }}

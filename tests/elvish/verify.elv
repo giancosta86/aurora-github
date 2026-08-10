@@ -1,0 +1,1 @@
+print 'TEST OK' > verify-out.txt

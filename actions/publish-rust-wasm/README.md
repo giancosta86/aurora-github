@@ -2,72 +2,63 @@
 
 Publishes a **Rust** web assembly to an [npm](https://www.npmjs.com/) registry.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
-  - uses: giancosta86/aurora-github/actions/publish-rust-wasm@v10
+  - uses: giancosta86/aurora-github/actions/publish-rust-wasm@v11
     with:
       npm-token: ${{ secrets.NPM_TOKEN }}
       wasm-pack-version: 0.13.1
-      npm-scope: your-npm-scope
+      npm-scope: your-npm-scope, or <ROOT>
 ```
 
 **Please, note**: this action is designed for _publication_ only - not for verification: you might want to use [verify-rust-wasm](../verify-rust-wasm/README.md) for that.
 
-## 💡How it works
+## 💡 How it works
 
-1. Invoke the [install-wasm-pack](../install-wasm-pack/README.md) action, passing all the matching inputs, to install the `wasm-pack` command.
+1. Call [setup-nodejs-context](../setup-nodejs-context/README.md), based on `working-directory`, without installing dependencies.
 
-1. Invoke [generate-wasm-target](../generate-wasm-target/README.md) to generate the NodeJS package source files in the **pkg** subdirectory.
+1. Install the `wasm-pack` command at `wasm-pack-version`.
 
-1. If a `.npmrc` configuration file exists in `project-directory`, copy it to **pkg**
+1. Generate the NodeJS package source files in the **pkg** subdirectory. In particular:
+   - if `node-version` is passed, it will be injected into the `engines/node` field in **package.json**
+
+   - if `package-manager` is passed, it will be injected into the `packageManager` field in **package.json**
+
+1. If `working-directory` contains **.npmrc**, copy it to **pkg**.
+
+1. Run [inject-branch-version](../inject-branch-version/README.md) to inject the branch version into **pkg/package-json**
 
 1. Call [publish-npm-package](../publish-npm-package/README.md) on the **pkg** directory - passing all the matching inputs - to publish the npm package.
 
-## ☑️Requirements
-
-- the `nodejs-version` input is required for the build process; optionally, you can set the `pnpm-version` input as well, in order to request a specific pnpm version.
+## ☑️ Requirements
 
 - `npm-token` is **mandatory** - unless `dry-run` is enabled
 
 - The requirements for [publish-npm-package](../publish-npm-package/README.md).
 
-- The requirements for [publish-github-pages](../publish-github-pages/README.md) if `website-directory` references an existing directory.
-
 - Before the first publication, running with `dry-run` set to **true** is recommended.
 
-## 📥Inputs
+## 📥 Inputs
 
-|           Name           |          Type           |                        Description                         | Default value |
-| :----------------------: | :---------------------: | :--------------------------------------------------------: | :-----------: |
-|        `dry-run`         |       **boolean**       |        Run a simulated publication via `--dry-run`         |   **false**   |
-|       `npm-token`        |       **string**        |      The secret token for publishing to the registry       |               |
-|   `wasm-pack-version`    |       **string**        |             The `wasm-pack` version to install             |               |
-|       `npm-scope`        |       **string**        |             The npm package scope or `<ROOT>`              |               |
-|     `nodejs-version`     |       **string**        |      The `engines / node` version within package.json      |               |
-|      `pnpm-version`      |       **string**        | The `packageManager` reference to pnpm within package.json |               |
-|      `wasm-target`       |       **string**        |        The target of the `wasm-pack build` command         |    **web**    |
-|   `website-directory`    |       **string**        |     Relative directory containing the project website      |  **website**  |
-| `enforce-branch-version` | `inject`,`check`,`skip` |         How the branch version should be enforced          |  **inject**   |
-|   `project-directory`    |       **string**        |           The directory containing `Cargo.toml`            |     **.**     |
+|        Name         |    Type     |                 Description                 | Default value |
+| :-----------------: | :---------: | :-----------------------------------------: | :-----------: |
+|      `dry-run`      | **boolean** | Run a simulated publication via `--dry-run` |   **false**   |
+|     `npm-token`     | **string**  | Secret token for publishing to the registry |               |
+| `wasm-pack-version` | **string**  |       `wasm-pack` version to install        |               |
+|    `wasm-target`    | **string**  |   Target of the `wasm-pack build` command   |    **web**    |
+|     `npm-scope`     | **string**  |        npm package scope or `<ROOT>`        |               |
+|   `node-version`    | **string**  |           Required NodeJS version           |               |
+|  `package-manager`  | **string**  |   Required package manager, with version    |               |
+| `working-directory` | **string**  |      Directory containing `Cargo.toml`      |     **.**     |
 
-## 🌐Further references
-
-- [generate-wasm-target](../generate-wasm-target/README.md)
+## 🌐 Further references
 
 - [publish-npm-package](../publish-npm-package/README.md)
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 
-- [publish-github-pages](../publish-github-pages/README.md)
-
-- [parse-npm-scope](../parse-npm-scope/README.md)
-
 - [verify-rust-wasm](../verify-rust-wasm/README.md)
-
-- [enforce-branch-version](../enforce-branch-version/README.md)
 
 - [aurora-github](../../README.md)

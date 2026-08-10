@@ -1,16 +1,14 @@
 # verify-npm-package
 
-Verifies the source files of a **NodeJS** package - by running its `verify` script within the `scripts` section of `package.json`.
+Verifies the source files of a **NodeJS** package.
 
-It is worth noting this action can support any technology - as long as you comply with the requirements described below.
+It is worth noting this action can support any related technology - as long as you comply with the requirements described below.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
-  - uses: giancosta86/aurora-github/actions/verify-npm-package@v10
+  - uses: giancosta86/aurora-github/actions/verify-npm-package@v11
 ```
 
 **IMPORTANT**: please, remember to declare your verification process in the `verify` script within `package.json`! For example:
@@ -23,53 +21,46 @@ steps:
 }
 ```
 
-## 💡How it works
+## 💡 How it works
 
-1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file, unless `check-license` is set to **false**.
 
-1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+1. 1. Run [inject-branch-version](../inject-branch-version/README.md) on **package.json**.
 
-1. Install the required NodeJS version, **pnpm** and the dependencies, via [setup-nodejs-context](../setup-nodejs-context/README.md)
+1. Run [setup-nodejs-context](../setup-nodejs-context/README.md), forwarding `corepack-version` and installing the dependencies.
 
-1. Run `pnpm verify` - so that the related script in **package.json** can decide what to do.
+1. Run each of the following scripts from **package.json** - provided that it's declared:
+   1. `verify`
 
-1. Run `pnpm build` - if the **build** script is defined in **package.json**.
+   1. `build`
 
-1. By default, run [check-subpath-exports](../check-subpath-exports/README.md) to verify that the `exports` field in `package.json` actually references existing files.
+1. Run [check-subpath-exports](../check-subpath-exports/README.md), unless prevented by the related input.
 
-1. If a **tests** directory exists within `project-directory`, execute [run-custom-tests](../run-custom-tests/README.md) on it, with the `optional` flag enabled.
+1. Ensure there are no [critical TODOs](../find-critical-todos/README.md).
 
-   💡The rationale for this step is a parallelism with Rust's **tests** directory - dedicated to verify the crate under test from a _client_ perspective; however, in `verify-npm-package` you have even more fine-grained control over the test process: for example, you can automatically launch _a Bash script_ to test the system, while still relying on the **tests** directory to host utility modules imported by different tests in the **src** directory tree.
+## ☑️ Requirements
 
-   **Please, note**: should you need to execute a shell script for testing, a `verify.sh` script, run by Bash, is required; for further details, please refer to [run-custom-tests](../run-custom-tests/README.md).
+- **package.json** must exist.
 
-1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
+## 📥 Inputs
 
-## ☑️Requirements
+|          Name           |    Type     |                      Description                      |                     Default value                     |
+| :---------------------: | :---------: | :---------------------------------------------------: | :---------------------------------------------------: |
+|   `corepack-version`    | **string**  |    **corepack** version to install, empty to skip     |                      **latest**                       |
+|     `check-license`     | **boolean** |           Run checks on the project license           |                       **true**                        |
+|      `todo-files`       | **string**  |  File patterns potentially containing critical TODOs  | **{src tests}/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}** |
+| `check-subpath-exports` | **boolean** | Run `check-subpath-exports` after the package scripts |                       **true**                        |
+|   `working-directory`   | **string**  |          Directory containing `package.json`          |                         **.**                         |
 
-- The entire verification process for the package must be triggered by the `verify` script in `package.json` (see the example).
-
-- The requirements for [setup-nodejs-context](../setup-nodejs-context/README.md).
-
-## 📥Inputs
-
-|           Name            |          Type           |                       Description                       |       Default value       |
-| :-----------------------: | :---------------------: | :-----------------------------------------------------: | :-----------------------: |
-| `crash-on-critical-todos` |       **boolean**       |     Crash the workflow if critical TODOs are found      |         **true**          |
-|    `source-file-regex`    |       **string**        |        PCRE pattern describing the source files         | view [source](action.yml) |
-| `enforce-branch-version`  | `inject`,`check`,`skip` |        How the branch version should be enforced        |        **inject**         |
-|  `check-subpath-exports`  |       **boolean**       | Run `check-subpath-exports` after the **verify** script |         **true**          |
-|    `project-directory`    |       **string**        |         The directory containing `package.json`         |           **.**           |
-
-## 🌐Further references
-
-- [check-project-license](../check-project-license/README.md)
+## 🌐 Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
 
 - [check-subpath-exports](../check-subpath-exports/README.md)
 
-- [enforce-branch-version](../enforce-branch-version/README.md)
+- [check-project-license](../check-project-license/README.md)
+
+- [inject-branch-version](../inject-branch-version/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

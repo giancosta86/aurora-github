@@ -3,61 +3,31 @@ description: Uploads one or more asset files to a GitHub release.
 
 inputs:
   release-tag:
-    description: The tag of the target release.
+    description: Tag of the target release.
 
   files:
-    description: The relative paths of the asset files to upload.
+    description: Comma-separated relative paths of the asset files to upload.
 
   overwrite:
     description: Overwrite existing assets in the release.
-    default: true
+    default: false
 
-  source-directory:
+  working-directory:
     description: Directory containing the files.
     default: .
 
 runs:
   using: composite
   steps:
-    - shell: bash
-      working-directory: ${{ inputs.source-directory }}
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        main() {
-          validateInputs
-          publishReleaseAssets
-        }
-
-        validateInputs() {
-          if [[ -z "${{ inputs.release-tag }}" ]]
-          then
-            echo "❌Missing action input: 'release-tag'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.files }}" ]]
-          then
-            echo "❌Missing action input: 'files'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.overwrite }}" ]]
-          then
-            echo "❌Missing action input: 'overwrite'!" >&2
-            exit 1
-          fi
-        }
-
-        publishReleaseAssets() {
-          if [[ "${{ inputs.overwrite }}" == "true" ]]
-          then
-            local clobberArg="--clobber"
-          else
-            local clobberArg=""
-          fi
-
-          gh release upload $clobberArg "${{ inputs.release-tag }}" ${{ inputs.files }}
-        }
-
-        main
+        use github.com/giancosta86/aurora-github/actions/upload-release-assets
+        upload-release-assets:main
       env:
+        release-tag: ${{ inputs.release-tag }}
+        files: ${{ inputs.files }}
+        overwrite: ${{ inputs.overwrite }}
         GH_TOKEN: ${{ github.token }}

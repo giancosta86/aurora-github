@@ -1,28 +1,34 @@
 name: Test publish-jvm-project
+description: Tests for publish-jvm-project.
 
 inputs:
   jvm-token:
-    description: The token used when publishing to a Maven repo
+    description: Token used when publishing to a Maven repo.
 
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭Testing publication via Maven..."
+    - uses: ./actions/init-aurora-github
+
+    - shell: elvish {0}
+      run: echo 🎭 Testing publication via Maven...
 
     - uses: ./actions/publish-jvm-project
       with:
         dry-run: true
-        project-directory: tests/maven-project
-        auth-user: giancosta86
+        working-directory: tests/maven-project
+        auth-user: gian-token
         auth-token: ${{ inputs.jvm-token }}
 
-    - shell: bash
-      run: echo "🎭Testing publication via Gradle..."
+    - shell: elvish {0}
+      run: echo 🎭 Testing publication via Gradle...
 
     - uses: ./actions/publish-jvm-project
       with:
         dry-run: true
-        project-directory: tests/gradle-project
-        auth-user: giancosta86
+        working-directory: tests/gradle-project
+        auth-user: gian-token
         auth-token: ${{ inputs.jvm-token }}
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

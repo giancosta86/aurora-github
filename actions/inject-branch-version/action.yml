@@ -1,0 +1,24 @@
+name: Inject branch version
+description: Injects the current branch version in lieu of "0.0.0" in the given file patterns.
+
+inputs:
+  files:
+    description: Comma-separated file patterns.
+    default: "**"
+
+  working-directory:
+    description: Directory where the action should run.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - id: detect-branch-version
+      uses: giancosta86/aurora-github/actions/detect-branch-version@v11.0.0
+
+    - uses: giancosta86/aurora-github/actions/replace-regex-pattern@v11.0.0
+      with:
+        files: ${{ inputs.files }}
+        regex: "0\\.0\\.0"
+        replacement: ${{ steps.detect-branch-version.outputs.version }}
+        working-directory: ${{ inputs.working-directory }}

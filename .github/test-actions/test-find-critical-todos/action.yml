@@ -1,51 +1,18 @@
 name: Test find-critical-todos
+description: Tests for find-critical-todos.
+
 runs:
   using: composite
   steps:
-    - shell: bash
-      run: echo "🎭Find existing critical TODOs without crashing..."
+    - uses: ./actions/init-aurora-github
+
+    - shell: elvish {0}
+      run: echo 🎭 Looking for inexistent critical TODOs...
 
     - uses: ./actions/find-critical-todos
-      id: find-existing-critical-todos
       with:
-        root-directory: tests/unknown-tech/src
-        source-file-regex: \.(js|txt)$
-        crash-on-found: false
-        verbose: true
+        files: README.md
+        working-directory: tests/unknown-tech
 
-    - name: Critical TODOs should be found when existing
-      shell: bash
-      run: |
-        found="${{ steps.find-existing-critical-todos.outputs.found }}"
-
-        if [[ "$found" == "true" ]]
-        then
-          echo "✅Critical TODOs found, as expected"
-        else
-          echo "❌The expected critical TODOs have not been found!" >&2
-          exit 1
-        fi
-
-    - shell: bash
-      run: echo "🎭Look for inexisting critical TODOs..."
-
-    - uses: ./actions/find-critical-todos
-      id: look-for-missing-critical-todos
-      with:
-        root-directory: tests/custom
-        source-file-regex: .*
-        crash-on-found: true
-        verbose: true
-
-    - name: Critical TODOs should not be found where they are missing
-      shell: bash
-      run: |
-        found="${{ steps.look-for-missing-critical-todos.outputs.found }}"
-
-        if [[ "$found" != "true" ]]
-        then
-          echo "✅Critical TODOs not found, as expected"
-        else
-          echo "❌Critical TODOs have been found where they should be missing!" >&2
-          exit 1
-        fi
+    - shell: elvish {0}
+      run: echo ✅ Tests OK!

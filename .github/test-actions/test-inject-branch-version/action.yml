@@ -1,0 +1,22 @@
+name: Test inject-branch-version
+description: Tests for inject-branch-version.
+
+runs:
+  using: composite
+  steps:
+    - id: detect-branch-version
+      uses: ./actions/detect-branch-version
+
+    - shell: elvish {0}
+      run: echo 🎭 Now injecting branch version into a NodeJS project...
+
+    - uses: ./actions/inject-branch-version
+      with:
+        files: package.json
+        working-directory: tests/npm-package
+
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+      env:
+        version: ${{ steps.detect-branch-version.outputs.version }}

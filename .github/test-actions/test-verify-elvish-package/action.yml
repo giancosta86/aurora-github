@@ -1,0 +1,10 @@
+name: Test verify-elvish-package
+description: Tests for verify-elvish-package.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/verify-elvish-package
+      with:
+        working-directory: tests/elvish-package
+        check-license: false

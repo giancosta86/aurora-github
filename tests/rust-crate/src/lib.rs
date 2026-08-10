@@ -1,3 +1,12 @@
+/// Sums two numbers.
+///
+/// ```
+/// use rust_crate::*;
+///
+/// let result = add(90, 2);
+///
+/// assert_eq!(result, 92);
+/// ```
 pub fn add(left: u64, right: u64) -> u64 {
     left + right
 }

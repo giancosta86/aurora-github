@@ -1,27 +1,18 @@
 name: Check GitHub Actions references
-description: Prevents cross-branch 'uses:' directives to GitHub actions residing below the same root directory.
+description: Prevents cross-branch `uses:` directives between GitHub actions residing below the same root directory.
 
 inputs:
   actions-directory:
-    description: The root of the directory tree containing the actions.
+    description: Root of the directory tree containing the actions.
     default: actions
 
 runs:
   using: composite
   steps:
-    - name: Setup Python context
-      shell: bash
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.actions-directory }}
       run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
-
-        echo "INPUT_ACTIONS_DIRECTORY=${{ inputs.actions-directory }}" >> $GITHUB_ENV
-
-    - name: Call the Python implementation
-      shell: python
-      run: |
-        from core.check_action_references import check_action_references, Inputs
-
-        inputs = Inputs.from_env()
-
-        check_action_references(inputs)
+        use github.com/giancosta86/aurora-github/actions/check-action-references
+        check-action-references:main

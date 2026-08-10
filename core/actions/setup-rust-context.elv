@@ -1,0 +1,83 @@
+use os
+use github.com/giancosta86/ethereal/v1/command
+use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/curl
+use github.com/giancosta86/ethereal/v1/fs
+use github.com/giancosta86/ethereal/v1/lang
+use github.com/giancosta86/gauntlet/v1/env
+use github.com/giancosta86/gauntlet/v1/input
+
+fn install-rust {
+  fs:with-path-sandbox $curl:configuration-path {
+    echo 📥 Now installing 🦀Rust core...
+
+    command:silence {
+      curl:display-errors-only
+
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    }
+
+    echo 🚀 Rust core installed!
+  }
+}
+
+fn ensure-rust-core {
+  if (
+    and (has-external rustup) (has-external cargo)
+  ) {
+    echo 🌟 rustup and cargo are available on the system!
+  } else {
+    install-rust
+  }
+}
+
+fn set-cargo-colors { |enabled|
+  env:set CARGO_TERM_COLOR (lang:ternary $enabled always never)
+}
+
+fn check-toolchain-file {
+  var toolchain-file = rust-toolchain.toml
+
+  if (os:is-regular $toolchain-file) {
+    console:inspect &emoji=✅ 'Toolchain file found' $toolchain-file
+  } else {
+    fail "Missing toolchain file: '"$toolchain-file"'"
+  }
+}
+
+fn ensure-required-components {
+  command:silence {
+    rustup component add rustfmt clippy
+  }
+}
+
+fn print-component-versions {
+  console:section &emoji=🦀 'Rust component versions' {
+    cargo --version
+    rustc --version
+    cargo fmt --version
+    cargo clippy --version
+  }
+}
+
+fn main {
+  var cargo-colors = (input:bool cargo-colors)
+
+  var check-toolchain-file = (input:bool check-toolchain-file)
+
+  echo 🦀💻 Setting up Rust context in "'"$pwd"'"...
+
+  if $check-toolchain-file {
+    check-toolchain-file
+  }
+
+  ensure-rust-core
+
+  set-cargo-colors $cargo-colors
+
+  ensure-required-components
+
+  print-component-versions
+
+  echo ✅🦀 Rust context in "'"$pwd"'" ready!
+}

@@ -1,48 +1,32 @@
 # check-project-license
 
-Ensures the validity of the project license file.
+Checks the validity of the project license file.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-project-license@v10
+  - uses: giancosta86/aurora-github/actions/check-project-license@v11
 ```
 
-**Please, note**: this action is automatically run by:
+**Please, note**: this action is automatically run by most `verify-` actions.
 
-- [verify-npm-package](../verify-npm-package/README.md)
+## ☑️ Requirements
 
-- [verify-rust-crate](../verify-rust-crate/README.md)
+- The POSIX `date` command must be available on the system.
 
-- [verify-rust-wasm](../verify-rust-wasm/README.md)
+## 💡 How it works
 
-- [verify-jvm-project](../verify-jvm-project/README.md)
-
-- [verify-python-package](../verify-python-package/README.md)
-
-## 💡How it works
-
-1. Check that the `license-file` path actually points to an existing file.
+1. If the path referenced by `license-file` does not exist, fail.
 
 1. Verify that the current year is mentioned within the license file.
 
-## 📥Inputs
+## 📥 Inputs
 
-|      Name      |    Type    |         Description          | Default value |
-| :------------: | :--------: | :--------------------------: | :-----------: |
-| `license-file` | **string** | The path to the license file |  **LICENSE**  |
+|      Name      |    Type    |       Description        | Default value |
+| :------------: | :--------: | :----------------------: | :-----------: |
+| `license-file` | **string** | Path to the license file |  **LICENSE**  |
 
-## 🌐Further references
-
-- [verify-npm-package](../verify-npm-package/README.md)
-
-- [verify-rust-crate](../verify-rust-crate/README.md)
-
-- [verify-rust-wasm](../verify-rust-wasm/README.md)
-
-- [verify-jvm-project](../verify-jvm-project/README.md)
-
-- [verify-python-package](../verify-python-package/README.md)
+## 🌐 Further references
 
 - [aurora-github](../../README.md)

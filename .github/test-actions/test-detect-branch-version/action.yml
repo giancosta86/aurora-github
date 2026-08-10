@@ -1,77 +1,17 @@
 name: Test detect-branch-version
+description: Tests for detect-branch-version.
 
 runs:
   using: composite
   steps:
-    - uses: ./actions/detect-branch-version
-      id: detector
+    - id: detect-branch-version
+      uses: ./actions/detect-branch-version
 
-    - name: Branch should not be empty
-      shell: bash
-      run: |
-        branch="${{ steps.detector.outputs.branch }}"
-
-        if [[ -n "$branch" ]]
-        then
-          echo "🌲Branch retrieved from action: '$branch'"
-        else
-          echo "❌The branch could not be detected!" >&2
-          exit 1
-        fi
-
-    - name: The detected branch should be the one starting the pull request for this test
-      shell: bash
-      run: |
-        headRef="${{ github.head_ref }}"
-        branch="${{ steps.detector.outputs.branch }}"
-
-        echo "🌲Head ref in pull request: '$headRef'"
-
-        if [[ "$branch" == "$headRef" ]]
-        then
-          echo "✅The detected branch coincides with the head ref!"
-        else
-          echo "❌The branch ('$branch') should match the head_ref ('$headRef')!" >&2
-          exit 1
-        fi
-
-    - name: Version should not be empty
-      shell: bash
-      run: |
-        version="${{ steps.detector.outputs.version }}"
-
-        if [[ -n "$version" ]]
-        then
-          echo "🔎Version retrieved from action: '$version'"
-        else
-          echo "❌The version could not be detected!" >&2
-          exit 1
-        fi
-
-    - name: Escaped version should include escaped dots
-      shell: bash
-      run: |
-        escapedVersion="${{ steps.detector.outputs.escaped-version }}"
-
-        echo "🔎Escaped version retrieved from action: '$escapedVersion'"
-
-        if echo "$escapedVersion"  | grep -Pq "\\\."
-        then
-          echo "✅The escaped version contains '\.', as expected!"
-        else
-          echo "❌The escaped version should include '\.'!" >&2
-          exit 1
-        fi
-
-    - name: Major component should not be empty
-      shell: bash
-      run: |
-        major="${{ steps.detector.outputs.major }}"
-
-        if [[ -n "$major" ]]
-        then
-          echo "🪩Major version component: '$major'"
-        else
-          echo "❌The major component could not be detected!" >&2
-          exit 1
-        fi
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+      env:
+        branch: ${{ steps.detect-branch-version.outputs.branch }}
+        version: ${{ steps.detect-branch-version.outputs.version }}
+        escaped-version: ${{ steps.detect-branch-version.outputs.escaped-version }}
+        major: ${{ steps.detect-branch-version.outputs.major }}

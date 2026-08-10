@@ -1,0 +1,50 @@
+name: scenario
+description: Runs a scenario for publish-rust-crate.
+
+inputs:
+  header:
+    description: Header to display for this test.
+
+  pre-addendum:
+    description: Whether the documentation addendum should be added before running the action.
+
+  document-all-features:
+    description: Forwarded to the action.
+
+  post-addendum:
+    description: Whether Cargo.toml should contain the documentation addendum after running the action.
+
+runs:
+  using: composite
+  steps:
+    - shell: elvish {0}
+      working-directory: tests/rust-crate
+      run: |
+        echo 🎭 ${{ inputs.header }}
+
+        cp Cargo.toml.bak Cargo.toml
+
+    - if: inputs.pre-addendum == 'true'
+      shell: elvish {0}
+      working-directory: tests/rust-crate
+      run: |
+        {
+          echo
+          echo '# Manually added'
+          echo '[package.metadata.docs.rs]'
+          echo 'all-features = true'
+        } >> Cargo.toml
+
+    - uses: ./actions/publish-rust-crate
+      with:
+        dry-run: true
+        document-all-features: ${{ inputs.document-all-features }}
+        working-directory: tests/rust-crate
+
+    - if: inputs.post-addendum == 'true'
+      uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: action
+      env:
+        post-addendum: ${{ inputs.post-addendum }}

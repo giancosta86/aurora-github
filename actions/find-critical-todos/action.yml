@@ -1,119 +1,36 @@
 name: Find critical TODOs
-description: Looks for "critical TODOs" - that is, instances of the "TODO!" string - in source files.
+description: Looks for critical TODOs - that is, instances of the 'TODO!' string - in source files.
 
 inputs:
-  source-file-regex:
-    description: The PCRE pattern of source file names, for the "find" command.
+  files:
+    description: Comma-separated file patterns; if empty, the action won't run.
 
-  crash-on-found:
-    description: If true, exits with error when critical TODOs are found.
-    default: true
-
-  display-lines:
-    description: Display the lines with critical TODOs.
-    default: true
-
-  verbose:
-    description: Show details such as the filterable paths.
-    default: false
-
-  root-directory:
-    description: The root of the directory tree.
+  working-directory:
+    description: Directory where the action must run.
     default: .
-
-outputs:
-  found:
-    description: true if at least one TODO! was found in some file, false otherwise.
-    value: ${{ steps.main.outputs.found }}
 
 runs:
   using: composite
   steps:
-    - id: main
-      shell: bash
-      working-directory: ${{ inputs.root-directory }}
-      run: |
-        todoText="TODO!"
+    - if: inputs.files != ''
+      uses: giancosta86/aurora-github/actions/find-regex-pattern@v11.0.0
+      with:
+        files: ${{ inputs.files }}
 
-        main() {
-          validateInputs
-          scanDirectoryTree
-        }
+        regex: TODO!
 
-        validateInputs() {
-          if [[ -z "${{ inputs.source-file-regex }}" ]]
-          then
-            echo "❌Missing action input: 'source-file-regex'!" >&2
-            exit 1
-          fi
+        crash-when: found
 
-          if [[ -z "${{ inputs.crash-on-found }}" ]]
-          then
-            echo "❌Missing action input: 'crash-on-found'!" >&2
-            exit 1
-          fi
+        crash-message: Critical TODOs found!
 
-          if [[ -z "${{ inputs.display-lines }}" ]]
-          then
-            echo "❌Missing action input: 'display-lines'!" >&2
-            exit 1
-          fi
+        quiet: false
 
-          if [[ -z "${{ inputs.verbose }}" ]]
-          then
-            echo "❌Missing action input: 'verbose'!" >&2
-            exit 1
-          fi
-        }
+        working-directory: ${{ inputs.working-directory }}
 
-        scanDirectoryTree() {
-          local sourceFileRegex="${{ inputs.source-file-regex }}"
-          echo "📥Source file regex: '$sourceFileRegex'"
+    - if: inputs.files != ''
+      shell: elvish {0}
+      run: echo ✅ No critical TODOs found!
 
-          local crashOnFound="${{ inputs.crash-on-found }}"
-          echo "📥Crash on found: $crashOnFound"
-
-          local displayLines="${{ inputs.display-lines }}"
-          echo "📥Display lines: $displayLines"
-
-          local verbose="${{ inputs.verbose }}"
-          echo "📥Verbose: $verbose"
-
-          if [[ "$verbose" == "true" ]]
-          then
-            echo "🔎File list to filter when looking for TODOs:"
-            find -type f -print
-            echo "🔎🔎🔎"
-          fi
-
-          if [[ "$displayLines" == "true" ]]
-          then
-            local quietArg=""
-          else
-            local quietArg="-q"
-          fi
-
-          if find -type f -print0 | grep -zP "$sourceFileRegex" | xargs -0 grep --color=always -Hn $quietArg "$todoText"
-          then
-            local found=true
-          else
-            local found=false
-          fi
-
-          if [[ "$found" == "true" ]]
-          then
-            if  [[ "$crashOnFound" == "true" ]]
-            then
-              echo "❌Critical TODOs found!" >&2
-              exit 1
-            else
-              echo "⚠️Critical TODOs found!"
-            fi
-          else
-            echo "✅No critical TODOs found!"
-          fi
-
-          echo "found=$found" >> $GITHUB_OUTPUT
-        }
-
-        main
+    - if: inputs.files == ''
+      shell: elvish {0}
+      run: echo 💭 Skipping critical TODOs check, as requested...

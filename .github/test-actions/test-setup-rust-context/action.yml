@@ -1,0 +1,24 @@
+name: Test setup-rust-context
+description: Tests for setup-rust-context.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/init-aurora-github
+
+    - shell: elvish {0}
+      run: echo 🎭 Testing on Rust crate...
+
+    - uses: ./actions/setup-rust-context
+      with:
+        working-directory: tests/rust-crate
+
+    - shell: elvish {0}
+      run: echo 🎭 Testing on Rust Wasm...
+
+    - uses: ./actions/setup-rust-context
+      with:
+        working-directory: tests/rust-wasm
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

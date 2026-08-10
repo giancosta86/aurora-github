@@ -2,205 +2,86 @@ name: Publish GitHub Pages
 description: Publishes a directory as the GitHub Pages website for the current repository.
 
 inputs:
-  source-directory:
-    description: Directory containing the website.
-    default: .
+  corepack-version:
+    description: Version of corepack to install for a NodeJS website, empty to skip.
+    default: latest
 
-  optional:
-    description: Whether "source-directory" can be empty string or missing directory.
-    default: false
+  java-version:
+    description: Java version to use for Java websites.
 
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
+  java-tool-version:
+    description: Tool version to use for Java websites.
 
   dry-run:
     description: Stop the publication just before uploading.
     default: false
 
+  working-directory:
+    description: Directory containing the website or its source files.
+    default: .
+
 outputs:
   url:
-    description: The URL of the published website.
+    description: URL of the published website.
     value: ${{ steps.publish-pages.outputs.page_url }}
 
 runs:
   using: composite
   steps:
-    - name: Set up strategy
-      shell: bash
-      run: |
-        strategy="exit"
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
 
-        main() {
-          validateInputs
-
-          if setupEnvironment
-          then
-            detectSourceStrategy
-          fi
-
-          echo "🔎Website build strategy: '$strategy'"
-          echo "strategy=$strategy" >> $GITHUB_ENV
-        }
-
-        validateInputs() {
-          if [[ -z "${{ inputs.optional }}" ]]
-          then
-            echo "❌Missing action input: 'optional'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-          then
-            echo "❌Missing action input: 'enforce-branch-version'!" >&2
-            exit 1
-          fi
-
-          if [[ -z "${{ inputs.dry-run }}" ]]
-          then
-            echo "❌Missing action input: 'dry-run'!" >&2
-            exit 1
-          fi
-        }
-
-        setupEnvironment() {
-          local sourceDirectory="${{ inputs.source-directory }}"
-          local optional="${{ inputs.optional }}"
-
-          if [[ -z "$sourceDirectory" ]]
-          then
-            if [[ "$optional" == "true" ]]
-            then
-              echo "💬Missing action input: 'source-directory' - can't proceed"
-              return 1
-            else
-              echo "❌Missing action input: 'source-directory'!" >&2
-              exit 1
-            fi
-          elif [[ ! -d "$sourceDirectory" ]]
-          then
-            if [[ "$optional" == "true" ]]
-            then
-              echo "💬Missing website directory '$sourceDirectory' - can't proceed"
-              return 1
-            else
-              echo "❌Missing website directory '$sourceDirectory'!" >&2
-              exit 1
-            fi
-          else
-            echo "🌐Website source directory '$sourceDirectory' found!"
-            cd "$sourceDirectory"
-          fi
-        }
-
-        detectSourceStrategy() {
-          if [[ -f "package.json" ]]
-          then
-            strategy=nodejs
-          elif [[ -f "pom.xml" ]]
-          then
-            strategy=maven
-          else
-            strategy="static-files"
-          fi
-        }
-
-        main
-
-    - name: Enforce branch version
-      if: env.strategy == 'nodejs' || env.strategy == 'maven'
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.2.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.source-directory }}
+        files: package.json pom.xml
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Setup NodeJS context
-      if: env.strategy == 'nodejs'
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v10.2.0
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/publish-github-pages
+        publish-github-pages:detect-strategy
+
+    - if: env.strategy == 'nodejs-site'
+      uses: giancosta86/aurora-github/actions/verify-npm-package@v11.0.0
       with:
-        project-directory: ${{ inputs.source-directory }}
+        check-license: false
+        corepack-version: ${{ inputs.corepack-version }}
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Create the website via NodeJS
-      if: env.strategy == 'nodejs'
-      shell: bash
-      working-directory: ${{ inputs.source-directory }}
+    - if: env.strategy == 'maven-site'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        echo "📦Now building the website via NodeJS..."
-        pnpm build
-        echo "✅Website ready!"
+        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
+        setup-jvm-context:main
+      env:
+        java-version: ${{ inputs.java-version }}
+        tool-version: ${{ inputs.java-tool-version }}
 
-        artifactDirectory=${{ inputs.source-directory }}/dist
-
-        echo "artifactDirectory=$artifactDirectory" >> $GITHUB_ENV
-
-    - name: Create the website via Maven
-      if: env.strategy == 'maven'
-      shell: bash
-      working-directory: ${{ inputs.source-directory }}
+    - if: env.strategy == 'maven-site'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        echo "🪶Now building the website via Maven..."
-        mvn -q site
-        echo "✅Website ready!"
+        use github.com/giancosta86/aurora-github/actions/publish-github-pages
+        publish-github-pages:build-via-maven
 
-        artifactDirectory=${{ inputs.source-directory }}/target/site
+    - if: inputs.dry-run == 'true'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: echo 💭 Skipping publication, as requested by dry-run.
 
-        echo "artifactDirectory=$artifactDirectory" >> $GITHUB_ENV
-
-    - name: Setup static artifacts
-      if: env.strategy == 'static-files'
-      shell: bash
-      run: echo "artifactDirectory=${{ inputs.source-directory }}" >> $GITHUB_ENV
-
-    - if: env.strategy != 'exit'
-      shell: bash
-      run: |
-        main() {
-          checkArtifactDirectory
-          skipUploadingOnDryRun
-        }
-
-        checkArtifactDirectory() {
-          echo "🔎Website artifact directory: '$artifactDirectory'"
-
-          if [[ -d "$artifactDirectory" ]]
-          then
-            echo "✅The artifact directory for the 🌐website exists!"
-          else
-            if [[ "${{ inputs.optional }}" == "true" ]]
-            then
-              echo "💬Missing website artifact directory - can't proceed"
-              echo "strategy=exit" >> $GITHUB_ENV
-            else
-              echo "❌Missing website artifact directory!" >&2
-              exit 1
-            fi
-          fi
-        }
-
-        skipUploadingOnDryRun() {
-          if [[ "${{ inputs.dry-run }}" == "true" ]]
-          then
-            echo "💭Skipping publication, as requested by dry-run."
-            echo "strategy=exit" >> $GITHUB_ENV
-          fi
-        }
-
-        main
-
-    - name: Upload website artifacts
-      if: env.strategy != 'exit'
-      uses: actions/upload-pages-artifact@v3
+    - if: inputs.dry-run != 'true'
+      uses: actions/upload-pages-artifact@v5
       with:
-        path: ${{ env.artifactDirectory }}
+        path: ${{ env.source-directory }}
 
-    - name: Publish website via GitHub Pages
-      if: env.strategy != 'exit'
+    - if: inputs.dry-run != 'true'
       id: publish-pages
-      uses: actions/deploy-pages@v4
+      uses: actions/deploy-pages@v5
 
-    - name: Print confirmation message
-      if: env.strategy != 'exit'
-      shell: bash
+    - if: inputs.dry-run != 'true'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        echo "✅Publication to GitHub Pages successful!"
-        echo "🌐Website: ${{ steps.publish-pages.outputs.page_url }}"
+        echo ✅ Website publication successful!
+        echo 🌐 Project website: ${{ steps.publish-pages.outputs.page_url }}

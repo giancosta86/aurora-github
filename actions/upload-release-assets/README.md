@@ -2,37 +2,35 @@
 
 Uploads one or more asset files to a **GitHub** release.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/upload-release-assets@v10
+  - uses: giancosta86/aurora-github/actions/upload-release-assets@v11
     with:
       release-tag: v3.0.2
+      working-directory: dist
       files: logo.png data.zip
-      source-directory: dist
 ```
 
-## 💡How it works
+## 💡 How it works
 
 This action calls the [gh release upload](https://cli.github.com/manual/gh_release_upload) command to upload the given files.
 
-## ☑️Requirements
+## ☑️ Requirements
 
-- The `release-tag` input must be the tag of an existing release - which could be, for example, the `release-tag` output of the [tag-and-release](../tag-and-release/README.md) action.
+- The `release-tag` input must be the tag of an existing release.
 
-- The `files` input must be passed just like a string of relative file paths on the Bash command line.
+## 📥 Inputs
 
-## 📥Inputs
+|        Name         |            Type             |                     Description                      | Default value |
+| :-----------------: | :-------------------------: | :--------------------------------------------------: | :-----------: |
+|    `release-tag`    |         **string**          |              Tag of the target release               |               |
+|       `files`       | **string**, comma-separated | Paths - even relative - of the asset files to upload |               |
+|     `overwrite`     |         **boolean**         |       Overwrite existing assets in the release       |   **false**   |
+| `working-directory` |         **string**          |           Directory containing the `files`           |     **.**     |
 
-|        Name        |    Type     |                   Description                   | Default value |
-| :----------------: | :---------: | :---------------------------------------------: | :-----------: |
-|   `release-tag`    | **string**  |          The tag of the target release          |               |
-|      `files`       | **string**  | The relative paths of the asset files to upload |               |
-|    `overwrite`     | **boolean** |    Overwrite existing assets in the release     |   **true**    |
-| `source-directory` | **string**  |         Directory containing the files          |     **.**     |
-
-## 🌐Further references
+## 🌐 Further references
 
 - [tag-and-release](../tag-and-release/README.md)
 

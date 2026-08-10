@@ -4,16 +4,15 @@
   "type": "module",
   "description": "Toy npm package",
   "scripts": {
-    "test": "echo '✅NodeJS tests simulated!'",
-    "build": "echo '✅NodeJS build simulated!'",
-    "verify": "pnpm test && pnpm build"
+    "verify": "echo '📦📃 package.json `verify` script!'",
+    "build": "echo '📦📃 package.json `build` script!'"
   },
   "devDependencies": {
     "@giancosta86/typed-env": "^2.0.3"
   },
   "private": true,
   "engines": {
-    "node": "20.15.1"
+    "node": "20.18.3"
   },
   "packageManager": "pnpm@9.7.1"
 }

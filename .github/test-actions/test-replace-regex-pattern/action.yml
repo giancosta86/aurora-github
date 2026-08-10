@@ -1,0 +1,54 @@
+name: Test replace-regex-pattern
+description: Tests for replace-regex-pattern.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/init-aurora-github
+
+    - shell: elvish {0}
+      run: |
+        use os
+        use github.com/giancosta86/gauntlet/v1/env
+
+        os:temp-dir |
+          env:set temp-dir (all)
+
+    - shell: elvish {0}
+      working-directory: ${{ env.temp-dir }}
+      run: |
+        print alpha > A.txt
+        print beta > B.txt
+
+    - shell: elvish {0}
+      run: echo 🎭 Testing replacement with enumerated files...
+
+    - uses: ./actions/replace-regex-pattern
+      with:
+        files: A.txt, B.txt
+        regex: ([ae])
+        replacement: "*$1*"
+        working-directory: ${{ env.temp-dir }}
+
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: enumeration
+
+    - shell: elvish {0}
+      run: echo 🎭 Testing replacement with wildcard...
+
+    - uses: ./actions/replace-regex-pattern
+      with:
+        files: "*.txt"
+        regex: "\\*"
+        replacement: ""
+        working-directory: ${{ env.temp-dir }}
+
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: wildcard
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

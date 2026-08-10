@@ -1,0 +1,44 @@
+name: Run Velvet tests and check the output.
+description: Scenario for run-elvish-tests.
+
+inputs:
+  header:
+    description: The header to display.
+
+  include-metadata:
+    description: Whether metadata.json should be created.
+    default: false
+
+  velvet-scripts:
+    description: The Velvet scripts to run.
+
+  first-output-should-exist:
+    description: Whether the output from 'first.test.elv' should be on disk.
+
+  second-output-should-exist:
+    description: Whether the output from 'second.test.elv' should be on disk.
+
+runs:
+  using: composite
+  steps:
+    - shell: elvish {0}
+      working-directory: tests/elvish
+      run: elvish ${{ github.action_path }}/setup.elv
+      env:
+        header: ${{ inputs.header }}
+        include-metadata: ${{ inputs.include-metadata }}
+
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: tests/elvish
+        velvet-scripts: ${{ inputs.velvet-scripts }}
+
+    - shell: elvish {0}
+      working-directory: ${{ github.action_path }}
+      run: |
+        use github.com/giancosta86/velvet/v4/velvet
+
+        velvet:velvet &flawless action
+      env:
+        first-output-should-exist: ${{ inputs.first-output-should-exist }}
+        second-output-should-exist: ${{ inputs.second-output-should-exist }}

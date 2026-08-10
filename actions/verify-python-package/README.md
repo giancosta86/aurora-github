@@ -2,50 +2,56 @@
 
 Verifies the source files of a **Python** package using [PDM](https://pdm-project.org).
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
-  - uses: giancosta86/aurora-github/actions/verify-python-package@v10
+  - uses: giancosta86/aurora-github/actions/verify-python-package@v11
 ```
 
-## 💡How it works
+## 💡 How it works
 
-1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file, unless `check-license` is set to **false**.
 
-1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
+1. Run [inject-branch-version](../inject-branch-version/README.md) on **pyproject.toml**.
 
-1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**; upon installation, the latest version will be retrieved if `pdm-version` is not specified.
+1. If **pipx** is not already installed, install it.
+
+1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**: the latest version will be retrieved if `pdm-version` is not specified.
+
+1. Install the **project dependencies** via pdm.
 
 1. Run `pdm run verify` - where the **verify** script should be defined in the `[tool.pdm.scripts]` of **pyproject.toml**.
 
 1. Run `pdm build` to build the project artifacts.
 
-1. Find [critical TODOs](../find-critical-todos/README.md) in the source code - which crash the workflow by default.
+1. Find [critical TODOs](../find-critical-todos/README.md) in the source code.
 
-## ☑️Requirements
+## ☑️ Requirements
 
-- `pipx` is mandatory when PDM has to be installed.
+- the **verify** script must be declared within **pyproject.toml**, like this:
 
-- the **verify** script must be declared within **pyproject.toml**.
+  ```toml
+  [tool.pdm.scripts]
+  verify = "<your shell commands here>"
+  ```
 
-## 📥Inputs
+## 📥 Inputs
 
-|           Name            |          Type           |                  Description                   |       Default value       |
-| :-----------------------: | :---------------------: | :--------------------------------------------: | :-----------------------: |
-|       `pdm-version`       |       **string**        |       Version of PDM that should be used       |                           |
-| `crash-on-critical-todos` |       **boolean**       | Crash the workflow if critical TODOs are found |         **true**          |
-|    `source-file-regex`    |       **string**        |    PCRE pattern describing the source files    | view [source](action.yml) |
-| `enforce-branch-version`  | `inject`,`check`,`skip` |   How the branch version should be enforced    |        **inject**         |
-|    `project-directory`    |       **string**        |  The directory containing **pyproject.toml**   |           **.**           |
+|        Name         |    Type     |                     Description                     | Default value |
+| :-----------------: | :---------: | :-------------------------------------------------: | :-----------: |
+|    `pdm-version`    | **string**  |         Version of PDM that should be used          |               |
+|   `check-license`   | **boolean** |          Run checks on the project license          |   **true**    |
+|    `todo-files`     | **string**  | File patterns potentially containing critical TODOs |    **.py**    |
+| `working-directory` | **string**  |       Directory containing **pyproject.toml**       |     **.**     |
 
-## 🌐Further references
+## 🌐 Further references
+
+- [PDM](https://pdm-project.org)
 
 - [check-project-license](../check-project-license/README.md)
 
-- [enforce-branch-version](../enforce-branch-version/README.md)
+- [inject-branch-version](../inject-branch-version/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

@@ -5,88 +5,51 @@ inputs:
   pdm-version:
     description: Version of PDM that should be used.
 
-  crash-on-critical-todos:
-    description: Crash the workflow if critical TODOs are found.
+  check-license:
+    description: Run checks on the project license.
     default: true
 
-  source-file-regex:
-    description: PCRE pattern describing the source files.
-    default: '^\.\/(src|tests)\/.+\.pyw?$'
+  todo-files:
+    description: File patterns potentially containing critical TODOs.
+    default: "{src tests}/**[nomatch-ok].rs"
 
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
-
-  project-directory:
-    description: The directory containing pyproject.toml.
+  working-directory:
+    description: Directory containing `pyproject.toml`.
     default: .
 
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
-          exit 1
-        fi
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
 
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
-
-    - name: Check the project license
-      uses: giancosta86/aurora-github/actions/check-project-license@v10.2.0
-
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.2.0
+    - if: inputs.check-license == 'true'
+      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}
+        license-file: ${{ inputs.working-directory }}/LICENSE
 
-    - name: Ensure pdm
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        source "${{ github.action_path }}/../../core/bash/pdm.sh"
-
-        ensurePdm
-
-    - name: Verify the project
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "🔬Verifying the project..."
-        pdm run verify
-        echo "✅Project verified!"
-
-    - name: Build the project
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "📦Building the project..."
-        pdm build
-        echo "✅Project built successfully!"
-
-    - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v10.2.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        source-file-regex: ${{ inputs.source-file-regex }}
-        crash-on-found: ${{ inputs.crash-on-critical-todos }}
-        display-lines: true
-        root-directory: ${{ inputs.project-directory }}
+        files: pyproject.toml
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Print confirmation message
-      shell: bash
-      run: echo "✅Python project verified!"
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/setup-python-context
+        setup-python-context:main
+      env:
+        pdm-version: ${{ inputs.pdm-version }}
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/verify-python-package
+        verify-python-package:main
+
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
+      with:
+        files: ${{ inputs.todo-files }}
+        working-directory: ${{ inputs.working-directory }}
+
+    - shell: elvish {0}
+      run: echo ✅🐍 Python package verified!

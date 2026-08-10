@@ -1,8 +1,9 @@
 name: Test publish-python-package
+description: Tests for publich-python-package.
 
 inputs:
   index-secret:
-    description: The password/token for publishing to the index
+    description: Password/token for publishing to the index.
 
 runs:
   using: composite
@@ -11,10 +12,12 @@ runs:
       with:
         dry-run: true
 
-        index-url: https://api.repsy.io/pypi/giancosta86/pyground
+        pdm-version: 2.28.0
 
-        index-user: giancosta86
+        index-url: https://repo.repsy.io/giancosta86/pyground
+
+        index-user: gian-token
 
         index-secret: ${{ inputs.index-secret }}
 
-        project-directory: tests/python-lib
+        working-directory: tests/python-lib

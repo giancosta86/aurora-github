@@ -1,0 +1,14 @@
+name: Initialize aurora-github
+description: Internally used to initialize any aurora-github action.
+
+inputs:
+  needs-as-json:
+    description: Always pass the evaluation of `toJSON(needs)`.
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/gauntlet/actions/setup-elvish-action@v1
+      with:
+        core-package: github.com/giancosta86/aurora-github
+        core-directory: ${{ github.action_path }}/../../core

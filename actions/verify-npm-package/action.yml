@@ -1,114 +1,62 @@
 name: Verify npm package
-description: Verifies the source files of a NodeJS package - by running its 'verify' script within the 'scripts' section of 'package.json'.
+description: Verifies the source files of a NodeJS package.
 
 inputs:
-  crash-on-critical-todos:
-    description: Crash the workflow if critical TODOs are found.
+  corepack-version:
+    description: corepack version to install, empty to skip.
+    default: latest
+
+  check-license:
+    description: Run checks on the project license.
     default: true
 
-  source-file-regex:
-    description: PCRE pattern describing the source files.
-    default: '^\.\/(src|(tests(?!\/node_modules\/)))\/.+\.(c|m)?(j|t)sx?$'
-
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
+  todo-files:
+    description: File patterns potentially containing critical TODOs.
+    default: "{src tests}/**[nomatch-ok].{'' c m}{j t}s{'' x}"
 
   check-subpath-exports:
-    description: Run check-subpath-exports after the "verify" package script.
+    description: Run check-subpath-exports after the package scripts.
     default: true
 
-  project-directory:
-    description: The directory containing package.json.
+  working-directory:
+    description: Directory containing `package.json`.
     default: .
 
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
+
+    - if: inputs.check-license == 'true'
+      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
+      with:
+        license-file: ${{ inputs.working-directory }}/LICENSE
+
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
+      with:
+        files: package.json
+        working-directory: ${{ inputs.working-directory }}
+
+    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
+      with:
+        working-directory: ${{ inputs.working-directory }}
+        corepack-version: ${{ inputs.corepack-version }}
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
-          exit 1
-        fi
+        use github.com/giancosta86/aurora-github/actions/verify-npm-package
+        verify-npm-package:run-package-scripts
 
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.check-subpath-exports }}" ]]
-        then
-          echo "❌Missing action input: 'check-subpath-exports'!" >&2
-          exit 1
-        fi
-
-        if [[ ! -f "package.json" ]]
-        then
-          echo "❌The package.json descriptor file does not exist!!" >&2
-          exit 1
-        fi
-
-    - name: Check the project license
-      uses: giancosta86/aurora-github/actions/check-project-license@v10.2.0
-
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.2.0
+    - if: inputs.check-subpath-exports == 'true'
+      uses: giancosta86/aurora-github/actions/check-subpath-exports@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Setup NodeJS context
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v10.2.0
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
       with:
-        project-directory: ${{ inputs.project-directory }}
+        files: ${{ inputs.todo-files }}
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Run the 'verify' script from package.json
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        echo "🔎Now running the 'verify' package.json script..."
-        pnpm verify
-        echo "✅'verify' script successful!"
-
-    - name: Try to build the package artifacts
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        source "${{ github.action_path }}/../../core/bash/npmPackage.sh"
-
-        tryToRunNpmBuildScript
-
-    - name: Check subpath exports
-      if: inputs.check-subpath-exports == 'true'
-      uses: giancosta86/aurora-github/actions/check-subpath-exports@v10.2.0
-      with:
-        project-directory: ${{ inputs.project-directory }}
-
-    - name: Run optional custom tests from the 'tests' directory
-      uses: giancosta86/aurora-github/actions/run-custom-tests@v10.2.0
-      with:
-        optional: true
-        root-directory: ${{ inputs.project-directory }}/tests
-
-    - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v10.2.0
-      with:
-        source-file-regex: ${{ inputs.source-file-regex }}
-        crash-on-found: ${{ inputs.crash-on-critical-todos }}
-        display-lines: true
-        root-directory: ${{ inputs.project-directory }}
-
-    - name: Print confirmation message
-      shell: bash
-      run: echo "✅npm package project verified!"
+    - shell: elvish {0}
+      run: echo ✅📦 npm package project verified!

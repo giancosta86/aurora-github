@@ -2,67 +2,63 @@
 
 Verifies the source files of a **Rust** web assembly.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
-  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v10
+  - uses: giancosta86/aurora-github/actions/verify-rust-wasm@v11
     with:
       wasm-pack-version: 0.13.1
-      npm-scope: your-npm-scope
+      npm-scope: your-npm-scope, or <ROOT>
 ```
 
-## 💡How it works
+## 💡 How it works
 
-1. Invoke the [install-wasm-pack](../install-wasm-pack/README.md) action, passing all the matching inputs, to install the `wasm-pack` command.
+1. Call [setup-nodejs-context](../setup-nodejs-context/README.md) based on `working-directory`, without installing dependencies.
+
+1. Ensure the `wasm-pack` command at `wasm-pack-version` is available.
 
 1. Invoke the [verify-rust-crate](../verify-rust-crate/README.md) action, passing all the matching inputs, to perform code analysis over the Rust source code.
 
 1. Run `wasm-pack test` to run headless browser tests on Chrome.
 
-1. Invoke [generate-wasm-target](../generate-wasm-target/README.md) to generate the NodeJS package source files in the **pkg** subdirectory.
+1. Generate the NodeJS package source files into the **pkg** subdirectory. In particular:
+   - if `node-version` is passed, it will be injected into the `engines/node` field in **package.json**
 
-1. If the directory referenced by the `client-tests-directory` input exists, execute the [run-custom-tests](../run-custom-tests/README.md) action on it, with the `optional` flag enabled.
+   - if `package-manager` is passed, it will be injected into the `packageManager` field in **package.json**
 
-## ☑️Requirements
+1. If `working-directory` contains **.npmrc**, copy it to **pkg**.
 
-- `rust-toolchain.toml` must be present in `project-directory` - as described in [check-rust-versions](../check-rust-versions/README.md)
+1. Run [inject-branch-version](../inject-branch-version/README.md) on **pkg/package-json**
 
-- Please, refer to the documentation of [run-custom-tests](../run-custom-tests/README.md) for details about setting up a suitable structure for `client-tests-directory`.
+1. If the directory referenced by the optional `client-tests-directory` input exists:
+   1. Run [setup-nodejs-context](../setup-nodejs-context/README.md) on it
 
-## 📥Inputs
+   1. Execute the tests via the package manager's `test` command.
 
-|           Name            |          Type           |                    Description                    |       Default value       |
-| :-----------------------: | :---------------------: | :-----------------------------------------------: | :-----------------------: |
-|    `wasm-pack-version`    |       **string**        |        The `wasm-pack` version to install         |                           |
-|        `npm-scope`        |       **string**        |         The npm package scope or `<ROOT>`         |                           |
-| `client-tests-directory`  |       **string**        |  Relative directory containing the client tests   |     **client-tests**      |
-|       `wasm-target`       |       **string**        |    The target of the `wasm-pack build` command    |          **web**          |
-|    `run-clippy-checks`    |       **boolean**       |             Enable linting via Clippy             |         **true**          |
-|      `check-rustdoc`      |       **boolean**       | Build the documentation - with warnings as errors |         **false**         |
-| `crash-on-critical-todos` |       **boolean**       |  Crash the workflow if critical TODOs are found   |         **true**          |
-|    `source-file-regex`    |       **string**        |     PCRE pattern describing the source files      | view [source](action.yml) |
-| `enforce-branch-version`  | `inject`,`check`,`skip` |     How the branch version should be enforced     |        **inject**         |
-|    `project-directory`    |       **string**        |       The directory containing `Cargo.toml`       |           **.**           |
+## ☑️ Requirements
 
-## 🌐Further references
+- `rust-toolchain.toml` must be present in `working-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
 
-- [check-project-license](../check-project-license/README.md)
+## 📥 Inputs
 
-- [generate-wasm-target](../generate-wasm-target/README.md)
+|           Name           |    Type     |                     Description                     |                                      Default value                                       |
+| :----------------------: | :---------: | :-------------------------------------------------: | :--------------------------------------------------------------------------------------: |
+|   `wasm-pack-version`    | **string**  |           `wasm-pack` version to install            |                                                                                          |
+|      `wasm-target`       | **string**  |       Target of the `wasm-pack build` command       |                                         **web**                                          |
+|       `npm-scope`        | **string**  |           npm package scope, or `<ROOT>`            |                                                                                          |
+|      `node-version`      | **string**  |               Required NodeJS version               |                                                                                          |
+|    `package-manager`     | **string**  |     Required package manager, with `@` version      |                                                                                          |
+| `client-tests-directory` | **string**  |   Relative directory containing the client tests    |                                     **client-tests**                                     |
+|       `run-clippy`       | **boolean** |              Enable linting via Clippy              |                                         **true**                                         |
+|     `check-rustdoc`      | **boolean** |  Build the documentation - with warnings as errors  |                                        **false**                                         |
+|     `check-license`      | **boolean** |          Run checks on the project license          |                                         **true**                                         |
+|       `todo-files`       | **string**  | File patterns potentially containing critical TODOs | **{{src tests}/\*\*[nomatch-ok].rs client-tests/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}}** |
 
-- [run-custom-tests](../run-custom-tests/README.md)
+| `working-directory` | **string** | Directory containing **Cargo.toml** | **.** |
 
-- [parse-npm-scope](../parse-npm-scope/README.md)
-
-- [check-rust-versions](../check-rust-versions/README.md)
-
-- [install-wasm-pack](../install-wasm-pack/README.md)
+## 🌐 Further references
 
 - [verify-rust-crate](../verify-rust-crate/README.md)
-
-- [enforce-branch-version](../enforce-branch-version/README.md)
 
 - [aurora-github](../../README.md)

@@ -1,84 +1,89 @@
 # setup-nodejs-context
 
-Conditionally installs **NodeJS** along with **pnpm**, as well as the dependencies listed in **package.json**.
+Installs and configures a **NodeJS** environment.
 
-## 🃏Example
+## 🃏 Example
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-
-  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v10
+  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11
 ```
 
 **Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md) and [publish-npm-package](../publish-npm-package/README.md).
 
-## 💡How it works
+## 💡 How it works
 
-1. If **package.json** - which must exist - declares the following field:
+1. Detect if a specific **NodeJS** version was requested for this project. In particular, in one of these cases:
+   1. If the **.nvmrc** file exists in the project directory - containing the requested NodeJS version, as expected by `nvm`.
 
-   ```json
-   {
-     "engines": {
-       "node": "..."
-     }
-   }
-   ```
+   1. If **package.json** declares the following field:
 
-   an entire NodeJS toolchain will be set up; in particular:
-
-   1. The requested **NodeJS** version - or a compatible one, if a range is passed - will be installed via [actions/setup-node](https://github.com/actions/setup-node)
-
-      **PLEASE, NOTE**: if you are using Bash as your development shell, you may want to install the [nvmcd](https://github.com/giancosta86/aurora-bash/tree/main/scripts/nvmcd) command from the [aurora-bash](https://github.com/giancosta86/aurora-bash) project.
-
-   1. **pnpm** will be downloaded via [pnpm/action-setup](https://github.com/pnpm/action-setup).
-
-      As for the version:
-
-      - if **package.json** explicitly provides a `packageManager` reference:
-
-        ```json
-        {
-          "packageManager": "pnpm@..."
+      ```json
+      {
+        "engines": {
+          "node": "..."
         }
-        ```
+      }
+      ```
 
-        it will be resolved
+1. If a specific **NodeJS** version was requested:
+   1. If the `nvm` command is not available in the **Bash** shell, install a convenient version.
 
-      - otherwise, the **latest** version will be installed
+   1. Run `nvm install <requested NodeJS version>`
 
-1. No matter whether the toolchain was installed, retrieve the dependencies - as follows:
+   Otherwise, consider whether the `node` command is accessible from PATH:
+   - if the command is available, just proceed to the next major step
 
-   - 🧊 if **pnpm-lock.yaml** exists, it is considered _frozen_ via the `--frozen-lockfile` flag
+   - otherwise:
+     1. if the `nvm` command is not available in the **Bash** shell, install a convenient version.
 
-   - 🌞 otherwise, `--no-frozen-lockfile` is passed explicitly
+     1. install the **latest** NodeJS version
 
-## ☑️Requirements
+1. Setup **corepack**:
+   1. if the `corepack-version` input is non-empty, run `npm install --global corepack@<corepack-version>`
 
-- The **package.json** descriptor must exist in `project-directory`.
+   1. if the `corepack` command is available:
+      1. display its version
 
-- The `packageManager` field can be missing, but it can't reference another package manager.
+      1. call `corepack:setup` from [astral-bridge](https://github.com/giancosta86/astral-bridge).
 
-- If the **pnpm-lock.yaml** file exists, it must be up-to-date - because it's considered _frozen_.
+1. Use the `packagemanager:exec` command from [astral-bridge](https://github.com/giancosta86/astral-bridge) to run the `--version` command for the package manager required by the project. In particular, it is detected from:
+   1. the `packageManager` field in **package.json**
 
-## 📥Inputs
+   1. the following field in **package.json**:
 
-|        Name         |    Type    |               Description               | Default value |
-| :-----------------: | :--------: | :-------------------------------------: | :-----------: |
-| `project-directory` | **string** | The directory containing `package.json` |     **.**     |
+      ```json
+      {
+        "devEngines": {
+          "packageManager": {
+            "name": "..."
+          }
+        }
+      }
+      ```
 
-## 🌐Further references
+   1. a recognized _lockfile_ in the project directory
 
-- [nvmcd](https://github.com/giancosta86/aurora-bash/tree/main/scripts/nvmcd) from [aurora-bash](https://github.com/giancosta86/aurora-bash)
+1. Run again the package manager, passing the `install` command - provided that `install-dependencies` is not set to **false**.
+
+## ☑️ Requirements
+
+- The **package.json** descriptor must exist in `working-directory`.
+
+## 📥 Inputs
+
+|          Name          |    Type     |                  Description                   | Default value |
+| :--------------------: | :---------: | :--------------------------------------------: | :-----------: |
+|   `corepack-version`   | **string**  | **corepack** version to install, empty to skip |  **latest**   |
+| `install-dependencies` | **boolean** |  Run the package manager's `install` command   |   **true**    |
+|  `working-directory`   | **string**  |      Directory containing `package.json`       |     **.**     |
+
+## 🌐 Further references
+
+- [astral-bridge](https://github.com/giancosta86/astral-bridge)
 
 - [verify-npm-package](../verify-npm-package/README.md)
 
 - [publish-npm-package](../publish-npm-package/README.md)
-
-- [actions/setup-node](https://github.com/actions/setup-node)
-
-- [pnpm/action-setup](https://github.com/pnpm/action-setup)
-
-- [pnpm](https://pnpm.io/)
 
 - [aurora-github](../../README.md)

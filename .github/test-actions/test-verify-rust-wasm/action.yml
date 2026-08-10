@@ -1,10 +1,32 @@
 name: Test verify-rust-wasm
+description: Tests for verify-rust-wasm.
 
 runs:
   using: composite
   steps:
+    - uses: ./actions/init-aurora-github
+
+    - shell: elvish {0}
+      run: echo 🎭 Running just with '<ROOT>' pseudo-scope...
+
     - uses: ./actions/verify-rust-wasm
       with:
-        project-directory: tests/rust-wasm
+        working-directory: tests/rust-wasm
+        wasm-pack-version: 0.15.0
+        npm-scope: <ROOT>
+        check-license: false
+
+    - shell: elvish {0}
+      run: echo 🎭 Running with custom npm scope, NodeJS version and package manager...
+
+    - uses: ./actions/verify-rust-wasm
+      with:
+        working-directory: tests/rust-wasm
+        wasm-pack-version: 0.15.0
         npm-scope: giancosta86
-        wasm-pack-version: 0.13.1
+        node-version: 26.2.0
+        package-manager: pnpm@10.22.0
+        check-license: false
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

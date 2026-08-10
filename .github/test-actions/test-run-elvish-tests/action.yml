@@ -1,0 +1,52 @@
+name: Test run-elvish-tests
+description: Tests for run-elvish-tests.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/init-aurora-github
+
+    - uses: giancosta86/epm-plus/actions/install-elvish-packages@v1
+      with:
+        packages: github.com/giancosta86/velvet@v4
+
+    - shell: elvish {0}
+      run: echo 🎭 Running the custom verification script...
+
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: tests/elvish
+
+    - shell: elvish {0}
+      working-directory: ${{ github.action_path }}
+      run: |
+        use github.com/giancosta86/velvet/v4/velvet
+
+        velvet:velvet &flawless verification-script-only
+
+    - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
+      with:
+        header: Now running Velvet tests...
+        first-output-should-exist: true
+        second-output-should-exist: true
+
+    - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
+      with:
+        header: Running a specific Velvet script...
+        velvet-scripts: second
+        first-output-should-exist: false
+        second-output-should-exist: true
+
+    - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
+      with:
+        header: Running Velvet scripts with a wildcard...
+        velvet-scripts: "*cond*"
+        first-output-should-exist: false
+        second-output-should-exist: true
+
+    - uses: ./.github/test-actions/test-run-elvish-tests/velvet-scenario
+      with:
+        header: Running Velvet scripts with metadata...
+        include-metadata: true
+        first-output-should-exist: true
+        second-output-should-exist: true

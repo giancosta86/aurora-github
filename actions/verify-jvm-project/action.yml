@@ -12,144 +12,54 @@ inputs:
     description: Run the build tool in quiet mode
     default: true
 
-  crash-on-critical-todos:
-    description: Crash the workflow if critical TODOs are found.
+  check-license:
+    description: Run checks on the project license.
     default: true
 
-  source-file-regex:
-    description: PCRE pattern describing the source files.
-    default: '^\.\/src\/.+\.(java|kt|scala|groovy)$'
+  todo-files:
+    description: File patterns potentially containing critical TODOs.
+    default: "src/**[nomatch-ok].{java kt scala groovy}"
 
-  enforce-branch-version:
-    description: How the branch version should be enforced.
-    default: inject
-
-  project-directory:
-    description: The directory containing the project descriptor.
+  working-directory:
+    description: Directory containing the project descriptor.
     default: .
 
 runs:
   using: composite
   steps:
-    - name: Validate inputs
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
-      run: |
-        if [[ -z "${{ inputs.quiet-tool }}" ]]
-        then
-          echo "❌Missing action input: 'quiet-tool'!" >&2
-          exit 1
-        fi
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
 
-        if [[ -z "${{ inputs.crash-on-critical-todos }}" ]]
-        then
-          echo "❌Missing action input: 'crash-on-critical-todos'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.source-file-regex }}" ]]
-        then
-          echo "❌Missing action input: 'source-file-regex'!" >&2
-          exit 1
-        fi
-
-        if [[ -z "${{ inputs.enforce-branch-version }}" ]]
-        then
-          echo "❌Missing action input: 'enforce-branch-version'!" >&2
-          exit 1
-        fi
-
-    - name: Check the project license
-      uses: giancosta86/aurora-github/actions/check-project-license@v10.2.0
-
-    - name: Setup Python context
-      shell: bash
-      run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
-
-        echo "INPUT_PROJECT_DIRECTORY=${{ inputs.project-directory }}" >> $GITHUB_ENV
-
-    - name: Detect the build tool
-      shell: python
-      run: |
-        from core.jvm import get_jvm_build_tool, Inputs
-
-        inputs = Inputs.from_env()
-
-        get_jvm_build_tool(inputs).write_to_github_env()
-
-    - name: Enforce branch version
-      uses: giancosta86/aurora-github/actions/enforce-branch-version@v10.2.0
+    - if: inputs.check-license == 'true'
+      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
       with:
-        mode: ${{ inputs.enforce-branch-version }}
-        project-directory: ${{ inputs.project-directory }}
+        license-file: ${{ inputs.working-directory }}/LICENSE
 
-    - name: Install Java
-      if: inputs.java-version != ''
-      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.2.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.0
       with:
-        candidate: java
-        version: ${{ inputs.java-version }}
+        files: pom.xml build.gradle{'' .kts}
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Install Maven
-      if: env.buildTool == 'mvn' && inputs.tool-version != ''
-      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.2.0
-      with:
-        candidate: maven
-        version: ${{ inputs.tool-version }}
-
-    - name: Install Gradle
-      if: env.buildTool == 'gradle' && inputs.tool-version != ''
-      uses: giancosta86/aurora-github/actions/install-via-sdkman@v10.2.0
-      with:
-        candidate: gradle
-        version: ${{ inputs.tool-version }}
-
-    - name: Run Maven
-      if: env.buildTool == 'mvn'
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        if [[ "${{ inputs.quiet-tool }}" == "true" ]]
-        then
-          quietToolArg="-q"
-        else
-          quietToolArg=""
-        fi
+        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
+        setup-jvm-context:main
+      env:
+        java-version: ${{ inputs.java-version }}
+        tool-version: ${{ inputs.tool-version }}
 
-        echo "🪶Running Maven to verify the project..."
-
-        mvn -B $quietToolArg verify
-
-        echo "✅Verification successful!"
-
-    - name: Run Gradle
-      if: env.buildTool == 'gradle'
-      shell: bash
-      working-directory: ${{ inputs.project-directory }}
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
       run: |
-        if [[ "${{ inputs.quiet-tool }}" == "true" ]]
-        then
-          quietToolArg="-q"
-        else
-          quietToolArg=""
-        fi
+        use github.com/giancosta86/aurora-github/actions/verify-jvm-project
+        verify-jvm-project:main
+      env:
+        quiet-tool: ${{ inputs.quiet-tool }}
 
-        echo "🐘Running Gradle to verify the project..."
-
-        gradle --no-daemon --no-scan $quietToolArg build
-
-        echo "✅Verification successful!"
-
-    - name: Check for critical TODOs
-      uses: giancosta86/aurora-github/actions/find-critical-todos@v10.2.0
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.0
       with:
-        source-file-regex: ${{ inputs.source-file-regex }}
-        crash-on-found: ${{ inputs.crash-on-critical-todos }}
-        display-lines: true
-        root-directory: ${{ inputs.project-directory }}
+        files: ${{ inputs.todo-files }}
+        working-directory: ${{ inputs.working-directory }}
 
-    - name: Print confirmation message
-      shell: bash
-      run: echo "✅JVM project verified!"
+    - shell: elvish {0}
+      run: echo ✅☕ JVM project verified!

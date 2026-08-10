@@ -1,36 +1,30 @@
 name: Detect branch version
-description: Extracts the version from the name of the current Git branch, returning both.
+description: Extracts the version from the name of the current Git branch, returning a variety of info.
 
 outputs:
   branch:
-    description: The current Git branch.
+    description: Current Git branch.
     value: ${{ steps.detect-version.outputs.branch }}
 
   version:
-    description: The version detected from the Git branch - always without prefix.
+    description: Version detected from the Git branch - always without prefix.
     value: ${{ steps.detect-version.outputs.version }}
 
   escaped-version:
-    description: The escaped version - for example, with '\.' in lieu of '.' - suitable for regular expressions.
+    description: Escaped version - for example, with `\.` in lieu of `.` - for regular expressions.
     value: ${{ steps.detect-version.outputs.escaped-version }}
 
   major:
-    description: The 'major' component of the version.
+    description: Major component of the version.
     value: ${{ steps.detect-version.outputs.major }}
 
 runs:
   using: composite
   steps:
-    - name: Setup Python context
-      shell: bash
-      run: |
-        pythonPath="${{ github.action_path }}/../../core/python"
-        echo "PYTHONPATH=$pythonPath" >> $GITHUB_ENV
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
 
-    - name: Call the Python implementation
-      id: detect-version
-      shell: python
+    - id: detect-version
+      shell: elvish {0}
       run: |
-        from core.detect_branch_version import detect_branch_version_info
-
-        detect_branch_version_info().write_to_github_output()
+        use github.com/giancosta86/aurora-github/actions/detect-branch-version
+        detect-branch-version:main

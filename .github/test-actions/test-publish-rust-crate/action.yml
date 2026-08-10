@@ -1,9 +1,37 @@
 name: Test publish-rust-crate
+description: Tests for publish-rust-crate.
 
 runs:
   using: composite
   steps:
-    - uses: ./actions/publish-rust-crate
+    - uses: ./actions/init-aurora-github
+
+    - shell: elvish {0}
+      working-directory: tests/rust-crate
+      run: |
+        echo 🎭 Now performing an initial descriptor backup...
+        cp Cargo.toml Cargo.toml.bak
+
+    - uses: ./.github/test-actions/test-publish-rust-crate/scenario
       with:
-        dry-run: true
-        project-directory: tests/rust-crate
+        header: Testing publication with no initial addendum - and creation disabled
+        pre-addendum: false
+        document-all-features: false
+        post-addendum: false
+
+    - uses: ./.github/test-actions/test-publish-rust-crate/scenario
+      with:
+        header: Testing publication with no initial addendum - and creation enabled
+        pre-addendum: false
+        document-all-features: true
+        post-addendum: true
+
+    - uses: ./.github/test-actions/test-publish-rust-crate/scenario
+      with:
+        header: Testing publication with initial addendum - and creation enabled
+        pre-addendum: true
+        document-all-features: true
+        post-addendum: true
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

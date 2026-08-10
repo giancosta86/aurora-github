@@ -1,0 +1,29 @@
+name: Setup Rust context
+description: Installs and configures a Rust toolchain.
+
+inputs:
+  cargo-colors:
+    description: Enable colors for Cargo.
+    default: true
+
+  check-toolchain-file:
+    description: Verify the existence of the toolchain file.
+    default: true
+
+  working-directory:
+    description: Directory containing the toolchain file.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/setup-rust-context
+        setup-rust-context:main
+      env:
+        cargo-colors: ${{ inputs.cargo-colors }}
+        check-toolchain-file: ${{ inputs.check-toolchain-file }}

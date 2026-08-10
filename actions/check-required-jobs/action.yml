@@ -1,0 +1,18 @@
+name: Check required jobs
+description: Verifies that all the jobs in the `needs:` directive of the current job have completed successfully.
+
+inputs:
+  needs-as-json:
+    description: Always pass the evaluation of `toJSON(needs)`.
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
+
+    - shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/check-required-jobs
+        check-required-jobs:main
+      env:
+        needs-as-json: ${{ inputs.needs-as-json }}

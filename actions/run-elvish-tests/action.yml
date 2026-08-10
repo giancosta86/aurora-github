@@ -1,0 +1,53 @@
+name: Run Elvish tests
+description: Runs tests via an Elvish script or via Velvet.
+
+inputs:
+  velvet-scripts:
+    description: Comma-separated Velvet scripts to run; wildcards are supported.
+
+  working-directory:
+    description: Directory containing the tests and, optionally, metadata.json.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-elvish-tests
+
+        run-elvish-tests:infer-test-strategy
+
+    - if: env.test-strategy == 'verification-script'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-elvish-tests
+
+        run-elvish-tests:run-verification-script
+
+    - if: env.test-strategy == 'velvet'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-elvish-tests
+
+        run-elvish-tests:infer-velvet-version
+
+    - if: env.test-strategy == 'velvet'
+      uses: giancosta86/epm-plus/actions/install-elvish-packages@v1
+      with:
+        packages: github.com/giancosta86/velvet@${{ env.velvet-version }}
+
+    - if: env.test-strategy == 'velvet'
+      shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/run-elvish-tests
+
+        run-elvish-tests:run-velvet
+      env:
+        velvet-scripts: ${{ inputs.velvet-scripts }}
