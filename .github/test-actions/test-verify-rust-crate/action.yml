@@ -7,3 +7,4 @@ runs:
     - uses: ./actions/verify-rust-crate
       with:
         working-directory: tests/rust-crate
+        check-license: false

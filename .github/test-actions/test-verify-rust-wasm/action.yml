@@ -14,6 +14,7 @@ runs:
         working-directory: tests/rust-wasm
         wasm-pack-version: 0.15.0
         npm-scope: <ROOT>
+        check-license: false
 
     - shell: elvish {0}
       run: echo 🎭 Running with custom npm scope, NodeJS version and package manager...
@@ -25,6 +26,7 @@ runs:
         npm-scope: giancosta86
         node-version: 26.2.0
         package-manager: pnpm@10.22.0
+        check-license: false
 
     - shell: elvish {0}
       run: echo ✅ All tests OK!

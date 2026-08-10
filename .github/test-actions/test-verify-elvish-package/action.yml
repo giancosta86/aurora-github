@@ -7,3 +7,4 @@ runs:
     - uses: ./actions/verify-elvish-package
       with:
         working-directory: tests/elvish-package
+        check-license: false

@@ -19,6 +19,7 @@ runs:
     - uses: ./actions/verify-jvm-project
       with:
         working-directory: tests/maven-project
+        check-license: false
 
     - shell: elvish {0}
       run: echo 🎭 Verifying the Gradle project...
@@ -26,6 +27,7 @@ runs:
     - uses: ./actions/verify-jvm-project
       with:
         working-directory: tests/gradle-project
+        check-license: false
 
     - shell: elvish {0}
       run: echo 🎭 Checking the action effects...

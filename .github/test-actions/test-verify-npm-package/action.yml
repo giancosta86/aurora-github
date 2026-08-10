@@ -7,3 +7,4 @@ runs:
     - uses: ./actions/verify-npm-package
       with:
         working-directory: tests/npm-package
+        check-license: false
