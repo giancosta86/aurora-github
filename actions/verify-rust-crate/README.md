@@ -13,7 +13,7 @@ steps:
 
 ## 💡 How it works
 
-1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file, unless `check-license` is set to **false**.
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **Cargo.toml**.
 
@@ -45,6 +45,7 @@ steps:
 | :-----------------: | :---------: | :-------------------------------------------------: | :---------------------------------: |
 |    `run-clippy`     | **boolean** |              Enable linting via Clippy              |              **true**               |
 |   `check-rustdoc`   | **boolean** |  Build the documentation - with warnings as errors  |              **true**               |
+|   `check-license`   | **boolean** |          Run checks on the project license          |              **true**               |
 |    `todo-files`     | **string**  | File patterns potentially containing critical TODOs | **{src tests}/\*\*[nomatch-ok].rs** |
 | `working-directory` | **string**  |          Directory containing `Cargo.toml`          |                **.**                |
 

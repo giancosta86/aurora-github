@@ -17,7 +17,7 @@ steps:
 
 ## 💡 How it works
 
-1. If the path referenced by `license-file` does not exist, just do nothing.
+1. If the path referenced by `license-file` does not exist, fail.
 
 1. Verify that the current year is mentioned within the license file.
 

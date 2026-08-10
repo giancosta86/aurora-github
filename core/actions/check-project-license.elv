@@ -24,9 +24,9 @@ fn check-current-year-included { |license-file|
 fn main {
   var license-file = (input:string license-file)
 
-  if (os:is-regular $license-file) {
-    check-current-year-included $license-file
-  } else {
-    console:inspect &emoji=💭 'License file not found' $license-file
+  if (not (os:is-regular $license-file)) {
+    fail 'License file not found: '$license-file
   }
+
+  check-current-year-included $license-file
 }

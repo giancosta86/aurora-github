@@ -11,7 +11,7 @@ steps:
 
 ## 💡 How it works
 
-1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file, unless `check-license` is set to **false**.
 
 1. Determine the build tool:
    - 🪶**Maven**, if the project descriptor is **pom.xml**
@@ -40,6 +40,7 @@ steps:
 |   `java-version`    | **string**  |         Java version (in SDKMAN) to install         |                                                 |
 |   `tool-version`    | **string**  |      Build tool version (in SDKMAN) to install      |                                                 |
 |    `quiet-tool`     | **boolean** |          Run the build tool in quiet mode           |                    **true**                     |
+|   `check-license`   | **boolean** |          Run checks on the project license          |                    **true**                     |
 |    `todo-files`     | **string**  | File patterns potentially containing critical TODOs | **src/\*\*[nomatch-ok].{java kt scala groovy}** |
 | `working-directory` | **string**  |     Directory containing the project descriptor     |                      **.**                      |
 

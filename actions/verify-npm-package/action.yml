@@ -6,6 +6,10 @@ inputs:
     description: corepack version to install, empty to skip.
     default: latest
 
+  check-license:
+    description: Run checks on the project license.
+    default: true
+
   todo-files:
     description: File patterns potentially containing critical TODOs.
     default: "{src tests}/**[nomatch-ok].{'' c m}{j t}s{'' x}"
@@ -23,7 +27,8 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
 
-    - uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
+    - if: inputs.check-license == 'true'
+      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
       with:
         license-file: ${{ inputs.working-directory }}/LICENSE
 

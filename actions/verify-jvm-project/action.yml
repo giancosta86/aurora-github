@@ -12,6 +12,10 @@ inputs:
     description: Run the build tool in quiet mode
     default: true
 
+  check-license:
+    description: Run checks on the project license.
+    default: true
+
   todo-files:
     description: File patterns potentially containing critical TODOs.
     default: "src/**[nomatch-ok].{java kt scala groovy}"
@@ -25,7 +29,8 @@ runs:
   steps:
     - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.0
 
-    - uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
+    - if: inputs.check-license == 'true'
+      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.0
       with:
         license-file: ${{ inputs.working-directory }}/LICENSE
 

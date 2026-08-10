@@ -30,6 +30,10 @@ inputs:
     description: Build the documentation - with warnings as errors.
     default: false
 
+  check-license:
+    description: Run checks on the project license.
+    default: true
+
   todo-files:
     description: File patterns potentially containing critical TODOs.
     default: "{{src tests}/**[nomatch-ok].rs client-tests/**[nomatch-ok].{'' c m}{j t}s{'' x}}"
@@ -60,6 +64,7 @@ runs:
       with:
         run-clippy: ${{ inputs.run-clippy }}
         check-rustdoc: ${{ inputs.check-rustdoc }}
+        check-license: ${{ inputs.check-license }}
         todo-files: ${{ inputs.todo-files }}
         working-directory: ${{ inputs.working-directory }}
 

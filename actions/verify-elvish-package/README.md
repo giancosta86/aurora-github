@@ -11,7 +11,7 @@ steps:
 
 ## 💡 How it works
 
-1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file, unless `check-license` is set to **false**.
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **metadata.json**.
 
@@ -29,10 +29,11 @@ steps:
 
 ## 📥 Inputs
 
-|        Name         |    Type    |                     Description                     |      Default value       |
-| :-----------------: | :--------: | :-------------------------------------------------: | :----------------------: |
-|    `todo-files`     | **string** | File patterns potentially containing critical TODOs | **\*\*[nomatch-ok].elv** |
-| `working-directory` | **string** |        Directory containing `metadata.json`         |          **.**           |
+|        Name         |    Type     |                     Description                     |      Default value       |
+| :-----------------: | :---------: | :-------------------------------------------------: | :----------------------: |
+|   `check-license`   | **boolean** |          Run checks on the project license          |         **true**         |
+|    `todo-files`     | **string**  | File patterns potentially containing critical TODOs | **\*\*[nomatch-ok].elv** |
+| `working-directory` | **string**  |        Directory containing `metadata.json`         |          **.**           |
 
 ## 🌐 Further references
 

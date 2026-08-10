@@ -52,6 +52,7 @@ steps:
 | `client-tests-directory` | **string**  |   Relative directory containing the client tests    |                                     **client-tests**                                     |
 |       `run-clippy`       | **boolean** |              Enable linting via Clippy              |                                         **true**                                         |
 |     `check-rustdoc`      | **boolean** |  Build the documentation - with warnings as errors  |                                        **false**                                         |
+|     `check-license`      | **boolean** |          Run checks on the project license          |                                         **true**                                         |
 |       `todo-files`       | **string**  | File patterns potentially containing critical TODOs | **{{src tests}/\*\*[nomatch-ok].rs client-tests/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}}** |
 
 | `working-directory` | **string** | Directory containing **Cargo.toml** | **.** |

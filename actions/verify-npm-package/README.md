@@ -23,7 +23,7 @@ steps:
 
 ## 💡 How it works
 
-1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file.
+1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file, unless `check-license` is set to **false**.
 
 1. 1. Run [inject-branch-version](../inject-branch-version/README.md) on **package.json**.
 
@@ -47,6 +47,7 @@ steps:
 |          Name           |    Type     |                      Description                      |                     Default value                     |
 | :---------------------: | :---------: | :---------------------------------------------------: | :---------------------------------------------------: |
 |   `corepack-version`    | **string**  |    **corepack** version to install, empty to skip     |                      **latest**                       |
+|     `check-license`     | **boolean** |           Run checks on the project license           |                       **true**                        |
 |      `todo-files`       | **string**  |  File patterns potentially containing critical TODOs  | **{src tests}/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}** |
 | `check-subpath-exports` | **boolean** | Run `check-subpath-exports` after the package scripts |                       **true**                        |
 |   `working-directory`   | **string**  |          Directory containing `package.json`          |                         **.**                         |
