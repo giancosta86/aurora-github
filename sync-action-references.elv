@@ -33,7 +33,6 @@ var actions-directory = (
   src |
     put (all)[name] |
     path:dir (all) |
-    path:dir (all) |
     path:join (all) actions
 )
 echo 📁 Actions directory: $actions-directory
