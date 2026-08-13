@@ -16,7 +16,7 @@ runs:
     - id: detect-branch-version
       uses: giancosta86/aurora-github/actions/detect-branch-version@v11.0.0
 
-    - uses: giancosta86/aurora-github/actions/replace-regex-pattern@v11.0.0
+    - uses: giancosta86/aurora-github/actions/replace-regex-pattern@v11.0.1
       with:
         files: ${{ inputs.files }}
         regex: "0\\.0\\.0"
