@@ -1,5 +1,3 @@
-use github.com/giancosta86/ethereal/v1/lang
-
 fn -ensure-pipx {
   if (not (has-external pipx)) {
     echo 📥 Installing pipx...
@@ -17,7 +15,11 @@ fn install-package { |package &version=$nil|
     echo 📥 Installing $package '('(all)')' via pipx...
 
   var version-suffix = (
-    lang:ternary $version '=='$version ''
+    if $version {
+      put '=='$version
+    } else {
+      put ''
+    }
   )
 
   pipx install $package''$version-suffix
