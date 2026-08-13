@@ -11,7 +11,7 @@ use path
 use re
 use str
 
-var reference-regex = '(-\s+uses:\s+giancosta86/aurora-github/actions/[^@]+@)\S+'
+var reference-regex = '(-?\s+uses:\s+giancosta86/aurora-github/actions/[^@]+@)\S+'
 
 var git-branch = (
   git status |
@@ -32,7 +32,6 @@ echo 🏷️ Version tag: $version-tag
 var actions-directory = (
   src |
     put (all)[name] |
-    path:dir (all) |
     path:dir (all) |
     path:join (all) actions
 )
