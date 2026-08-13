@@ -10,7 +10,7 @@ inputs:
     description: Version of PDM that should be used.
 
   index-url:
-    description: URL of the target index.
+    description: URL of the target index - empty for PyPI.
 
   index-user:
     description: User for publishing to the index.
@@ -47,7 +47,7 @@ runs:
         publish-python-package:main
       env:
         dry-run: ${{ inputs.dry-run }}
-        PDM_PUBLISH_REPO: ${{ inputs.index-url }}
+        index-url: ${{ inputs.index-url }}
         PDM_PUBLISH_USERNAME: ${{ inputs.index-user }}
         PDM_PUBLISH_PASSWORD: ${{ inputs.index-secret }}
 

@@ -13,6 +13,7 @@ fn display-descriptor {
 
 fn main {
   var dry-run = (input:bool dry-run)
+  var index-url = (input:string &optional index-url)
 
   display-descriptor
 
@@ -22,6 +23,10 @@ fn main {
     project:build
   } else {
     echo 📤 Publishing the 🐍 Python package...
+
+    if $index-url {
+      set-env PDM_PUBLISH_REPO $index-url
+    }
 
     pdm publish
 
