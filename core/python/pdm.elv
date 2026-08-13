@@ -12,18 +12,21 @@ fn -install { |version|
 fn ensure { |&version=$nil|
   if (has-external pdm) {
     var installed-version = (pdm --version)
+    console:inspect &emoji=📦 'Current pdm version' $installed-version
 
-    var version-found = (
-      put $installed-version |
-        semver:contains $version
-    )
+    if $version {
+      var version-found = (
+        put $installed-version |
+          semver:contains $version
+      )
 
-    if $version-found {
-      echo ✅ The requested pdm version '('$version')' is already installed!
+      if $version-found {
+        echo ✅ The requested pdm version '('$version')' is already installed!
+      } else {
+        -install $version
+      }
     } else {
-      console:inspect &emoji=📦 'Current pdm version' $installed-version
-
-      -install $version
+      echo 💬 No specific pdm version requested...
     }
   } else {
     echo 💬 pdm is not available: now installing it!
