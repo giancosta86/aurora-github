@@ -34,7 +34,7 @@ steps:
 | :-----------------: | :---------: | :----------------------------------------: | :-----------: |
 |      `dry-run`      | **boolean** |        Run a simulated publication         |   **false**   |
 |    `pdm-version`    | **string**  |     Version of PDM that should be used     |               |
-|     `index-url`     | **string**  |          URL of the target index           |               |
+|     `index-url`     | **string**  |  URL of the target index - empty for PyPI  |               |
 |    `index-user`     | **string**  |      User for publishing to the index      |               |
 |   `index-secret`    | **string**  | Password/token for publishing to the index |               |
 | `working-directory` | **string**  |   Directory containing `pyproject.toml`    |     **.**     |

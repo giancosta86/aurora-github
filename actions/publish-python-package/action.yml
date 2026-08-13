@@ -10,7 +10,7 @@ inputs:
     description: Version of PDM that should be used.
 
   index-url:
-    description: URL of the target index.
+    description: URL of the target index - empty for PyPI.
 
   index-user:
     description: User for publishing to the index.
@@ -25,9 +25,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.1
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.2
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.1
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.2
       with:
         files: pyproject.toml
         working-directory: ${{ inputs.working-directory }}
@@ -47,7 +47,7 @@ runs:
         publish-python-package:main
       env:
         dry-run: ${{ inputs.dry-run }}
-        PDM_PUBLISH_REPO: ${{ inputs.index-url }}
+        index-url: ${{ inputs.index-url }}
         PDM_PUBLISH_USERNAME: ${{ inputs.index-user }}
         PDM_PUBLISH_PASSWORD: ${{ inputs.index-secret }}
 

@@ -17,14 +17,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.1
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.2
 
     - if: inputs.check-license == 'true'
-      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.1
+      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.2
       with:
         license-file: ${{ inputs.working-directory }}/LICENSE
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.1
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.2
       with:
         files: metadata.json
         working-directory: ${{ inputs.working-directory }}
@@ -39,11 +39,11 @@ runs:
       with:
         working-directory: ${{ inputs.working-directory }}
 
-    - uses: giancosta86/aurora-github/actions/run-elvish-tests@v11.0.1
+    - uses: giancosta86/aurora-github/actions/run-elvish-tests@v11.0.2
       with:
         working-directory: ${{ inputs.working-directory }}
 
-    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.1
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.2
       with:
         files: ${{ inputs.todo-files }}
         working-directory: ${{ inputs.working-directory }}
