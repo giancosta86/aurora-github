@@ -25,4 +25,12 @@ runs:
         check-license: false
 
     - shell: elvish {0}
+      run: echo 🎭 Running for a third time, to test installing the latest pdm...
+
+    - uses: ./actions/verify-python-package
+      with:
+        working-directory: tests/python-lib
+        check-license: false
+
+    - shell: elvish {0}
       run: echo ✅ All tests OK!
