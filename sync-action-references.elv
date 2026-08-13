@@ -11,7 +11,7 @@ use path
 use re
 use str
 
-var reference-regex = '(-\s+uses:\s+giancosta86/aurora-github/actions/[^@]+@)\S+'
+var reference-regex = '(-?\s+uses:\s+giancosta86/aurora-github/actions/[^@]+@)\S+'
 
 var git-branch = (
   git status |
