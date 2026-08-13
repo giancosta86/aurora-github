@@ -110,7 +110,7 @@ runs:
         client-tests-directory: ${{ inputs.client-tests-directory }}
 
     - if: env.run-client-tests == 'true'
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.1
       with:
         working-directory: ${{ inputs.working-directory }}/${{ inputs.client-tests-directory }}
 

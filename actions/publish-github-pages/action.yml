@@ -42,7 +42,7 @@ runs:
         publish-github-pages:detect-strategy
 
     - if: env.strategy == 'nodejs-site'
-      uses: giancosta86/aurora-github/actions/verify-npm-package@v11.0.0
+      uses: giancosta86/aurora-github/actions/verify-npm-package@v11.0.1
       with:
         check-license: false
         corepack-version: ${{ inputs.corepack-version }}
