@@ -25,7 +25,7 @@ runs:
         check-license: false
 
     - shell: elvish {0}
-      run: echo 🎭 Running for a third time, to test installing the latest pdm...
+      run: echo 🎭 Running for a third time, without passing a specific pdm version...
 
     - uses: ./actions/verify-python-package
       with:
