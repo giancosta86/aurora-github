@@ -32,11 +32,16 @@ For any trigger different from a **merged** pull request, the action will merely
 1. Create a **release draft** with _auto-generated notes_. The release title will be `<product name> <major>.<minor>.<patch>`, where `product-name` will be the related input value, defaulting to the _repository name_.
 
 1. If `update-major-branch` is enabled:
-   1. Create the `v<major>` branch if it does not already exist, then switch to it
+   1. Create the **major branch** if it does not already exist, then switch to it.
+
+      The **major branch** is named as follows:
+      - if **major version > 0**: `v<major>`
+
+      - if **major version == 0**: `v<major>.<minor>`
 
    1. Merge with the `v<major>.<minor>.<patch>` tag created above
 
-   1. Push the updated `v<major>` branch
+   1. Push the updated **major branch**.
 
 ## 💬 Remarks
 
