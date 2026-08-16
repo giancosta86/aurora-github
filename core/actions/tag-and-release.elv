@@ -62,14 +62,6 @@ fn update-major-branch { |major-branch tag|
   echo ✅ Major version branch updated!
 }
 
-fn get-major-branch { |branch-version|
-  if (> $branch-version[major] 0) {
-    put 'v'$branch-version[major]
-  } else {
-    put 'v0.'$branch-version[minor]
-  }
-}
-
 fn main {
   var product-name = (
     input:string &optional product-name |
@@ -102,7 +94,7 @@ fn main {
   var major-branch
 
   if $update-major-branch {
-    set major-branch = (get-major-branch $branch-version)
+    set major-branch = 'v'(semver:to-major-string $branch-version)
     update-major-branch $major-branch $tag
   } else {
     set major-branch = ''
