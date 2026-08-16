@@ -32,9 +32,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.3
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.0
 
-    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11.0.3
+    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v12.0.0
       with:
         working-directory: ${{ inputs.working-directory }}
         install-dependencies: false
@@ -60,12 +60,12 @@ runs:
         node-version: ${{ inputs.node-version }}
         package-manager: ${{ inputs.package-manager }}
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.3
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.0
       with:
         files: package.json
         working-directory: ${{ inputs.working-directory }}/pkg
 
-    - uses: giancosta86/aurora-github/actions/publish-npm-package@v11.0.3
+    - uses: giancosta86/aurora-github/actions/publish-npm-package@v12.0.0
       with:
         dry-run: ${{ inputs.dry-run }}
         npm-token: ${{ inputs.npm-token }}
