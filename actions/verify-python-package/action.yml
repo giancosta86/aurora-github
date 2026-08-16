@@ -20,14 +20,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.3
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.4
 
     - if: inputs.check-license == 'true'
-      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.3
+      uses: giancosta86/aurora-github/actions/check-project-license@v11.0.4
       with:
         license-file: ${{ inputs.working-directory }}/LICENSE
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.3
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v11.0.4
       with:
         files: pyproject.toml
         working-directory: ${{ inputs.working-directory }}
@@ -46,7 +46,7 @@ runs:
         use github.com/giancosta86/aurora-github/actions/verify-python-package
         verify-python-package:main
 
-    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.3
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v11.0.4
       with:
         files: ${{ inputs.todo-files }}
         working-directory: ${{ inputs.working-directory }}
