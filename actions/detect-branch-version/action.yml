@@ -21,7 +21,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.3
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.4
 
     - id: detect-version
       shell: elvish {0}
