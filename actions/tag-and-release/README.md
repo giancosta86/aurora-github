@@ -37,7 +37,7 @@ For any trigger different from a **merged** pull request, the action will merely
       The **major branch** is named as follows:
       - if **major version > 0**: `v<major>`
 
-      - if **major version == 0**: `v<major>.<minor>`
+      - if **major version == 0**: `v0.<minor>`
 
    1. Merge with the `v<major>.<minor>.<patch>` tag created above
 
