@@ -1,8 +1,8 @@
 Let's test a Rust snippet:
 
 ```rust
+use rust_crate::*;
 use std::error::Error;
-use rust_crate::add;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let result = add(90, 2);
@@ -22,8 +22,8 @@ Not Rust code
 Another Rust example:
 
 ```rust
-use std::error::Error;
 use rust_crate::add;
+use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let result = add(90, 5);
@@ -37,8 +37,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 Yet another example:
 
 ```rust
-use std::error::Error;
 use rust_crate::add;
+use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let result = add(90, 8);
