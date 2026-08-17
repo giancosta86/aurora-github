@@ -2,7 +2,6 @@ Let's test a Rust snippet:
 
 ```rust
 use std::error::Error;
-use rust_crate::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let result = add(90, 2);
@@ -23,7 +22,6 @@ Another Rust example:
 
 ```rust
 use std::error::Error;
-use rust_crate::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let result = add(90, 5);
@@ -38,7 +36,6 @@ Yet another example:
 
 ```rust
 use std::error::Error;
-use rust_crate::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let result = add(90, 8);
