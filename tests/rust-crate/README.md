@@ -22,7 +22,7 @@ Not Rust code
 Another Rust example:
 
 ```rust
-use rust_crate::add;
+use rust_crate::*;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -37,7 +37,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 Yet another example:
 
 ```rust
-use rust_crate::add;
+use rust_crate::*;
 use std::error::Error;
 
 fn main() -> Result<(), Box<dyn Error>> {
