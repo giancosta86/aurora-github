@@ -5,11 +5,11 @@ use std::error::Error;
 use rust_crate::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
-  let result = add(90, 2);
+    let result = add(90, 2);
 
-  assert_eq!(result, 92);
+    assert_eq!(result, 92);
 
-  Ok(())
+    Ok(())
 }
 ```
 
@@ -26,11 +26,11 @@ use std::error::Error;
 use rust_crate::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
-  let result = add(90, 5);
+    let result = add(90, 5);
 
-  assert_eq!(result, 95);
+    assert_eq!(result, 95);
 
-  Ok(())
+    Ok(())
 }
 ```
 
@@ -41,10 +41,10 @@ use std::error::Error;
 use rust_crate::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
-  let result = add(90, 8);
+    let result = add(90, 8);
 
-  assert_eq!(result, 98);
+    assert_eq!(result, 98);
 
-  Ok(())
+    Ok(())
 }
 ```
