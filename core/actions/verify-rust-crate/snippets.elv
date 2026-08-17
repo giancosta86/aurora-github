@@ -39,7 +39,7 @@ fn extract { |markdown-path test-filename-prefix|
           ]
         )
 
-        var updated-snippet = $snippet"\n\n"$test-bootstrap-code
+        var updated-snippet = $snippet"\n"$test-bootstrap-code
 
         fs:save-anywhere $snippet-path $updated-snippet
 
