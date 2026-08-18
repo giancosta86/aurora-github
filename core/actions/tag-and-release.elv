@@ -94,7 +94,7 @@ fn main {
   var major-branch
 
   if $update-major-branch {
-    set major-branch = 'v'$branch-version[major]
+    set major-branch = 'v'(semver:to-major-string $branch-version)
     update-major-branch $major-branch $tag
   } else {
     set major-branch = ''

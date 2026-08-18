@@ -19,7 +19,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v11.0.3
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.0
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
