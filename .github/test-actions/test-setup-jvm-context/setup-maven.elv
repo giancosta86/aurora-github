@@ -1,6 +1,6 @@
 echo 🎭 Setting up a legacy JVM context with ☕Java 1.8 and 🪶Maven...
 
-get-env $temp-project-dir |
+get-env temp-project-dir |
   cd (all)
 
 rm *
