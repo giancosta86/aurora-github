@@ -40,7 +40,7 @@ fn main {
   env:map $build-context
 
   if $java-version {
-    sdkman:install-sdk java $java-version
+    sdkman:sdkman install java $java-version
   }
 
   if $tool-version {
@@ -48,7 +48,7 @@ fn main {
 
     var tool-candidate = $sdkman-candidates-by-build-tool[$build-tool]
 
-    sdkman:install $tool-candidate $tool-version
+    sdkman:sdkman install $tool-candidate $tool-version
   }
 
   echo ✅☕ JVM context in "'"$pwd"'" ready!
