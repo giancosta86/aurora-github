@@ -1,4 +1,5 @@
 use os
+use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/map
 use github.com/giancosta86/ethereal/v1/sdkman
 use github.com/giancosta86/gauntlet/v1/env
@@ -40,7 +41,13 @@ fn main {
   env:map $build-context
 
   if $java-version {
-    sdkman:sdkman install java $java-version
+    echo ☕ Installing Java $java-version...
+
+    command:silence {
+      sdkman:sdkman install java $java-version
+    }
+
+    echo 🚀 Java $java-version ready!
   }
 
   if $tool-version {
@@ -48,7 +55,13 @@ fn main {
 
     var tool-candidate = $sdkman-candidates-by-build-tool[$build-tool]
 
-    sdkman:sdkman install $tool-candidate $tool-version
+    echo 🧰 Installing $tool-candidate $tool-version...
+
+    command:silence {
+      sdkman:sdkman install $tool-candidate $tool-version
+    }
+
+    echo 🚀 $tool-candidate $tool-version ready!
   }
 
   echo ✅☕ JVM context in "'"$pwd"'" ready!
