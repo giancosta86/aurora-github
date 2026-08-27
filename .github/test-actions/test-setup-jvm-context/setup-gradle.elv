@@ -3,6 +3,6 @@ echo 🎭 Setting up a legacy JVM context with ☕Java 1.8 and 🐘Gradle...
 get-env temp-project-dir |
   cd (all)
 
-rm *
+rm -rf *[nomatch-ok]
 
 touch build.gradle
