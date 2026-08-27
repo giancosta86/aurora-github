@@ -1,0 +1,42 @@
+name: Test setup-jvm-context
+description: Tests for setup-jvm-context.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/init-aurora-github
+
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish setup.elv
+
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish setup-maven.elv
+
+    - shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
+        setup-jvm-context:main
+      env:
+        java-version: java 8.0.502.fx-zulu
+        tool-version: 3.3.9
+
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish setup-gradle.elv
+
+    - shell: elvish {0}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
+        setup-jvm-context:main
+      env:
+        java-version: java 8.0.502.fx-zulu
+        tool-version: 2.10
+
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+
+    - shell: elvish {0}
+      run: echo ✅ The environment was correctly created!
