@@ -15,6 +15,7 @@ runs:
       run: elvish setup-maven.elv
 
     - shell: elvish {0}
+      working-directory: ${{ env.temp-project-dir }}
       run: |
         use github.com/giancosta86/aurora-github/actions/setup-jvm-context
         setup-jvm-context:main
@@ -27,6 +28,7 @@ runs:
       run: elvish setup-gradle.elv
 
     - shell: elvish {0}
+      working-directory: ${{ env.temp-project-dir }}
       run: |
         use github.com/giancosta86/aurora-github/actions/setup-jvm-context
         setup-jvm-context:main
