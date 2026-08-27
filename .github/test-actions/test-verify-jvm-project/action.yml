@@ -20,6 +20,8 @@ runs:
       with:
         working-directory: tests/maven-project
         check-license: false
+        java-version: 23-open
+        tool-version: 3.9.9
 
     - shell: elvish {0}
       run: echo 🎭 Verifying the Gradle project...
@@ -28,6 +30,8 @@ runs:
       with:
         working-directory: tests/gradle-project
         check-license: false
+        java-version: 23-open
+        tool-version: 8.12
 
     - shell: elvish {0}
       run: echo 🎭 Checking the action effects...
