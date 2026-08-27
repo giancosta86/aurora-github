@@ -20,14 +20,14 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.0
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.1
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.1
       with:
         files: Cargo.toml
         working-directory: ${{ inputs.working-directory }}
 
-    - uses: giancosta86/aurora-github/actions/setup-rust-context@v12.0.0
+    - uses: giancosta86/aurora-github/actions/setup-rust-context@v12.0.1
       with:
         working-directory: ${{ inputs.working-directory }}
 
