@@ -5,6 +5,8 @@ use github.com/giancosta86/ethereal/v1/sdkman
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 
+var sdkman~ = $sdkman:sdkman~
+
 var build-tools-by-descriptor = [
   &pom.xml=mvn
   &build.gradle=gradle
@@ -44,7 +46,7 @@ fn main {
     echo ☕ Installing Java $java-version...
 
     command:silence {
-      sdkman:sdkman install java $java-version
+      sdkman install java $java-version
     }
 
     echo 🚀 Java $java-version ready!
@@ -58,7 +60,7 @@ fn main {
     echo 🧰 Installing $tool-candidate $tool-version...
 
     command:silence {
-      sdkman:sdkman install $tool-candidate $tool-version
+      sdkman install $tool-candidate $tool-version
     }
 
     echo 🚀 $tool-candidate $tool-version ready!
