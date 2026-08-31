@@ -89,14 +89,6 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-install-system-packages
 
-  test-install-via-sdkman:
-    if: false
-    runs-on: ubuntu-24.04
-    needs: test-fundamental-actions
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ./.github/test-actions/test-install-via-sdkman
-
   test-upload-release-assets:
     if: false
     runs-on: ubuntu-24.04
@@ -223,7 +215,7 @@ jobs:
   test-setup-jvm-context:
     if: always()
     runs-on: ubuntu-24.04
-    needs: test-install-via-sdkman
+    needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-setup-jvm-context
@@ -283,7 +275,6 @@ jobs:
       - test-replace-regex-pattern
       - test-inject-branch-version
       - test-install-system-packages
-      - test-install-via-sdkman
       - test-upload-release-assets
       - test-verify-elvish-package
       - test-setup-rust-context

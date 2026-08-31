@@ -13,14 +13,12 @@ steps:
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file, unless `check-license` is set to **false**.
 
+1. If a **.sdkmanrc** file exists in `working-directory`, run **SDKMAN**'s [env command](https://sdkman.io/usage/#env-command)
+
 1. Determine the build tool:
    - 🪶**Maven**, if the project descriptor is **pom.xml**
 
    - 🐘**Gradle**, if the project descriptor is **build.gradle** or **build.gradle.kts**
-
-1. If a specific Java version is declared as `java-version`, pass it to [install-via-sdkman](../install-via-sdkman/README.md)
-
-1. If a specific build tool version is declared as `tool-version`, pass it to [install-via-sdkman](../install-via-sdkman/README.md)
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on the project descriptor.
 
@@ -47,8 +45,6 @@ steps:
 ## 🌐 Further references
 
 - [check-project-license](../check-project-license/README.md)
-
-- [install-via-sdkman](../install-via-sdkman/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 
