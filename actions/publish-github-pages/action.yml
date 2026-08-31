@@ -22,9 +22,9 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.1
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.1
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v13.0.0
       with:
         files: package.json pom.xml
         working-directory: ${{ inputs.working-directory }}
@@ -36,7 +36,7 @@ runs:
         publish-github-pages:detect-strategy
 
     - if: env.strategy == 'nodejs-site'
-      uses: giancosta86/aurora-github/actions/verify-npm-package@v12.0.1
+      uses: giancosta86/aurora-github/actions/verify-npm-package@v13.0.0
       with:
         check-license: false
         corepack-version: ${{ inputs.corepack-version }}

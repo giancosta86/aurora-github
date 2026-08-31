@@ -21,7 +21,7 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.1
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
 
     - if: github.event_name != 'pull_request' || github.event.action != 'closed' || github.event.pull_request.merged != true
       shell: elvish {0}
