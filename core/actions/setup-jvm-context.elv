@@ -1,4 +1,5 @@
 use os
+use path
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/map
 use github.com/giancosta86/ethereal/v1/sdkman
@@ -39,9 +40,15 @@ fn main {
   if (os:is-regular $paths:sdk-file) {
     sdkman:sdkman env install
 
+    var java-home = (
+      which java |
+        path:dir (all) |
+        path:dir (all)
+    )
+
     env:map [
       &PATH=(get-env path)
-      &JAVA_HOME=(sdkman:get-sdk-directory java $java-version)
+      &JAVA_HOME=$java-home
     ]
   }
 
