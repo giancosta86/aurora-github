@@ -12,9 +12,7 @@ var sdkman~ = $sdkman:sdkman~
 fn install-sdk { |candidate version|
   echo 📥 Installing $candidate $version'...'
 
-  fs:with-path-sandbox curl:configuration-path {
-    curl:display-errors-only
-
+  curl:with-silence {
     command:silence {
       sdkman install $candidate $version
     }

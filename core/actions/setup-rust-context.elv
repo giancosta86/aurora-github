@@ -11,10 +11,10 @@ fn install-rust {
   fs:with-path-sandbox $curl:configuration-path {
     echo 📥 Now installing 🦀Rust core...
 
-    command:silence {
-      curl:display-errors-only
-
-      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    curl:with-silence {
+      command:silence {
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      }
     }
 
     echo 🚀 Rust core installed!
