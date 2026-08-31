@@ -8,14 +8,14 @@
 
   >> 'Maven' {
     capture {
-      mvn -version
+      mvn --version
     } |
       should-have-prefix 'Apache Maven 3.3.9'
   }
 
   >> 'Gradle' {
     capture {
-      gradle -version
+      gradle --version
     } |
       should-contain 'Gradle 2.10'
   }
