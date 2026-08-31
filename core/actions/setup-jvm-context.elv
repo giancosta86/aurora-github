@@ -38,6 +38,9 @@ fn main {
 
   if (os:is-regular $paths:sdk-file) {
     sdkman:sdkman env install
+
+    get-env PATH |
+      env:set PATH
   }
 
   detect-build-context |
