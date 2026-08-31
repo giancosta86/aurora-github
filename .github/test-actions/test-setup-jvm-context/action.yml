@@ -19,9 +19,6 @@ runs:
       run: |
         use github.com/giancosta86/aurora-github/actions/setup-jvm-context
         setup-jvm-context:main
-      env:
-        java-version: 8.0.502.fx-zulu
-        tool-version: 3.3.9
 
     - shell: bash
       working-directory: ${{ github.action_path }}
@@ -32,9 +29,6 @@ runs:
       run: |
         use github.com/giancosta86/aurora-github/actions/setup-jvm-context
         setup-jvm-context:main
-      env:
-        java-version: 8.0.502.fx-zulu
-        tool-version: 2.10
 
     - uses: ./actions/run-elvish-tests
       with:

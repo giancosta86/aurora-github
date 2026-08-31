@@ -2,6 +2,7 @@ use os
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/map
 use github.com/giancosta86/ethereal/v1/sdkman
+use github.com/giancosta86/ethereal/v1/sdkman/paths
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 
@@ -35,36 +36,12 @@ fn detect-build-context {
 fn main {
   echo ☕💻 Setting up JVM context in "'"$pwd"'"...
 
-  var java-version = (input:string &optional java-version)
-  var tool-version = (input:string &optional tool-version)
-
-  var build-context = (detect-build-context)
-
-  env:map $build-context
-
-  if $java-version {
-    echo ☕ Installing Java $java-version...
-
-    command:silence {
-      sdkman install java $java-version
-    }
-
-    echo 🚀 Java $java-version ready!
+  if (os:is-regular $paths:sdk-file) {
+    sdkman:sdkman env install
   }
 
-  if $tool-version {
-    var build-tool = $build-context[jvm-build-tool]
-
-    var tool-candidate = $sdkman-candidates-by-build-tool[$build-tool]
-
-    echo 🧰 Installing $tool-candidate $tool-version...
-
-    command:silence {
-      sdkman install $tool-candidate $tool-version
-    }
-
-    echo 🚀 $tool-candidate $tool-version ready!
-  }
+  detect-build-context |
+    env:map
 
   echo ✅☕ JVM context in "'"$pwd"'" ready!
 }

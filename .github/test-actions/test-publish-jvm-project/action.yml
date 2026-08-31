@@ -17,8 +17,6 @@ runs:
       with:
         dry-run: true
         working-directory: tests/maven-project
-        java-version: 23-open
-        tool-version: 3.9.9
         auth-user: gian-token
         auth-token: ${{ inputs.jvm-token }}
 
@@ -29,8 +27,6 @@ runs:
       with:
         dry-run: true
         working-directory: tests/gradle-project
-        java-version: 23-open
-        tool-version: 8.12
         auth-user: gian-token
         auth-token: ${{ inputs.jvm-token }}
 

@@ -91,8 +91,6 @@ steps:
 |      `dry-run`      | **boolean** |         Run a simulated publication         |   **false**   |
 |     `auth-user`     | **string**  |           Username for publishing           |               |
 |    `auth-token`     | **string**  |         Secret token for publishing         |               |
-|   `java-version`    | **string**  |     Java version (in SDKMAN) to install     |               |
-|   `tool-version`    | **string**  |  Build tool version (in SDKMAN) to install  |               |
 |    `quiet-tool`     | **boolean** |      Run the build tool in quiet mode       |   **true**    |
 | `working-directory` | **string**  | Directory containing the project descriptor |     **.**     |
 
