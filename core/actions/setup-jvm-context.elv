@@ -39,8 +39,10 @@ fn main {
   if (os:is-regular $paths:sdk-file) {
     sdkman:sdkman env install
 
-    get-env PATH |
-      env:set PATH
+    env:map [
+      &PATH=(get-env path)
+      &JAVA_HOME=(sdkman:get-sdk-directory java $java-version)
+    ]
   }
 
   detect-build-context |

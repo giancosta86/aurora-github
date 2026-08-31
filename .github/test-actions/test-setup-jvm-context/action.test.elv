@@ -1,3 +1,5 @@
+use github.com/giancosta86/ethereal/v1/sdkman
+
 >> 'Version check' {
   >> 'JDK' {
     capture {
@@ -19,4 +21,9 @@
     } |
       should-contain 'Gradle 2.10'
   }
+}
+
+>> 'JAVA_HOME environment variable' {
+  get-env JAVA_HOME |
+    should-be (sdkman:get-sdk-directory java 8.0.502.fx-zulu)
 }
