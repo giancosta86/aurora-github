@@ -47,7 +47,7 @@ fn main {
     )
 
     env:map [
-      &PATH=(get-env path)
+      &PATH=(get-env PATH)
       &JAVA_HOME=$java-home
     ]
   }
