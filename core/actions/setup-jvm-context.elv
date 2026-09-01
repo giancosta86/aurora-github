@@ -43,7 +43,7 @@ fn main {
 
     echo 🪜🪜🪜🪜🪜🪜
 
-    sdk list sbt
+    #sdk list sbt
 
     echo 🪜🪜🪜🪜🪜🪜
 
