@@ -23,7 +23,25 @@ use github.com/giancosta86/ethereal/v1/sdkman
   }
 }
 
->> 'JAVA_HOME environment variable' {
-  get-env JAVA_HOME |
-    should-be (sdkman:get-sdk-directory java 8.0.502.fx-zulu)
+
+>> 'Environment variables' {
+  >> 'Java' {
+    get-env JAVA_HOME |
+      should-be (sdkman:get-sdk-directory java 8.0.502.fx-zulu)
+  }
+
+  >> 'Maven' {
+    get-env MAVEN_HOME |
+      should-be (sdkman:get-sdk-directory maven 3.3.9)
+  }
+
+  >> 'Gradle' {
+    get-env GRADLE_HOME |
+      should-be (sdkman:get-sdk-directory gradle 2.10)
+  }
+
+  >> 'sbt' {
+    get-env SBT_HOME |
+      should-be (sdkman:get-sdk-directory sbt 0.13.18)
+  }
 }

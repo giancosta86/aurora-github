@@ -7,7 +7,7 @@ use github.com/giancosta86/ethereal/v1/sdkman/paths
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 
-var sdkman~ = $sdkman:sdkman~
+var sdk~ = $sdkman:sdk~
 
 var build-tools-by-descriptor = [
   &pom.xml=mvn
@@ -38,17 +38,16 @@ fn main {
   echo ☕💻 Setting up JVM context in "'"$pwd"'"...
 
   if (os:is-regular $paths:sdk-file) {
-    sdkman:sdkman env install
+    sdk env install
 
-    var java-home = (
-      which java |
-        path:dir (all) |
-        path:dir (all)
-    )
+    setup-jvm-homes
 
     env:map [
       &PATH=(get-env PATH)
-      &JAVA_HOME=$java-home
+      &JAVA_HOME=(get-env JAVA_HOME)
+      &MAVEN_HOME=(get-env MAVEN_HOME)
+      &GRADLE_HOME=(get-env GRADLE_HOME)
+      &SBT_HOME=(get-env SBT_HOME)
     ]
   }
 
