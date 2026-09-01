@@ -41,7 +41,14 @@ fn main {
 
     sdkman:setup-jvm-homes
 
+    echo 🪜🪜🪜🪜🪜🪜
+
+    sdk list sbt
+
+    echo 🪜🪜🪜🪜🪜🪜
+
     fail "-------> "(which sbt)
+
 
     env:map [
       &PATH=(get-env PATH)
