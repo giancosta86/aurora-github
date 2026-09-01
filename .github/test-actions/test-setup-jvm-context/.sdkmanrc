@@ -1,4 +1,4 @@
-echo java=8.0.502.fx-zulu
-echo maven=3.3.9
-echo gradle=2.10
-echo sbt=0.13.18
+java=8.0.502.fx-zulu
+maven=3.3.9
+gradle=2.10
+sbt=0.13.18
