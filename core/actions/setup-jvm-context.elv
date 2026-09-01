@@ -3,7 +3,6 @@ use path
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/map
 use github.com/giancosta86/ethereal/v1/sdkman
-use github.com/giancosta86/ethereal/v1/sdkman/paths
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 
@@ -37,7 +36,7 @@ fn detect-build-context {
 fn main {
   echo ☕💻 Setting up JVM context in "'"$pwd"'"...
 
-  if (os:is-regular $paths:sdk-file) {
+  if (os:is-regular $sdkman:sdk-file) {
     sdk env install
 
     setup-jvm-homes
