@@ -39,7 +39,7 @@ fn main {
   if (os:is-regular $sdkman:sdk-file) {
     sdk env install
 
-    setup-jvm-homes
+    sdkman:setup-jvm-homes
 
     env:map [
       &PATH=(get-env PATH)
