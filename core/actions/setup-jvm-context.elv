@@ -41,6 +41,8 @@ fn main {
 
     sdkman:setup-jvm-homes
 
+    fail "-------> "(which sbt)
+
     env:map [
       &PATH=(get-env PATH)
       &JAVA_HOME=(get-env JAVA_HOME)
