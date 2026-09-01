@@ -39,8 +39,7 @@ fn install-specific-nodejs { |version|
   }
 
   # The path set by nvm must be preserved all over the workflow
-  get-env PATH |
-    env:set PATH
+  env:cascade PATH |
 
   echo 🚀 NodeJS '('$version')' ready!
 }

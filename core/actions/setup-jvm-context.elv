@@ -41,22 +41,14 @@ fn main {
 
     sdkman:setup-jvm-homes
 
-    echo 🪜🪜🪜🪜🪜🪜
-
-    #sdk list sbt
-
-    echo 🪜🪜🪜🪜🪜🪜
-
-    fail "-------> "(which sbt)
-
-
-    env:map [
-      &PATH=(get-env PATH)
-      &JAVA_HOME=(get-env JAVA_HOME)
-      &MAVEN_HOME=(get-env MAVEN_HOME)
-      &GRADLE_HOME=(get-env GRADLE_HOME)
-      &SBT_HOME=(get-env SBT_HOME)
-    ]
+    all [
+      PATH
+      JAVA_HOME
+      MAVEN_HOME
+      GRADLE_HOME
+      SBT_HOME
+    ] |
+      each $env:cascade~
   }
 
   detect-build-context |
