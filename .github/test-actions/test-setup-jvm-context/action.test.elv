@@ -41,11 +41,8 @@ use github.com/giancosta86/ethereal/v1/sdkman
   }
 
   >> 'sbt' {
-    #TODO!
-    {
-      echo "SBT RESIDES AT:"
-      echo "-------> "(which sbt)
-    } >&2
+    fail "-------> "(which sbt)
+
     get-env SBT_HOME |
       should-be (sdkman:get-sdk-directory sbt 0.13.18)
   }
