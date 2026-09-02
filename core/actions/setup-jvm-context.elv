@@ -14,11 +14,6 @@ var build-tools-by-descriptor = [
   &build.gradle.kts=gradle
 ]
 
-var sdkman-candidates-by-build-tool = [
-  &mvn=maven
-  &gradle=gradle
-]
-
 fn detect-build-context {
   map:iterate $build-tools-by-descriptor { |descriptor build-tool|
     if (os:is-regular $descriptor) {
@@ -27,29 +22,36 @@ fn detect-build-context {
         &jvm-build-tool=$build-tool
       ]
       return
+    } else {
+      put [
+        &jvm-descriptor=$nil
+        &jvm-build-tool=$nil
+      ]
     }
   }
 
-  fail 'Cannot detect a supported JVM build tool for the project'
+  echo '💭Cannot detect a supported JVM build tool for the project...'
 }
 
 fn main {
   echo ☕💻 Setting up JVM context in "'"$pwd"'"...
 
-  if (os:is-regular $sdkman:sdk-file) {
-    sdk env install
-
-    sdkman:setup-jvm-homes
-
-    all [
-      PATH
-      JAVA_HOME
-      MAVEN_HOME
-      GRADLE_HOME
-      SBT_HOME
-    ] |
-      each $env:cascade~
+  if (not (os:is-regular $sdkman:sdk-file)) {
+    fail 'Please, create a '$sdkman:sdk-file' file for SDKMAN'
   }
+
+  sdk env install
+
+  sdkman:setup-jvm-homes
+
+  all [
+    PATH
+    JAVA_HOME
+    MAVEN_HOME
+    GRADLE_HOME
+    SBT_HOME
+  ] |
+    each $env:cascade~
 
   detect-build-context |
     env:map
