@@ -8,7 +8,7 @@ It is worth noting this action can support any related technology - as long as y
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/verify-npm-package@v11
+  - uses: giancosta86/aurora-github/actions/verify-npm-package@v13
 ```
 
 **IMPORTANT**: please, remember to declare your verification process in the `verify` script within `package.json`! For example:

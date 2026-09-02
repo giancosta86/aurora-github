@@ -6,7 +6,7 @@ Runs tests via an **Elvish** script or via [Velvet](https://github.com/giancosta
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/run-elvish-tests@v11
+  - uses: giancosta86/aurora-github/actions/run-elvish-tests@v13
 ```
 
 ## 💡 How it works

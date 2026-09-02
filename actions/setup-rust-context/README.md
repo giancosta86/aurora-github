@@ -6,7 +6,7 @@ Installs and configures a **Rust** toolchain.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/setup-rust-context@v11
+  - uses: giancosta86/aurora-github/actions/setup-rust-context@v13
 ```
 
 **Please, note**: this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md) and [publish-rust-crate](../publish-rust-crate/README.md).

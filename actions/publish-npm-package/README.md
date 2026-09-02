@@ -6,7 +6,7 @@ Publishes a **NodeJS** package to an [npm](https://www.npmjs.com/) registry.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/publish-npm-package@v11
+  - uses: giancosta86/aurora-github/actions/publish-npm-package@v13
     with:
       npm-token: ${{ secrets.NPM_TOKEN }}
 ```

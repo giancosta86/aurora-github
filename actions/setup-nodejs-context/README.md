@@ -6,7 +6,7 @@ Installs and configures a **NodeJS** environment.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v11
+  - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v13
 ```
 
 **Please, note**: this action is automatically run by [verify-npm-package](../verify-npm-package/README.md) and [publish-npm-package](../publish-npm-package/README.md).

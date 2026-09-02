@@ -6,7 +6,7 @@ Publishes a **Rust** crate - by default, to [crates.io](https://crates.io/) - wi
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/publish-rust-crate@v11
+  - uses: giancosta86/aurora-github/actions/publish-rust-crate@v13
     with:
       cargo-token: ${{ secrets.CARGO_TOKEN }}
 ```

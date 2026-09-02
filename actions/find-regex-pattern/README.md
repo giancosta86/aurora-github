@@ -6,7 +6,7 @@ Finds and displays matches of the given regex in all the requested file patterns
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/find-regex-pattern@v11
+  - uses: giancosta86/aurora-github/actions/find-regex-pattern@v13
     with:
       working-directory: tests/some-dir/src
       files: "*.txt"
