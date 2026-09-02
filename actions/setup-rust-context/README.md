@@ -13,7 +13,7 @@ steps:
 
 ## 💡 How it works
 
-1. If the `check-toolchain-file` input is **true**, verify that **rust-toolchain.toml** (see below) exists.
+1. Verify that **rust-toolchain.toml** (see below) exists.
 
 1. If the `rustup` and `cargo` commands are not accessible, install their latest versions.
 
@@ -34,11 +34,10 @@ steps:
 
 ## 📥 Inputs
 
-|          Name          |    Type     |                Description                 | Default value |
-| :--------------------: | :---------: | :----------------------------------------: | :-----------: |
-|     `cargo-colors`     | **boolean** |          Enable colors for Cargo           |   **true**    |
-| `check-toolchain-file` | **boolean** | Verify the existence of the toolchain file |   **true**    |
-|  `working-directory`   | **string**  |  Directory containing the toolchain file   |     **.**     |
+|        Name         |    Type     |               Description               | Default value |
+| :-----------------: | :---------: | :-------------------------------------: | :-----------: |
+|   `cargo-colors`    | **boolean** |         Enable colors for Cargo         |   **true**    |
+| `working-directory` | **string**  | Directory containing the toolchain file |     **.**     |
 
 ## 🌐 Further references
 

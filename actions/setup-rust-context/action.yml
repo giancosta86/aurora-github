@@ -6,10 +6,6 @@ inputs:
     description: Enable colors for Cargo.
     default: true
 
-  check-toolchain-file:
-    description: Verify the existence of the toolchain file.
-    default: true
-
   working-directory:
     description: Directory containing the toolchain file.
     default: .
@@ -26,4 +22,3 @@ runs:
         setup-rust-context:main
       env:
         cargo-colors: ${{ inputs.cargo-colors }}
-        check-toolchain-file: ${{ inputs.check-toolchain-file }}

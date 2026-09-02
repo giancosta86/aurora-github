@@ -63,13 +63,9 @@ fn print-component-versions {
 fn main {
   var cargo-colors = (input:bool cargo-colors)
 
-  var check-toolchain-file = (input:bool check-toolchain-file)
-
   echo 🦀💻 Setting up Rust context in "'"$pwd"'"...
 
-  if $check-toolchain-file {
-    check-toolchain-file
-  }
+  check-toolchain-file
 
   ensure-rust-core
 
