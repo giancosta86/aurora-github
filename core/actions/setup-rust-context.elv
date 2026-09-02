@@ -7,6 +7,16 @@ use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
 
+fn check-toolchain-file {
+  var toolchain-file = rust-toolchain.toml
+
+  if (os:is-regular $toolchain-file) {
+    console:inspect &emoji=✅ 'Toolchain file found' $toolchain-file
+  } else {
+    fail "Missing toolchain file: '"$toolchain-file"'"
+  }
+}
+
 fn install-rust {
   fs:with-path-sandbox $curl:configuration-path {
     echo 📥 Now installing 🦀Rust core...
@@ -31,19 +41,20 @@ fn ensure-rust-core {
   }
 }
 
+fn check-edition {
+  if (not (
+    slurp < Cargo.toml |
+      re:match '(?m)^edition\s+=\s+[\S]+' (all)
+    )
+  ) {
+    fail 'Missing "edition" declaration in Cargo.toml!'
+  }
+}
+
 fn set-cargo-colors { |enabled|
   env:set CARGO_TERM_COLOR (lang:ternary $enabled always never)
 }
 
-fn check-toolchain-file {
-  var toolchain-file = rust-toolchain.toml
-
-  if (os:is-regular $toolchain-file) {
-    console:inspect &emoji=✅ 'Toolchain file found' $toolchain-file
-  } else {
-    fail "Missing toolchain file: '"$toolchain-file"'"
-  }
-}
 
 fn ensure-required-components {
   command:silence {
@@ -68,6 +79,10 @@ fn main {
   check-toolchain-file
 
   ensure-rust-core
+
+  if (os:is-regular Cargo.toml) {
+    check-edition
+  }
 
   set-cargo-colors $cargo-colors
 
