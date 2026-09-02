@@ -5,5 +5,8 @@ use github.com/giancosta86/gauntlet/v1/env
 
 echo 🎭 Setting up the tests...
 
-os:temp-dir |
-  env:set temp-project-dir (all)
+var temp-project-dir = (os:temp-dir)
+
+env:set temp-project-dir $temp-project-dir
+
+cp .sdkmanrc $temp-project-dir
