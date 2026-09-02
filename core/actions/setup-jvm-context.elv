@@ -22,6 +22,7 @@ fn detect-build-context {
         &jvm-build-tool=$build-tool
       ]
       return
+    }
   }
 
   put [
