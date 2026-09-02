@@ -34,6 +34,8 @@ steps:
   channel = "1.80.0"
   ```
 
+- **Cargo.toml**, if existing, requires the `edition` field.
+
 ## 📥 Inputs
 
 |        Name         |    Type     |               Description               | Default value |
