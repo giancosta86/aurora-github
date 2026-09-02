@@ -15,7 +15,7 @@ steps:
 
 1. Verify that **rust-toolchain.toml** (see below) exists.
 
-1. If the `rustup` and `cargo` commands are not accessible, install their latest versions.
+1. If the `rustup` and `cargo` commands are not accessible, run the [rustup](https://rustup.rs) installer.
 
 1. If **Cargo.toml** exists, verify that the `edition` field is declared.
 
