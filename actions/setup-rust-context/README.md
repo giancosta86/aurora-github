@@ -17,6 +17,8 @@ steps:
 
 1. If the `rustup` and `cargo` commands are not accessible, install their latest versions.
 
+1. If **Cargo.toml** exists, verify that the `edition` field is declared.
+
 1. Set the `CARGO_TERM_COLOR` environment variable according to the value of the `cargo-colors` input.
 
 1. Ensure the required components (**rustfmt**, **clippy**) are installed.
