@@ -22,15 +22,14 @@ fn detect-build-context {
         &jvm-build-tool=$build-tool
       ]
       return
-    } else {
-      put [
-        &jvm-descriptor=$nil
-        &jvm-build-tool=$nil
-      ]
-    }
   }
 
-  echo '💭Cannot detect a supported JVM build tool for the project...'
+  put [
+    &jvm-descriptor=$nil
+    &jvm-build-tool=$nil
+  ]
+
+  echo '💭Cannot detect a supported JVM build tool for the project...' >&2
 }
 
 fn main {
