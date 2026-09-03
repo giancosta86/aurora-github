@@ -1,9 +1,17 @@
 use os
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/map
 use github.com/giancosta86/ethereal/v1/sdkman
 use github.com/giancosta86/gauntlet/v1/env
 
 var sdk~ = $sdkman:sdk~
+
+var home-dir-vars = [
+  JAVA_HOME
+  MAVEN_HOME
+  GRADLE_HOME
+  SBT_HOME
+]
 
 var build-tools-by-descriptor = [
   &pom.xml=mvn
@@ -41,13 +49,24 @@ fn main {
 
   sdkman:setup-jvm-homes
 
-  all [
-    PATH
-    JAVA_HOME
-    MAVEN_HOME
-    GRADLE_HOME
-    SBT_HOME
-  ] |
+  console:section &emoji=🏡 'HOME directories' {
+    all $home-dir-vars | each { |home-dir-var|
+      if (has-env $home-dir-var) {
+        get-env $home-dir-var |
+          console:inspect &emoji=📌 $home-dir-var (all)
+      }
+    }
+  }
+
+  console:section &emoji=⚙️ 'PATH' {
+    get-env PATH |
+      echo (all)
+  }
+
+  {
+    all $home-directories
+    put PATH
+  } |
     each $env:cascade~
 
   detect-build-context |

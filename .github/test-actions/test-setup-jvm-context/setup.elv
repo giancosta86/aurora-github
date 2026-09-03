@@ -9,4 +9,4 @@ var temp-project-dir = (os:temp-dir)
 
 env:set temp-project-dir $temp-project-dir
 
-cp .sdkmanrc $temp-project-dir
+cp $sdkman:sdk-file $temp-project-dir
