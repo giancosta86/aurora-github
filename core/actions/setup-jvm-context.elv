@@ -58,21 +58,30 @@ fn main {
     }
   }
 
+  all [
+    java
+    maven
+    gradle
+    sbt
+  ] | each { |candidate|
+    var current-candidate-dir = (sdkman:get-sdk-directory $candidate current)
+
+    if (
+      os:exists $current-candidate-dir
+    ) {
+      set paths = [(
+        put $current-candidate-dir
+        all $paths
+      )]
+    }
+  }
+
   console:section &emoji=⚙️ 'PATH' {
     get-env PATH |
       echo (all)
   }
 
-  #TODO!
-  console:section &emoji=☕ 'JVM LIST' {
-    sdkman:sdk list java
-  }
-  console:section &emoji=🪶 'MAVEN LIST' {
-    sdkman:sdk list maven
-  }
-  console:section &emoji=🐘 'GRADLE LIST' {
-    sdkman:sdk list gradle
-  }
+
 
 
   {
