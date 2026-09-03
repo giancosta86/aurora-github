@@ -63,6 +63,18 @@ fn main {
       echo (all)
   }
 
+  #TODO!
+  console:section &emoji=☕ 'JVM LIST' {
+    sdkman:sdk list java
+  }
+  console:section &emoji=🪶 'MAVEN LIST' {
+    sdkman:sdk list maven
+  }
+  console:section &emoji=🐘 'GRADLE LIST' {
+    sdkman:sdk list gradle
+  }
+
+
   {
     all $home-dir-vars
     put PATH
