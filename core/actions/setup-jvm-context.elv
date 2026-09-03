@@ -1,4 +1,5 @@
 use os
+use path
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/map
 use github.com/giancosta86/ethereal/v1/sdkman
@@ -58,11 +59,6 @@ fn main {
     }
   }
 
-  #TODO!
-  console:section &emoji=‼️ 'CANDIDATES' {
-    find ~/.sdkman/candidates -type d -maxdepth 2
-  }
-
   all [
     java
     maven
@@ -75,7 +71,7 @@ fn main {
       os:exists $current-candidate-dir
     ) {
       set paths = [(
-        put $current-candidate-dir
+        path:join $current-candidate-dir bin
         all $paths
       )]
     }
