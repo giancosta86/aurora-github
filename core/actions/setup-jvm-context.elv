@@ -64,7 +64,7 @@ fn main {
   }
 
   {
-    all $home-directories
+    all $home-dir-vars
     put PATH
   } |
     each $env:cascade~
