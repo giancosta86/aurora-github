@@ -58,6 +58,11 @@ fn main {
     }
   }
 
+  #TODO!
+  console:section &emoji=‼️ 'CANDIDATES' {
+    find ~/.sdkman/candidates -type d -maxdepth 2
+  }
+
   all [
     java
     maven
