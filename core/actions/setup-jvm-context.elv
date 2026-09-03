@@ -1,10 +1,7 @@
 use os
-use path
-use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/map
 use github.com/giancosta86/ethereal/v1/sdkman
 use github.com/giancosta86/gauntlet/v1/env
-use github.com/giancosta86/gauntlet/v1/input
 
 var sdk~ = $sdkman:sdk~
 
