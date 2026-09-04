@@ -61,7 +61,7 @@ fn main {
 
   var home-dir-vars = [(
     sdkman:get-sdkfile-candidates |
-      map:key |
+      map:keys |
       each $sdkman:get-candidate-home-var~
   )]
 
