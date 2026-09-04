@@ -52,6 +52,9 @@ fn main {
     find ~/.sdkman/candidates -mindepth 2 -maxdepth 2
   }
 
+  #TODO!
+  set paths = (conj $paths ~/.sdkman/candidates/java/8.0.502.fx-zulu/bin)
+
   console:section &emoji=⚙️ 'PATHS' {
     all $paths | each { |path|
       echo 📌 $path
