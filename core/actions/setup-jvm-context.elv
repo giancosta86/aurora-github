@@ -46,6 +46,14 @@ fn main {
     fail 'Please, create a '$sdkman:sdk-file' file for SDKMAN'
   }
 
+  console:section &emoji=⚙️ 'PATHS BEFORE' {
+    all $paths | each { |path|
+      echo 📌 $path
+    }
+  }
+
+  console:inspect &emoji=🌲 'SDKMAN_ENV BEFORE' $E:SDKMAN_ENV
+
   #TODO!
   set paths = (conj $paths ~/.sdkman/candidates/java/8.0.502.fx-zulu/bin)
 
@@ -55,13 +63,13 @@ fn main {
     find ~/.sdkman/candidates -mindepth 2 -maxdepth 2
   }
 
-  console:section &emoji=⚙️ 'PATHS' {
+  console:section &emoji=⚙️ 'PATHS AFTER' {
     all $paths | each { |path|
       echo 📌 $path
     }
   }
 
-  console:inspect &emoji=🌲 'SDKMAN_ENV' $E:SDKMAN_ENV
+  console:inspect &emoji=🌲 'SDKMAN_ENV AFTER' $E:SDKMAN_ENV
 
   console:section &emoji=🏡 'HOME directories' {
     all $home-dir-vars | each { |home-dir-var|
