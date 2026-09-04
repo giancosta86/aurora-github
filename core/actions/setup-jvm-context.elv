@@ -5,15 +5,6 @@ use github.com/giancosta86/ethereal/v1/map
 use github.com/giancosta86/ethereal/v1/sdkman
 use github.com/giancosta86/gauntlet/v1/env
 
-var sdk~ = $sdkman:sdk~
-
-var home-dir-vars = [
-  JAVA_HOME
-  MAVEN_HOME
-  GRADLE_HOME
-  SBT_HOME
-]
-
 var build-tools-by-descriptor = [
   &pom.xml=mvn
   &build.gradle=gradle
@@ -54,9 +45,6 @@ fn main {
 
   console:inspect &emoji=🌲 'SDKMAN_ENV BEFORE' $E:SDKMAN_ENV
 
-  #TODO!
-  set paths = (conj $paths ~/.sdkman/candidates/java/8.0.502.fx-zulu/bin)
-
   sdkman:setup-env
 
   console:section &emoji=📦 'CANDIDATES' {
@@ -70,6 +58,12 @@ fn main {
   }
 
   console:inspect &emoji=🌲 'SDKMAN_ENV AFTER' $E:SDKMAN_ENV
+
+  var home-dir-vars = [(
+    sdkman:get-sdkfile-candidates |
+      map:key |
+      each $sdkman:get-candidate-home-var~
+  )]
 
   console:section &emoji=🏡 'HOME directories' {
     all $home-dir-vars | each { |home-dir-var|
@@ -87,8 +81,11 @@ fn main {
   } |
     each $env:cascade~
 
-  detect-build-context |
-    env:map
+  var build-context = (detect-build-context)
+
+  console:inspect &emoji=🧰 'Build context' $build-context
+
+  env:map $build-context
 
   echo ✅☕ JVM context in "'"$pwd"'" ready!
 }
