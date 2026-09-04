@@ -1,7 +1,7 @@
 use github.com/giancosta86/ethereal/v1/sdkman
 
 fn within-temp-project { |block|
-  var sdkfile-content = (slurp < $sdkman:sdkfile)
+  var sdkfile-content = (slurp < $sdkman:sdk-file)
 
   var temp-project-dir = (get-env temp-project-dir)
 
