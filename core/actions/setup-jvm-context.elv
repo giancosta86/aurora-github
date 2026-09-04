@@ -54,6 +54,8 @@ fn main {
     }
   }
 
+  console:inspect &emoji=🌲 'SDKMAN_ENV' $E:SDKMAN_ENV
+
   console:section &emoji=🏡 'HOME directories' {
     all $home-dir-vars | each { |home-dir-var|
       if (has-env $home-dir-var) {
