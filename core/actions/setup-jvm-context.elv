@@ -46,14 +46,14 @@ fn main {
     fail 'Please, create a '$sdkman:sdk-file' file for SDKMAN'
   }
 
+  #TODO!
+  set paths = (conj $paths ~/.sdkman/candidates/java/8.0.502.fx-zulu/bin)
+
   sdkman:setup-env
 
   console:section &emoji=📦 'CANDIDATES' {
     find ~/.sdkman/candidates -mindepth 2 -maxdepth 2
   }
-
-  #TODO!
-  set paths = (conj $paths ~/.sdkman/candidates/java/8.0.502.fx-zulu/bin)
 
   console:section &emoji=⚙️ 'PATHS' {
     all $paths | each { |path|
