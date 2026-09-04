@@ -48,6 +48,10 @@ fn main {
 
   sdkman:setup-env
 
+  console:section &emoji=📦 'CANDIDATES' {
+    find ~/.sdkman/candidates -mindepth 2 -maxdepth 2
+  }
+
   console:section &emoji=⚙️ 'PATHS' {
     all $paths | each { |path|
       echo 📌 $path
