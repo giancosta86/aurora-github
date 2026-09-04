@@ -48,6 +48,12 @@ fn main {
 
   sdkman:setup-env
 
+  console:section &emoji=⚙️ 'PATHS' {
+    all $paths | each { |path|
+      echo 📌 $path
+    }
+  }
+
   console:section &emoji=🏡 'HOME directories' {
     all $home-dir-vars | each { |home-dir-var|
       if (has-env $home-dir-var) {
