@@ -19,44 +19,44 @@ runs:
         working-directory: ${{ github.action_path }}
         velvet-scripts: action
 
-    # - shell: bash
-    #   working-directory: ${{ github.action_path }}
-    #   run: elvish maven-setup.elv
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish maven-setup.elv
 
-    # - uses: ./actions/setup-jvm-context
-    #   with:
-    #     working-directory: ${{ env.temp-project-dir }}
+    - uses: ./actions/setup-jvm-context
+      with:
+        working-directory: ${{ env.temp-project-dir }}
 
-    # - uses: ./actions/run-elvish-tests
-    #   with:
-    #     working-directory: ${{ github.action_path }}
-    #     velvet-scripts: maven
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: maven
 
-    # - shell: bash
-    #   working-directory: ${{ github.action_path }}
-    #   run: elvish classic-gradle-setup.elv
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish kotlin-gradle-setup.elv
 
-    # - uses: ./actions/setup-jvm-context
-    #   with:
-    #     working-directory: ${{ env.temp-project-dir }}
+    - uses: ./actions/setup-jvm-context
+      with:
+        working-directory: ${{ env.temp-project-dir }}
 
-    # - uses: ./actions/run-elvish-tests
-    #   with:
-    #     working-directory: ${{ github.action_path }}
-    #     velvet-scripts: classic-gradle
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: kotlin-gradle
 
-    # - shell: bash
-    #   working-directory: ${{ github.action_path }}
-    #   run: elvish kotlin-gradle-setup.elv
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish classic-gradle-setup.elv
 
-    # - uses: ./actions/setup-jvm-context
-    #   with:
-    #     working-directory: ${{ env.temp-project-dir }}
+    - uses: ./actions/setup-jvm-context
+      with:
+        working-directory: ${{ env.temp-project-dir }}
 
-    # - uses: ./actions/run-elvish-tests
-    #   with:
-    #     working-directory: ${{ github.action_path }}
-    #     velvet-scripts: kotlin-gradle
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: classic-gradle
 
     - shell: elvish {0}
       run: echo ✅ The environment was correctly created!
