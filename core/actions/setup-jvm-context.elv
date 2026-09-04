@@ -46,9 +46,7 @@ fn main {
     fail 'Please, create a '$sdkman:sdk-file' file for SDKMAN'
   }
 
-  sdk env install
-
-  sdkman:setup-jvm-homes
+  sdkman:setup-env
 
   console:section &emoji=🏡 'HOME directories' {
     all $home-dir-vars | each { |home-dir-var|
@@ -59,35 +57,10 @@ fn main {
     }
   }
 
-  all [
-    java
-    maven
-    gradle
-    sbt
-  ] | each { |candidate|
-    var current-candidate-dir = (sdkman:get-sdk-directory $candidate current)
-
-    if (
-      os:exists $current-candidate-dir
-    ) {
-      set paths = [(
-        path:join $current-candidate-dir bin
-        all $paths
-      )]
-    }
-  }
-
-  console:section &emoji=⚙️ 'PATH' {
-    get-env PATH |
-      echo (all)
-  }
-
-
-
-
   {
     all $home-dir-vars
     put PATH
+    put SDKMAN_ENV
   } |
     each $env:cascade~
 

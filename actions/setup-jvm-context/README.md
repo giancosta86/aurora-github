@@ -17,7 +17,7 @@ steps:
 
 1. Run `sdk env install`, to install all the SDKs required by **.sdkmanrc**.
 
-1. Run `sdkman:setup-jvm-homes`, to set/unset environment variables - especially **JAVA_HOME** - and propagate them to the rest of the workflow.
+1. Run `sdkman:setup-env`, to set/unset environment variables - especially **JAVA_HOME** - and propagate them to the rest of the workflow.
 
 1. Set the following environment variables:
    - **jvm-descriptor**: the name of the descriptor file, among the supported ones.
