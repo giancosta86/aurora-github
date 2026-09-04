@@ -24,24 +24,24 @@ use github.com/giancosta86/ethereal/v1/sdkman
 }
 
 
->> 'Environment variables' {
+>> 'Home variables' {
   >> 'Java' {
     get-env JAVA_HOME |
-      should-be (sdkman:get-sdk-directory java 8.0.502.fx-zulu)
+      should-be (sdkman:get-sdk-directory java current)
   }
 
   >> 'Maven' {
     get-env MAVEN_HOME |
-      should-be (sdkman:get-sdk-directory maven 3.3.9)
+      should-be (sdkman:get-sdk-directory maven current)
   }
 
   >> 'Gradle' {
     get-env GRADLE_HOME |
-      should-be (sdkman:get-sdk-directory gradle 2.10)
+      should-be (sdkman:get-sdk-directory gradle current)
   }
 
   >> 'sbt' {
     get-env SBT_HOME |
-      should-be (sdkman:get-sdk-directory sbt 0.13.18)
+      should-be (sdkman:get-sdk-directory sbt current)
   }
 }
