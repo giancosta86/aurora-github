@@ -26,8 +26,6 @@ fn detect-build-context {
     &jvm-descriptor=$nil
     &jvm-build-tool=$nil
   ]
-
-  echo '💭Cannot detect a supported JVM build tool for the project...' >&2
 }
 
 fn main {
@@ -37,27 +35,7 @@ fn main {
     fail 'Please, create a '$sdkman:sdk-file' file for SDKMAN'
   }
 
-  console:section &emoji=⚙️ 'PATHS BEFORE' {
-    all $paths | each { |path|
-      echo 📌 $path
-    }
-  }
-
-  console:inspect &emoji=🌲 'SDKMAN_ENV BEFORE' $E:SDKMAN_ENV
-
   sdkman:setup-env
-
-  console:section &emoji=📦 'CANDIDATES' {
-    find ~/.sdkman/candidates -mindepth 2 -maxdepth 2
-  }
-
-  console:section &emoji=⚙️ 'PATHS AFTER' {
-    all $paths | each { |path|
-      echo 📌 $path
-    }
-  }
-
-  console:inspect &emoji=🌲 'SDKMAN_ENV AFTER' $E:SDKMAN_ENV
 
   var home-dir-vars = [(
     sdkman:get-sdkfile-candidates |
@@ -67,23 +45,25 @@ fn main {
 
   console:section &emoji=🏡 'HOME directories' {
     all $home-dir-vars | each { |home-dir-var|
-      if (has-env $home-dir-var) {
-        get-env $home-dir-var |
-          console:inspect &emoji=📌 $home-dir-var (all)
-      }
+      get-env $home-dir-var |
+        console:inspect &emoji=📌 $home-dir-var (all)
     }
   }
 
   {
-    all $home-dir-vars
     put PATH
     put SDKMAN_ENV
+    all $home-dir-vars
   } |
     each $env:cascade~
 
   var build-context = (detect-build-context)
 
-  console:inspect &emoji=🧰 'Build context' $build-context
+  if $build-context[jvm-build-tool] {
+    console:inspect &emoji=🧰 'Build context' $build-context
+  } else {
+    echo 💭 Cannot detect a supported JVM build tool for the project...
+  }
 
   env:map $build-context
 
