@@ -9,7 +9,7 @@ fn within-temp-project { |block|
 
   tmp pwd = $temp-project-dir
 
-  print $sdkfile-content > $sdkfile
+  print $sdkfile-content > $sdkman:sdk-file
 
   $block
 }
