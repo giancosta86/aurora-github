@@ -1,3 +1,4 @@
+use github.com/giancosta86/ethereal/v1/fs
 use github.com/giancosta86/ethereal/v1/sdkman
 
 fn within-temp-project { |block|
