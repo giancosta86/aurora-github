@@ -41,7 +41,7 @@ fn ensure-nvm {
   } else {
     echo 📥 Installing nvm...
 
-    var nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
+    var nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash'
 
     command:silence {
       bash -c $nvm-setup-command
