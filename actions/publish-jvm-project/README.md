@@ -16,12 +16,7 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on the project descriptor.
 
-1. If a **.sdkmanrc** file exists in `working-directory`, run **SDKMAN**'s [env command](https://sdkman.io/usage/#env-command)
-
-1. Determine the build tool:
-   - 🪶**Maven**, if the project descriptor is **pom.xml**
-
-   - 🐘**Gradle**, if the project descriptor is **build.gradle** or **build.gradle.kts**
+1. Run [setup-jvm-context](../setup-jvm-context/README.md) to set up a JVM environment via [SDKMAN](https://sdkman.io/).
 
 1. If **Maven** is the build tool:
    - if the **settings.xml** file exists in `working-directory`, copy it to the **$HOME/.m2** directory
@@ -95,6 +90,8 @@ steps:
 | `working-directory` | **string**  | Directory containing the project descriptor |     **.**     |
 
 ## 🌐 Further references
+
+- [setup-jvm-context](../setup-jvm-context/README.md)
 
 - [inject-branch-version](../inject-branch-version/README.md)
 
