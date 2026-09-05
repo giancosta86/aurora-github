@@ -26,11 +26,11 @@ fn check-package-json {
     from-json < package.json
   )
 
-  if (not (seq:drill-drown $package-json engines node)) {
+  if (not (seq:drill-down $package-json engines node)) {
     fail 'package.json must contain the "engines/node" field!'
   }
 
-  if (not (seq:drill-down packageManager)) {
+  if (not (seq:drill-down $package-json packageManager)) {
     fail 'package.json must contain the "packageManager" field!'
   }
 }
