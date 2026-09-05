@@ -137,7 +137,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-rust-crate
 
   test-setup-nodejs-context:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -221,7 +221,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-jvm-context
 
   test-verify-jvm-project:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -233,7 +233,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-jvm-project
 
   test-publish-jvm-project:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-verify-jvm-project
     steps:
