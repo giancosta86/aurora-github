@@ -43,11 +43,11 @@ steps:
 
 ## 📥 Inputs
 
-|          Name          |    Type     |                  Description                   | Default value |
-| :--------------------: | :---------: | :--------------------------------------------: | :-----------: |
-|   `corepack-version`   | **string**  | **corepack** version to install, empty to skip |  **0.36.x**   |
-| `install-dependencies` | **boolean** |  Run the package manager's `install` command   |   **true**    |
-|  `working-directory`   | **string**  |      Directory containing `package.json`       |     **.**     |
+|          Name          |    Type     |                 Description                 | Default value |
+| :--------------------: | :---------: | :-----------------------------------------: | :-----------: |
+|   `corepack-version`   | **string**  |       **corepack** version to install       |  **0.36.x**   |
+| `install-dependencies` | **boolean** | Run the package manager's `install` command |   **true**    |
+|  `working-directory`   | **string**  |     Directory containing `package.json`     |     **.**     |
 
 ## 🌐 Further references
 

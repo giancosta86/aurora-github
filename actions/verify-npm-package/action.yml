@@ -3,8 +3,8 @@ description: Verifies the source files of a NodeJS package.
 
 inputs:
   corepack-version:
-    description: corepack version to install, empty to skip.
-    default: latest
+    description: corepack version to install.
+    default: 0.36.x
 
   check-license:
     description: Run checks on the project license.

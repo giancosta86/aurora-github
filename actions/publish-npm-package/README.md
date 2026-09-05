@@ -15,9 +15,9 @@ steps:
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
 
-1. Invoke [setup-nodejs-context](../setup-nodejs-context/README.md) to set up a NodeJS environment having `pnpm` and dependencies.
+1. Run [setup-nodejs-context](../setup-nodejs-context/README.md), forwarding `corepack-version` and installing the dependencies.
 
-1. Run `pnpm build` _if_ such script has been declared in **package.json**.
+1. Run the `build` script _if_ such script has been declared in **package.json**.
 
 1. Run `publish-github-pages` with the `optional` flag enabled.
 
@@ -25,7 +25,7 @@ steps:
 
 1. Display the **package.json** descriptor.
 
-1. Run `pnpm publish`, with the value of `npm-token` injected into the **NPM_TOKEN** environment variable - accessible, for example, from the `.npmrc` configuration file.
+1. Run the `npm publish` command, with the value of `npm-token` injected into the **NPM_TOKEN** environment variable - accessible, for example, from the `.npmrc` configuration file.
 
 ## 💬 Remarks
 
@@ -51,6 +51,7 @@ steps:
 | :----------------------: | :---------------------: | :-----------------------------------------------: | :-----------: |
 |        `dry-run`         |       **boolean**       |            Run a simulated publication            |   **false**   |
 |       `npm-token`        |       **string**        |    Secret token for publishing to the registry    |               |
+|    `corepack-version`    |       **string**        |          **corepack** version to install          |  **0.36.x**   |
 |   `website-directory`    |       **string**        | Relative directory containing the project website |  **website**  |
 | `enforce-branch-version` | `inject`,`check`,`skip` |     How the branch version should be enforced     |  **inject**   |
 |   `working-directory`    |       **string**        |        Directory containing `package.json`        |     **.**     |

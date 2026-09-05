@@ -9,6 +9,10 @@ inputs:
   npm-token:
     description: Secret token for publishing to the registry.
 
+  corepack-version:
+    description: corepack version to install.
+    default: 0.36.x
+
   working-directory:
     description: Directory containing `package.json`.
     default: .
@@ -26,6 +30,7 @@ runs:
     - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v13.0.0
       with:
         working-directory: ${{ inputs.working-directory }}
+        corepack-version: ${{ inputs.corepack-version }}
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
