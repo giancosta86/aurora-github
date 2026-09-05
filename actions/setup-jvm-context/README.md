@@ -38,6 +38,8 @@ steps:
   maven=3.9.9
   ```
 
+  If no specific SDK is required, the file can be empty.
+
 ## 📥 Inputs
 
 |        Name         |    Type    |                 Description                 | Default value |
