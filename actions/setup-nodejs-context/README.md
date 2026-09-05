@@ -17,31 +17,9 @@ steps:
 
 1. Check that **package.json** exists and complies with the _requirements_ described below.
 
-1. Detect if a specific **NodeJS** version was requested for this project. In particular, in one of these cases:
-   1. If the **.nvmrc** file exists in the project directory - containing the requested NodeJS version, as expected by `nvm`.
+1. If **nvm** is not installed, run its installation script.
 
-   1. If **package.json** declares the following field:
-
-      ```json
-      {
-        "engines": {
-          "node": "..."
-        }
-      }
-      ```
-
-1. If a specific **NodeJS** version was requested:
-   1. If the `nvm` command is not available in the **Bash** shell, install a convenient version.
-
-   1. Run `nvm install <requested NodeJS version>`
-
-   Otherwise, consider whether the `node` command is accessible from PATH:
-   - if the command is available, just proceed to the next major step
-
-   - otherwise:
-     1. if the `nvm` command is not available in the **Bash** shell, install a convenient version.
-
-     1. install the **latest** NodeJS version
+1. Run `nvm install <NodeJS version in engines/node>`
 
 1. Setup **corepack**:
    1. if the `corepack-version` input is non-empty, run `npm install --global corepack@<corepack-version>`

@@ -55,37 +55,21 @@ fn ensure-nvm {
   }
 }
 
-fn install-specific-nodejs { |version|
-  ensure-nvm
+fn install-node {
+  var requested-node-version = (
+    from-json < package.json
+  )[engines][node]
 
-  echo 📥 Installing NodeJS '('$version')'...
+  echo 📥 Installing NodeJS '('$requested-node-version')'...
 
   command:silence {
-    nvm install $version
+    nvm install $requested-node-version
   }
 
   # The path set by nvm must be preserved all over the workflow
   env:cascade PATH |
 
-  echo 🚀 NodeJS '('$version')' ready!
-}
-
-fn ensure-node {
-  var requested-node-version = (requested:detect-recursively $pwd)
-
-  if $requested-node-version {
-    console:inspect &emoji=🏷️ 'Requested NodeJS version' $requested-node-version
-
-    install-specific-nodejs $requested-node-version
-  } else {
-    echo 💭 No specific NodeJS version requested...
-
-    if (has-external node) {
-      echo 🌟 NodeJS is already on the system!
-    } else {
-      install-specific-nodejs latest
-    }
-  }
+  echo 🚀 NodeJS ready!
 
   console:section &emoji=🎡 'NodeJS version' {
     node --version
@@ -152,7 +136,9 @@ fn main {
 
   check-package-json
 
-  ensure-node
+  ensure-nvm
+
+  install-node
 
   configure-corepack $corepack-version
 
