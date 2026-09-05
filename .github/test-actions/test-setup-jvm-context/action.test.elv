@@ -39,9 +39,4 @@ use github.com/giancosta86/ethereal/v1/sdkman
     get-env GRADLE_HOME |
       should-be (sdkman:get-sdk-directory gradle current)
   }
-
-  >> 'sbt' {
-    get-env SBT_HOME |
-      should-be (sdkman:get-sdk-directory sbt current)
-  }
 }
