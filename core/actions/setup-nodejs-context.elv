@@ -76,7 +76,7 @@ fn install-node {
   }
 }
 
-fn configure-corepack { |corepack-version|
+fn setup-corepack { |corepack-version|
   echo 📥 Now installing corepack@$corepack-version...
 
   command:silence {
@@ -89,13 +89,13 @@ fn configure-corepack { |corepack-version|
     corepack --version
   }
 
-  echo ⚙️ Setting up corepack...
+  echo 🔗 Enabling corepack...
 
   command:silence {
-    corepack:setup
+    corepack enable
   }
 
-  echo 🚀 corepack ready!
+  echo 🟢 corepack enabled!
 }
 
 fn ensure-package-manager {
