@@ -77,33 +77,25 @@ fn install-node {
 }
 
 fn configure-corepack { |corepack-version|
-  if $corepack-version {
-    echo 📥 Now installing corepack@$corepack-version...
+  echo 📥 Now installing corepack@$corepack-version...
 
-    command:silence {
-      npm install --global corepack@$corepack-version
-    }
-
-    echo 🎉 corepack installed!
-  } else {
-    echo 💭 Skipping corepack installation, as it was not requested...
+  command:silence {
+    npm install --global corepack@$corepack-version
   }
 
-  if (has-external corepack) {
-    console:section &emoji=🔮 'corepack version' {
-      corepack --version
-    }
+  echo 🎉 corepack installed!
 
-    echo ⚙️ Setting up corepack...
-
-    command:silence {
-      corepack:setup
-    }
-
-    echo 🚀 corepack ready!
-  } else {
-    echo 💭 corepack not available on the system...
+  console:section &emoji=🔮 'corepack version' {
+    corepack --version
   }
+
+  echo ⚙️ Setting up corepack...
+
+  command:silence {
+    corepack:setup
+  }
+
+  echo 🚀 corepack ready!
 }
 
 fn ensure-package-manager {
