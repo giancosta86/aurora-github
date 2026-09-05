@@ -6,7 +6,7 @@ Creates a **Git** tag and a **GitHub** _draft_ release when merging a pull reque
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/tag-and-release@v11
+  - uses: giancosta86/aurora-github/actions/tag-and-release@v13
 ```
 
 It is essential to remember that this action should be associated with this trigger:

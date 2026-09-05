@@ -6,7 +6,7 @@ Publishes a **Python** package using [PDM](https://pdm-project.org).
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/publish-python-package@v11
+  - uses: giancosta86/aurora-github/actions/publish-python-package@v13
     with:
       index-user: __token__
       index-secret: ${{ secrets.PYPI_TOKEN }}

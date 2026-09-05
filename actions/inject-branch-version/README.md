@@ -6,7 +6,7 @@ Injects the current branch version in lieu of `0.0.0` in the given file patterns
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/inject-branch-version@v11
+  - uses: giancosta86/aurora-github/actions/inject-branch-version@v13
     with:
       files: package.json
 ```

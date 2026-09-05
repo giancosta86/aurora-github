@@ -6,7 +6,7 @@ Publishes a project for the **Java Virtual Machine** - using **Maven** or **Grad
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/publish-jvm-project@v11
+  - uses: giancosta86/aurora-github/actions/publish-jvm-project@v13
     with:
       auth-user: userOnTheServer
       auth-token: ${{ secrets.SERVER_TOKEN }}
@@ -16,14 +16,7 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on the project descriptor.
 
-1. Determine the build tool:
-   - 🪶**Maven**, if the project descriptor is **pom.xml**
-
-   - 🐘**Gradle**, if the project descriptor is **build.gradle** or **build.gradle.kts**
-
-1. If a specific version of Java is requested via `java-version`, install it using SDKMAN
-
-1. If a specific version of the build tool is requested via `tool-version`, install it using SDKMAN
+1. Run [setup-jvm-context](../setup-jvm-context/README.md) to set up a JVM environment via [SDKMAN](https://sdkman.io/).
 
 1. If **Maven** is the build tool:
    - if the **settings.xml** file exists in `working-directory`, copy it to the **$HOME/.m2** directory
@@ -93,12 +86,12 @@ steps:
 |      `dry-run`      | **boolean** |         Run a simulated publication         |   **false**   |
 |     `auth-user`     | **string**  |           Username for publishing           |               |
 |    `auth-token`     | **string**  |         Secret token for publishing         |               |
-|   `java-version`    | **string**  |     Java version (in SDKMAN) to install     |               |
-|   `tool-version`    | **string**  |  Build tool version (in SDKMAN) to install  |               |
 |    `quiet-tool`     | **boolean** |      Run the build tool in quiet mode       |   **true**    |
 | `working-directory` | **string**  | Directory containing the project descriptor |     **.**     |
 
 ## 🌐 Further references
+
+- [setup-jvm-context](../setup-jvm-context/README.md)
 
 - [inject-branch-version](../inject-branch-version/README.md)
 

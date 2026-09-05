@@ -45,9 +45,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.0
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
 
-    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v12.0.0
+    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v13.0.0
       with:
         working-directory: ${{ inputs.working-directory }}
         install-dependencies: false
@@ -60,7 +60,7 @@ runs:
       env:
         version: ${{ inputs.wasm-pack-version }}
 
-    - uses: giancosta86/aurora-github/actions/verify-rust-crate@v12.0.0
+    - uses: giancosta86/aurora-github/actions/verify-rust-crate@v13.0.0
       with:
         run-clippy: ${{ inputs.run-clippy }}
         check-rustdoc: ${{ inputs.check-rustdoc }}
@@ -90,7 +90,7 @@ runs:
         node-version: ${{ inputs.node-version }}
         package-manager: ${{ inputs.package-manager }}
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v13.0.0
       with:
         files: package.json
         working-directory: ${{ inputs.working-directory }}/pkg
@@ -110,7 +110,7 @@ runs:
         client-tests-directory: ${{ inputs.client-tests-directory }}
 
     - if: env.run-client-tests == 'true'
-      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v12.0.0
+      uses: giancosta86/aurora-github/actions/setup-nodejs-context@v13.0.0
       with:
         working-directory: ${{ inputs.working-directory }}/${{ inputs.client-tests-directory }}
 

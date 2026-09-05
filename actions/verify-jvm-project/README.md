@@ -6,21 +6,14 @@ Verifies the source files of a project for the **Java Virtual Machine** - using 
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/verify-jvm-project@v11
+  - uses: giancosta86/aurora-github/actions/verify-jvm-project@v13
 ```
 
 ## 💡 How it works
 
 1. Run [check-project-license](../check-project-license/README.md) to verify the **LICENSE** file, unless `check-license` is set to **false**.
 
-1. Determine the build tool:
-   - 🪶**Maven**, if the project descriptor is **pom.xml**
-
-   - 🐘**Gradle**, if the project descriptor is **build.gradle** or **build.gradle.kts**
-
-1. If a specific Java version is declared as `java-version`, pass it to [install-via-sdkman](../install-via-sdkman/README.md)
-
-1. If a specific build tool version is declared as `tool-version`, pass it to [install-via-sdkman](../install-via-sdkman/README.md)
+1. Run [setup-jvm-context](../setup-jvm-context/README.md) to set up a JVM environment via [SDKMAN](https://sdkman.io/).
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on the project descriptor.
 
@@ -37,8 +30,6 @@ steps:
 
 |        Name         |    Type     |                     Description                     |                  Default value                  |
 | :-----------------: | :---------: | :-------------------------------------------------: | :---------------------------------------------: |
-|   `java-version`    | **string**  |         Java version (in SDKMAN) to install         |                                                 |
-|   `tool-version`    | **string**  |      Build tool version (in SDKMAN) to install      |                                                 |
 |    `quiet-tool`     | **boolean** |          Run the build tool in quiet mode           |                    **true**                     |
 |   `check-license`   | **boolean** |          Run checks on the project license          |                    **true**                     |
 |    `todo-files`     | **string**  | File patterns potentially containing critical TODOs | **src/\*\*[nomatch-ok].{java kt scala groovy}** |
@@ -46,9 +37,9 @@ steps:
 
 ## 🌐 Further references
 
-- [check-project-license](../check-project-license/README.md)
+- [setup-jvm-context](../setup-jvm-context/README.md)
 
-- [install-via-sdkman](../install-via-sdkman/README.md)
+- [check-project-license](../check-project-license/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)
 

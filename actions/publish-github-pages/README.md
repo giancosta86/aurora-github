@@ -6,7 +6,7 @@ Publishes a directory as the [GitHub Pages](https://pages.github.com/) website f
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/publish-github-pages@v11
+  - uses: giancosta86/aurora-github/actions/publish-github-pages@v13
 ```
 
 ## 💡 How it works
@@ -51,8 +51,6 @@ steps:
 |        Name         |    Type     |                            Description                             | Default value |
 | :-----------------: | :---------: | :----------------------------------------------------------------: | :-----------: |
 | `corepack-version`  | **string**  | Version of corepack to install for a NodeJS website, empty to skip |  **latest**   |
-|   `java-version`    | **string**  |               Java version to use for Java websites                |               |
-| `java-tool-version` | **string**  |               Tool version to use for Java websites                |               |
 |      `dry-run`      | **boolean** |             Stop the publication just before uploading             |   **false**   |
 | `working-directory` | **string**  |        Directory containing the website or its source files        |     **.**     |
 

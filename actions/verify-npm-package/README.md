@@ -8,17 +8,7 @@ It is worth noting this action can support any related technology - as long as y
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/verify-npm-package@v11
-```
-
-**IMPORTANT**: please, remember to declare your verification process in the `verify` script within `package.json`! For example:
-
-```json
-"scripts": {
-  "test": "vitest",
-  "build": "tsc",
-  "verify": "pnpm test && pnpm build"
-}
+  - uses: giancosta86/aurora-github/actions/verify-npm-package@v13
 ```
 
 ## 💡 How it works
@@ -46,7 +36,7 @@ steps:
 
 |          Name           |    Type     |                      Description                      |                     Default value                     |
 | :---------------------: | :---------: | :---------------------------------------------------: | :---------------------------------------------------: |
-|   `corepack-version`    | **string**  |    **corepack** version to install, empty to skip     |                      **latest**                       |
+|   `corepack-version`    | **string**  |            **corepack** version to install            |                      **0.36.x**                       |
 |     `check-license`     | **boolean** |           Run checks on the project license           |                       **true**                        |
 |      `todo-files`       | **string**  |  File patterns potentially containing critical TODOs  | **{src tests}/\*\*[nomatch-ok].{'' c m}{j t}s{'' x}** |
 | `check-subpath-exports` | **boolean** | Run `check-subpath-exports` after the package scripts |                       **true**                        |

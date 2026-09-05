@@ -1,18 +1,14 @@
 use os
+use path
+use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/map
 use github.com/giancosta86/ethereal/v1/sdkman
 use github.com/giancosta86/gauntlet/v1/env
-use github.com/giancosta86/gauntlet/v1/input
 
 var build-tools-by-descriptor = [
   &pom.xml=mvn
   &build.gradle=gradle
   &build.gradle.kts=gradle
-]
-
-var sdkman-candidates-by-build-tool = [
-  &mvn=maven
-  &gradle=gradle
 ]
 
 fn detect-build-context {
@@ -26,30 +22,50 @@ fn detect-build-context {
     }
   }
 
-  fail 'Cannot detect a supported JVM build tool for the project'
+  put [
+    &jvm-descriptor=$nil
+    &jvm-build-tool=$nil
+  ]
 }
 
 fn main {
   echo ☕💻 Setting up JVM context in "'"$pwd"'"...
 
-  var java-version = (input:string &optional java-version)
-  var tool-version = (input:string &optional tool-version)
+  if (not (os:is-regular $sdkman:sdk-file)) {
+    fail 'Please, create a '$sdkman:sdk-file' file for SDKMAN'
+  }
+
+  sdkman:setup-env
+
+  var home-dir-vars = [(
+    sdkman:get-sdkfile-candidates |
+      map:keys |
+      each $sdkman:get-candidate-home-var~
+  )]
+
+  console:section &emoji=🏡 'HOME directories' {
+    all $home-dir-vars | each { |home-dir-var|
+      get-env $home-dir-var |
+        console:inspect &emoji=📌 $home-dir-var (all)
+    }
+  }
+
+  {
+    put PATH
+    put SDKMAN_ENV
+    all $home-dir-vars
+  } |
+    each $env:cascade~
 
   var build-context = (detect-build-context)
 
+  if $build-context[jvm-build-tool] {
+    console:inspect &emoji=🧰 'Build context' $build-context
+  } else {
+    echo 💭 Cannot detect a supported JVM build tool for the project...
+  }
+
   env:map $build-context
-
-  if $java-version {
-    sdkman:install-sdk java $java-version
-  }
-
-  if $tool-version {
-    var build-tool = $build-context[jvm-build-tool]
-
-    var tool-candidate = $sdkman-candidates-by-build-tool[$build-tool]
-
-    sdkman:install $tool-candidate $tool-version
-  }
 
   echo ✅☕ JVM context in "'"$pwd"'" ready!
 }

@@ -1,7 +1,6 @@
 use os
 use github.com/giancosta86/astral-bridge/v1/package-manager
 use github.com/giancosta86/gauntlet/v1/input
-use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/gauntlet/v1/env
 
 fn check-preconditions {

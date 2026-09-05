@@ -6,16 +6,18 @@ Installs and configures a **Rust** toolchain.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/setup-rust-context@v11
+  - uses: giancosta86/aurora-github/actions/setup-rust-context@v13
 ```
 
 **Please, note**: this action is automatically run by [verify-rust-crate](../verify-rust-crate/README.md) and [publish-rust-crate](../publish-rust-crate/README.md).
 
 ## 💡 How it works
 
-1. If the `check-toolchain-file` input is **true**, verify that **rust-toolchain.toml** (see below) exists.
+1. Verify that **rust-toolchain.toml** (see below) exists.
 
-1. If the `rustup` and `cargo` commands are not accessible, install their latest versions.
+1. If the `rustup` and `cargo` commands are not accessible, run the [rustup](https://rustup.rs) installer.
+
+1. If **Cargo.toml** exists, verify that the `edition` field is declared.
 
 1. Set the `CARGO_TERM_COLOR` environment variable according to the value of the `cargo-colors` input.
 
@@ -25,20 +27,21 @@ steps:
 
 ## ☑️ Requirements
 
-- If existing, **rust-toolchain.toml** should include at least the required toolchain version - for example:
+- **rust-toolchain.toml** must exist - and should include at least the required **toolchain version**; for example:
 
   ```toml
   [toolchain]
   channel = "1.80.0"
   ```
 
+- **Cargo.toml**, if existing, requires the `edition` field.
+
 ## 📥 Inputs
 
-|          Name          |    Type     |                Description                 | Default value |
-| :--------------------: | :---------: | :----------------------------------------: | :-----------: |
-|     `cargo-colors`     | **boolean** |          Enable colors for Cargo           |   **true**    |
-| `check-toolchain-file` | **boolean** | Verify the existence of the toolchain file |   **true**    |
-|  `working-directory`   | **string**  |  Directory containing the toolchain file   |     **.**     |
+|        Name         |    Type     |               Description               | Default value |
+| :-----------------: | :---------: | :-------------------------------------: | :-----------: |
+|   `cargo-colors`    | **boolean** |         Enable colors for Cargo         |   **true**    |
+| `working-directory` | **string**  | Directory containing the toolchain file |     **.**     |
 
 ## 🌐 Further references
 

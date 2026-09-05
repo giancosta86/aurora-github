@@ -1,0 +1,18 @@
+name: Setup JVM context
+description: Installs and configures a JVM environment using SDKMAN.
+
+inputs:
+  working-directory:
+    description: Directory containing the .sdkmanrc file.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
+        setup-jvm-context:main

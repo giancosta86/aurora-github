@@ -12,12 +12,6 @@ inputs:
   auth-token:
     description: Secret token for publishing.
 
-  java-version:
-    description: Java version (in SDKMAN) to install.
-
-  tool-version:
-    description: Build tool version (in SDKMAN) to install.
-
   quiet-tool:
     description: Run the build tool in quiet mode
     default: true
@@ -29,21 +23,16 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.0
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v13.0.0
       with:
         files: pom.xml build.gradle{'' .kts}
         working-directory: ${{ inputs.working-directory }}
 
-    - shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
-        setup-jvm-context:main
-      env:
-        java-version: ${{ inputs.java-version }}
-        tool-version: ${{ inputs.tool-version }}
+    - uses: giancosta86/aurora-github/actions/setup-jvm-context@v13.0.0
+      with:
+        working-directory: ${{ inputs.working-directory }}
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}

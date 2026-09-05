@@ -6,12 +6,6 @@ inputs:
     description: Version of corepack to install for a NodeJS website, empty to skip.
     default: latest
 
-  java-version:
-    description: Java version to use for Java websites.
-
-  java-tool-version:
-    description: Tool version to use for Java websites.
-
   dry-run:
     description: Stop the publication just before uploading.
     default: false
@@ -28,9 +22,9 @@ outputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.0
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v13.0.0
       with:
         files: package.json pom.xml
         working-directory: ${{ inputs.working-directory }}
@@ -42,7 +36,7 @@ runs:
         publish-github-pages:detect-strategy
 
     - if: env.strategy == 'nodejs-site'
-      uses: giancosta86/aurora-github/actions/verify-npm-package@v12.0.0
+      uses: giancosta86/aurora-github/actions/verify-npm-package@v13.0.0
       with:
         check-license: false
         corepack-version: ${{ inputs.corepack-version }}
@@ -54,9 +48,6 @@ runs:
       run: |
         use github.com/giancosta86/aurora-github/actions/setup-jvm-context
         setup-jvm-context:main
-      env:
-        java-version: ${{ inputs.java-version }}
-        tool-version: ${{ inputs.java-tool-version }}
 
     - if: env.strategy == 'maven-site'
       shell: elvish {0}
