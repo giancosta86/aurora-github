@@ -13,6 +13,8 @@ steps:
 
 ## 💡 How it works
 
+1. Check the overall directory structure, according with the _requirements_ described below.
+
 1. Check that **package.json** exists and complies with the _requirements_ described below.
 
 1. Detect if a specific **NodeJS** version was requested for this project. In particular, in one of these cases:
@@ -69,6 +71,8 @@ steps:
 1. Run again the package manager, passing the `install` command - provided that `install-dependencies` is not set to **false**.
 
 ## ☑️ Requirements
+
+- The **.nvmrc** file **must not** exist; instead, use _shell hooks_ based on the `engines/node` field in **package.json** - like the ones in [astral-bridge](https://github.com/giancosta86/astral-bridge) or [aurora-bash](https://github.com/giancosta86/aurora-bash/blob/main/scripts/nvmcd/README.md).
 
 - The **package.json** descriptor must exist in `working-directory`, with the following fields:
   - `engines/nodes`

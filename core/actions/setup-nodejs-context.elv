@@ -11,6 +11,12 @@ use github.com/giancosta86/astral-bridge/v1/version/requested
 
 var nvm~ = $nvm:nvm~
 
+fn check-directory-structure {
+  if (os:is-regular .nvmrc) {
+    fail 'The .nvmrc file is not admitted: use the "engines/node" field in package.json instead!'
+  }
+}
+
 fn check-package-json {
   if (not (os:is-regular package.json)) {
     fail 'package.json must exist!'
@@ -141,6 +147,8 @@ fn main {
   var corepack-version = (input:string corepack-version)
 
   var install-dependencies = (input:bool install-dependencies)
+
+  check-directory-structure
 
   check-package-json
 
