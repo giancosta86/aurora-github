@@ -213,7 +213,7 @@ jobs:
           index-secret: ${{ secrets.FAKE_PYTHON_TOKEN }}
 
   test-setup-jvm-context:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
@@ -221,7 +221,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-jvm-context
 
   test-verify-jvm-project:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
