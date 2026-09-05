@@ -21,30 +21,14 @@ steps:
 
 1. Run `nvm install <NodeJS version in engines/node>`
 
-1. Setup **corepack**:
-   1. if the `corepack-version` input is non-empty, run `npm install --global corepack@<corepack-version>`
+1. Configure **corepack**:
+   1. run `npm install --global corepack@<corepack-version>`
 
-   1. if the `corepack` command is available:
-      1. display its version
+   1. display its version
 
-      1. call `corepack:setup` from [astral-bridge](https://github.com/giancosta86/astral-bridge).
+   1. call `corepack:setup` from [astral-bridge](https://github.com/giancosta86/astral-bridge).
 
-1. Use the `packagemanager:exec` command from [astral-bridge](https://github.com/giancosta86/astral-bridge) to run the `--version` command for the package manager required by the project. In particular, it is detected from:
-   1. the `packageManager` field in **package.json**
-
-   1. the following field in **package.json**:
-
-      ```json
-      {
-        "devEngines": {
-          "packageManager": {
-            "name": "..."
-          }
-        }
-      }
-      ```
-
-   1. a recognized _lockfile_ in the project directory
+1. Use the `packagemanager:exec` command from [astral-bridge](https://github.com/giancosta86/astral-bridge) to run the `--version` command for the package manager required by the project. In particular, it is detected from the `packageManager` field in **package.json**
 
 1. Run again the package manager, passing the `install` command - provided that `install-dependencies` is not set to **false**.
 
