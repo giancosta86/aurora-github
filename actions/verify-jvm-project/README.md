@@ -37,6 +37,8 @@ steps:
 
 ## 🌐 Further references
 
+- [setup-jvm-context](../setup-jvm-context/README.md)
+
 - [check-project-license](../check-project-license/README.md)
 
 - [find-critical-todos](../find-critical-todos/README.md)

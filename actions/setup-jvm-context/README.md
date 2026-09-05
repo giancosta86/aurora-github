@@ -1,6 +1,6 @@
 # setup-jvm-context
 
-Installs and configures a **JVM** environment using **SDKMAN**.
+Installs and configures a **JVM** environment using [SDKMAN](https://sdkman.io/).
 
 ## 🃏 Example
 
@@ -50,6 +50,8 @@ steps:
 | `working-directory` | **string** | Directory containing the **.sdkmanrc** file |     **.**     |
 
 ## 🌐 Further references
+
+- [SDKMAN](https://sdkman.io/)
 
 - [verify-jvm-project](../verify-jvm-project/README.md)
 
