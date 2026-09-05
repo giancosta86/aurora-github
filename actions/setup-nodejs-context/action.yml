@@ -4,7 +4,7 @@ description: Installs and configures a NodeJS environment.
 inputs:
   corepack-version:
     description: corepack version to install, empty to skip.
-    default: latest
+    default: 0.36.x
 
   install-dependencies:
     description: Run the package manager's `install` command.
