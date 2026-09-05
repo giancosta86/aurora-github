@@ -13,6 +13,8 @@ steps:
 
 ## 💡 How it works
 
+1. Check that **package.json** exists and complies with the _requirements_ described below.
+
 1. Detect if a specific **NodeJS** version was requested for this project. In particular, in one of these cases:
    1. If the **.nvmrc** file exists in the project directory - containing the requested NodeJS version, as expected by `nvm`.
 
@@ -68,7 +70,10 @@ steps:
 
 ## ☑️ Requirements
 
-- The **package.json** descriptor must exist in `working-directory`.
+- The **package.json** descriptor must exist in `working-directory`, with the following fields:
+  - `engines/nodes`
+
+  - `packageManager`
 
 ## 📥 Inputs
 
