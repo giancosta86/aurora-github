@@ -153,7 +153,7 @@ jobs:
       - uses: ./.github/test-actions/test-check-subpath-exports
 
   test-verify-npm-package:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -166,7 +166,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-npm-package
 
   test-publish-npm-package:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-verify-npm-package
     steps:
