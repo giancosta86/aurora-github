@@ -27,7 +27,12 @@ steps:
 
    - **jvm-build-tool**: the command used to process the descriptor.
 
-   If no supported descriptor is found in `working-directory`, the variables are set to _an empty value_.
+   In particular, the build tool is detected as follows:
+   - 🪶 **Maven**, if the project descriptor is **pom.xml**
+
+   - 🐘 **Gradle**, if the project descriptor is **build.gradle** or **build.gradle.kts**
+
+   If no supported descriptor is found in `working-directory`, the above variables are set to _an empty value_.
 
 ## ☑️ Requirements
 
@@ -37,8 +42,6 @@ steps:
   java=23-open
   maven=3.9.9
   ```
-
-  If no specific SDK is required, the file can be empty.
 
 ## 📥 Inputs
 
