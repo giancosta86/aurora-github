@@ -27,7 +27,7 @@ steps:
 
 ## ☑️ Requirements
 
-- If existing, **rust-toolchain.toml** should include at least the required toolchain version - for example:
+- **rust-toolchain.toml** must exist - and should include at least the required **toolchain version**; for example:
 
   ```toml
   [toolchain]
