@@ -118,7 +118,7 @@ fn install-dependencies {
 }
 
 fn main {
-  var corepack-version = (input:string &optional corepack-version)
+  var corepack-version = (input:string corepack-version)
 
   var install-dependencies = (input:bool install-dependencies)
 
