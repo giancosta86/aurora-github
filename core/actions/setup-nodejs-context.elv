@@ -30,8 +30,8 @@ fn check-package-json {
     fail 'package.json must contain the "engines/node" field!'
   }
 
-  if (not (seq:drill-down $package-json packageManager)) {
-    fail 'package.json must contain the "packageManager" field!'
+  if (not (package-manager:detect-from-package-json)) {
+    fail 'package.json must contain a field describing the package manager!'
   }
 }
 
@@ -76,26 +76,26 @@ fn install-node {
   }
 }
 
-fn configure-corepack { |corepack-version|
+fn setup-corepack { |corepack-version|
   echo 📥 Now installing corepack@$corepack-version...
 
   command:silence {
     npm install --global corepack@$corepack-version
   }
 
-  echo 🎉 corepack installed!
+  echo 🎉 corepack@$corepack-version installed!
 
   console:section &emoji=🔮 'corepack version' {
     corepack --version
   }
 
-  echo ⚙️ Setting up corepack...
+  echo 🔗 Enabling corepack...
 
   command:silence {
-    corepack:setup
+    corepack enable
   }
 
-  echo 🚀 corepack ready!
+  echo 🟢 corepack enabled!
 }
 
 fn ensure-package-manager {
@@ -103,6 +103,10 @@ fn ensure-package-manager {
     package-manager:detect |
       coalesce (all) npm
   )
+
+  if (not-eq $detected-package-manager npm) {
+    corepack install
+  }
 
   console:section &emoji=📦 'Package manager ('$detected-package-manager')' {
     package-manager:exec --version

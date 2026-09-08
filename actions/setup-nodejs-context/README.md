@@ -26,7 +26,9 @@ steps:
 
    1. display its version
 
-   1. call `corepack:setup` from [astral-bridge](https://github.com/giancosta86/astral-bridge).
+   1. run `corepack enable`
+
+1. Detect the package manager and, if it's not **npm**, run `corepack install`
 
 1. Use the `packagemanager:exec` command from [astral-bridge](https://github.com/giancosta86/astral-bridge) to run the `--version` command for the package manager required by the project. In particular, it is detected from the `packageManager` field in **package.json**
 
@@ -39,7 +41,7 @@ steps:
 - The **package.json** descriptor must exist in `working-directory`, with the following fields:
   - `engines/nodes`
 
-  - `packageManager`
+  - `packageManager` **or** `devEngines/packageManager`, as described by [corepack](https://www.npmjs.com/package/corepack)
 
 ## 📥 Inputs
 
