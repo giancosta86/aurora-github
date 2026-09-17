@@ -118,7 +118,7 @@ fn main {
 
   install-node $requested-tools[node-version]
 
-  configure-corepack $corepack-version
+  setup-corepack $corepack-version
 
   ensure-package-manager $requested-tools[package-manager]
 
