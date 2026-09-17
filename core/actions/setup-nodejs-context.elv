@@ -9,7 +9,7 @@ use github.com/giancosta86/astral-bridge/v2/nodejs/package-manager
 
 fn check-directory-structure {
   if (os:is-regular .nvmrc) {
-    fail 'The .nvmrc file is not admitted: use the "engines/node" field in package.json instead!'
+    fail 'The .nvmrc file is not allowed: use the "engines/node" field in package.json instead!'
   }
 }
 
@@ -53,8 +53,12 @@ fn install-node { |node-version|
     nvm:nvm install $node-version
   }
 
-  # The path set by nvm must be preserved all over the workflow
-  env:cascade PATH
+  all [
+    PATH
+    NVM_BIN
+    NVM_INC
+  ] |
+    each $env:cascade~
 
   echo 🚀 NodeJS ready!
 
@@ -113,8 +117,6 @@ fn main {
   check-directory-structure
 
   var requested-tools = (read-package-json)
-
-  console:inspect &emoji=🧰 'Requested tools' $requested-tools
 
   ensure-nvm
 
