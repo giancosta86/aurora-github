@@ -22,13 +22,22 @@ fn check-package-json {
     from-json < package.json
   )
 
-  if (not (seq:drill-down $package-json engines node)) {
+  var node-version = (seq:drill-down $package-json engines node)
+
+  if (not $node-version) {
     fail 'package.json must contain the "engines/node" field!'
   }
 
-  if (not (package-manager:detect-from-package-json)) {
+  var package-manager = (package-manager:detect-from-package-json)
+
+  if (not $package-manager) {
     fail 'package.json must contain a field describing the package manager!'
   }
+
+  put [
+    &node-version=$node-version
+    &package-manager=$package-manager
+  ]
 }
 
 fn ensure-nvm {
@@ -37,19 +46,15 @@ fn ensure-nvm {
   }
 }
 
-fn install-node {
-  var requested-node-version = (
-    from-json < package.json
-  )[engines][node]
-
-  echo 📥 Installing NodeJS '('$requested-node-version')'...
+fn install-node { |node-version|
+  echo 📥 Installing NodeJS '('$node-version')'...
 
   command:silence {
-    nvm:nvm install $requested-node-version
+    nvm:nvm install $node-version
   }
 
   # The path set by nvm must be preserved all over the workflow
-  env:cascade PATH |
+  env:cascade PATH
 
   echo 🚀 NodeJS ready!
 
@@ -80,17 +85,17 @@ fn setup-corepack { |corepack-version|
   echo 🟢 corepack enabled!
 }
 
-fn ensure-package-manager {
-  console:section &emoji=📦 'Package manager ('$detected-package-manager')' {
+fn ensure-package-manager { |package-manager|
+  console:section &emoji=📦 'Package manager ('$package-manager')' {
     package-manager:exec --version
   }
 }
 
-fn install-dependencies { |detected-package-manager|
+fn install-dependencies { |package-manager|
   echo 📥 Installing the project dependencies...
 
   command:silence {
-    if (eq $detected-package-manager npm) {
+    if (eq $package-manager npm) {
       npm ci
     } else {
       package-manager:exec install
@@ -107,18 +112,18 @@ fn main {
 
   check-directory-structure
 
-  check-package-json
+  var requested-tools = (check-package-json)
 
   ensure-nvm
 
-  install-node
+  install-node $requested-tools[node-version]
 
   configure-corepack $corepack-version
 
-  ensure-package-manager
+  ensure-package-manager $requested-tools[package-manager]
 
   if $install-dependencies {
-    package-manager:install &frozen
+    $install-dependencies $requested-tools[package-manager]
   } else {
     echo 💭 Skipping installation of the project dependencies...
   }
