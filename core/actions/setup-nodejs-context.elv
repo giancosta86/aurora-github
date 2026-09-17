@@ -13,7 +13,7 @@ fn check-directory-structure {
   }
 }
 
-fn check-package-json {
+fn read-package-json {
   if (not (os:is-regular package.json)) {
     fail 'package.json must exist!'
   }
@@ -112,7 +112,9 @@ fn main {
 
   check-directory-structure
 
-  var requested-tools = (check-package-json)
+  var requested-tools = (read-package-json)
+
+  console:inspect &emoji=🧰 'Requested tools' $requested-tools
 
   ensure-nvm
 
