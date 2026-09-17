@@ -25,7 +25,7 @@ fn should-match-version { |version|
   }
 }
 
->> 'The project packages' {
+>> 'The project dependencies' {
   >> 'should be installed' {
     path:join node_modules @giancosta86 typed-env package.json |
       should-be-regular

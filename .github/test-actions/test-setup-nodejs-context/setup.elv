@@ -18,7 +18,7 @@ var expected-pnpm-version = (
   from-json < package.json |
     put (all)[packageManager] |
     str:split @ (all) |
-    drop 1
+    take 1
 )
 echo 📦 Expected pnpm version: $expected-pnpm-version
 
