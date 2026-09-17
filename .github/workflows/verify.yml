@@ -212,10 +212,18 @@ jobs:
         with:
           index-secret: ${{ secrets.FAKE_PYTHON_TOKEN }}
 
-  test-setup-jvm-context:
-    if: false
+  test-setup-sdkman-context:
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/test-actions/test-setup-jvm-context
+
+  test-setup-jvm-context:
+    if: always()
+    runs-on: ubuntu-24.04
+    needs: test-setup-sdkman-context
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-setup-jvm-context
@@ -288,6 +296,7 @@ jobs:
       - test-publish-rust-wasm
       - test-verify-python-package
       - test-publish-python-package
+      - test-setup-sdkman-context
       - test-setup-jvm-context
       - test-verify-jvm-project
       - test-publish-jvm-project

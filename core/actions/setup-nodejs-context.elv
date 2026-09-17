@@ -4,12 +4,8 @@ use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/seq
 use github.com/giancosta86/gauntlet/v1/env
 use github.com/giancosta86/gauntlet/v1/input
-use github.com/giancosta86/astral-bridge/v1/corepack
-use github.com/giancosta86/astral-bridge/v1/nvm
-use github.com/giancosta86/astral-bridge/v1/package-manager
-use github.com/giancosta86/astral-bridge/v1/version/requested
-
-var nvm~ = $nvm:nvm~
+use github.com/giancosta86/astral-bridge/v2/nvm
+use github.com/giancosta86/astral-bridge/v2/nodejs/package-manager
 
 fn check-directory-structure {
   if (os:is-regular .nvmrc) {
@@ -36,22 +32,8 @@ fn check-package-json {
 }
 
 fn ensure-nvm {
-  if (command:exists-in-bash nvm) {
-    echo 🌟 nvm already available!
-  } else {
-    echo 📥 Installing nvm...
-
-    var nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash'
-
-    command:silence {
-      bash -c $nvm-setup-command
-    }
-
-    echo 🚀 nvm ready!
-  }
-
   console:section &emoji=🚢 'nvm version' {
-    nvm --version
+    nvm:nvm --version
   }
 }
 
@@ -63,7 +45,7 @@ fn install-node {
   echo 📥 Installing NodeJS '('$requested-node-version')'...
 
   command:silence {
-    nvm install $requested-node-version
+    nvm:nvm install $requested-node-version
   }
 
   # The path set by nvm must be preserved all over the workflow
@@ -99,25 +81,20 @@ fn setup-corepack { |corepack-version|
 }
 
 fn ensure-package-manager {
-  var detected-package-manager = (
-    package-manager:detect |
-      coalesce (all) npm
-  )
-
-  if (not-eq $detected-package-manager npm) {
-    corepack install
-  }
-
   console:section &emoji=📦 'Package manager ('$detected-package-manager')' {
     package-manager:exec --version
   }
 }
 
-fn install-dependencies {
+fn install-dependencies { |detected-package-manager|
   echo 📥 Installing the project dependencies...
 
   command:silence {
-    package-manager:exec install
+    if (eq $detected-package-manager npm) {
+      npm ci
+    } else {
+      package-manager:exec install
+    }
   }
 
   echo 🎉 Dependencies installed!
@@ -141,7 +118,7 @@ fn main {
   ensure-package-manager
 
   if $install-dependencies {
-    install-dependencies
+    package-manager:install &frozen
   } else {
     echo 💭 Skipping installation of the project dependencies...
   }

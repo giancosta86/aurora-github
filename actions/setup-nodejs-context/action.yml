@@ -21,7 +21,7 @@ runs:
 
     - uses: giancosta86/epm-plus/actions/install-elvish-packages@v1
       with:
-        packages: github.com/giancosta86/astral-bridge@v1
+        packages: github.com/giancosta86/astral-bridge@v2
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}

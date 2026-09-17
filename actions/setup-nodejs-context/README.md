@@ -17,7 +17,7 @@ steps:
 
 1. Check that **package.json** exists and complies with the _requirements_ described below.
 
-1. If **nvm** is not installed, run its installation script.
+1. If **nvm** is not installed, run its installation script; anyway, display its version.
 
 1. Run `nvm install <NodeJS version in engines/node>`
 
@@ -28,11 +28,9 @@ steps:
 
    1. run `corepack enable`
 
-1. Detect the package manager and, if it's not **npm**, run `corepack install`
+1. Use the `packagemanager:exec` command from [astral-bridge](https://github.com/giancosta86/astral-bridge) to run the `--version` command for the package manager required by the project; in particular, it will run `corepack install` if needed.
 
-1. Use the `packagemanager:exec` command from [astral-bridge](https://github.com/giancosta86/astral-bridge) to run the `--version` command for the package manager required by the project. In particular, it is detected from the `packageManager` field in **package.json**
-
-1. Run again the package manager, passing the `install` command - provided that `install-dependencies` is not set to **false**.
+1. Run again the package manager, passing the `install` command - **freezing** dependencies whenever possible - provided that `install-dependencies` is not set to **false**.
 
 ## ☑️ Requirements
 

@@ -1,8 +1,6 @@
 use os
-use path
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/map
-use github.com/giancosta86/ethereal/v1/sdkman
 use github.com/giancosta86/gauntlet/v1/env
 
 var build-tools-by-descriptor = [
@@ -30,32 +28,6 @@ fn detect-build-context {
 
 fn main {
   echo ☕💻 Setting up JVM context in "'"$pwd"'"...
-
-  if (not (os:is-regular $sdkman:sdk-file)) {
-    fail 'Please, create a '$sdkman:sdk-file' file for SDKMAN'
-  }
-
-  sdkman:setup-env
-
-  var home-dir-vars = [(
-    sdkman:get-sdkfile-candidates |
-      map:keys |
-      each $sdkman:get-candidate-home-var~
-  )]
-
-  console:section &emoji=🏡 'HOME directories' {
-    all $home-dir-vars | each { |home-dir-var|
-      get-env $home-dir-var |
-        console:inspect &emoji=📌 $home-dir-var (all)
-    }
-  }
-
-  {
-    put PATH
-    put SDKMAN_ENV
-    all $home-dir-vars
-  } |
-    each $env:cascade~
 
   var build-context = (detect-build-context)
 

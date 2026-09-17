@@ -1,0 +1,12 @@
+name: Test setup-sdkman-context
+description: Tests for setup-sdkman-context.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/setup-sdkman-context
+      with:
+        working-directory: tests/maven-project
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!
