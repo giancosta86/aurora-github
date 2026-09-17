@@ -123,7 +123,7 @@ fn main {
   ensure-package-manager $requested-tools[package-manager]
 
   if $install-dependencies {
-    $install-dependencies $requested-tools[package-manager]
+    install-dependencies $requested-tools[package-manager]
   } else {
     echo 💭 Skipping installation of the project dependencies...
   }
