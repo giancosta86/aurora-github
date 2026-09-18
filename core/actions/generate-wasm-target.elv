@@ -58,7 +58,7 @@ fn try-to-merge-package-json {
     to-json > $generated-package-json-path
 
   console:section &emoji=🧬 'Merged package.json' {
-    highlight:file package.json json
+    highlight:file $generated-package-json-path json
   }
 }
 
