@@ -50,4 +50,4 @@ runs:
         velvet-scripts: classic-gradle
 
     - shell: elvish {0}
-      run: echo ✅ The environment was correctly created!
+      run: echo ✅ All tests OK!
