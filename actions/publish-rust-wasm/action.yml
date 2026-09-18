@@ -45,7 +45,7 @@ runs:
         use github.com/giancosta86/aurora-github/actions/ensure-wasm-pack
         ensure-wasm-pack:main
       env:
-        version: ${{ inputs.wasm-pack-version }}
+        wasm-pack-version: ${{ inputs.wasm-pack-version }}
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
