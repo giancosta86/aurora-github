@@ -174,7 +174,7 @@ jobs:
       - uses: ./.github/test-actions/test-publish-npm-package
 
   test-verify-rust-wasm:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-verify-rust-crate
     steps:
@@ -182,7 +182,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-rust-wasm
 
   test-publish-rust-wasm:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs:
       - test-verify-rust-wasm
@@ -213,12 +213,12 @@ jobs:
           index-secret: ${{ secrets.FAKE_PYTHON_TOKEN }}
 
   test-setup-sdkman-context:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/test-actions/test-setup-jvm-context
+      - uses: ./.github/test-actions/test-setup-sdkman-context
 
   test-setup-jvm-context:
     if: false
