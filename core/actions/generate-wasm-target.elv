@@ -2,6 +2,7 @@ use os
 use path
 use str
 use github.com/giancosta86/ethereal/v1/console
+use github.com/giancosta86/ethereal/v1/highlight
 use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/gauntlet/v1/input
 use github.com/giancosta86/ethereal/v1/map
