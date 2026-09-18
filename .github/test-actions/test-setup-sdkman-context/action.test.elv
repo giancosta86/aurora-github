@@ -27,16 +27,16 @@ use github.com/giancosta86/ethereal/v1/sdkman
 >> 'Home variables' {
   >> 'Java' {
     get-env JAVA_HOME |
-      should-be (sdkman:get-sdk-directory java current)
+      should-be (sdkman:get-sdk-directory java 1.8.0_502)
   }
 
   >> 'Maven' {
     get-env MAVEN_HOME |
-      should-be (sdkman:get-sdk-directory maven current)
+      should-be (sdkman:get-sdk-directory maven 3.3.9)
   }
 
   >> 'Gradle' {
     get-env GRADLE_HOME |
-      should-be (sdkman:get-sdk-directory gradle current)
+      should-be (sdkman:get-sdk-directory gradle 2.10)
   }
 }
