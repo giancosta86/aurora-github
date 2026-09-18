@@ -33,14 +33,7 @@ fn run-wasm-pack { |inputs|
   wasm-pack build --target $target $mode-arg $@npm-scope-args --out-dir $target-directory
 }
 
-fn try-to-merge-package-json {
-  var generated-package-json-path = (path:join pkg package.json)
-
-  if (not (os:is-regular $generated-package-json-path)) {
-    echo 💭 No package.json file was generated - no merging will take place
-    return
-  }
-
+fn merge-package-json { |generated-package-json-path|
   var generated-package-json = (
     from-json < $generated-package-json-path
   )
@@ -56,6 +49,22 @@ fn try-to-merge-package-json {
   ] |
     map:merge |
     to-json > $generated-package-json-path
+}
+
+fn try-to-format-json-file { |path|
+  if (not (has-external jq)) {
+    return
+  }
+
+  slurp < $path |
+    print (all) |
+    jq > $path
+}
+
+fn process-generated-package-json { |generated-package-json-path|
+  merge-package-json $generated-package-json-path
+
+  try-to-format-json-file $generated-package-json-path
 
   console:section &emoji=🧬 'Merged package.json' {
     highlight:file $generated-package-json-path json
@@ -91,7 +100,13 @@ fn main {
     &npm-scope=$npm-scope
   ]
 
-  try-to-merge-package-json
+  var generated-package-json-path = (path:join pkg package.json)
+
+  if (os:is-regular $generated-package-json-path) {
+    process-generated-package-json $generated-package-json-path
+  } else {
+    echo 💭 No package.json file was generated...
+  }
 
   try-to-copy-special-root-files $target-directory
 
