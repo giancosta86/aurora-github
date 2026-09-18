@@ -32,7 +32,7 @@ fn main {
   var build-context = (detect-build-context)
 
   if $build-context[jvm-build-tool] {
-    console:inspect &emoji=🧰 'Build context' $build-context
+    console:inspect &emoji=☕ 'JVM build context variables' $build-context
   } else {
     echo 💭 Cannot detect a supported JVM build tool for the project...
   }
