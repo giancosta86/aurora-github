@@ -1,5 +1,5 @@
 name: Setup JVM context
-description: Installs and configures a JVM environment using SDKMAN.
+description: Installs and configures a Java Virtual Machine environment using SDKMAN.
 
 inputs:
   working-directory:

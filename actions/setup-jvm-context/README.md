@@ -1,6 +1,6 @@
 # setup-jvm-context
 
-Installs and configures a **JVM** environment using [SDKMAN](https://sdkman.io/).
+Installs and configures a **Java Virtual Machine** environment using [SDKMAN](https://sdkman.io/).
 
 ## 🃏 Example
 
