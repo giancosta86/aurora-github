@@ -20,6 +20,8 @@ steps:
      1. The **dist** subdirectory will contain the actual website.
 
    - a **pom.xml** file:
+     1. Run [setup-jvm-context](../setup-jvm-context/README.md)
+
      1. Run `mvn site`.
 
      1. The **target/site** subdirectory will contain the actual website.
@@ -33,6 +35,11 @@ steps:
 ## ☑️ Requirements
 
 - **GitHub Pages** must be enabled for the current repository - and having GitHub Actions as their **source**.
+
+- The requirements for:
+  - [setup-nodejs-context](../setup-nodejs-context/README.md) - when using **NodeJS**
+
+  - [setup-jvm-context](../setup-jvm-context/README.md) - when using **Maven**
 
 - The following [permissions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work:
 
@@ -50,7 +57,7 @@ steps:
 
 |        Name         |    Type     |                            Description                             | Default value |
 | :-----------------: | :---------: | :----------------------------------------------------------------: | :-----------: |
-| `corepack-version`  | **string**  | Version of corepack to install for a NodeJS website, empty to skip |  **latest**   |
+| `corepack-version`  | **string**  | Version of corepack to install for a NodeJS website, empty to skip |  **0.36.x**   |
 |      `dry-run`      | **boolean** |             Stop the publication just before uploading             |   **false**   |
 | `working-directory` | **string**  |        Directory containing the website or its source files        |     **.**     |
 

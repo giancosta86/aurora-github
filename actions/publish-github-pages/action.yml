@@ -4,7 +4,7 @@ description: Publishes a directory as the GitHub Pages website for the current r
 inputs:
   corepack-version:
     description: Version of corepack to install for a NodeJS website, empty to skip.
-    default: latest
+    default: 0.36.x
 
   dry-run:
     description: Stop the publication just before uploading.
