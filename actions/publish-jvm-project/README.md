@@ -39,6 +39,8 @@ steps:
 
 ## ☑️ Requirements
 
+- The requirements for [setup-jvm-context](../setup-jvm-context/README.md)
+
 - `auth-user` and `auth-token` are never mandatory - because of the flexibility provided by the supported build tools - but they are recommended for the most common scenarios:
   - when the build tool is 🪶**Maven**, for deploying a conventional library it is a wise idea to declare a server named **target-server** within **pom.xml**, like this:
 

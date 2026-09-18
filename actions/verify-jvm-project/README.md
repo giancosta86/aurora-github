@@ -26,6 +26,10 @@ steps:
 
 1. Find [critical TODOs](../find-critical-todos/README.md) in the source code.
 
+## ☑️ Requirements
+
+- The requirements for [setup-jvm-context](../setup-jvm-context/README.md).
+
 ## 📥 Inputs
 
 |        Name         |    Type     |                     Description                     |                  Default value                  |
