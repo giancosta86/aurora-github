@@ -43,11 +43,9 @@ runs:
         working-directory: ${{ inputs.working-directory }}
 
     - if: env.strategy == 'maven-site'
-      shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-github/actions/setup-jvm-context
-        setup-jvm-context:main
+      uses: giancosta86/aurora-github/actions/setup-jvm-context@v13.0.0
+      with:
+        working-directory: ${{ inputs.working-directory }}
 
     - if: env.strategy == 'maven-site'
       shell: elvish {0}
