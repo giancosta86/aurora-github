@@ -22,9 +22,9 @@ steps:
 1. Install the `wasm-pack` command at `wasm-pack-version`.
 
 1. Generate the NodeJS package source files in the **pkg** subdirectory. In particular:
-   - if `node-version` is passed, it will be injected into the `engines/node` field in **package.json**
+   - `node-version` will be injected into the `engines/node` field in **package.json**
 
-   - if `package-manager` is passed, it will be injected into the `packageManager` field in **package.json**
+   - `package-manager` will be injected into the `packageManager` field in **package.json**
 
 1. If `working-directory` contains **.npmrc**, copy it to **pkg**.
 

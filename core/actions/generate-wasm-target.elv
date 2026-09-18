@@ -89,8 +89,8 @@ fn main {
   var target-directory = (input:string target-directory)
   var development = (input:bool development)
   var npm-scope = (input:string npm-scope)
-  var node-version = (input:string &optional node-version)
-  var package-manager = (input:string &optional package-manager)
+  var node-version = (input:string node-version)
+  var package-manager = (input:string package-manager)
 
   run-wasm-pack [
     &target=$target
