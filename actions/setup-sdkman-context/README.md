@@ -22,6 +22,13 @@ steps:
 
    - set/unset **\*\_HOME** environment variables - based on the candidates declared in **.sdkmanrc**
 
+1. Export the following variables to downstream steps within the workflow:
+   - **PATH**
+
+   - **SDKMAN_ENV**
+
+   - **\*\_HOME** - one for each _installed candidate_.
+
 ## ☑️ Requirements
 
 - The **.sdkmanrc** configuration file **must** exist in `working-directory` - something like:
