@@ -1,4 +1,3 @@
-use os
 use github.com/giancosta86/ethereal/v1/fs
 use ./shared
 
