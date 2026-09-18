@@ -19,12 +19,6 @@ inputs:
   npm-scope:
     description: npm package scope or `<ROOT>`.
 
-  node-version:
-    description: Required NodeJS version.
-
-  package-manager:
-    description: Required package manager, with version.
-
   working-directory:
     description: Directory containing `Cargo.toml`.
     default: .
@@ -57,8 +51,6 @@ runs:
         target-directory: pkg
         development: false
         npm-scope: ${{ inputs.npm-scope }}
-        node-version: ${{ inputs.node-version }}
-        package-manager: ${{ inputs.package-manager }}
 
     - uses: giancosta86/aurora-github/actions/inject-branch-version@v13.0.0
       with:

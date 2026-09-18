@@ -3,6 +3,7 @@ use str
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/gauntlet/v1/input
+use github.com/giancosta86/ethereal/v1/map
 
 fn get-npm-scope-args { |npm-scope|
   var npm-scope-arg = (
@@ -30,42 +31,28 @@ fn run-wasm-pack { |inputs|
   wasm-pack build --target $target $mode-arg $@npm-scope-args --out-dir $target-directory
 }
 
-fn try-to-update-package-json { |inputs|
-  tmp pwd = pkg
+fn try-to-merge-package-json {
+  var generated-package-json-path = (path:join pkg package.json)
 
-  if (not (os:is-regular package.json)) {
+  if (not (os:is-regular $generated-package-json-path)) {
     return
   }
 
-  var node-version = $inputs[node-version]
-  var package-manager = $inputs[package-manager]
+  var generated-package-json = (
+    from-json < $generated-package-json-path
+  )
 
-  if (or $node-version $package-manager) {
-    var package-json = (from-json < package.json)
+  var manual-package-json = (
+    from-json < package.json
+  )
 
-    if $node-version {
-      console:inspect &emoji=🧬 'Injecting the requested NodeJS version' $node-version
+  all [
+    $generated-package-json
 
-      var engines = (
-        lang:get-value $package-json engines |
-          coalesce (all) [&]
-      )
-
-      set package-json = (
-        assoc $engines node $node-version |
-          assoc $package-json engines (all)
-      )
-    }
-
-    if $package-manager {
-      console:inspect &emoji=🧬 'Injecting the requested package manager' $package-manager
-
-      set package-json = (assoc $package-json packageManager $package-manager)
-    }
-
-    put $package-json |
-      lang:to-json > package.json
-  }
+    $manual-package-json
+  ] |
+    map:merge |
+    to-json > $generated-package-json-path
 }
 
 fn try-to-copy-special-root-files { |target-directory|
@@ -89,8 +76,6 @@ fn main {
   var target-directory = (input:string target-directory)
   var development = (input:bool development)
   var npm-scope = (input:string npm-scope)
-  var node-version = (input:string node-version)
-  var package-manager = (input:string package-manager)
 
   run-wasm-pack [
     &target=$target
@@ -99,10 +84,7 @@ fn main {
     &npm-scope=$npm-scope
   ]
 
-  try-to-update-package-json [
-    &node-version=$node-version
-    &package-manager=$package-manager
-  ]
+  try-to-merge-package-json
 
   try-to-copy-special-root-files $target-directory
 

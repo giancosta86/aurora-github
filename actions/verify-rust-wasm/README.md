@@ -22,10 +22,9 @@ steps:
 
 1. Run `wasm-pack test` to run headless browser tests on Chrome.
 
-1. Generate the NodeJS package source files into the **pkg** subdirectory. In particular:
-   - `node-version` will be injected into the `engines/node` field in **package.json**
+1. Generate the NodeJS package source files into the **pkg** subdirectory.
 
-   - `package-manager` will be injected into the `packageManager` field in **package.json**
+1. **If** a **package.json** was generated, **merge** the **package.json** in `working-directory` **on top of it**.
 
 1. If `working-directory` contains **.npmrc**, copy it to **pkg**.
 
@@ -38,7 +37,9 @@ steps:
 
 ## ☑️ Requirements
 
-- `rust-toolchain.toml` must be present in `working-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
+- **rust-toolchain.toml** must be present in `working-directory` - as described in [setup-rust-context](../setup-rust-context/README.md)
+
+- **package.json** must be present in `working-directory`, declaring at least a *NodeJS version* and a *package manager*, which are required to run [setup-nodejs-context](../setup-nodejs-context/README.md); it is worth noting that such file will be merged on top of any generated **package.json**.
 
 ## 📥 Inputs
 
@@ -47,8 +48,6 @@ steps:
 |   `wasm-pack-version`    | **string**  |           `wasm-pack` version to install            |                                                                                          |
 |      `wasm-target`       | **string**  |       Target of the `wasm-pack build` command       |                                         **web**                                          |
 |       `npm-scope`        | **string**  |           npm package scope, or `<ROOT>`            |                                                                                          |
-|      `node-version`      | **string**  |               Required NodeJS version               |                                                                                          |
-|    `package-manager`     | **string**  |     Required package manager, with `@` version      |                                                                                          |
 | `client-tests-directory` | **string**  |   Relative directory containing the client tests    |                                     **client-tests**                                     |
 |       `run-clippy`       | **boolean** |              Enable linting via Clippy              |                                         **true**                                         |
 |     `check-rustdoc`      | **boolean** |  Build the documentation - with warnings as errors  |                                        **false**                                         |
