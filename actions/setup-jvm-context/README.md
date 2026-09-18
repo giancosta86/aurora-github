@@ -16,17 +16,17 @@ steps:
 1. Run [setup-sdkman-context](../setup-sdkman-context/README.md) on the given `working-directory`.
 
 1. Set the following environment variables:
-   - **jvm-descriptor**: the name of the descriptor file, among the supported ones:
-     - **pom.xml** (🪶 **Maven**)
+   - **jvm-descriptor**: the name of the descriptor file, among the supported ones; in particular:
+     - **pom.xml**: 🪶 **Maven**
 
-     - **build.gradle.kts** (🐘 **Gradle** with **Kotlin** scripting)
+     - **build.gradle.kts**: 🐘 **Gradle** with **Kotlin** scripting
 
-     - **build.gradle** (🐘 **Gradle** with **Groovy** scripting)
+     - **build.gradle**: 🐘 **Gradle** with **Groovy** scripting
 
    - **jvm-build-tool**: the command used to process the descriptor.
-     - **mvn** (🪶 **Maven**)
+     - **mvn**: 🪶 **Maven**
 
-     - **gradle** (🐘 **Gradle**)
+     - **gradle**: 🐘 **Gradle**
 
    If no supported descriptor is found in `working-directory`, the above variables are set to _empty strings_.
 
@@ -47,10 +47,12 @@ steps:
 
 ## 🌐 Further references
 
-- [SDKMAN](https://sdkman.io/)
-
 - [verify-jvm-project](../verify-jvm-project/README.md)
 
 - [publish-jvm-project](../publish-jvm-project/README.md)
+
+- [setup-sdkman-context](../setup-sdkman-context/README.md)
+
+- [SDKMAN](https://sdkman.io/)
 
 - [aurora-github](../../README.md)
