@@ -36,6 +36,7 @@ fn try-to-merge-package-json {
   var generated-package-json-path = (path:join pkg package.json)
 
   if (not (os:is-regular $generated-package-json-path)) {
+    echo 💭 No package.json file was generated - no merging will take place
     return
   }
 
@@ -54,6 +55,10 @@ fn try-to-merge-package-json {
   ] |
     map:merge |
     to-json > $generated-package-json-path
+
+  console:section &emoji=🧬 'Merged package.json' {
+    highlight:file package.json json
+  }
 }
 
 fn try-to-copy-special-root-files { |target-directory|
