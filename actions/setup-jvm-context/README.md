@@ -16,16 +16,19 @@ steps:
 1. Run [setup-sdkman-context](../setup-sdkman-context/README.md) on the given `working-directory`.
 
 1. Set the following environment variables:
-   - **jvm-descriptor**: the name of the descriptor file, among the supported ones.
+   - **jvm-descriptor**: the name of the descriptor file, among the supported ones:
+     - **pom.xml** (🪶 **Maven**)
+
+     - **build.gradle.kts** (🐘 **Gradle** with **Kotlin** scripting)
+
+     - **build.gradle** (🐘 **Gradle** with **Groovy** scripting)
 
    - **jvm-build-tool**: the command used to process the descriptor.
+     - **mvn** (🪶 **Maven**)
 
-   In particular, the build tool is detected as follows:
-   - 🪶 **Maven**, if the project descriptor is **pom.xml**
+     - **gradle** (🐘 **Gradle**)
 
-   - 🐘 **Gradle**, if the project descriptor is **build.gradle** or **build.gradle.kts**
-
-   If no supported descriptor is found in `working-directory`, the above variables are set to _an empty value_.
+   If no supported descriptor is found in `working-directory`, the above variables are set to _empty strings_.
 
 ## ☑️ Requirements
 
