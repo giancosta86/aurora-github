@@ -51,14 +51,6 @@ fn merge-package-json { |generated-package-json-path|
     lang:to-json > $generated-package-json-path
 }
 
-fn process-generated-package-json { |generated-package-json-path|
-  merge-package-json $generated-package-json-path
-
-  console:section &emoji=🧬 'Merged package.json' {
-    highlight:file $generated-package-json-path json
-  }
-}
-
 fn try-to-copy-special-root-files { |target-directory|
   var root-files-to-copy = [
     .npmrc
@@ -91,7 +83,7 @@ fn main {
   var generated-package-json-path = (path:join pkg package.json)
 
   if (os:is-regular $generated-package-json-path) {
-    process-generated-package-json $generated-package-json-path
+    merge-package-json $generated-package-json-path
   } else {
     echo 💭 No package.json file was generated...
   }
