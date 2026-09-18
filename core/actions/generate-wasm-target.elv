@@ -48,23 +48,11 @@ fn merge-package-json { |generated-package-json-path|
     $manual-package-json
   ] |
     map:merge |
-    to-json > $generated-package-json-path
-}
-
-fn try-to-format-json-file { |path|
-  if (not (has-external jq)) {
-    return
-  }
-
-  slurp < $path |
-    print (all) |
-    jq > $path
+    lang:to-json > $generated-package-json-path
 }
 
 fn process-generated-package-json { |generated-package-json-path|
   merge-package-json $generated-package-json-path
-
-  try-to-format-json-file $generated-package-json-path
 
   console:section &emoji=🧬 'Merged package.json' {
     highlight:file $generated-package-json-path json
