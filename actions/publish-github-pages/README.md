@@ -20,7 +20,7 @@ steps:
      1. The **dist** subdirectory will contain the actual website.
 
    - a **pom.xml** file:
-     1. Run [setup-jvm-context](../setup-jvm-context/README.md)
+     1. Run [setup-jvm-context](../setup-jvm-context/README.md).
 
      1. Run `mvn site`.
 
@@ -37,9 +37,9 @@ steps:
 - **GitHub Pages** must be enabled for the current repository - and having GitHub Actions as their **source**.
 
 - The requirements for:
-  - [setup-nodejs-context](../setup-nodejs-context/README.md) - when using **NodeJS**
+  - [setup-nodejs-context](../setup-nodejs-context/README.md) - when using **NodeJS**.
 
-  - [setup-jvm-context](../setup-jvm-context/README.md) - when using **Maven**
+  - [setup-jvm-context](../setup-jvm-context/README.md) - when using **Maven**.
 
 - The following [permissions](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token) must be set for the action to work:
 
@@ -70,6 +70,8 @@ steps:
 ## 🌐 Further references
 
 - [setup-nodejs-context](../setup-nodejs-context/README.md)
+
+- [setup-jvm-context](../setup-jvm-context/README.md)
 
 - [GitHub Pages](https://pages.github.com/)
 

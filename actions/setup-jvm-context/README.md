@@ -9,7 +9,13 @@ steps:
   - uses: giancosta86/aurora-github/actions/setup-jvm-context@v13
 ```
 
-**Please, note**: this action is automatically run by [verify-jvm-project](../verify-jvm-project/README.md) and [publish-jvm-project](../publish-jvm-project/README.md).
+**Please, note**: this action is automatically run by:
+
+- [verify-jvm-project](../verify-jvm-project/README.md)
+
+- [publish-jvm-project](../publish-jvm-project/README.md)
+
+- [publish-github-pages](../publish-github-pages/README.md)
 
 ## 💡 How it works
 
