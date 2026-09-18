@@ -13,7 +13,7 @@ steps:
 
 ## 💡 How it works
 
-1. Verify that [.sdkmanrc](https://sdkman.io/usage/#env-command) exists.
+1. Verify that [.sdkmanrc](https://sdkman.io/usage/#env-command) exists in `working-directory`.
 
 1. Run `sdkman:setup-env` to:
    - install all the SDKs required by **.sdkmanrc**
@@ -24,7 +24,7 @@ steps:
 
 ## ☑️ Requirements
 
-- The **.sdkmanrc** configuration file **must** exist - something like:
+- The **.sdkmanrc** configuration file **must** exist in `working-directory` - something like:
 
   ```toml
   java=23-open
