@@ -221,7 +221,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-sdkman-context
 
   test-setup-jvm-context:
-    if: always()
+    if: false
     runs-on: ubuntu-24.04
     needs: test-setup-sdkman-context
     steps:
@@ -229,7 +229,7 @@ jobs:
       - uses: ./.github/test-actions/test-setup-jvm-context
 
   test-verify-jvm-project:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
@@ -241,7 +241,7 @@ jobs:
       - uses: ./.github/test-actions/test-verify-jvm-project
 
   test-publish-jvm-project:
-    if: false
+    if: always()
     runs-on: ubuntu-24.04
     needs: test-verify-jvm-project
     steps:
