@@ -20,10 +20,7 @@ fn detect-build-context {
     }
   }
 
-  put [
-    &jvm-descriptor=$nil
-    &jvm-build-tool=$nil
-  ]
+  fail 'Cannot detect a supported JVM tool descriptor!'
 }
 
 fn main {
@@ -31,11 +28,7 @@ fn main {
 
   var build-context = (detect-build-context)
 
-  if $build-context[jvm-build-tool] {
-    console:inspect &emoji=☕ 'JVM build context variables' $build-context
-  } else {
-    echo 💭 Cannot detect a supported JVM build tool for the project...
-  }
+  console:inspect &emoji=☕ 'JVM build context variables' $build-context
 
   env:map $build-context
 
