@@ -27,7 +27,7 @@ use github.com/giancosta86/ethereal/v1/sdkman
 >> 'Home variables' {
   >> 'Java' {
     get-env JAVA_HOME |
-      should-be (sdkman:get-sdk-directory java 1.8.0_502.fx-zulu)
+      should-be (sdkman:get-sdk-directory java 8.0.502.fx-zulu)
   }
 
   >> 'Maven' {
