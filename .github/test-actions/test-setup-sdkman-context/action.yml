@@ -1,0 +1,23 @@
+name: Test setup-sdkman-context
+description: Tests for setup-sdkman-context.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/init-aurora-github
+
+    - shell: bash
+      working-directory: ${{ github.action_path }}
+      run: elvish setup.elv
+
+    - uses: ./actions/setup-sdkman-context
+      with:
+        working-directory: ${{ env.temp-project-dir }}
+
+    - uses: ./actions/run-elvish-tests
+      with:
+        working-directory: ${{ github.action_path }}
+        velvet-scripts: action
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

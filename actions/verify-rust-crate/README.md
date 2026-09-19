@@ -6,7 +6,7 @@ Verifies the source files of a **Rust** crate.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/verify-rust-crate@v11
+  - uses: giancosta86/aurora-github/actions/verify-rust-crate@v13
 ```
 
 **Please, note**: this action is automatically run by [verify-rust-wasm](../verify-rust-wasm/README.md).

@@ -6,7 +6,7 @@ Replaces the _given regex_ with the _given replacement_ in all the requested fil
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/replace-regex-pattern@v11
+  - uses: giancosta86/aurora-github/actions/replace-regex-pattern@v13
     with:
       files: alpha.txt, **.md
       regex: "([ae])"

@@ -6,7 +6,7 @@ Verifies the source files of an **Elvish** package.
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/verify-elvish-package@v11
+  - uses: giancosta86/aurora-github/actions/verify-elvish-package@v13
 ```
 
 ## 💡 How it works

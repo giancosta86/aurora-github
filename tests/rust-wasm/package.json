@@ -1,0 +1,6 @@
+{
+  "packageManager": "pnpm@10.22.0",
+  "engines": {
+    "node": "26.2.0"
+  }
+}

@@ -6,7 +6,7 @@ Verifies that all the jobs in the `needs:` directive of the current job have com
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/check-required-jobs@v11
+  - uses: giancosta86/aurora-github/actions/check-required-jobs@v13
     with:
       needs-as-json: ${{ toJSON(needs) }}
 ```

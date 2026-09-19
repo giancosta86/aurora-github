@@ -46,8 +46,6 @@ The actions can be grouped by technology:
 
 - [publish-jvm-project](actions/publish-jvm-project/README.md)
 
-- [install-via-sdkman](actions/install-via-sdkman/README.md)
-
 ## 🐍 Python
 
 - [verify-python-package](actions/verify-python-package/README.md)

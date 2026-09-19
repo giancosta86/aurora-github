@@ -6,7 +6,7 @@ Verifies the source files of a **Python** package using [PDM](https://pdm-projec
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/verify-python-package@v11
+  - uses: giancosta86/aurora-github/actions/verify-python-package@v13
 ```
 
 ## 💡 How it works

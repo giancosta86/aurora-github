@@ -1,136 +1,133 @@
-use github.com/giancosta86/gauntlet/v1/env
-use github.com/giancosta86/gauntlet/v1/input
+use os
 use github.com/giancosta86/ethereal/v1/command
 use github.com/giancosta86/ethereal/v1/console
-use github.com/giancosta86/astral-bridge/v1/corepack
-use github.com/giancosta86/astral-bridge/v1/nvm
-use github.com/giancosta86/astral-bridge/v1/package-manager
-use github.com/giancosta86/astral-bridge/v1/version/requested
+use github.com/giancosta86/ethereal/v1/seq
+use github.com/giancosta86/gauntlet/v1/env
+use github.com/giancosta86/gauntlet/v1/input
+use github.com/giancosta86/astral-bridge/v2/nvm
+use github.com/giancosta86/astral-bridge/v2/nodejs/package-manager
 
-var nvm~ = $nvm:nvm~
+fn check-directory-structure {
+  if (os:is-regular .nvmrc) {
+    fail 'The .nvmrc file is not allowed: use the "engines/node" field in package.json instead!'
+  }
+}
+
+fn read-package-json {
+  if (not (os:is-regular package.json)) {
+    fail 'package.json must exist!'
+  }
+
+  var package-json = (
+    from-json < package.json
+  )
+
+  var node-version = (seq:drill-down $package-json engines node)
+
+  if (not $node-version) {
+    fail 'package.json must contain the "engines/node" field!'
+  }
+
+  var package-manager = (package-manager:detect-from-package-json)
+
+  if (not $package-manager) {
+    fail 'package.json must contain a field describing the package manager!'
+  }
+
+  put [
+    &node-version=$node-version
+    &package-manager=$package-manager
+  ]
+}
 
 fn ensure-nvm {
-  if (command:exists-in-bash nvm) {
-    echo 🌟 nvm already available!
-  } else {
-    echo 📥 Installing nvm...
-
-    var nvm-setup-command = 'wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
-
-    command:silence {
-      bash -c $nvm-setup-command
-    }
-
-    echo 🚀 nvm ready!
-  }
-
   console:section &emoji=🚢 'nvm version' {
-    nvm --version
+    nvm:nvm --version
   }
 }
 
-fn install-specific-nodejs { |version|
-  ensure-nvm
-
-  echo 📥 Installing NodeJS '('$version')'...
+fn install-node { |node-version|
+  echo 📥 Installing NodeJS '('$node-version')'...
 
   command:silence {
-    nvm install $version
+    nvm:nvm install $node-version
   }
 
-  # The path set by nvm must be preserved all over the workflow
-  get-env PATH |
-    env:set PATH
+  all [
+    PATH
+    NVM_BIN
+    NVM_INC
+  ] |
+    each $env:cascade~
 
-  echo 🚀 NodeJS '('$version')' ready!
-}
-
-fn ensure-node {
-  var requested-node-version = (requested:detect-recursively $pwd)
-
-  if $requested-node-version {
-    console:inspect &emoji=🏷️ 'Requested NodeJS version' $requested-node-version
-
-    install-specific-nodejs $requested-node-version
-  } else {
-    echo 💭 No specific NodeJS version requested...
-
-    if (has-external node) {
-      echo 🌟 NodeJS is already on the system!
-    } else {
-      install-specific-nodejs latest
-    }
-  }
+  echo 🚀 NodeJS ready!
 
   console:section &emoji=🎡 'NodeJS version' {
     node --version
   }
 }
 
-fn configure-corepack { |corepack-version|
-  if $corepack-version {
-    echo 📥 Now installing corepack@$corepack-version...
+fn setup-corepack { |corepack-version|
+  echo 📥 Now installing corepack@$corepack-version...
 
-    command:silence {
-      npm install --global corepack@$corepack-version
-    }
-
-    echo 🎉 corepack installed!
-  } else {
-    echo 💭 Skipping corepack installation, as it was not requested...
+  command:silence {
+    npm install --global corepack@$corepack-version
   }
 
-  if (has-external corepack) {
-    console:section &emoji=🔮 'corepack version' {
-      corepack --version
-    }
+  echo 🎉 corepack@$corepack-version installed!
 
-    echo ⚙️ Setting up corepack...
-
-    command:silence {
-      corepack:setup
-    }
-
-    echo 🚀 corepack ready!
-  } else {
-    echo 💭 corepack not available on the system...
+  console:section &emoji=🔮 'corepack version' {
+    corepack --version
   }
+
+  echo 🔗 Enabling corepack...
+
+  command:silence {
+    corepack enable
+  }
+
+  echo 🟢 corepack enabled!
 }
 
-fn ensure-package-manager {
-  var detected-package-manager = (
-    package-manager:detect |
-      coalesce (all) npm
-  )
-
-  console:section &emoji=📦 'Package manager ('$detected-package-manager')' {
+fn ensure-package-manager { |package-manager|
+  console:section &emoji=📦 'Package manager ('$package-manager')' {
     package-manager:exec --version
   }
 }
 
-fn install-dependencies {
+fn install-dependencies { |package-manager|
   echo 📥 Installing the project dependencies...
 
   command:silence {
-    package-manager:exec install
+    if (eq $package-manager npm) {
+      npm ci
+    } else {
+      package-manager:exec install
+    }
   }
 
   echo 🎉 Dependencies installed!
 }
 
 fn main {
-  var corepack-version = (input:string &optional corepack-version)
+  var corepack-version = (input:string corepack-version)
 
   var install-dependencies = (input:bool install-dependencies)
 
-  ensure-node
+  check-directory-structure
 
-  configure-corepack $corepack-version
+  var requested-tools = (read-package-json)
 
-  ensure-package-manager
+  ensure-nvm
+
+  install-node $requested-tools[node-version]
+
+  setup-corepack $corepack-version
+
+  ensure-package-manager $requested-tools[package-manager]
 
   if $install-dependencies {
-    install-dependencies
+    install-dependencies $requested-tools[package-manager]
   } else {
     echo 💭 Skipping installation of the project dependencies...
   }
