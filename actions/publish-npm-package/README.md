@@ -11,6 +11,8 @@ steps:
       npm-token: ${{ secrets.NPM_TOKEN }}
 ```
 
+**Please, note**: this action is automatically run by [publish-rust-wasm](../publish-rust-wasm/README.md).
+
 ## 💡 How it works
 
 1. Run [enforce-branch-version](../enforce-branch-version/README.md), forwarding the `enforce-branch-version` input to its `mode` input.
@@ -32,8 +34,6 @@ steps:
 - This action is designed for _publication_ only - not for _verification_: you should call [verify-npm-package](../verify-npm-package/README.md) for that instead.
 
 - Before the first publication, running with `dry-run` set to **true** during the _verification_ phase is recommended.
-
-- This action is automatically run by [publish-rust-wasm](../publish-rust-wasm/README.md).
 
 ## ☑️ Requirements
 
