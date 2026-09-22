@@ -1,6 +1,5 @@
 use github.com/giancosta86/ethereal/v1/python/pipx
 use github.com/giancosta86/gauntlet/v1/input
-use ../python/project
 
 fn main {
   var pdm-version = (input:string pdm-version)
