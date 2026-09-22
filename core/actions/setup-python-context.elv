@@ -10,16 +10,6 @@ fn check-directory-structure {
   }
 }
 
-fn install-dependencies { |pdm-version|
-  var pdm~ = (pipx:get-command pdm &version=$pdm-version)
-
-  echo 📥 Installing project dependencies...
-
-  pdm install
-
-  echo 🚀 Project dependencies ready!
-}
-
 fn main {
   var pdm-version = (input:string pdm-version)
 
@@ -29,8 +19,14 @@ fn main {
 
   check-directory-structure
 
+  var pdm~ = (pipx:get-command pdm &version=$pdm-version)
+
   if $install-dependencies {
-    install-dependencies $pdm-version
+    echo 📥 Installing project dependencies...
+
+    pdm install
+
+    echo 🚀 Project dependencies ready!
   } else {
     echo 💭 Skipping installation of the project dependencies...
   }
