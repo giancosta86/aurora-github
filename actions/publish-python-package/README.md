@@ -33,7 +33,7 @@ steps:
 |        Name         |    Type     |                Description                 | Default value |
 | :-----------------: | :---------: | :----------------------------------------: | :-----------: |
 |      `dry-run`      | **boolean** |        Run a simulated publication         |   **false**   |
-|    `pdm-version`    | **string**  |     Version of PDM that should be used     |               |
+|    `pdm-version`    | **string**  |      Version of PDM that will be used      |               |
 |     `index-url`     | **string**  |  URL of the target index - empty for PyPI  |               |
 |    `index-user`     | **string**  |      User for publishing to the index      |               |
 |   `index-secret`    | **string**  | Password/token for publishing to the index |               |

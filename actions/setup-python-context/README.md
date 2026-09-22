@@ -33,7 +33,7 @@ steps:
 
 |          Name          |    Type     |                   Description                    | Default value |
 | :--------------------: | :---------: | :----------------------------------------------: | :-----------: |
-|     `pdm-version`      | **string**  |        Version of PDM that should be used        |               |
+|     `pdm-version`      | **string**  |         Version of PDM that will be used         |               |
 | `install-dependencies` | **boolean** |           Run PDM's `install` command            |   **true**    |
 |  `working-directory`   | **string**  | Directory containing the **pyproject.toml** file |     **.**     |
 

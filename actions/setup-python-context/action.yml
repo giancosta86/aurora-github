@@ -3,7 +3,7 @@ description: Installs and configures a PDM-based Python environment.
 
 inputs:
   pdm-version:
-    description: Version of PDM that should be used.
+    description: Version of PDM that will be used.
 
   install-dependencies:
     description: Run PDM's `install` command.

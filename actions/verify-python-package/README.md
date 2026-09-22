@@ -36,7 +36,7 @@ steps:
 
 |        Name         |    Type     |                     Description                     | Default value |
 | :-----------------: | :---------: | :-------------------------------------------------: | :-----------: |
-|    `pdm-version`    | **string**  |         Version of PDM that should be used          |               |
+|    `pdm-version`    | **string**  |          Version of PDM that will be used           |               |
 |   `check-license`   | **boolean** |          Run checks on the project license          |   **true**    |
 |    `todo-files`     | **string**  | File patterns potentially containing critical TODOs |    **.py**    |
 | `working-directory` | **string**  |       Directory containing **pyproject.toml**       |     **.**     |

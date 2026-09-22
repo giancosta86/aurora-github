@@ -7,7 +7,7 @@ inputs:
     default: false
 
   pdm-version:
-    description: Version of PDM that should be used.
+    description: Version of PDM that will be used.
 
   index-url:
     description: URL of the target index - empty for PyPI.

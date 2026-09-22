@@ -3,7 +3,7 @@ description: Verifies the source files of a Python package using PDM.
 
 inputs:
   pdm-version:
-    description: Version of PDM that should be used.
+    description: Version of PDM that will be used.
 
   check-license:
     description: Run checks on the project license.
