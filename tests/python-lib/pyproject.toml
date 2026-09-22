@@ -4,7 +4,7 @@ version = "0.0.0"
 description = "My sample Python library"
 readme = "README.md"
 authors = [{ name = "Gianluca Costa", email = "gianluca@gianlucacosta.info" }]
-
+requires-python = ">=3.14"
 dependencies = ["info-gianlucacosta-eos-core==2.0.2"]
 
 [build-system]
