@@ -24,6 +24,8 @@ fn main {
     echo 💭 dry-run is enabled: just building the 🐍 Python project...
 
     pdm build
+
+    echo 🎉 Project built successfully!
   } else {
     echo 📤 Publishing the 🐍 Python package...
 
