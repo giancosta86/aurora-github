@@ -2,11 +2,11 @@ use os
 use github.com/giancosta86/ethereal/v1/python/pipx
 use github.com/giancosta86/gauntlet/v1/input
 
-var python-project-file = pyproject.toml
-
 fn check-directory-structure {
-  if (not (os:is-regular $python-project-file)) {
-    fail 'The '$python-project-file' project descriptor is missing!'
+  var project-file = pyproject.toml
+
+  if (not (os:is-regular $project-file)) {
+    fail 'The '$project-file' project descriptor is missing!'
   }
 }
 
