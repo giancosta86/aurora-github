@@ -42,11 +42,15 @@ The actions can be grouped by technology:
 
 ## ☕ Java Virtual Machine ecosystem
 
+- [setup-jvm-context](actions/setup-jvm-context/README.md)
+
 - [verify-jvm-project](actions/verify-jvm-project/README.md)
 
 - [publish-jvm-project](actions/publish-jvm-project/README.md)
 
 ## 🐍 Python
+
+- [setup-python-context](actions/setup-python-context/README.md)
 
 - [verify-python-package](actions/verify-python-package/README.md)
 
@@ -81,6 +85,8 @@ The actions can be grouped by technology:
 - [upload-release-assets](actions/upload-release-assets/README.md)
 
 ## 🖥 Operating-system utilities
+
+- [setup-sdkman-context](actions/setup-sdkman-context/README.md)
 
 - [install-system-packages](actions/install-system-packages/README.md)
 
