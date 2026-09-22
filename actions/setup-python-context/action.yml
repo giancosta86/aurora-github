@@ -1,0 +1,28 @@
+name: Setup Python context
+description: Installs and configures a PDM-based Python environment.
+
+inputs:
+  pdm-version:
+    description: Version of PDM that should be used.
+
+  install-dependencies:
+    description: Run PDM's `install` command.
+    default: true
+
+  working-directory:
+    description: Directory containing the pyproject.toml file.
+    default: .
+
+runs:
+  using: composite
+  steps:
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
+
+    - shell: elvish {0}
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        use github.com/giancosta86/aurora-github/actions/setup-python-context
+        setup-python-context:main
+      env:
+        pdm-version: ${{ inputs.pdm-version }}
+        install-dependencies: ${{ inputs.install-dependencies }}

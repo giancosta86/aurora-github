@@ -32,12 +32,9 @@ runs:
         files: pyproject.toml
         working-directory: ${{ inputs.working-directory }}
 
-    - shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-github/actions/setup-python-context
-        setup-python-context:main
-      env:
+    - uses: giancosta86/aurora-github/actions/setup-python-context@v13.0.0
+      with:
+        working-directory: ${{ inputs.working-directory }}
         pdm-version: ${{ inputs.pdm-version }}
 
     - shell: elvish {0}
@@ -45,6 +42,8 @@ runs:
       run: |
         use github.com/giancosta86/aurora-github/actions/verify-python-package
         verify-python-package:main
+      env:
+        pdm-version: ${{ inputs.pdm-version }}
 
     - uses: giancosta86/aurora-github/actions/find-critical-todos@v13.0.0
       with:

@@ -18,7 +18,7 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **pyproject.toml**.
 
-1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**; upon installation, the latest version will be retrieved if `pdm-version` is not specified.
+1. Run [setup-python-context](../setup-python-context/README.md), **without** installing the _dependencies_.
 
 1. Display the **pyproject.toml** descriptor.
 

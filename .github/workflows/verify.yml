@@ -191,19 +191,28 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-rust-wasm
 
-  test-verify-python-package:
+  test-setup-python-context:
     if: always()
+    runs-on: ubuntu-24.04
+    needs: test-fundamental-actions
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/test-actions/test-verify-python-package
+
+  test-verify-python-package:
+    if: true
     runs-on: ubuntu-24.04
     needs:
       - test-check-project-license
       - test-find-critical-todos
       - test-inject-branch-version
+      - test-setup-python-context
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-python-package
 
   test-publish-python-package:
-    if: always()
+    if: true
     runs-on: ubuntu-24.04
     needs: test-verify-python-package
     steps:
@@ -294,6 +303,7 @@ jobs:
       - test-publish-npm-package
       - test-verify-rust-wasm
       - test-publish-rust-wasm
+      - test-setup-python-context
       - test-verify-python-package
       - test-publish-python-package
       - test-setup-sdkman-context

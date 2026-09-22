@@ -32,13 +32,11 @@ runs:
         files: pyproject.toml
         working-directory: ${{ inputs.working-directory }}
 
-    - shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-github/actions/setup-python-context
-        setup-python-context:main
-      env:
+    - uses: giancosta86/aurora-github/actions/setup-python-context@v13.0.0
+      with:
+        working-directory: ${{ inputs.working-directory }}
         pdm-version: ${{ inputs.pdm-version }}
+        install-dependencies: false
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
@@ -48,6 +46,7 @@ runs:
       env:
         dry-run: ${{ inputs.dry-run }}
         index-url: ${{ inputs.index-url }}
+        pdm-version: ${{ inputs.pdm-version }}
         PDM_PUBLISH_USERNAME: ${{ inputs.index-user }}
         PDM_PUBLISH_PASSWORD: ${{ inputs.index-secret }}
 

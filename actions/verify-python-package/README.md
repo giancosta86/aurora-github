@@ -15,11 +15,7 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **pyproject.toml**.
 
-1. If **pipx** is not already installed, install it.
-
-1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**: the latest version will be retrieved if `pdm-version` is not specified.
-
-1. Install the **project dependencies** via pdm.
+1. Run [setup-python-context](../setup-python-context/README.md).
 
 1. Run `pdm run verify` - where the **verify** script should be defined in the `[tool.pdm.scripts]` of **pyproject.toml**.
 
