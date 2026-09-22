@@ -21,13 +21,17 @@ steps:
 
 1. Verify that [pyproject.toml](https://pydevtools.com/handbook/reference/pyproject.toml/) exists in `working-directory`.
 
+1. Verify that **pyproject.toml** contains the `requires-python` field.
+
 1. If **pipx** is not already installed, install it.
 
 1. Install the **project dependencies** via `pdm install`, if `install-dependencies` is set to **true** (the default).
 
 ## ☑️ Requirements
 
-- The [pyproject.toml](https://pydevtools.com/handbook/reference/pyproject.toml/) descriptor **must** exist in `working-directory`.
+- The [pyproject.toml](https://pydevtools.com/handbook/reference/pyproject.toml/) descriptor **must** exist in `working-directory`
+
+- In **pyproject.tml**, the `requires-python` field **must** be declared.
 
 ## 📥 Inputs
 
