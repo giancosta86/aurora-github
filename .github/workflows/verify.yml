@@ -197,7 +197,7 @@ jobs:
     needs: test-fundamental-actions
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/test-actions/test-verify-python-package
+      - uses: ./.github/test-actions/test-setup-python-context
 
   test-verify-python-package:
     if: true
