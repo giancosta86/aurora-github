@@ -1,0 +1,26 @@
+name: Test setup-python-context
+description: Tests for setup-python-context.
+
+runs:
+  using: composite
+  steps:
+    - uses: ./actions/init-aurora-github
+
+    - shell: elvish {0}
+      run: echo 🎭 Setting up context for the first time...
+
+    - uses: ./actions/setup-python-context
+      with:
+        working-directory: tests/python-lib
+        pdm-version: 2.28.2
+
+    - shell: elvish {0}
+      run: echo 🎭 Setting up context for a second time, to test caching...
+
+    - uses: ./actions/setup-python-context
+      with:
+        working-directory: tests/python-lib
+        pdm-version: 2.28.2
+
+    - shell: elvish {0}
+      run: echo ✅ All tests OK!

@@ -1,7 +1,7 @@
 use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/highlight
 use github.com/giancosta86/gauntlet/v1/input
-use ../python/project
+use github.com/giancosta86/ethereal/v1/python/pipx
 
 fn display-descriptor {
   var descriptor = pyproject.toml
@@ -12,15 +12,20 @@ fn display-descriptor {
 }
 
 fn main {
+  var pdm-version = (input:string pdm-version)
   var dry-run = (input:bool dry-run)
   var index-url = (input:string &optional index-url)
 
   display-descriptor
 
+  var pdm~ = (pipx:get-command pdm &version=$pdm-version)
+
   if $dry-run {
     echo 💭 dry-run is enabled: just building the 🐍 Python project...
 
-    project:build
+    pdm build
+
+    echo 🎉 Project built successfully!
   } else {
     echo 📤 Publishing the 🐍 Python package...
 

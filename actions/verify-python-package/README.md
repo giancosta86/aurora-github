@@ -6,7 +6,7 @@ Verifies the source files of a **Python** package using [PDM](https://pdm-projec
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/verify-python-package@v11
+  - uses: giancosta86/aurora-github/actions/verify-python-package@v13
 ```
 
 ## 💡 How it works
@@ -15,11 +15,7 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **pyproject.toml**.
 
-1. If **pipx** is not already installed, install it.
-
-1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**: the latest version will be retrieved if `pdm-version` is not specified.
-
-1. Install the **project dependencies** via pdm.
+1. Run [setup-python-context](../setup-python-context/README.md).
 
 1. Run `pdm run verify` - where the **verify** script should be defined in the `[tool.pdm.scripts]` of **pyproject.toml**.
 
@@ -40,7 +36,7 @@ steps:
 
 |        Name         |    Type     |                     Description                     | Default value |
 | :-----------------: | :---------: | :-------------------------------------------------: | :-----------: |
-|    `pdm-version`    | **string**  |         Version of PDM that should be used          |               |
+|    `pdm-version`    | **string**  |          Version of PDM that will be used           |               |
 |   `check-license`   | **boolean** |          Run checks on the project license          |   **true**    |
 |    `todo-files`     | **string**  | File patterns potentially containing critical TODOs |    **.py**    |
 | `working-directory` | **string**  |       Directory containing **pyproject.toml**       |     **.**     |

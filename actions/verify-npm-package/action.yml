@@ -3,8 +3,8 @@ description: Verifies the source files of a NodeJS package.
 
 inputs:
   corepack-version:
-    description: corepack version to install, empty to skip.
-    default: latest
+    description: corepack version to install.
+    default: 0.36.x
 
   check-license:
     description: Run checks on the project license.
@@ -25,19 +25,19 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.0
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
 
     - if: inputs.check-license == 'true'
-      uses: giancosta86/aurora-github/actions/check-project-license@v12.0.0
+      uses: giancosta86/aurora-github/actions/check-project-license@v13.0.0
       with:
         license-file: ${{ inputs.working-directory }}/LICENSE
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v13.0.0
       with:
         files: package.json
         working-directory: ${{ inputs.working-directory }}
 
-    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v12.0.0
+    - uses: giancosta86/aurora-github/actions/setup-nodejs-context@v13.0.0
       with:
         working-directory: ${{ inputs.working-directory }}
         corepack-version: ${{ inputs.corepack-version }}
@@ -49,11 +49,11 @@ runs:
         verify-npm-package:run-package-scripts
 
     - if: inputs.check-subpath-exports == 'true'
-      uses: giancosta86/aurora-github/actions/check-subpath-exports@v12.0.0
+      uses: giancosta86/aurora-github/actions/check-subpath-exports@v13.0.0
       with:
         working-directory: ${{ inputs.working-directory }}
 
-    - uses: giancosta86/aurora-github/actions/find-critical-todos@v12.0.0
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v13.0.0
       with:
         files: ${{ inputs.todo-files }}
         working-directory: ${{ inputs.working-directory }}

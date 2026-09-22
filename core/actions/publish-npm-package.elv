@@ -3,7 +3,7 @@ use github.com/giancosta86/ethereal/v1/console
 use github.com/giancosta86/ethereal/v1/highlight
 use github.com/giancosta86/ethereal/v1/lang
 use github.com/giancosta86/gauntlet/v1/input
-use github.com/giancosta86/astral-bridge/v1/package-manager
+use github.com/giancosta86/astral-bridge/v2/nodejs/package-manager
 
 fn ensure-npm-config {
   var config-path = .npmrc
@@ -33,6 +33,7 @@ fn publish-to-registry { |dry-run|
 fn main {
   var dry-run = (input:bool dry-run)
 
+  echo 💫 Now trying to run the build script from package.json...
   package-manager:run-script &optional build
 
   console:section &emoji=📦 'package.json just before publication' {

@@ -7,7 +7,7 @@ inputs:
     default: false
 
   pdm-version:
-    description: Version of PDM that should be used.
+    description: Version of PDM that will be used.
 
   index-url:
     description: URL of the target index - empty for PyPI.
@@ -25,20 +25,18 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.0
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v13.0.0
       with:
         files: pyproject.toml
         working-directory: ${{ inputs.working-directory }}
 
-    - shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-github/actions/setup-python-context
-        setup-python-context:main
-      env:
+    - uses: giancosta86/aurora-github/actions/setup-python-context@v13.0.0
+      with:
+        working-directory: ${{ inputs.working-directory }}
         pdm-version: ${{ inputs.pdm-version }}
+        install-dependencies: false
 
     - shell: elvish {0}
       working-directory: ${{ inputs.working-directory }}
@@ -48,6 +46,7 @@ runs:
       env:
         dry-run: ${{ inputs.dry-run }}
         index-url: ${{ inputs.index-url }}
+        pdm-version: ${{ inputs.pdm-version }}
         PDM_PUBLISH_USERNAME: ${{ inputs.index-user }}
         PDM_PUBLISH_PASSWORD: ${{ inputs.index-secret }}
 

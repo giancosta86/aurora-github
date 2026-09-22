@@ -10,5 +10,3 @@ runs:
         dry-run: true
         wasm-pack-version: 0.15.0
         npm-scope: giancosta86
-        node-version: 26.2.0
-        package-manager: pnpm@10.22.0

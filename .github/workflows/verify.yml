@@ -89,14 +89,6 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-install-system-packages
 
-  test-install-via-sdkman:
-    if: true
-    runs-on: ubuntu-24.04
-    needs: test-fundamental-actions
-    steps:
-      - uses: actions/checkout@v7
-      - uses: ./.github/test-actions/test-install-via-sdkman
-
   test-upload-release-assets:
     if: true
     runs-on: ubuntu-24.04
@@ -199,6 +191,14 @@ jobs:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-publish-rust-wasm
 
+  test-setup-python-context:
+    if: true
+    runs-on: ubuntu-24.04
+    needs: test-fundamental-actions
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/test-actions/test-setup-python-context
+
   test-verify-python-package:
     if: true
     runs-on: ubuntu-24.04
@@ -206,6 +206,7 @@ jobs:
       - test-check-project-license
       - test-find-critical-todos
       - test-inject-branch-version
+      - test-setup-python-context
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-python-package
@@ -220,6 +221,22 @@ jobs:
         with:
           index-secret: ${{ secrets.FAKE_PYTHON_TOKEN }}
 
+  test-setup-sdkman-context:
+    if: true
+    runs-on: ubuntu-24.04
+    needs: test-fundamental-actions
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/test-actions/test-setup-sdkman-context
+
+  test-setup-jvm-context:
+    if: true
+    runs-on: ubuntu-24.04
+    needs: test-setup-sdkman-context
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/test-actions/test-setup-jvm-context
+
   test-verify-jvm-project:
     if: true
     runs-on: ubuntu-24.04
@@ -227,7 +244,7 @@ jobs:
       - test-check-project-license
       - test-find-critical-todos
       - test-inject-branch-version
-      - test-install-via-sdkman
+      - test-setup-jvm-context
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/test-actions/test-verify-jvm-project
@@ -275,7 +292,6 @@ jobs:
       - test-replace-regex-pattern
       - test-inject-branch-version
       - test-install-system-packages
-      - test-install-via-sdkman
       - test-upload-release-assets
       - test-verify-elvish-package
       - test-setup-rust-context
@@ -287,8 +303,11 @@ jobs:
       - test-publish-npm-package
       - test-verify-rust-wasm
       - test-publish-rust-wasm
+      - test-setup-python-context
       - test-verify-python-package
       - test-publish-python-package
+      - test-setup-sdkman-context
+      - test-setup-jvm-context
       - test-verify-jvm-project
       - test-publish-jvm-project
       - test-publish-github-pages

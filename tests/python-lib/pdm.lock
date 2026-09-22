@@ -4,19 +4,19 @@
 [metadata]
 groups = ["default"]
 strategy = ["inherit_metadata"]
-lock_version = "4.5.0"
-content_hash = "sha256:e0ae89ca48832fc9688c49a21445ee449042cc10f911a9f57496e9c1370fb96c"
+lock_version = "4.5.1"
+content_hash = "sha256:d03d92b40e52586782b04ec93d56e374d6e1679574f763f58ef2c2729102b31c"
 
 [[metadata.targets]]
-requires_python = ">=3.12"
+requires_python = ">=3.14"
 
 [[package]]
 name = "info-gianlucacosta-eos-core"
-version = "1.0.0"
-requires_python = ">=3.10,<4.0"
+version = "2.0.2"
+requires_python = "<4.0,>=3.14"
 summary = "Type-checked, dependency-free utility library for modern Python"
 groups = ["default"]
 files = [
-    {file = "info.gianlucacosta.eos.core-1.0.0-py3-none-any.whl", hash = "sha256:d5302bddf62a3dc27b8fab52f3059b21c38abff03dd72c9084b3cfd2fc36e4a9"},
-    {file = "info.gianlucacosta.eos.core-1.0.0.tar.gz", hash = "sha256:9b19503485674e4e400de1bbb4408d0e802538395d6d929a61d5b36bde93284c"},
+    {file = "info_gianlucacosta_eos_core-2.0.2-py3-none-any.whl", hash = "sha256:4e95ada715c9004783ea24d24416d7166874d593eccbc01841e3e381927feb10"},
+    {file = "info_gianlucacosta_eos_core-2.0.2.tar.gz", hash = "sha256:7553d838bbc493af20592db9a79bbc50a41fbcf0bb3b33746d4b3d51897b3a9d"},
 ]

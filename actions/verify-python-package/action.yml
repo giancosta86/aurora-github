@@ -3,7 +3,7 @@ description: Verifies the source files of a Python package using PDM.
 
 inputs:
   pdm-version:
-    description: Version of PDM that should be used.
+    description: Version of PDM that will be used.
 
   check-license:
     description: Run checks on the project license.
@@ -20,24 +20,21 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: giancosta86/aurora-github/actions/init-aurora-github@v12.0.0
+    - uses: giancosta86/aurora-github/actions/init-aurora-github@v13.0.0
 
     - if: inputs.check-license == 'true'
-      uses: giancosta86/aurora-github/actions/check-project-license@v12.0.0
+      uses: giancosta86/aurora-github/actions/check-project-license@v13.0.0
       with:
         license-file: ${{ inputs.working-directory }}/LICENSE
 
-    - uses: giancosta86/aurora-github/actions/inject-branch-version@v12.0.0
+    - uses: giancosta86/aurora-github/actions/inject-branch-version@v13.0.0
       with:
         files: pyproject.toml
         working-directory: ${{ inputs.working-directory }}
 
-    - shell: elvish {0}
-      working-directory: ${{ inputs.working-directory }}
-      run: |
-        use github.com/giancosta86/aurora-github/actions/setup-python-context
-        setup-python-context:main
-      env:
+    - uses: giancosta86/aurora-github/actions/setup-python-context@v13.0.0
+      with:
+        working-directory: ${{ inputs.working-directory }}
         pdm-version: ${{ inputs.pdm-version }}
 
     - shell: elvish {0}
@@ -45,8 +42,10 @@ runs:
       run: |
         use github.com/giancosta86/aurora-github/actions/verify-python-package
         verify-python-package:main
+      env:
+        pdm-version: ${{ inputs.pdm-version }}
 
-    - uses: giancosta86/aurora-github/actions/find-critical-todos@v12.0.0
+    - uses: giancosta86/aurora-github/actions/find-critical-todos@v13.0.0
       with:
         files: ${{ inputs.todo-files }}
         working-directory: ${{ inputs.working-directory }}

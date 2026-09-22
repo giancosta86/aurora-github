@@ -4,6 +4,8 @@
 # Script updating the intra-repository 'uses:' references
 # between composite GitHub actions, so that only the current branch is referenced.
 #
+# The script also updates the example usages in README files.
+#
 # Just run the script, with no arguments, from any directory; also, the execution is idempotent.
 #
 
@@ -37,17 +39,52 @@ var actions-directory = (
 )
 echo 📁 Actions directory: $actions-directory
 
-put $actions-directory/**.yml |
-  each { |action-path|
-    put $action-path[(+ (count $actions-directory) 1)..] |
-      echo 📜 (all)
+fn create-reference-updater { |&major-only=$false emoji|
+  put { |source-path|
+    put $source-path[(+ (count $actions-directory) 1)..] |
+      echo $emoji (all)
 
-    var updated-content = (
-      slurp < $action-path |
-        re:replace $reference-regex '${1}'$version-tag (all)
+    var updated-reference = (
+      if $major-only {
+        put $version-tag |
+          str:split . (all) |
+          take 1
+      } else {
+        put $version-tag
+      }
     )
 
-    print $updated-content > $action-path
-  }
+    var updated-content = (
+      slurp < $source-path |
+        re:replace $reference-regex '${1}'$updated-reference (all)
+    )
 
-echo ✅ All references updated!
+    print $updated-content > $source-path
+  }
+}
+
+fn update-actions {
+  var action-updater = (create-reference-updater 📜)
+
+  put $actions-directory/**.yml |
+    each $action-updater
+}
+
+
+fn update-readmes {
+  var readme-updater = (create-reference-updater &major-only 🗒️)
+
+  put $actions-directory/**/README.md |
+    each $readme-updater
+}
+
+
+fn main {
+  update-actions
+
+  update-readmes
+
+  echo ✅ All references updated!
+}
+
+main

@@ -6,7 +6,7 @@ Publishes a **Python** package using [PDM](https://pdm-project.org).
 
 ```yaml
 steps:
-  - uses: giancosta86/aurora-github/actions/publish-python-package@v11
+  - uses: giancosta86/aurora-github/actions/publish-python-package@v13
     with:
       index-user: __token__
       index-secret: ${{ secrets.PYPI_TOKEN }}
@@ -18,7 +18,7 @@ steps:
 
 1. Run [inject-branch-version](../inject-branch-version/README.md) on **pyproject.toml**.
 
-1. If the `pdm` command is not installed (at the requested `pdm-version`, if declared), install it via **pipx**; upon installation, the latest version will be retrieved if `pdm-version` is not specified.
+1. Run [setup-python-context](../setup-python-context/README.md), **without** installing the _dependencies_.
 
 1. Display the **pyproject.toml** descriptor.
 
@@ -33,7 +33,7 @@ steps:
 |        Name         |    Type     |                Description                 | Default value |
 | :-----------------: | :---------: | :----------------------------------------: | :-----------: |
 |      `dry-run`      | **boolean** |        Run a simulated publication         |   **false**   |
-|    `pdm-version`    | **string**  |     Version of PDM that should be used     |               |
+|    `pdm-version`    | **string**  |      Version of PDM that will be used      |               |
 |     `index-url`     | **string**  |  URL of the target index - empty for PyPI  |               |
 |    `index-user`     | **string**  |      User for publishing to the index      |               |
 |   `index-secret`    | **string**  | Password/token for publishing to the index |               |
