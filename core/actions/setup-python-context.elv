@@ -11,7 +11,7 @@ fn check-directory-structure {
 }
 
 fn install-dependencies { |pdm-version|
-  var pdm = (pipx:get-command pdm &version=$pdm-version)
+  var pdm~ = (pipx:get-command pdm &version=$pdm-version)
 
   echo 📥 Installing project dependencies...
 

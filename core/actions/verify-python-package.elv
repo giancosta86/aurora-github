@@ -5,7 +5,7 @@ use ../python/project
 fn main {
   var pdm-version = (input:string pdm-version)
 
-  var pdm = (pipx:get-command pdm &version=$pdm-version)
+  var pdm~ = (pipx:get-command pdm &version=$pdm-version)
 
   echo 🔬 Verifying the project...
   pdm run verify
