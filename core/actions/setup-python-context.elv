@@ -1,4 +1,5 @@
 use os
+use re
 use github.com/giancosta86/ethereal/v1/python/pipx
 use github.com/giancosta86/gauntlet/v1/input
 
